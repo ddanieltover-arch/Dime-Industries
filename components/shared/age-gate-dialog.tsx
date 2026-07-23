@@ -3,6 +3,7 @@
 
 import { useActionState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 import * as Dialog from "@radix-ui/react-dialog";
 import { motion, useReducedMotion, AnimatePresence } from "framer-motion";
 import { confirmAgeGate, type AgeGateActionState } from "@/app/(compliance)/actions";
@@ -17,9 +18,6 @@ export function AgeGateDialog({ initiallyOpen }: { initiallyOpen: boolean }) {
   const headingRef = useRef<HTMLHeadingElement>(null);
 
   const resolved = !state.error && !state.needsJurisdiction && !state.notAvailable && !pending;
-  // Once the server action succeeds with no follow-up step, force the page's
-  // Server Component to re-read the now-set cookie so the dialog actually
-  // closes and the real page renders behind it.
   useEffect(() => {
     if (resolved && (state as AgeGateActionState) !== initialState) {
       router.refresh();
@@ -32,48 +30,53 @@ export function AgeGateDialog({ initiallyOpen }: { initiallyOpen: boolean }) {
   return (
     <Dialog.Root open={open}>
       <Dialog.Portal>
-        <Dialog.Overlay className="fixed inset-0 z-50 bg-[var(--color-ink)]/60 backdrop-blur-sm" />
+        <Dialog.Overlay className="fixed inset-0 z-50 bg-black/85 backdrop-blur-sm" />
         <Dialog.Content
           onOpenAutoFocus={(e) => {
             e.preventDefault();
             headingRef.current?.focus();
           }}
-          onEscapeKeyDown={(e) => e.preventDefault()} // can't dismiss a legal gate with Escape
+          onEscapeKeyDown={(e) => e.preventDefault()}
           onPointerDownOutside={(e) => e.preventDefault()}
           aria-describedby="age-gate-description"
-          className="fixed left-1/2 top-1/2 z-50 w-[92vw] max-w-md -translate-x-1/2 -translate-y-1/2 rounded-[var(--radius-lg)] border border-[var(--color-border)] bg-[var(--color-surface-raised)] p-8 shadow-[var(--shadow-card)]"
+          className="fixed inset-0 z-50 flex items-center justify-center p-6"
         >
           <AnimatePresence mode="wait">
             <motion.div
               key={state.needsJurisdiction ? "jurisdiction" : state.notAvailable ? "unavailable" : "age"}
-              initial={prefersReducedMotion ? {} : { opacity: 0, y: 8 }}
+              initial={prefersReducedMotion ? {} : { opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
+              transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
+              className="w-full max-w-lg text-center"
             >
+              <div className="relative mx-auto mb-8 h-12 w-40">
+                <Image src="/brand/logo.png" alt="DIME" fill className="object-contain" sizes="160px" priority />
+              </div>
+
               <Dialog.Title
                 ref={headingRef}
                 tabIndex={-1}
-                className="font-[var(--font-display)] text-[var(--scale-xl)] text-[var(--color-ink)] outline-none"
+                className="font-[var(--font-display)] text-[var(--scale-2xl)] uppercase tracking-[0.08em] text-white outline-none sm:text-[var(--scale-3xl)]"
               >
-                {state.notAvailable ? "Not yet available in your area" : "Age verification required"}
+                {state.notAvailable ? "Not yet available" : "Are you over 21?"}
               </Dialog.Title>
 
               <Dialog.Description
                 id="age-gate-description"
-                className="mt-2 text-[var(--scale-sm)] text-[var(--color-ink-soft)]"
+                className="mx-auto mt-4 max-w-md text-[var(--scale-sm)] leading-relaxed text-[var(--color-ink-soft)]"
               >
                 {state.notAvailable
-                  ? "DIME Enterprise Commerce currently serves California and Massachusetts only. We're not able to show pricing or products outside those states."
-                  : "This site sells regulated cannabis products. You must confirm you are 21 or older, or a qualifying medical patient, to continue."}
+                  ? "DIME currently serves California and Massachusetts only. We're not able to show pricing or products outside those states."
+                  : "By clicking Yes and entering DIME Industries' site, I confirm I'm at least 21 or a qualified patient, and I agree to the Terms of Service and Privacy Policy."}
               </Dialog.Description>
 
               {!state.notAvailable && (
-                <form action={formAction} className="mt-6 space-y-4">
+                <form action={formAction} className="mt-10 space-y-4">
                   {state.needsJurisdiction && (
-                    <div>
+                    <div className="mx-auto max-w-xs text-left">
                       <label
                         htmlFor="jurisdiction"
-                        className="block text-[var(--scale-sm)] font-medium text-[var(--color-ink)]"
+                        className="block font-[var(--font-display)] text-[var(--scale-xs)] uppercase tracking-[0.14em] text-[var(--color-resin)]"
                       >
                         Which state are you in?
                       </label>
@@ -82,7 +85,7 @@ export function AgeGateDialog({ initiallyOpen }: { initiallyOpen: boolean }) {
                         name="jurisdiction"
                         required
                         defaultValue=""
-                        className="mt-1 w-full rounded-[var(--radius-sm)] border border-[var(--color-border-interactive)] bg-[var(--color-surface)] px-3 py-2 text-[var(--color-ink)]"
+                        className="mt-2 w-full rounded-full border border-[var(--color-border-interactive)] bg-[var(--color-surface)] px-4 py-3 text-[var(--color-ink)]"
                       >
                         <option value="" disabled>
                           Select a state
@@ -98,30 +101,22 @@ export function AgeGateDialog({ initiallyOpen }: { initiallyOpen: boolean }) {
                     </div>
                   )}
 
-                  {!state.needsJurisdiction && (
-                    <fieldset>
-                      <legend className="text-[var(--scale-sm)] text-[var(--color-ink)]">
-                        I am 21 years of age or older, or a qualifying medical patient.
-                      </legend>
-                    </fieldset>
-                  )}
-
                   {state.error && (
                     <p role="alert" className="text-[var(--scale-sm)] text-[var(--color-flag)]">
                       {state.error}
                     </p>
                   )}
 
-                  <div className="flex gap-3 pt-2">
+                  <div className="flex flex-wrap items-center justify-center gap-4 pt-2">
                     {!state.needsJurisdiction && (
                       <button
                         type="submit"
                         name="isOfAge"
                         value="no"
                         formNoValidate
-                        className="flex-1 rounded-[var(--radius-sm)] border border-[var(--color-border)] px-4 py-2 text-[var(--scale-sm)] text-[var(--color-ink)] transition-colors hover:bg-[var(--color-surface)]"
+                        className="min-w-[7.5rem] rounded-full border border-white/40 px-8 py-3 font-[var(--font-display)] text-[var(--scale-sm)] uppercase tracking-[0.14em] text-white transition-colors hover:border-[var(--color-resin)] hover:text-[var(--color-resin)]"
                       >
-                        I'm under 21
+                        No
                       </button>
                     )}
                     <button
@@ -129,9 +124,9 @@ export function AgeGateDialog({ initiallyOpen }: { initiallyOpen: boolean }) {
                       name="isOfAge"
                       value="yes"
                       disabled={pending}
-                      className="flex-1 rounded-[var(--radius-sm)] bg-[var(--color-resin-strong)] px-4 py-2 text-[var(--scale-sm)] font-medium text-[var(--color-surface)] transition-colors hover:bg-[var(--color-resin-hover)] disabled:opacity-60"
+                      className="min-w-[7.5rem] rounded-full bg-[var(--color-resin)] px-8 py-3 font-[var(--font-display)] text-[var(--scale-sm)] uppercase tracking-[0.14em] text-black transition-colors hover:bg-[var(--color-resin-hover)] disabled:opacity-60"
                     >
-                      {pending ? "Checking…" : state.needsJurisdiction ? "Continue" : "I'm 21 or older"}
+                      {pending ? "Checking…" : state.needsJurisdiction ? "Continue" : "Yes"}
                     </button>
                   </div>
                 </form>

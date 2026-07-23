@@ -10,21 +10,27 @@ export function NewsletterSignup() {
   const [state, formAction, pending] = useActionState(subscribeToNewsletter, initialState);
 
   return (
-    <section aria-labelledby="newsletter-heading" className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
-      <div className="rounded-[var(--radius-lg)] bg-[var(--color-ink)] p-8 text-[var(--color-bg)] sm:p-10">
-        <h2 id="newsletter-heading" className="font-[var(--font-display)] text-[var(--scale-xl)]">
-          New batches, first look
+    <section
+      aria-labelledby="newsletter-heading"
+      className="border-t border-[var(--color-border)] bg-[var(--color-surface)]"
+    >
+      <div className="mx-auto max-w-7xl px-4 py-16 text-center sm:px-6 lg:px-8">
+        <h2
+          id="newsletter-heading"
+          className="font-[var(--font-display)] text-[var(--scale-xl)] uppercase tracking-[0.1em] text-white sm:text-[var(--scale-2xl)]"
+        >
+          Access our members only newsletter
         </h2>
-        <p className="mt-2 max-w-md text-[var(--scale-sm)] opacity-80">
-          One email when a new drop lands. No spam, unsubscribe anytime.
+        <p className="mx-auto mt-3 max-w-lg text-[var(--scale-sm)] text-[var(--color-ink-soft)]">
+          Sign up now for drops, promotions, and early access.
         </p>
 
         {state.success ? (
-          <p role="status" className="mt-6 text-[var(--scale-sm)] text-[var(--color-resin-strong)]">
-            You're on the list — check your inbox to confirm.
+          <p role="status" className="mt-8 text-[var(--scale-sm)] text-[var(--color-resin)]">
+            You&apos;re on the list — check your inbox to confirm.
           </p>
         ) : (
-          <form action={formAction} className="mt-6 flex max-w-md flex-col gap-3 sm:flex-row">
+          <form action={formAction} className="mx-auto mt-8 flex max-w-md flex-col gap-3 sm:flex-row">
             <label htmlFor="newsletter-email" className="sr-only">
               Email address
             </label>
@@ -33,23 +39,23 @@ export function NewsletterSignup() {
               type="email"
               name="email"
               required
-              placeholder="you@example.com"
+              placeholder="Email address"
               aria-invalid={Boolean(state.error)}
               aria-describedby={state.error ? "newsletter-error" : undefined}
-              className="flex-1 rounded-[var(--radius-sm)] border border-[var(--color-border-interactive)] bg-[var(--color-surface)] px-4 py-2.5 text-[var(--scale-sm)] text-[var(--color-ink)]"
+              className="flex-1 rounded-full border border-[var(--color-border-interactive)] bg-[var(--color-bg)] px-5 py-3 text-[var(--scale-sm)] text-[var(--color-ink)]"
             />
             <button
               type="submit"
               disabled={pending}
-              className="rounded-[var(--radius-sm)] bg-[var(--color-resin-strong)] px-6 py-2.5 text-[var(--scale-sm)] font-medium text-[var(--color-surface)] transition-colors hover:bg-[var(--color-resin-hover)] disabled:opacity-60"
+              className="rounded-full bg-[var(--color-resin)] px-8 py-3 font-[var(--font-display)] text-[var(--scale-xs)] uppercase tracking-[0.16em] text-black transition-colors hover:bg-[var(--color-resin-hover)] disabled:opacity-60"
             >
-              {pending ? "Signing up…" : "Sign up"}
+              {pending ? "Signing up…" : "Sign up now"}
             </button>
           </form>
         )}
 
         {state.error && (
-          <p id="newsletter-error" role="alert" className="mt-2 text-[var(--scale-sm)] text-[var(--color-flag)]">
+          <p id="newsletter-error" role="alert" className="mt-3 text-[var(--scale-sm)] text-[var(--color-flag)]">
             {state.error}
           </p>
         )}

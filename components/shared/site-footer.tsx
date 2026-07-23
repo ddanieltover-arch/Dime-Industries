@@ -1,4 +1,5 @@
 // components/shared/site-footer.tsx
+import Image from "next/image";
 import Link from "next/link";
 
 const COLUMNS = [
@@ -19,6 +20,7 @@ const COLUMNS = [
       { href: "/wholesale", label: "Wholesale" },
       { href: "/blog", label: "Blog" },
       { href: "/contact", label: "Contact" },
+      { href: "/locations", label: "Store Locator" },
     ],
   },
   {
@@ -38,19 +40,25 @@ export function SiteFooter() {
       <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
         <div className="grid grid-cols-2 gap-8 sm:grid-cols-4">
           <div className="col-span-2 sm:col-span-1">
-            <p className="font-[var(--font-display)] text-[var(--scale-lg)] text-[var(--color-ink)]">DIME</p>
-            <p className="mt-2 text-[var(--scale-xs)] text-[var(--color-ink-soft)]">
-              For use only by adults 21 and older, or qualifying medical patients.
-              Keep out of reach of children.
+            <div className="relative h-8 w-32">
+              <Image src="/brand/logo.png" alt="DIME" fill className="object-contain object-left" sizes="128px" />
+            </div>
+            <p className="mt-4 text-[var(--scale-xs)] leading-relaxed text-[var(--color-ink-soft)]">
+              For use only by adults 21 and older, or qualifying medical patients. Keep out of reach of children.
             </p>
           </div>
           {COLUMNS.map((col) => (
             <div key={col.heading}>
-              <h3 className="text-[var(--scale-sm)] font-medium text-[var(--color-ink)]">{col.heading}</h3>
+              <h3 className="font-[var(--font-display)] text-[var(--scale-xs)] uppercase tracking-[0.14em] text-[var(--color-resin)]">
+                {col.heading}
+              </h3>
               <ul className="mt-3 space-y-2">
                 {col.links.map((l) => (
                   <li key={l.href}>
-                    <Link href={l.href} className="text-[var(--scale-sm)] text-[var(--color-ink-soft)] hover:text-[var(--color-ink)]">
+                    <Link
+                      href={l.href}
+                      className="text-[var(--scale-sm)] text-[var(--color-ink-soft)] transition-colors hover:text-[var(--color-resin)]"
+                    >
                       {l.label}
                     </Link>
                   </li>
@@ -60,15 +68,11 @@ export function SiteFooter() {
           ))}
         </div>
 
-        {/* License disclosure — required, per the reference-site research
-            (dimeindustries.com footer convention) and SRS §7 */}
-        <div className="mt-10 border-t border-[var(--color-border)] pt-6 font-[var(--font-mono)] text-[var(--scale-xs)] text-[var(--color-ink-soft)]">
+        <div className="mt-10 border-t border-[var(--color-border)] pt-6 text-[var(--scale-xs)] text-[var(--color-ink-soft)]">
           <p>Bud Technology Distribution — Adult and Medical — License C11-0001413-LIC (CA)</p>
           <p>Bud Technology Manufacturing — Adult and Medical — License CDPH-0003528 (CA)</p>
-          <p className="mt-2">
-            Massachusetts licensing information available at checkout for MA-fulfilled orders.
-          </p>
-          <p className="mt-4">© {new Date().getFullYear()} DIME Enterprise Commerce Platform.</p>
+          <p className="mt-2">Massachusetts licensing information available at checkout for MA-fulfilled orders.</p>
+          <p className="mt-4">© {new Date().getFullYear()} DIME Industries.</p>
         </div>
       </div>
     </footer>

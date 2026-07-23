@@ -1,4 +1,5 @@
 // components/shared/site-header.tsx
+import Image from "next/image";
 import Link from "next/link";
 import { ThemeToggle } from "@/components/shared/theme-toggle";
 import { CartHeaderControls } from "@/components/cart/cart-header-controls";
@@ -20,17 +21,21 @@ export async function SiteHeader() {
     <>
       <a
         href="#main-content"
-        className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-[60] focus:rounded-[var(--radius-sm)] focus:bg-[var(--color-resin-strong)] focus:px-4 focus:py-2 focus:text-[var(--color-surface)]"
+        className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-[60] focus:rounded-[var(--radius-sm)] focus:bg-[var(--color-resin-strong)] focus:px-4 focus:py-2 focus:text-[var(--color-bg)]"
       >
         Skip to main content
       </a>
       <header className="sticky top-0 z-40 border-b border-[var(--color-border)] bg-[var(--color-bg)]/95 backdrop-blur">
-        <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
-          <Link
-            href="/"
-            className="font-[var(--font-display)] text-[var(--scale-lg)] font-semibold tracking-tight text-[var(--color-ink)]"
-          >
-            DIME
+        <div className="mx-auto flex h-16 max-w-7xl items-center justify-between gap-4 px-4 sm:px-6 lg:px-8">
+          <Link href="/" className="relative h-8 w-[7.5rem] shrink-0 sm:h-9 sm:w-36">
+            <Image
+              src="/brand/logo.png"
+              alt="DIME"
+              fill
+              priority
+              className="object-contain object-left"
+              sizes="144px"
+            />
           </Link>
 
           <nav aria-label="Main" className="hidden md:block">
@@ -39,7 +44,7 @@ export async function SiteHeader() {
                 <li key={link.href}>
                   <Link
                     href={link.href}
-                    className="text-[var(--scale-sm)] text-[var(--color-ink-soft)] transition-colors hover:text-[var(--color-ink)]"
+                    className="font-[var(--font-display)] text-[var(--scale-xs)] uppercase tracking-[0.12em] text-[var(--color-ink-soft)] transition-colors hover:text-[var(--color-resin)]"
                   >
                     {link.label}
                   </Link>
@@ -52,13 +57,13 @@ export async function SiteHeader() {
             <ThemeToggle />
             <Link
               href="/account"
-              className="hidden text-[var(--scale-sm)] text-[var(--color-ink-soft)] transition-colors hover:text-[var(--color-ink)] sm:block"
+              className="hidden font-[var(--font-display)] text-[var(--scale-xs)] uppercase tracking-[0.12em] text-[var(--color-ink-soft)] transition-colors hover:text-[var(--color-resin)] sm:block"
             >
               Account
             </Link>
             <Link
               href="/admin"
-              className="hidden text-[var(--scale-sm)] text-[var(--color-ink-soft)] transition-colors hover:text-[var(--color-ink)] lg:block"
+              className="hidden font-[var(--font-display)] text-[var(--scale-xs)] uppercase tracking-[0.12em] text-[var(--color-ink-soft)] transition-colors hover:text-[var(--color-resin)] lg:block"
             >
               Admin
             </Link>
@@ -70,13 +75,19 @@ export async function SiteHeader() {
           <ul className="flex gap-4 overflow-x-auto">
             {NAV_LINKS.map((link) => (
               <li key={link.href} className="shrink-0">
-                <Link href={link.href} className="text-[var(--scale-sm)] text-[var(--color-ink-soft)]">
+                <Link
+                  href={link.href}
+                  className="font-[var(--font-display)] text-[var(--scale-xs)] uppercase tracking-[0.12em] text-[var(--color-ink-soft)]"
+                >
                   {link.label}
                 </Link>
               </li>
             ))}
             <li className="shrink-0">
-              <Link href="/wishlist" className="text-[var(--scale-sm)] text-[var(--color-ink-soft)]">
+              <Link
+                href="/wishlist"
+                className="font-[var(--font-display)] text-[var(--scale-xs)] uppercase tracking-[0.12em] text-[var(--color-ink-soft)]"
+              >
                 Wishlist
               </Link>
             </li>

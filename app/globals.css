@@ -1,42 +1,57 @@
 /* app/globals.css
  *
- * Design language: "Lab Ticket" — DIME's whole public identity (per the
- * reference-site research) is built on lab-tested transparency: COAs, batch
- * numbers, cannabinoid percentages. Rather than the generic near-black +
- * acid-green cannabis-site cliché, this system is built around the actual
- * object that transparency lives on: a certificate/ticket. Warm parchment
- * paper as the default surface, amber resin as the primary accent (the color
- * of cured live resin, not a stock "cannabis green"), a desaturated moss for
- * the secondary/terpene accent, and a monospace utility face reserved for
- * anything that reads like lab data (batch IDs, percentages, SKUs) so those
- * numbers always look like they came off a real certificate.
- *
- * Light mode (default) = the certificate itself, bright and clinical.
- * Dark mode = the same ticket under amber light — same hues, inverted
- * surface, not a different design language.
+ * Design language: DIME brand site (dimeindustries.com) — near-black concrete
+ * surfaces, gold resin accents, Gotham for UI, Retro Signature for display
+ * flourishes. Commerce flows stay on this stack; visual chrome matches the
+ * official brand site.
  */
 
 @import "tailwindcss";
 
-:root {
-  /* Color — light (default): parchment/certificate paper */
-  --color-bg: #F3ECDD;
-  --color-surface: #FFFCF5;
-  --color-surface-raised: #FFFFFF;
-  --color-ink: #1B1712;
-  --color-ink-soft: #5C5346;
-  --color-resin: #B5651D;         /* primary accent — cured resin amber */
-  --color-resin-strong: #8C4A14;
-  --color-resin-hover: #6E3A0F;   /* solid-fill button hover; resin-strong is the button base, this is its hover */
-  --color-terp: #5F7052;          /* secondary accent — desaturated moss, not neon */
-  --color-flag: #A23B24;          /* alerts, out-of-stock, destructive */
-  --color-border: #DDD2B8;        /* decorative dividers/card edges only — NOT sufficient contrast (1.28:1) for a form-control boundary; use --color-border-interactive for those */
-  --color-border-interactive: #8C7A54; /* form control borders — verified >=3:1 on both --color-bg and --color-surface-raised, per WCAG 1.4.11 */
-  --color-focus: #1B1712;
+@font-face {
+  font-family: "Gotham Black";
+  font-weight: 900;
+  font-style: normal;
+  font-display: swap;
+  src: url("/fonts/gotham-black.ttf") format("truetype");
+}
 
-  --font-display: var(--font-display-family), Georgia, serif;
-  --font-body: var(--font-body-family), system-ui, sans-serif;
-  --font-mono: var(--font-mono-family), ui-monospace, monospace;
+@font-face {
+  font-family: "Gotham";
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+  src: url("/fonts/gotham-book.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "Retro Signature";
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+  src: url("/fonts/retro-signature.ttf") format("truetype");
+}
+
+:root {
+  /* Brand — dark concrete (default matches dimeindustries.com) */
+  --color-bg: #0e0e0e;
+  --color-surface: #171616;
+  --color-surface-raised: #1f1e1e;
+  --color-ink: #ffffff;
+  --color-ink-soft: #bcbcbc;
+  --color-resin: #c9b138;         /* primary gold */
+  --color-resin-strong: #e5bd6f;
+  --color-resin-hover: #f0d08a;
+  --color-terp: #b7984b;          /* secondary gold */
+  --color-flag: #8b232d;
+  --color-border: #2e2e2e;
+  --color-border-interactive: #4e4e4e;
+  --color-focus: #e5bd6f;
+
+  --font-display: "Gotham Black", "Arial Black", system-ui, sans-serif;
+  --font-body: "Gotham", system-ui, sans-serif;
+  --font-mono: "Gotham", ui-monospace, monospace;
+  --font-script: "Retro Signature", Georgia, cursive;
 
   --scale-xs: 0.75rem;
   --scale-sm: 0.875rem;
@@ -49,8 +64,8 @@
   --space-1: 4px; --space-2: 8px; --space-3: 12px; --space-4: 16px;
   --space-6: 24px; --space-8: 32px; --space-12: 48px; --space-16: 64px;
 
-  --radius-sm: 2px; --radius-md: 4px; --radius-lg: 8px; /* ticket-paper edges, not soft app-UI radii */
-  --shadow-card: 0 1px 2px rgba(27,23,18,0.08), 0 4px 12px rgba(27,23,18,0.06);
+  --radius-sm: 2px; --radius-md: 4px; --radius-lg: 8px;
+  --shadow-card: 0 1px 2px rgba(0,0,0,0.45), 0 8px 24px rgba(0,0,0,0.35);
 
   --motion-fast: 150ms;
   --motion-base: 300ms;
@@ -58,22 +73,22 @@
   --ease-ticket: cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-[data-theme="dark"] {
-  /* Same hues, "the ticket under amber light" — not a separate palette */
-  --color-bg: #17130E;
-  --color-surface: #201A13;
-  --color-surface-raised: #291F16;
-  --color-ink: #F3ECDD;
-  --color-ink-soft: #B9AF9C;
-  --color-resin: #E39A4C;
-  --color-resin-strong: #F0B36E;
-  --color-resin-hover: #E39A4C;    /* reuses the base resin value — still >=7:1 with dark button text */
-  --color-terp: #93A583;
-  --color-flag: #E07A5F;
-  --color-border: #3A2F22;
-  --color-border-interactive: #8A7456; /* verified >=3:1 on both dark --color-bg and --color-surface-raised */
-  --color-focus: #F3ECDD;
-  --shadow-card: 0 1px 2px rgba(0,0,0,0.4), 0 4px 16px rgba(0,0,0,0.35);
+[data-theme="light"] {
+  /* Secondary light surface — still gold-forward, not parchment */
+  --color-bg: #f5f2ea;
+  --color-surface: #ffffff;
+  --color-surface-raised: #ffffff;
+  --color-ink: #171616;
+  --color-ink-soft: #4e433c;
+  --color-resin: #b7984b;
+  --color-resin-strong: #c9b138;
+  --color-resin-hover: #a8892f;
+  --color-terp: #8c7a3a;
+  --color-flag: #8b232d;
+  --color-border: #dcdcde;
+  --color-border-interactive: #818181;
+  --color-focus: #171616;
+  --shadow-card: 0 1px 2px rgba(23,22,22,0.08), 0 4px 12px rgba(23,22,22,0.06);
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -91,7 +106,6 @@ body {
   font-family: var(--font-body);
 }
 
-/* Visible keyboard focus everywhere — never suppressed */
 :focus-visible {
   outline: 2px solid var(--color-focus);
   outline-offset: 2px;

@@ -3,37 +3,36 @@ import type { Metadata } from "next";
 import { getAgeGateState } from "@/lib/compliance/age-gate";
 import { getFeaturedProductLines } from "@/lib/data/products";
 import { AgeGateDialog } from "@/components/shared/age-gate-dialog";
-import { HeroBatchTicket } from "@/components/home/hero-batch-ticket";
-import { PromoBanner } from "@/components/home/promo-banner";
-import { TrustStrip } from "@/components/home/trust-strip";
+import { HeroVideo } from "@/components/home/hero-video";
+import { CategorySpotlight } from "@/components/home/category-spotlight";
+import { ElevateAwards } from "@/components/home/elevate-awards";
 import { ProductLineRail } from "@/components/home/product-line-rail";
 import { StoreLocatorTeaser } from "@/components/home/store-locator-teaser";
+import { ValidateProducts } from "@/components/home/validate-products";
 import { NewsletterSignup } from "@/components/home/newsletter-signup";
+import { PromoBanner } from "@/components/home/promo-banner";
 import { getHomepageBanner } from "@/lib/cms/store";
 
 export const metadata: Metadata = {
-  title: "Lab-Tested Vapes, Edibles & Prerolls",
+  title: "Buy THC Edibles & Vapes Online",
   description:
-    "Shop DIME's lab-tested cannabis products by potency, strain, and format. Every batch published with its certificate of analysis. Licensed in California and Massachusetts.",
+    "Shop award-winning DIME vapes, edibles, and prerolls. Lab-tested. Licensed in California and Massachusetts.",
   alternates: { canonical: "/" },
 };
 
 const organizationJsonLd = {
   "@context": "https://schema.org",
   "@type": "Organization",
-  name: "DIME Enterprise Commerce",
+  name: "DIME Industries",
   url: "https://dimeindustries.us",
-  description: "Lab-tested cannabis products sold under license in California and Massachusetts.",
+  description: "Award-winning cannabis products sold under license in California and Massachusetts.",
 };
 
 export default async function HomePage() {
   const ageGate = await getAgeGateState();
 
   // Compliance-critical: do not fetch or ship real product/pricing data to
-  // an unverified visitor at all — the age-gate overlay is the UX, but the
-  // actual control has to hold even if JS is disabled or the overlay is
-  // inspected away. An unverified request gets a neutral placeholder
-  // instead of a second network round-trip once the gate clears.
+  // an unverified visitor. Gate clears via cookie + server refresh.
   const productLines = ageGate.ageVerified ? await getFeaturedProductLines() : [];
   const banner = ageGate.ageVerified ? await getHomepageBanner() : null;
 
@@ -48,18 +47,18 @@ export default async function HomePage() {
       <AgeGateDialog initiallyOpen={!ageGate.ageVerified} />
 
       {!ageGate.ageVerified ? (
-        <div aria-hidden="true" className="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
-          <div className="h-64 animate-pulse rounded-[var(--radius-lg)] bg-[var(--color-surface)]" />
-        </div>
+        <div className="min-h-[70vh] bg-black" aria-hidden="true" />
       ) : (
         <>
-          <HeroBatchTicket />
+          <HeroVideo />
           {banner ? <PromoBanner banner={banner} /> : null}
-          <TrustStrip />
+          <CategorySpotlight />
+          <ElevateAwards />
           {productLines.map((section) => (
             <ProductLineRail key={section.slug} section={section} />
           ))}
           <StoreLocatorTeaser />
+          <ValidateProducts />
           <NewsletterSignup />
         </>
       )}
