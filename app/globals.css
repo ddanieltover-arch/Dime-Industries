@@ -16,6 +16,8 @@
  * surface, not a different design language.
  */
 
+@import "tailwindcss";
+
 :root {
   /* Color — light (default): parchment/certificate paper */
   --color-bg: #F3ECDD;
