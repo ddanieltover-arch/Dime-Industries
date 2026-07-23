@@ -1,0 +1,42 @@
+// app/shop/page.tsx
+import type { Metadata } from "next";
+import { getAgeGateState } from "@/lib/compliance/age-gate";
+import { listProducts, parseCatalogSearchParams, withCatalogSource } from "@/lib/catalog";
+import { loadEffectiveCatalog } from "@/lib/catalog/effective";
+import { CatalogPageShell } from "@/components/catalog/catalog-page";
+
+export const metadata: Metadata = {
+  title: "Shop",
+  description:
+    "Browse lab-tested vapes, edibles, prerolls, and accessories. Filter by strain, potency, and format.",
+  alternates: { canonical: "/shop" },
+};
+
+type SearchParams = Promise<Record<string, string | string[] | undefined>>;
+
+export default async function ShopPage({ searchParams }: { searchParams: SearchParams }) {
+  const ageGate = await getAgeGateState();
+  const params = await searchParams;
+  const filters = {
+    ...parseCatalogSearchParams(params),
+    jurisdiction: ageGate.jurisdiction,
+  };
+
+  const catalog = ageGate.ageVerified ? await loadEffectiveCatalog() : [];
+  const result = ageGate.ageVerified
+    ? withCatalogSource(catalog, () => listProducts(filters))
+    : { items: [], total: 0, page: 1, pageSize: 24, facets: { categories: [], lines: [], strains: [], potencyBands: [], formats: [] } };
+
+  return (
+    <CatalogPageShell
+      title="Shop"
+      description="Potency-first catalog. Every active SKU is jurisdiction-gated for California and Massachusetts."
+      basePath="/shop"
+      ageVerified={ageGate.ageVerified}
+      filters={filters}
+      items={result.items}
+      total={result.total}
+      facets={result.facets}
+    />
+  );
+}

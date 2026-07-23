@@ -1,0 +1,94 @@
+name: Deploy — Production
+
+# Manual promotion only — never triggered by a push. This is deliberate: the
+# Deployment Architecture requires a human decision point between staging
+# and production, not an automatic pipeline. The `environment: production`
+# below is a GitHub Environment with required reviewers configured in repo
+# settings (Settings → Environments → production → Required reviewers) —
+# that's what actually enforces the approval gate; this workflow file alone
+# doesn't force it; see docs/DEPLOY_CHECKLIST.md.
+
+on:
+  workflow_dispatch:
+    inputs:
+      staging_deployment_url:
+        description: "Staging URL that was smoke-tested and approved for promotion"
+        required: true
+        type: string
+      confirm_checklist:
+        description: "I have completed docs/DEPLOY_CHECKLIST.md for this release"
+        required: true
+        type: boolean
+
+jobs:
+  verify-inputs:
+    name: Verify checklist confirmation
+    runs-on: ubuntu-latest
+    steps:
+      - name: Fail if checklist not confirmed
+        if: ${{ inputs.confirm_checklist != true }}
+        run: |
+          echo "Deploy checklist confirmation was not checked. Refusing to proceed."
+          exit 1
+
+  migrate:
+    name: Run migrations against production
+    needs: verify-inputs
+    runs-on: ubuntu-latest
+    environment: production # requires manual approval per repo settings
+    steps:
+      - uses: actions/checkout@v4
+      - name: Apply pending migrations
+        run: |
+          for f in $(ls db/migrations/*.sql | sort); do
+            echo "Applying $f"
+            psql "$DATABASE_URL" -f "$f" -v ON_ERROR_STOP=1
+          done
+        env:
+          DATABASE_URL: ${{ secrets.PRODUCTION_DATABASE_URL }}
+
+  deploy:
+    name: Deploy to Vercel (production project)
+    needs: migrate
+    runs-on: ubuntu-latest
+    environment: production
+    outputs:
+      deployment_url: ${{ steps.deploy.outputs.url }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+      - run: npm install -g vercel@latest
+      - run: vercel pull --yes --environment=production --token=${{ secrets.VERCEL_PRODUCTION_TOKEN }}
+      - run: vercel build --prod --token=${{ secrets.VERCEL_PRODUCTION_TOKEN }}
+      - id: deploy
+        run: |
+          url=$(vercel deploy --prebuilt --prod --token=${{ secrets.VERCEL_PRODUCTION_TOKEN }})
+          echo "url=$url" >> "$GITHUB_OUTPUT"
+
+  smoke-test:
+    name: Smoke test production
+    needs: deploy
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+      - name: Health + surface smoke
+        run: node scripts/smoke-production.mjs "${{ needs.deploy.outputs.deployment_url }}"
+
+  notify:
+    name: Record the release
+    needs: [deploy, smoke-test]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Summary
+        run: |
+          echo "### Production deploy complete" >> "$GITHUB_STEP_SUMMARY"
+          echo "- URL: ${{ needs.deploy.outputs.deployment_url }}" >> "$GITHUB_STEP_SUMMARY"
+          echo "- Promoted from staging: ${{ inputs.staging_deployment_url }}" >> "$GITHUB_STEP_SUMMARY"
+          echo "- Triggered by: ${{ github.actor }}" >> "$GITHUB_STEP_SUMMARY"
+          echo "" >> "$GITHUB_STEP_SUMMARY"
+          echo "If anything looks wrong, see docs/ROLLBACK_PLAN.md — do not debug forward under pressure." >> "$GITHUB_STEP_SUMMARY"

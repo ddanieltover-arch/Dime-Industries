@@ -1,0 +1,96 @@
+/* app/globals.css
+ *
+ * Design language: "Lab Ticket" — DIME's whole public identity (per the
+ * reference-site research) is built on lab-tested transparency: COAs, batch
+ * numbers, cannabinoid percentages. Rather than the generic near-black +
+ * acid-green cannabis-site cliché, this system is built around the actual
+ * object that transparency lives on: a certificate/ticket. Warm parchment
+ * paper as the default surface, amber resin as the primary accent (the color
+ * of cured live resin, not a stock "cannabis green"), a desaturated moss for
+ * the secondary/terpene accent, and a monospace utility face reserved for
+ * anything that reads like lab data (batch IDs, percentages, SKUs) so those
+ * numbers always look like they came off a real certificate.
+ *
+ * Light mode (default) = the certificate itself, bright and clinical.
+ * Dark mode = the same ticket under amber light — same hues, inverted
+ * surface, not a different design language.
+ */
+
+:root {
+  /* Color — light (default): parchment/certificate paper */
+  --color-bg: #F3ECDD;
+  --color-surface: #FFFCF5;
+  --color-surface-raised: #FFFFFF;
+  --color-ink: #1B1712;
+  --color-ink-soft: #5C5346;
+  --color-resin: #B5651D;         /* primary accent — cured resin amber */
+  --color-resin-strong: #8C4A14;
+  --color-resin-hover: #6E3A0F;   /* solid-fill button hover; resin-strong is the button base, this is its hover */
+  --color-terp: #5F7052;          /* secondary accent — desaturated moss, not neon */
+  --color-flag: #A23B24;          /* alerts, out-of-stock, destructive */
+  --color-border: #DDD2B8;        /* decorative dividers/card edges only — NOT sufficient contrast (1.28:1) for a form-control boundary; use --color-border-interactive for those */
+  --color-border-interactive: #8C7A54; /* form control borders — verified >=3:1 on both --color-bg and --color-surface-raised, per WCAG 1.4.11 */
+  --color-focus: #1B1712;
+
+  --font-display: var(--font-display-family), Georgia, serif;
+  --font-body: var(--font-body-family), system-ui, sans-serif;
+  --font-mono: var(--font-mono-family), ui-monospace, monospace;
+
+  --scale-xs: 0.75rem;
+  --scale-sm: 0.875rem;
+  --scale-base: 1rem;
+  --scale-lg: 1.25rem;
+  --scale-xl: 1.75rem;
+  --scale-2xl: 2.5rem;
+  --scale-3xl: 3.5rem;
+
+  --space-1: 4px; --space-2: 8px; --space-3: 12px; --space-4: 16px;
+  --space-6: 24px; --space-8: 32px; --space-12: 48px; --space-16: 64px;
+
+  --radius-sm: 2px; --radius-md: 4px; --radius-lg: 8px; /* ticket-paper edges, not soft app-UI radii */
+  --shadow-card: 0 1px 2px rgba(27,23,18,0.08), 0 4px 12px rgba(27,23,18,0.06);
+
+  --motion-fast: 150ms;
+  --motion-base: 300ms;
+  --motion-slow: 600ms;
+  --ease-ticket: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+[data-theme="dark"] {
+  /* Same hues, "the ticket under amber light" — not a separate palette */
+  --color-bg: #17130E;
+  --color-surface: #201A13;
+  --color-surface-raised: #291F16;
+  --color-ink: #F3ECDD;
+  --color-ink-soft: #B9AF9C;
+  --color-resin: #E39A4C;
+  --color-resin-strong: #F0B36E;
+  --color-resin-hover: #E39A4C;    /* reuses the base resin value — still >=7:1 with dark button text */
+  --color-terp: #93A583;
+  --color-flag: #E07A5F;
+  --color-border: #3A2F22;
+  --color-border-interactive: #8A7456; /* verified >=3:1 on both dark --color-bg and --color-surface-raised */
+  --color-focus: #F3ECDD;
+  --shadow-card: 0 1px 2px rgba(0,0,0,0.4), 0 4px 16px rgba(0,0,0,0.35);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+body {
+  background: var(--color-bg);
+  color: var(--color-ink);
+  font-family: var(--font-body);
+}
+
+/* Visible keyboard focus everywhere — never suppressed */
+:focus-visible {
+  outline: 2px solid var(--color-focus);
+  outline-offset: 2px;
+}

@@ -1,0 +1,73 @@
+// app/shop/[category]/page.tsx
+import type { Metadata } from "next";
+import { notFound } from "next/navigation";
+import { getAgeGateState } from "@/lib/compliance/age-gate";
+import {
+  CATALOG_CATEGORIES,
+  listProducts,
+  parseCatalogSearchParams,
+  withCatalogSource,
+} from "@/lib/catalog";
+import { loadEffectiveCatalog } from "@/lib/catalog/effective";
+import { CatalogPageShell } from "@/components/catalog/catalog-page";
+
+type Params = Promise<{ category: string }>;
+type SearchParams = Promise<Record<string, string | string[] | undefined>>;
+
+export async function generateStaticParams() {
+  return CATALOG_CATEGORIES.map((c) => ({ category: c.slug }));
+}
+
+export async function generateMetadata({ params }: { params: Params }): Promise<Metadata> {
+  const { category } = await params;
+  const meta = CATALOG_CATEGORIES.find((c) => c.slug === category);
+  if (!meta) return { title: "Shop" };
+  return {
+    title: meta.name,
+    description: `Shop DIME ${meta.name.toLowerCase()} — filter by strain, potency, and format.`,
+    alternates: { canonical: `/shop/${meta.slug}` },
+  };
+}
+
+export default async function CategoryPage({
+  params,
+  searchParams,
+}: {
+  params: Params;
+  searchParams: SearchParams;
+}) {
+  const { category } = await params;
+  const meta = CATALOG_CATEGORIES.find((c) => c.slug === category);
+  if (!meta) notFound();
+
+  const ageGate = await getAgeGateState();
+  const sp = await searchParams;
+  const filters = {
+    ...parseCatalogSearchParams(sp),
+    category: meta.slug,
+    jurisdiction: ageGate.jurisdiction,
+  };
+
+  const result = ageGate.ageVerified
+    ? withCatalogSource(await loadEffectiveCatalog(), () => listProducts(filters))
+    : {
+        items: [],
+        total: 0,
+        page: 1,
+        pageSize: 24,
+        facets: { categories: [], lines: [], strains: [], potencyBands: [], formats: [] },
+      };
+
+  return (
+    <CatalogPageShell
+      title={meta.name}
+      description={`Lab-tested ${meta.name.toLowerCase()} available in your selected jurisdiction.`}
+      basePath={`/shop/${meta.slug}`}
+      ageVerified={ageGate.ageVerified}
+      filters={filters}
+      items={result.items}
+      total={result.total}
+      facets={result.facets}
+    />
+  );
+}

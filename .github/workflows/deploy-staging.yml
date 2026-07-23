@@ -1,0 +1,92 @@
+name: Deploy — Staging
+
+# Runs automatically on every push to main. This is the "auto-deploy staging"
+# step in the Deployment Architecture pipeline. Migrations are a distinct,
+# gated step that must succeed before the app deploy runs — never bundled
+# together, so a bad migration fails loudly instead of leaving the app
+# half-deployed against a half-migrated database.
+#
+# Vercel model: this project uses TWO separate Vercel projects (dime-staging
+# and dime-production), not Vercel's native preview/production split within
+# one project — that split doesn't map cleanly onto a three-stage
+# preview → staging → production pipeline. Vercel's own git integration is
+# used only for per-PR preview deployments; staging and production are both
+# driven explicitly from here via the Vercel CLI, so migrations can gate
+# them. See docs/DEPLOYMENT.md "Environment model" for the full reasoning.
+
+on:
+  push:
+    branches: [main]
+
+concurrency:
+  group: deploy-staging
+  cancel-in-progress: false # never cancel a mid-flight deploy
+
+jobs:
+  migrate:
+    name: Run migrations against staging
+    runs-on: ubuntu-latest
+    environment: staging
+    steps:
+      - uses: actions/checkout@v4
+      - name: Apply pending migrations
+        run: |
+          for f in $(ls db/migrations/*.sql | sort); do
+            echo "Applying $f"
+            psql "$DATABASE_URL" -f "$f" -v ON_ERROR_STOP=1
+          done
+        env:
+          DATABASE_URL: ${{ secrets.STAGING_DATABASE_URL }}
+
+  deploy:
+    name: Deploy to Vercel (staging project)
+    needs: migrate
+    runs-on: ubuntu-latest
+    environment: staging
+    outputs:
+      deployment_url: ${{ steps.deploy.outputs.url }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+      - run: npm install -g vercel@latest
+      - run: vercel pull --yes --environment=production --token=${{ secrets.VERCEL_STAGING_TOKEN }}
+      - run: vercel build --token=${{ secrets.VERCEL_STAGING_TOKEN }}
+      - id: deploy
+        run: |
+          url=$(vercel deploy --prebuilt --prod --token=${{ secrets.VERCEL_STAGING_TOKEN }})
+          echo "url=$url" >> "$GITHUB_OUTPUT"
+
+  smoke-test:
+    name: Smoke test staging
+    needs: deploy
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+      - name: Health + surface smoke
+        run: node scripts/smoke-production.mjs "${{ needs.deploy.outputs.deployment_url }}"
+
+  e2e-staging:
+    name: E2E against staging
+    needs: deploy
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "pnpm"
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 9
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm exec playwright install --with-deps chromium
+      - run: pnpm test:e2e
+        env:
+          PLAYWRIGHT_BASE_URL: ${{ needs.deploy.outputs.deployment_url }}
+          # Staging should not start a local webServer — hit the deploy URL.
+          CI: true

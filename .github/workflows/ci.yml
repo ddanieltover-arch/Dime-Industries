@@ -1,0 +1,114 @@
+name: CI
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  lint-and-typecheck:
+    name: Lint & Typecheck
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "pnpm"
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 9
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm lint
+      - run: pnpm typecheck
+
+  unit-tests:
+    name: Unit Tests (Vitest)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "pnpm"
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 9
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm test:unit
+
+  e2e-tests:
+    name: E2E Tests (Playwright)
+    runs-on: ubuntu-latest
+    # Deliberately not run against ephemeral PR previews: previews share the
+    # dev Supabase project (see docs/DEPLOYMENT.md "environment model"), so
+    # state from one PR's preview can bleed into another's, making e2e
+    # results flaky and hard to trust. The real e2e gate runs post-deploy
+    # against the actual staging environment — see deploy-staging.yml.
+    if: false
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "pnpm"
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 9
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm exec playwright install --with-deps chromium
+      - run: pnpm test:e2e
+
+  security-scan:
+    name: Dependency Security Scan
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "pnpm"
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 9
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm audit --audit-level=high
+      - uses: actions/dependency-review-action@v4
+        if: github.event_name == 'pull_request'
+
+  migration-dry-run:
+    name: Migration Dry Run
+    runs-on: ubuntu-latest
+    # Uses the Supabase CLI's local stack, not a bare Postgres container —
+    # migration 0002 creates a trigger on auth.users, which only exists in a
+    # real Supabase-provisioned database. An earlier version of this job
+    # used a bare `postgres:15` image, which would have made this job
+    # falsely pass CI while silently never actually validating 0002 (it
+    # would have failed at deploy time instead, against a real environment,
+    # which is a much worse place to find out).
+    steps:
+      - uses: actions/checkout@v4
+      - uses: supabase/setup-cli@v1
+        with:
+          version: latest
+      - name: Start local Supabase stack
+        run: supabase start
+      - name: Apply migrations in order
+        run: |
+          DB_URL=$(supabase status -o json | jq -r '.DB_URL')
+          for f in $(ls db/migrations/*.sql | sort); do
+            echo "Applying $f"
+            psql "$DB_URL" -f "$f" -v ON_ERROR_STOP=1
+          done
+      - name: Apply RLS policies
+        run: |
+          DB_URL=$(supabase status -o json | jq -r '.DB_URL')
+          psql "$DB_URL" -f db/rls_policies.sql -v ON_ERROR_STOP=1
+      - name: Stop local Supabase stack
+        if: always()
+        run: supabase stop

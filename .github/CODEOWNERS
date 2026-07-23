@@ -1,0 +1,17 @@
+# Anything touching the database schema, RLS policies, or migrations needs
+# explicit review — these are the hardest things to safely roll back once a
+# migration has run against production data.
+/db/                        @dime/backend-leads
+/db/migrations/              @dime/backend-leads
+/db/rls_policies.sql         @dime/backend-leads @dime/security
+
+# Auth, roles, and middleware are the security boundary for the whole app.
+/backend/lib/auth/           @dime/security
+/backend/middleware.ts       @dime/security
+
+# Deployment and CI configuration.
+/.github/workflows/          @dime/devops
+/vercel.json                 @dime/devops
+
+# Everything else defaults to the general engineering team.
+*                             @dime/engineering
