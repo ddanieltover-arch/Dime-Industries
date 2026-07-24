@@ -9,6 +9,7 @@ export type AgeGateActionState = {
   error?: string;
   needsJurisdiction?: boolean;
   notAvailable?: boolean;
+  success?: boolean;
 };
 
 export async function confirmAgeGate(
@@ -34,9 +35,21 @@ export async function confirmAgeGate(
 
   const store = await cookies();
   const oneYear = 60 * 60 * 24 * 365;
-  store.set("dime_age_verified", "1", { httpOnly: true, secure: true, sameSite: "lax", maxAge: oneYear, path: "/" });
-  store.set("dime_jurisdiction", jurisdictionInput, { httpOnly: true, secure: true, sameSite: "lax", maxAge: oneYear, path: "/" });
+  store.set("dime_age_verified", "1", {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === "production",
+    sameSite: "lax",
+    maxAge: oneYear,
+    path: "/",
+  });
+  store.set("dime_jurisdiction", jurisdictionInput, {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === "production",
+    sameSite: "lax",
+    maxAge: oneYear,
+    path: "/",
+  });
 
-  revalidatePath("/");
-  return {};
+  revalidatePath("/", "layout");
+  return { success: true };
 }
