@@ -93,6 +93,21 @@ export function getLaunchStatus(env: Env = process.env): LaunchStatus {
           : "COA/Rewards adapters in mock/fallback mode — set COA_API_BASE / REWARDS_API_BASE when hosts are ready.",
     },
     {
+      id: "placeholder_pricing",
+      ok: true,
+      severity: "warning",
+      message:
+        "Catalog uses PLACEHOLDER_PRICING from brand import — replace retailPriceCents with the owner price sheet before go-live.",
+    },
+    {
+      id: "assistant",
+      ok: true,
+      severity: "info",
+      message: process.env.ASSISTANT_API_BASE?.trim()
+        ? "Assistant API base configured (live path)."
+        : "AI Assistant running in on-site mock guide mode — set ASSISTANT_API_BASE when budtender host is ready.",
+    },
+    {
       id: "supabase",
       ok: supabase,
       severity: isProd ? "blocker" : "warning",

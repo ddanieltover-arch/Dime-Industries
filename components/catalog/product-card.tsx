@@ -1,4 +1,5 @@
 // components/catalog/product-card.tsx
+import Image from "next/image";
 import Link from "next/link";
 import type { ProductCardModel } from "@/lib/catalog/types";
 import { formatPrice } from "@/lib/format";
@@ -13,37 +14,50 @@ export function ProductCard({ product }: { product: ProductCardModel }) {
   return (
     <Link
       href={`/product/${product.slug}`}
-      className="group flex h-full flex-col rounded-[var(--radius-md)] border border-[var(--color-border)] bg-[var(--color-surface-raised)] p-4 transition-shadow hover:shadow-[var(--shadow-card)] focus-visible:shadow-[var(--shadow-card)]"
+      className="group flex h-full flex-col overflow-hidden border border-[var(--color-border)] bg-[var(--color-surface)] transition-colors hover:border-[var(--color-resin)]"
     >
-      <div className="flex items-center justify-between font-[var(--font-mono)] text-[var(--scale-xs)] text-[var(--color-ink-soft)]">
-        <span>{STRAIN_LABEL[product.strainType]}</span>
-        <span>
-          {product.weightOrFormat}
-          {product.variantCount > 1 ? " · options" : ""}
-        </span>
+      <div className="relative aspect-[4/5] bg-[var(--color-surface-raised)]">
+        {product.imageUrl ? (
+          <Image
+            src={product.imageUrl}
+            alt={product.name}
+            fill
+            className="object-contain p-4 transition-transform duration-500 group-hover:scale-105"
+            sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
+          />
+        ) : (
+          <div className="flex h-full items-center justify-center font-[var(--font-display)] text-[var(--scale-xs)] uppercase tracking-[0.14em] text-[var(--color-ink-soft)]">
+            DIME
+          </div>
+        )}
       </div>
 
-      <h3 className="mt-3 font-[var(--font-display)] text-[var(--scale-lg)] text-[var(--color-ink)] group-hover:text-[var(--color-resin)]">
-        {product.name}
-      </h3>
-      <p className="text-[var(--scale-sm)] text-[var(--color-ink-soft)]">{product.line}</p>
-
-      {/* Always-visible potency — Eaze research finding */}
-      <dl className="mt-3 flex gap-4 font-[var(--font-mono)] text-[var(--scale-xs)]">
-        <div>
-          <dt className="text-[var(--color-ink-soft)]">THC</dt>
-          <dd className="text-[var(--color-ink)]">{product.thcPct}%</dd>
+      <div className="flex flex-1 flex-col p-4">
+        <div className="flex items-center justify-between font-[var(--font-display)] text-[10px] uppercase tracking-[0.14em] text-[var(--color-resin)]">
+          <span>{product.line}</span>
+          <span className="text-[var(--color-ink-soft)]">{STRAIN_LABEL[product.strainType]}</span>
         </div>
-        <div>
-          <dt className="text-[var(--color-ink-soft)]">CBD</dt>
-          <dd className="text-[var(--color-ink)]">{product.cbdPct}%</dd>
-        </div>
-      </dl>
 
-      <p className="mt-auto pt-4 font-[var(--font-display)] text-[var(--scale-base)] text-[var(--color-ink)]">
-        {product.variantCount > 1 ? "From " : ""}
-        {formatPrice(product.retailPriceCents)}
-      </p>
+        <h3 className="mt-2 font-[var(--font-display)] text-[var(--scale-base)] uppercase tracking-[0.04em] text-[var(--color-ink)] group-hover:text-[var(--color-resin)]">
+          {product.name}
+        </h3>
+
+        <dl className="mt-3 flex gap-4 text-[var(--scale-xs)] text-[var(--color-ink-soft)]">
+          <div>
+            <dt className="sr-only">THC</dt>
+            <dd>THC {product.thcPct}%</dd>
+          </div>
+          <div>
+            <dt className="sr-only">Format</dt>
+            <dd>{product.weightOrFormat}</dd>
+          </div>
+        </dl>
+
+        <p className="mt-auto pt-4 font-[var(--font-display)] text-[var(--scale-sm)] text-[var(--color-resin-strong)]">
+          {product.variantCount > 1 ? "From " : ""}
+          {formatPrice(product.retailPriceCents)}
+        </p>
+      </div>
     </Link>
   );
 }

@@ -44,6 +44,11 @@ export type CatalogProduct = {
   variants: CatalogVariant[];
   /** Soft popularity signal until real order analytics exist */
   popularityScore: number;
+  /** Primary product image (self-hosted under /public/catalog) */
+  imageUrl: string | null;
+  galleryUrls: string[];
+  /** Source path on dimeindustries.com */
+  brandPath: string | null;
 };
 
 /** Card-facing projection used by ProductCard and home rails */
@@ -57,6 +62,7 @@ export type ProductCardModel = {
   thcPct: number;
   cbdPct: number;
   variantCount: number;
+  imageUrl: string | null;
 };
 
 export type CatalogFilters = {

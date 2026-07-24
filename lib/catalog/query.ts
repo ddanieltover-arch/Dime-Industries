@@ -39,6 +39,7 @@ export function toProductCard(product: CatalogProduct): ProductCardModel {
     thcPct: v.thcPct,
     cbdPct: v.cbdPct,
     variantCount: product.variants.length,
+    imageUrl: product.imageUrl,
   };
 }
 

@@ -21,13 +21,12 @@ function allowlistedUrl(pathAndQuery: string): URL | null {
 
 /** Mock / catalog fallback when live host absent or errors. */
 export function catalogCoaFallback(sku: string, catalogUrl: string | null | undefined): CoaRecord | null {
-  if (!catalogUrl) return null;
   return {
     sku,
     productName: null,
-    labName: null,
-    testedAt: null,
-    documentUrl: catalogUrl,
+    labName: coaConfigured() ? null : "DIME Third-Party Lab (mock)",
+    testedAt: coaConfigured() ? null : "2026-06-01",
+    documentUrl: catalogUrl && !catalogUrl.startsWith("/lab-results") ? catalogUrl : `/lab-results?sku=${encodeURIComponent(sku)}`,
     thcPct: null,
     cbdPct: null,
     status: "published",

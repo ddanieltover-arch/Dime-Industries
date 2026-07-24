@@ -10,7 +10,7 @@ const NAV_LINKS = [
   { href: "/shop/vapes", label: "Vapes" },
   { href: "/shop/edibles", label: "Edibles" },
   { href: "/shop/prerolls", label: "Prerolls" },
-  { href: "/wholesale", label: "Wholesale" },
+  { href: "/promotions", label: "Promotions" },
   { href: "/locations", label: "Find DIME" },
 ];
 
@@ -38,8 +38,8 @@ export async function SiteHeader() {
             />
           </Link>
 
-          <nav aria-label="Main" className="hidden md:block">
-            <ul className="flex items-center gap-6">
+          <nav aria-label="Main" className="hidden lg:block">
+            <ul className="flex items-center gap-5">
               {NAV_LINKS.map((link) => (
                 <li key={link.href}>
                   <Link
@@ -56,22 +56,22 @@ export async function SiteHeader() {
           <div className="flex items-center gap-3">
             <ThemeToggle />
             <Link
+              href="/assistant"
+              className="hidden font-[var(--font-display)] text-[var(--scale-xs)] uppercase tracking-[0.12em] text-[var(--color-ink-soft)] transition-colors hover:text-[var(--color-resin)] md:block"
+            >
+              Assistant
+            </Link>
+            <Link
               href="/account"
               className="hidden font-[var(--font-display)] text-[var(--scale-xs)] uppercase tracking-[0.12em] text-[var(--color-ink-soft)] transition-colors hover:text-[var(--color-resin)] sm:block"
             >
               Account
             </Link>
-            <Link
-              href="/admin"
-              className="hidden font-[var(--font-display)] text-[var(--scale-xs)] uppercase tracking-[0.12em] text-[var(--color-ink-soft)] transition-colors hover:text-[var(--color-resin)] lg:block"
-            >
-              Admin
-            </Link>
             <CartHeaderControls cart={cart} />
           </div>
         </div>
 
-        <nav aria-label="Main mobile" className="border-t border-[var(--color-border)] px-4 py-2 md:hidden">
+        <nav aria-label="Main mobile" className="border-t border-[var(--color-border)] px-4 py-2 lg:hidden">
           <ul className="flex gap-4 overflow-x-auto">
             {NAV_LINKS.map((link) => (
               <li key={link.href} className="shrink-0">

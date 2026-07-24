@@ -15,7 +15,8 @@
     "smoke": "node scripts/smoke-production.mjs",
     "load:checkout": "node scripts/load-checkout-reserve.mjs",
     "load:checkout:probe": "node scripts/load-checkout-reserve.mjs --probe",
-    "db:seed": "tsx db/seed.ts"
+    "db:seed": "tsx db/seed.ts",
+    "catalog:import": "node scripts/import-brand-catalog.mjs"
   },
   "dependencies": {
     "@radix-ui/react-dialog": "^1.1.0",

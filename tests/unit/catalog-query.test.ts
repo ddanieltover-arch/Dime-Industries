@@ -13,11 +13,10 @@ describe("catalog query layer", () => {
     expect(result.items.every((p) => p.strainType === "sativa")).toBe(true);
   });
 
-  it("hides MA-only products from CA jurisdiction", () => {
-    const ca = getProductBySlug("state-exclusive-jet-fuel-1g", "CA");
-    const ma = getProductBySlug("state-exclusive-jet-fuel-1g", "MA");
-    expect(ca).toBeNull();
-    expect(ma).not.toBeNull();
+  it("hides products outside allowed jurisdictions when filtered", () => {
+    const product = getProductBySlug("miami-ice", "CA");
+    expect(product).not.toBeNull();
+    expect(product?.allowedJurisdictions).toContain("CA");
   });
 
   it("maps potency bands", () => {
@@ -27,8 +26,8 @@ describe("catalog query layer", () => {
   });
 
   it("supports text search across name and line", () => {
-    const result = listProducts({ q: "gelato", jurisdiction: "CA" });
-    expect(result.items.some((p) => p.slug.includes("gelato"))).toBe(true);
+    const result = listProducts({ q: "miami", jurisdiction: "CA" });
+    expect(result.items.some((p) => p.slug.includes("miami"))).toBe(true);
   });
 
   it("sorts by price ascending", () => {

@@ -8,7 +8,7 @@ test.describe("Coupons", () => {
       { name: "dime_jurisdiction", value: "CA", domain: "localhost", path: "/" },
     ]);
 
-    await page.goto("/product/live-reserve-gelato-1g");
+    await page.goto("/product/miami-ice");
     await page.getByRole("button", { name: "Add to cart" }).click();
     await expect(page.getByRole("status")).toContainText(/Added to cart/i);
 

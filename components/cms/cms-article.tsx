@@ -4,8 +4,8 @@ import { renderCmsBody } from "@/lib/cms/render";
 export function CmsArticle({ title, body }: { title: string; body: string }) {
   const blocks = renderCmsBody(body);
   return (
-    <article className="mx-auto max-w-3xl px-4 py-12 sm:px-6">
-      <h1 className="font-[var(--font-display)] text-[var(--scale-3xl)] text-[var(--color-ink)]">
+    <article className="mx-auto max-w-3xl px-4 py-12 sm:px-6 lg:py-16">
+      <h1 className="font-[var(--font-display)] text-[var(--scale-2xl)] uppercase tracking-[0.06em] text-[var(--color-ink)] sm:text-[var(--scale-3xl)]">
         {title}
       </h1>
       <div className="mt-8 space-y-4">
@@ -13,7 +13,7 @@ export function CmsArticle({ title, body }: { title: string; body: string }) {
           block.type === "h3" ? (
             <h2
               key={i}
-              className="pt-2 font-[var(--font-display)] text-[var(--scale-lg)] text-[var(--color-ink)]"
+              className="pt-4 font-[var(--font-display)] text-[var(--scale-lg)] uppercase tracking-[0.08em] text-[var(--color-resin)]"
             >
               {block.text}
             </h2>

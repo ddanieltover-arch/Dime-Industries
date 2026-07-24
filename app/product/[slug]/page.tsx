@@ -1,5 +1,6 @@
 // app/product/[slug]/page.tsx
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { AgeGateDialog } from "@/components/shared/age-gate-dialog";
@@ -36,6 +37,7 @@ export async function generateMetadata({ params }: { params: Params }): Promise<
     openGraph: {
       title: product.name,
       description: `${formatPct(v.thcPct)} THC · ${product.lineName ?? product.categoryName}`,
+      images: product.imageUrl ? [product.imageUrl] : undefined,
     },
   };
 }
@@ -55,9 +57,7 @@ export default async function ProductDetailPage({ params }: { params: Params }) 
     return (
       <>
         <AgeGateDialog initiallyOpen />
-        <div aria-hidden="true" className="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
-          <div className="h-96 animate-pulse rounded-[var(--radius-lg)] bg-[var(--color-surface)]" />
-        </div>
+        <div className="min-h-[70vh] bg-black" aria-hidden="true" />
       </>
     );
   }
@@ -72,6 +72,7 @@ export default async function ProductDetailPage({ params }: { params: Params }) 
   const primarySaved = wishlistIds.includes(v.id);
   const { fetchCoaBySku } = await import("@/lib/integrations/coa/client");
   const coa = await fetchCoaBySku(v.sku, product.coaUrl);
+  const gallery = product.galleryUrls.length > 0 ? product.galleryUrls : product.imageUrl ? [product.imageUrl] : [];
 
   const jsonLd = {
     "@context": "https://schema.org",
@@ -79,6 +80,7 @@ export default async function ProductDetailPage({ params }: { params: Params }) 
     name: product.name,
     description: product.description,
     sku: v.sku,
+    image: product.imageUrl ?? undefined,
     brand: { "@type": "Brand", name: "DIME" },
     offers: {
       "@type": "Offer",
@@ -106,16 +108,13 @@ export default async function ProductDetailPage({ params }: { params: Params }) 
         <nav aria-label="Breadcrumb" className="mb-6 text-[var(--scale-sm)] text-[var(--color-ink-soft)]">
           <ol className="flex flex-wrap gap-2">
             <li>
-              <Link href="/shop" className="hover:text-[var(--color-ink)] hover:underline">
+              <Link href="/shop" className="hover:text-[var(--color-resin)]">
                 Shop
               </Link>
             </li>
             <li aria-hidden="true">/</li>
             <li>
-              <Link
-                href={`/shop/${product.categorySlug}`}
-                className="hover:text-[var(--color-ink)] hover:underline"
-              >
+              <Link href={`/shop/${product.categorySlug}`} className="hover:text-[var(--color-resin)]">
                 {product.categoryName}
               </Link>
             </li>
@@ -125,7 +124,7 @@ export default async function ProductDetailPage({ params }: { params: Params }) 
                 <li>
                   <Link
                     href={`/shop/${product.categorySlug}/${product.lineSlug}`}
-                    className="hover:text-[var(--color-ink)] hover:underline"
+                    className="hover:text-[var(--color-resin)]"
                   >
                     {product.lineName}
                   </Link>
@@ -140,34 +139,68 @@ export default async function ProductDetailPage({ params }: { params: Params }) 
         </nav>
 
         <div className="grid gap-10 lg:grid-cols-2">
-          <div className="flex min-h-[20rem] items-center justify-center rounded-[var(--radius-lg)] border border-[var(--color-border)] bg-[var(--color-surface)]">
-            <p className="font-[var(--font-mono)] text-[var(--scale-sm)] text-[var(--color-ink-soft)]">
-              Batch ticket visual · {v.sku}
-            </p>
+          <div className="space-y-3">
+            <div className="relative aspect-square overflow-hidden border border-[var(--color-border)] bg-[var(--color-surface)]">
+              {gallery[0] ? (
+                <Image
+                  src={gallery[0]}
+                  alt={product.name}
+                  fill
+                  priority
+                  className="object-contain p-6"
+                  sizes="(max-width: 1024px) 100vw, 50vw"
+                />
+              ) : (
+                <div className="flex h-full items-center justify-center font-[var(--font-display)] uppercase tracking-[0.14em] text-[var(--color-ink-soft)]">
+                  {v.sku}
+                </div>
+              )}
+            </div>
+            {gallery.length > 1 ? (
+              <ul className="grid grid-cols-4 gap-2" role="list">
+                {gallery.slice(0, 4).map((src) => (
+                  <li key={src} className="relative aspect-square border border-[var(--color-border)] bg-[var(--color-surface)]">
+                    <Image src={src} alt="" fill className="object-contain p-2" sizes="120px" />
+                  </li>
+                ))}
+              </ul>
+            ) : null}
           </div>
 
           <div>
-            <p className="font-[var(--font-mono)] text-[var(--scale-xs)] uppercase tracking-wide text-[var(--color-ink-soft)]">
+            <p className="font-[var(--font-display)] text-[var(--scale-xs)] uppercase tracking-[0.16em] text-[var(--color-resin)]">
               {STRAIN_LABEL[product.strainType]}
               {product.lineName ? ` · ${product.lineName}` : ""}
             </p>
-            <h1 className="mt-2 font-[var(--font-display)] text-[var(--scale-3xl)] leading-tight text-[var(--color-ink)]">
+            <h1 className="mt-2 font-[var(--font-display)] text-[var(--scale-2xl)] uppercase leading-tight tracking-[0.04em] text-[var(--color-ink)] sm:text-[var(--scale-3xl)]">
               {product.name}
             </h1>
 
-            <dl className="mt-6 flex flex-wrap gap-6 font-[var(--font-mono)]">
+            <dl className="mt-6 flex flex-wrap gap-6">
               <div>
-                <dt className="text-[var(--scale-xs)] text-[var(--color-ink-soft)]">THC</dt>
-                <dd className="text-[var(--scale-xl)] text-[var(--color-ink)]">{formatPct(v.thcPct)}</dd>
+                <dt className="font-[var(--font-display)] text-[10px] uppercase tracking-[0.14em] text-[var(--color-ink-soft)]">
+                  THC
+                </dt>
+                <dd className="font-[var(--font-display)] text-[var(--scale-xl)] text-[var(--color-ink)]">
+                  {formatPct(v.thcPct)}
+                </dd>
               </div>
               <div>
-                <dt className="text-[var(--scale-xs)] text-[var(--color-ink-soft)]">CBD</dt>
-                <dd className="text-[var(--scale-xl)] text-[var(--color-ink)]">{formatPct(v.cbdPct)}</dd>
+                <dt className="font-[var(--font-display)] text-[10px] uppercase tracking-[0.14em] text-[var(--color-ink-soft)]">
+                  CBD
+                </dt>
+                <dd className="font-[var(--font-display)] text-[var(--scale-xl)] text-[var(--color-ink)]">
+                  {formatPct(v.cbdPct)}
+                </dd>
               </div>
               {v.cbnPct != null ? (
                 <div>
-                  <dt className="text-[var(--scale-xs)] text-[var(--color-ink-soft)]">CBN</dt>
-                  <dd className="text-[var(--scale-xl)] text-[var(--color-ink)]">{formatPct(v.cbnPct)}</dd>
+                  <dt className="font-[var(--font-display)] text-[10px] uppercase tracking-[0.14em] text-[var(--color-ink-soft)]">
+                    CBN
+                  </dt>
+                  <dd className="font-[var(--font-display)] text-[var(--scale-xl)] text-[var(--color-ink)]">
+                    {formatPct(v.cbnPct)}
+                  </dd>
                 </div>
               ) : null}
             </dl>
@@ -181,7 +214,7 @@ export default async function ProductDetailPage({ params }: { params: Params }) 
                 {product.effects.map((effect) => (
                   <li
                     key={effect}
-                    className="border border-[var(--color-border)] px-2 py-1 font-[var(--font-mono)] text-[var(--scale-xs)] text-[var(--color-ink-soft)]"
+                    className="border border-[var(--color-border)] px-3 py-1 font-[var(--font-display)] text-[10px] uppercase tracking-[0.12em] text-[var(--color-ink-soft)]"
                   >
                     {effect}
                   </li>
@@ -190,7 +223,10 @@ export default async function ProductDetailPage({ params }: { params: Params }) 
             ) : null}
 
             <section className="mt-8" aria-labelledby="variants-heading">
-              <h2 id="variants-heading" className="font-[var(--font-display)] text-[var(--scale-lg)] text-[var(--color-ink)]">
+              <h2
+                id="variants-heading"
+                className="font-[var(--font-display)] text-[var(--scale-sm)] uppercase tracking-[0.14em] text-[var(--color-resin)]"
+              >
                 Formats
               </h2>
               <ul className="mt-3 space-y-2" role="list">
@@ -200,10 +236,10 @@ export default async function ProductDetailPage({ params }: { params: Params }) 
                     className="flex items-center justify-between border border-[var(--color-border)] bg-[var(--color-surface-raised)] px-4 py-3"
                   >
                     <div>
-                      <p className="font-[var(--font-display)] text-[var(--color-ink)]">
+                      <p className="font-[var(--font-display)] uppercase tracking-[0.06em] text-[var(--color-ink)]">
                         {variant.weightOrFormat}
                       </p>
-                      <p className="font-[var(--font-mono)] text-[var(--scale-xs)] text-[var(--color-ink-soft)]">
+                      <p className="text-[var(--scale-xs)] text-[var(--color-ink-soft)]">
                         {variant.sku}
                         {variant.quantityOnHand <= 0
                           ? " · Out of stock"
@@ -212,12 +248,15 @@ export default async function ProductDetailPage({ params }: { params: Params }) 
                             : ""}
                       </p>
                     </div>
-                    <p className="font-[var(--font-display)] text-[var(--scale-lg)] text-[var(--color-ink)]">
+                    <p className="font-[var(--font-display)] text-[var(--scale-lg)] text-[var(--color-resin-strong)]">
                       {formatPrice(variant.retailPriceCents)}
                     </p>
                   </li>
                 ))}
               </ul>
+              <p className="mt-2 text-[var(--scale-xs)] text-[var(--color-ink-soft)]">
+                Placeholder pricing until the official price sheet is applied.
+              </p>
             </section>
 
             <div className="mt-8 space-y-4">
@@ -225,19 +264,15 @@ export default async function ProductDetailPage({ params }: { params: Params }) 
               <WishlistToggle variantId={v.id} initiallySaved={primarySaved} />
             </div>
 
-            {coa ? (
-              <p className="mt-6 text-[var(--scale-sm)]">
-                <a
-                  href={coa.documentUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-[var(--color-resin-strong)] underline-offset-4 hover:underline"
-                >
-                  View certificate of analysis
-                  {coa.source === "live" ? " (lab host)" : " (external)"}
-                </a>
-              </p>
-            ) : null}
+            <p className="mt-6 text-[var(--scale-sm)]">
+              <Link
+                href={`/lab-results?sku=${encodeURIComponent(v.sku)}`}
+                className="font-[var(--font-display)] text-[var(--scale-xs)] uppercase tracking-[0.14em] text-[var(--color-resin)] underline-offset-4 hover:underline"
+              >
+                View lab results / COA
+                {coa?.source === "live" ? " (live host)" : ""}
+              </Link>
+            </p>
           </div>
         </div>
 
@@ -245,7 +280,7 @@ export default async function ProductDetailPage({ params }: { params: Params }) 
           <section className="mt-16" aria-labelledby="related-heading">
             <h2
               id="related-heading"
-              className="mb-6 font-[var(--font-display)] text-[var(--scale-xl)] text-[var(--color-ink)]"
+              className="mb-6 font-[var(--font-display)] text-[var(--scale-xl)] uppercase tracking-[0.08em] text-[var(--color-ink)]"
             >
               Related in {product.categoryName}
             </h2>
@@ -257,7 +292,7 @@ export default async function ProductDetailPage({ params }: { params: Params }) 
           <section className="mt-16" aria-labelledby="recent-heading">
             <h2
               id="recent-heading"
-              className="mb-6 font-[var(--font-display)] text-[var(--scale-xl)] text-[var(--color-ink)]"
+              className="mb-6 font-[var(--font-display)] text-[var(--scale-xl)] uppercase tracking-[0.08em] text-[var(--color-ink)]"
             >
               Recently viewed
             </h2>

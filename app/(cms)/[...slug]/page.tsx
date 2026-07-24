@@ -11,11 +11,15 @@ export async function generateStaticParams() {
     { slug: ["about"] },
     { slug: ["faq"] },
     { slug: ["contact"] },
+    { slug: ["careers"] },
+    { slug: ["promotions"] },
+    { slug: ["links"] },
     { slug: ["wholesale"] },
     { slug: ["legal", "terms"] },
     { slug: ["legal", "privacy"] },
     { slug: ["legal", "medical-privacy"] },
     { slug: ["legal", "returns"] },
+    { slug: ["legal", "wholesale-rewards"] },
   ];
 }
 
@@ -47,6 +51,12 @@ export default async function CmsCatchAllPage({ params }: { params: Params }) {
     "api",
     "auth",
     "r",
+    "locations",
+    "validate",
+    "lab-results",
+    "rewards",
+    "app",
+    "assistant",
   ]);
   if (reserved.has(slug[0] ?? "")) notFound();
 

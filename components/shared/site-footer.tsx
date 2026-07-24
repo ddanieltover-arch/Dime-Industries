@@ -10,6 +10,7 @@ const COLUMNS = [
       { href: "/shop/edibles", label: "Edibles" },
       { href: "/shop/prerolls", label: "Prerolls" },
       { href: "/shop/accessories", label: "Accessories" },
+      { href: "/promotions", label: "Promotions" },
     ],
   },
   {
@@ -17,10 +18,22 @@ const COLUMNS = [
     links: [
       { href: "/about", label: "About" },
       { href: "/faq", label: "FAQ" },
-      { href: "/wholesale", label: "Wholesale" },
+      { href: "/careers", label: "Careers" },
       { href: "/blog", label: "Blog" },
       { href: "/contact", label: "Contact" },
-      { href: "/locations", label: "Store Locator" },
+      { href: "/wholesale", label: "Wholesale" },
+      { href: "/locations", label: "Find DIME" },
+    ],
+  },
+  {
+    heading: "Programs",
+    links: [
+      { href: "/validate", label: "Validate" },
+      { href: "/lab-results", label: "Lab Results" },
+      { href: "/rewards", label: "Rewards" },
+      { href: "/app", label: "DIME App" },
+      { href: "/assistant", label: "AI Assistant" },
+      { href: "/links", label: "Quick Links" },
     ],
   },
   {
@@ -30,6 +43,7 @@ const COLUMNS = [
       { href: "/legal/privacy", label: "Privacy Policy" },
       { href: "/legal/medical-privacy", label: "Medical Privacy" },
       { href: "/legal/returns", label: "Returns" },
+      { href: "/legal/wholesale-rewards", label: "Wholesale Rewards" },
     ],
   },
 ];
@@ -38,8 +52,8 @@ export function SiteFooter() {
   return (
     <footer className="border-t border-[var(--color-border)] bg-[var(--color-surface)]">
       <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-2 gap-8 sm:grid-cols-4">
-          <div className="col-span-2 sm:col-span-1">
+        <div className="grid grid-cols-2 gap-8 md:grid-cols-5">
+          <div className="col-span-2 md:col-span-1">
             <div className="relative h-8 w-32">
               <Image src="/brand/logo.png" alt="DIME" fill className="object-contain object-left" sizes="128px" />
             </div>

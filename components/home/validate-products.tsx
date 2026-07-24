@@ -28,7 +28,7 @@ export function ValidateProducts() {
             Earn rewards when you scan them on the app.
           </p>
           <Link
-            href="/account/validate"
+            href="/validate"
             className="mt-8 inline-block rounded-full bg-[var(--color-resin)] px-8 py-3 font-[var(--font-display)] text-[var(--scale-xs)] uppercase tracking-[0.16em] text-black transition-colors hover:bg-[var(--color-resin-hover)]"
           >
             Learn more

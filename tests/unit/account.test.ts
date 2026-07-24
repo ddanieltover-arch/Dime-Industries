@@ -6,17 +6,17 @@ import {
 import { orderConfirmationEmail } from "../../lib/email/resend";
 
 describe("product validation", () => {
-  it("normalizes codes", () => {
-    expect(normalizeValidationCode(" lr-gelato-1g ")).toBe("LR-GELATO-1G");
-  });
-
   it("accepts a known SKU", () => {
-    const result = validateProductCode(`LR-GELATO-1G-TEST${Date.now()}`);
+    const result = validateProductCode(`MIAMI_ICE-TEST${Date.now()}`);
     expect(result.ok).toBe(true);
     if (result.ok) {
-      expect(result.sku).toBe("LR-GELATO-1G");
-      expect(result.productSlug).toContain("gelato");
+      expect(result.sku).toBe("MIAMI_ICE");
+      expect(result.productSlug).toContain("miami");
     }
+  });
+
+  it("normalizes codes", () => {
+    expect(normalizeValidationCode(" miami_ice ")).toBe("MIAMI_ICE");
   });
 
   it("rejects unknown codes", () => {
