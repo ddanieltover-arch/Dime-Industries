@@ -69,11 +69,7 @@ export default async function CheckoutPage({ searchParams }: { searchParams: Sea
     <>
       <AgeGateDialog initiallyOpen={!ageGate.ageVerified} />
 
-      {!ageGate.ageVerified || !ageGate.jurisdiction ? (
-        <div aria-hidden="true" className="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
-          <div className="h-64 animate-pulse rounded-[var(--radius-lg)] bg-[var(--color-surface)]" />
-        </div>
-      ) : cart.lines.length === 0 ? (
+      {!ageGate.ageVerified || !ageGate.jurisdiction ? null : cart.lines.length === 0 ? (
         <div className="mx-auto max-w-3xl px-4 py-16 text-center sm:px-6">
           <h1 className="font-[var(--font-display)] text-[var(--scale-3xl)] text-[var(--color-ink)]">
             Checkout

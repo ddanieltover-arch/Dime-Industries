@@ -54,12 +54,7 @@ export default async function ProductDetailPage({ params }: { params: Params }) 
   const ageGate = await getAgeGateState();
 
   if (!ageGate.ageVerified) {
-    return (
-      <>
-        <AgeGateDialog initiallyOpen />
-        <div className="min-h-[70vh] bg-black" aria-hidden="true" />
-      </>
-    );
+    return <AgeGateDialog initiallyOpen />;
   }
 
   const product = getProductBySlug(slug, ageGate.jurisdiction);

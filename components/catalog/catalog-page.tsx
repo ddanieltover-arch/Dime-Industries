@@ -30,11 +30,7 @@ export function CatalogPageShell({
     <>
       <AgeGateDialog initiallyOpen={!ageVerified} />
 
-      {!ageVerified ? (
-        <div aria-hidden="true" className="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
-          <div className="h-64 animate-pulse rounded-[var(--radius-lg)] bg-[var(--color-surface)]" />
-        </div>
-      ) : (
+      {!ageVerified ? null : (
         <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
           <header className="mb-8 max-w-2xl">
             <h1 className="font-[var(--font-display)] text-[var(--scale-3xl)] leading-tight text-[var(--color-ink)]">

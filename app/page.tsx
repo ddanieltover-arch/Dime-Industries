@@ -46,9 +46,7 @@ export default async function HomePage() {
 
       <AgeGateDialog initiallyOpen={!ageGate.ageVerified} />
 
-      {!ageGate.ageVerified ? (
-        <div className="min-h-[70vh] bg-black" aria-hidden="true" />
-      ) : (
+      {!ageGate.ageVerified ? null : (
         <>
           <HeroVideo />
           {banner ? <PromoBanner banner={banner} /> : null}

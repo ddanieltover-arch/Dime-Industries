@@ -17,8 +17,14 @@ export default function HomeError({ error, reset }: { error: Error & { digest?: 
         Something went wrong loading this page
       </h1>
       <p className="mt-3 text-[var(--scale-base)] text-[var(--color-ink-soft)]">
-        This wasn't your mistake — try again, or head back to the homepage.
+        This wasn&apos;t your mistake — try again, or head back to the homepage.
       </p>
+      {process.env.NODE_ENV !== "production" || error.digest ? (
+        <p className="mt-4 break-all font-mono text-[var(--scale-xs)] text-[var(--color-ink-soft)]">
+          {error.message}
+          {error.digest ? ` · ${error.digest}` : ""}
+        </p>
+      ) : null}
       <div className="mt-8 flex justify-center gap-3">
         <button
           type="button"

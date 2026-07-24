@@ -2,7 +2,6 @@
 "use server";
 
 import { cookies } from "next/headers";
-import { revalidatePath } from "next/cache";
 import { isLaunchJurisdiction } from "@/lib/compliance/age-gate";
 
 export type AgeGateActionState = {
@@ -33,23 +32,27 @@ export async function confirmAgeGate(
     return { notAvailable: true };
   }
 
-  const store = await cookies();
-  const oneYear = 60 * 60 * 24 * 365;
-  store.set("dime_age_verified", "1", {
-    httpOnly: true,
-    secure: process.env.NODE_ENV === "production",
-    sameSite: "lax",
-    maxAge: oneYear,
-    path: "/",
-  });
-  store.set("dime_jurisdiction", jurisdictionInput, {
-    httpOnly: true,
-    secure: process.env.NODE_ENV === "production",
-    sameSite: "lax",
-    maxAge: oneYear,
-    path: "/",
-  });
+  try {
+    const store = await cookies();
+    const oneYear = 60 * 60 * 24 * 365;
+    store.set("dime_age_verified", "1", {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "lax",
+      maxAge: oneYear,
+      path: "/",
+    });
+    store.set("dime_jurisdiction", jurisdictionInput, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "lax",
+      maxAge: oneYear,
+      path: "/",
+    });
+  } catch (err) {
+    console.error("[age-gate] cookie write failed", err);
+    return { error: "Could not save age verification. Please try again." };
+  }
 
-  revalidatePath("/", "layout");
   return { success: true };
 }
