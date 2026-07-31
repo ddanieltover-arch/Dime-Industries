@@ -1,6 +1,7 @@
 // app/api/products/route.ts
 import { NextResponse } from "next/server";
-import { listProducts, parseCatalogSearchParams } from "@/lib/catalog";
+import { listProducts, parseCatalogSearchParams, withCatalogSource } from "@/lib/catalog";
+import { loadEffectiveCatalog } from "@/lib/catalog/effective";
 import { LAUNCH_JURISDICTIONS, isLaunchJurisdiction } from "@/lib/compliance/age-gate";
 import { clientIpFromRequest, rateLimit } from "@/lib/security/rate-limit";
 
@@ -38,35 +39,38 @@ export async function GET(request: Request) {
     jurisdictionRaw && isLaunchJurisdiction(jurisdictionRaw) ? jurisdictionRaw : null;
 
   const filters = parseCatalogSearchParams(params);
+  const catalog = await loadEffectiveCatalog();
   const cacheHeaders = {
     "Cache-Control": "public, s-maxage=60, stale-while-revalidate=300",
     "X-RateLimit-Remaining": String(limited.remaining),
   };
 
-  if (!jurisdiction) {
-    const all = listProducts({ ...filters, jurisdiction: undefined });
-    const items = all.items.filter((item) => {
-      const sets = LAUNCH_JURISDICTIONS.map(
-        (j) =>
-          new Set(
-            listProducts({ ...filters, jurisdiction: j, pageSize: 1000 }).items.map((i) => i.slug)
-          )
+  return withCatalogSource(catalog, () => {
+    if (!jurisdiction) {
+      const all = listProducts({ ...filters, jurisdiction: undefined });
+      const items = all.items.filter((item) => {
+        const sets = LAUNCH_JURISDICTIONS.map(
+          (j) =>
+            new Set(
+              listProducts({ ...filters, jurisdiction: j, pageSize: 1000 }).items.map((i) => i.slug)
+            )
+        );
+        return sets.every((s) => s.has(item.slug));
+      });
+      return NextResponse.json(
+        {
+          items,
+          total: items.length,
+          page: 1,
+          pageSize: items.length,
+          facets: all.facets,
+          jurisdiction: null,
+        },
+        { headers: cacheHeaders }
       );
-      return sets.every((s) => s.has(item.slug));
-    });
-    return NextResponse.json(
-      {
-        items,
-        total: items.length,
-        page: 1,
-        pageSize: items.length,
-        facets: all.facets,
-        jurisdiction: null,
-      },
-      { headers: cacheHeaders }
-    );
-  }
+    }
 
-  const result = listProducts({ ...filters, jurisdiction });
-  return NextResponse.json({ ...result, jurisdiction }, { headers: cacheHeaders });
+    const result = listProducts({ ...filters, jurisdiction });
+    return NextResponse.json({ ...result, jurisdiction }, { headers: cacheHeaders });
+  });
 }

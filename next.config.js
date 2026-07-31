@@ -10,8 +10,16 @@ const nextConfig = {
   images: {
     formats: ["image/avif", "image/webp"],
     remotePatterns: [
-      // Supabase Storage — product/CMS media once those features ship.
-      { protocol: "https", hostname: "*.supabase.co" },
+      {
+        protocol: "https",
+        hostname: "vzylebivuwwecvbjritx.supabase.co",
+        pathname: "/storage/v1/object/public/**",
+      },
+      {
+        protocol: "https",
+        hostname: "*.supabase.co",
+        pathname: "/storage/v1/object/public/**",
+      },
     ],
   },
   async headers() {

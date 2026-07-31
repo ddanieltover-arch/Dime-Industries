@@ -4,7 +4,8 @@
 import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
-import { getAgeGateState } from "@/lib/compliance/age-gate";
+import { cookies } from "next/headers";
+import { getAgeGateState, isLaunchJurisdiction } from "@/lib/compliance/age-gate";
 import {
   checkoutFormSchema,
   computePricing,
@@ -201,8 +202,8 @@ export async function startWholesaleCheckout(
   }
 
   const gate = await getAgeGateState();
-  if (!gate.ageVerified || !gate.jurisdiction) {
-    return { error: "Age verification and jurisdiction are required." };
+  if (!gate.ageVerified) {
+    return { error: "Age verification is required." };
   }
 
   const paymentTerms = String(formData.get("paymentTerms") ?? buyer.account.defaultPaymentTerms) as PaymentTerms;
@@ -227,10 +228,26 @@ export async function startWholesaleCheckout(
       fieldErrors: parsed.error.flatten().fieldErrors as Record<string, string[]>,
     };
   }
-  if (parsed.data.state !== gate.jurisdiction) {
+  if (!isLaunchJurisdiction(parsed.data.state)) {
+    return { error: "Shipping is only available in California and Massachusetts." };
+  }
+  const jurisdiction = parsed.data.state;
+  if (gate.jurisdiction && gate.jurisdiction !== jurisdiction) {
     return {
       error: `Shipping state must match your verified jurisdiction (${gate.jurisdiction}).`,
     };
+  }
+  try {
+    const store = await cookies();
+    store.set("dime_jurisdiction", jurisdiction, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "lax",
+      maxAge: 60 * 60 * 24 * 365,
+      path: "/",
+    });
+  } catch (err) {
+    console.warn("[wholesale] jurisdiction cookie write failed", err);
   }
 
   const cart = await getWholesaleCartSnapshot();
@@ -259,14 +276,14 @@ export async function startWholesaleCheckout(
     postalCode: parsed.data.postalCode,
   };
 
-  const pricing = computePricing(cart.lines, gate.jurisdiction, null);
+  const pricing = computePricing(cart.lines, jurisdiction, null);
   const orders = getOrderRepository();
   const isNet = paymentTerms === "net30" || paymentTerms === "net60";
 
   const order = await orders.create({
     email: parsed.data.email,
     address,
-    jurisdiction: gate.jurisdiction,
+    jurisdiction,
     lines: cart.lines,
     pricing,
     channel: "wholesale",

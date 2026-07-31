@@ -55,7 +55,7 @@ export function CheckoutForm({ jurisdiction, pricing, defaultEmail }: Props) {
           Shipping
         </h2>
         <p className="text-[var(--scale-sm)] text-[var(--color-ink-soft)]">
-          Must ship within your verified jurisdiction: <strong className="text-[var(--color-ink)]">{jurisdiction}</strong>
+          Delivery available in California and Massachusetts only.
         </p>
 
         <label className="block text-[var(--scale-xs)] text-[var(--color-ink-soft)]">

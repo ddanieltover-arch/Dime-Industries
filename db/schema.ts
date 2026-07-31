@@ -94,6 +94,8 @@ export const products = pgTable(
     description: text("description"),
     status: text("status").notNull().default("draft"),
     allowedJurisdictions: text("allowed_jurisdictions").array().notNull().default(sql`'{}'::text[]`),
+    imageUrl: text("image_url"),
+    galleryUrls: text("gallery_urls").array().notNull().default(sql`'{}'::text[]`),
     createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
   },
   (t) => ({

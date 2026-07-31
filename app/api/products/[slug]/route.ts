@@ -1,6 +1,7 @@
 // app/api/products/[slug]/route.ts
 import { NextResponse } from "next/server";
-import { getProductBySlug, primaryVariant, toProductCard } from "@/lib/catalog";
+import { getProductBySlug, primaryVariant, toProductCard, withCatalogSource } from "@/lib/catalog";
+import { loadEffectiveCatalog } from "@/lib/catalog/effective";
 import { isLaunchJurisdiction } from "@/lib/compliance/age-gate";
 
 export const dynamic = "force-dynamic";
@@ -13,7 +14,9 @@ export async function GET(request: Request, { params }: { params: Params }) {
   const jurisdictionRaw = url.searchParams.get("jurisdiction") ?? "";
   const jurisdiction = isLaunchJurisdiction(jurisdictionRaw) ? jurisdictionRaw : null;
 
-  const product = getProductBySlug(slug, jurisdiction);
+  const product = await withCatalogSource(await loadEffectiveCatalog(), () =>
+    getProductBySlug(slug, jurisdiction)
+  );
   if (!product) {
     return NextResponse.json({ error: "Product not found" }, { status: 404 });
   }

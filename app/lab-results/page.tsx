@@ -1,8 +1,8 @@
 // app/lab-results/page.tsx
 import type { Metadata } from "next";
 import Link from "next/link";
-import { SEED_CATALOG } from "@/lib/catalog/seed-catalog";
 import { primaryVariant } from "@/lib/catalog";
+import { loadEffectiveCatalog } from "@/lib/catalog/effective";
 import { fetchCoaBySku } from "@/lib/integrations/coa/client";
 import { formatPct } from "@/lib/format";
 
@@ -17,21 +17,26 @@ type SearchParams = Promise<{ sku?: string; q?: string }>;
 export default async function LabResultsPage({ searchParams }: { searchParams: SearchParams }) {
   const sp = await searchParams;
   const skuQuery = (sp.sku || sp.q || "").trim().toUpperCase();
+  const catalog = await loadEffectiveCatalog();
 
   const matches = skuQuery
-    ? SEED_CATALOG.filter((p) =>
-        p.variants.some(
-          (v) =>
-            v.sku.toUpperCase() === skuQuery ||
-            v.sku.toUpperCase().includes(skuQuery) ||
-            p.slug.toUpperCase().includes(skuQuery) ||
-            p.name.toUpperCase().includes(skuQuery)
+    ? catalog
+        .filter((p) =>
+          p.variants.some(
+            (v) =>
+              v.sku.toUpperCase() === skuQuery ||
+              v.sku.toUpperCase().includes(skuQuery) ||
+              p.slug.toUpperCase().includes(skuQuery) ||
+              p.name.toUpperCase().includes(skuQuery)
+          )
         )
-      ).slice(0, 12)
-    : SEED_CATALOG.filter((p) => p.categorySlug === "vapes").slice(0, 8);
+        .slice(0, 12)
+    : catalog.filter((p) => p.categorySlug === "vapes").slice(0, 8);
 
   const primary = matches[0] ? primaryVariant(matches[0]) : null;
-  const coa = primary ? await fetchCoaBySku(primary.sku, matches[0]?.coaUrl) : null;
+  const coa = primary
+    ? await fetchCoaBySku(primary.sku, matches[0]?.coaUrl, matches[0]?.name)
+    : null;
 
   return (
     <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8 lg:py-16">

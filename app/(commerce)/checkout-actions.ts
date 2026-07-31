@@ -3,7 +3,8 @@
 
 import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
-import { getAgeGateState } from "@/lib/compliance/age-gate";
+import { cookies } from "next/headers";
+import { getAgeGateState, isLaunchJurisdiction } from "@/lib/compliance/age-gate";
 import { getCartSnapshot, persistCartLines } from "@/lib/cart";
 import {
   computePricing,
@@ -32,8 +33,8 @@ export async function startCheckout(
   formData: FormData
 ): Promise<CheckoutActionState> {
   const gate = await getAgeGateState();
-  if (!gate.ageVerified || !gate.jurisdiction) {
-    return { error: "Age verification and jurisdiction are required before checkout." };
+  if (!gate.ageVerified) {
+    return { error: "Age verification is required before checkout." };
   }
 
   const raw = {
@@ -56,10 +57,28 @@ export async function startCheckout(
   }
 
   const data = parsed.data;
-  if (data.state !== gate.jurisdiction) {
+  if (!isLaunchJurisdiction(data.state)) {
+    return { error: "Shipping is only available in California and Massachusetts." };
+  }
+  // Shipping state is the jurisdiction of record when the age gate no longer
+  // collects it up front. Keep any existing cookie in sync.
+  const jurisdiction = data.state;
+  if (gate.jurisdiction && gate.jurisdiction !== jurisdiction) {
     return {
       error: `Shipping state must match your verified jurisdiction (${gate.jurisdiction}).`,
     };
+  }
+  try {
+    const store = await cookies();
+    store.set("dime_jurisdiction", jurisdiction, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "lax",
+      maxAge: 60 * 60 * 24 * 365,
+      path: "/",
+    });
+  } catch (err) {
+    console.warn("[checkout] jurisdiction cookie write failed", err);
   }
 
   const cart = await getCartSnapshot();
@@ -98,12 +117,12 @@ export async function startCheckout(
     email: data.email,
     subtotalAfterCouponCents: afterCoupon,
   });
-  const pricing = computePricing(cart.lines, gate.jurisdiction, coupon, loyalty);
+  const pricing = computePricing(cart.lines, jurisdiction, coupon, loyalty);
   const orders = getOrderRepository();
   const order = await orders.create({
     email: data.email,
     address,
-    jurisdiction: gate.jurisdiction,
+    jurisdiction,
     lines: cart.lines,
     pricing,
   });

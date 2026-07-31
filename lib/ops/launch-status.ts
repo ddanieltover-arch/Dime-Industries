@@ -88,24 +88,26 @@ export function getLaunchStatus(env: Env = process.env): LaunchStatus {
       ok: true,
       severity: "info",
       message:
-        process.env.COA_API_BASE?.trim() || process.env.REWARDS_API_BASE?.trim()
-          ? "COA/Rewards API base configured (live adapter path)."
-          : "COA/Rewards adapters in mock/fallback mode — set COA_API_BASE / REWARDS_API_BASE when hosts are ready.",
+        process.env.REWARDS_API_BASE?.trim() && process.env.REWARDS_API_BASE.trim() !== "off"
+          ? "COA defaults to DIME Heroku lab host; Rewards REST sync configured."
+          : "COA defaults to DIME Heroku lab host (/api/coas). Rewards stays local loyalty until REWARDS_API_BASE + key (rewards.dimeindustries.com is OAuth SPA, not REST).",
     },
     {
-      id: "placeholder_pricing",
+      id: "reference_pricing",
       ok: true,
-      severity: "warning",
+      severity: "info",
       message:
-        "Catalog uses PLACEHOLDER_PRICING from brand import — replace retailPriceCents with the owner price sheet before go-live.",
+        "Catalog uses REFERENCE_PRICING from Eaze CA (+ Rolling Releaf MA notes). Edibles/rosin/collabs without marketplace hits still use documented bands — override via lib/catalog/reference-price-sheet.ts.",
     },
     {
       id: "assistant",
       ok: true,
       severity: "info",
-      message: process.env.ASSISTANT_API_BASE?.trim()
-        ? "Assistant API base configured (live path)."
-        : "AI Assistant running in on-site mock guide mode — set ASSISTANT_API_BASE when budtender host is ready.",
+      message:
+        process.env.ASSISTANT_API_BASE?.trim() === "off" ||
+        process.env.ASSISTANT_API_BASE?.trim() === "mock"
+          ? "AI Assistant forced to mock mode (ASSISTANT_API_BASE=off)."
+          : "AI Assistant defaults to DIME Budtender Heroku (POST /chat).",
     },
     {
       id: "supabase",

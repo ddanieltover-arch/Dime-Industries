@@ -1,9 +1,10 @@
 // lib/integrations/rewards/client.ts
 import "server-only";
+import { DIME_REFERENCE_HOSTS, resolveRewardsApiBase } from "@/lib/integrations/hosts";
 import type { RewardsEvent, RewardsMember } from "./types";
 
 function rewardsConfigured() {
-  return Boolean(process.env.REWARDS_API_BASE?.trim());
+  return Boolean(resolveRewardsApiBase());
 }
 
 function syncEnabled() {
@@ -11,7 +12,7 @@ function syncEnabled() {
 }
 
 function allowlistedUrl(path: string): URL | null {
-  const base = process.env.REWARDS_API_BASE?.trim();
+  const base = resolveRewardsApiBase();
   if (!base) return null;
   try {
     const origin = new URL(base);
@@ -31,6 +32,11 @@ function authHeaders(): HeadersInit {
   const key = process.env.REWARDS_API_KEY?.trim();
   if (key) headers.Authorization = `Bearer ${key}`;
   return headers;
+}
+
+/** Consumer-facing Rewards app (OAuth SPA on the reference site). */
+export function getRewardsAppUrl() {
+  return process.env.REWARDS_APP_URL?.trim() || DIME_REFERENCE_HOSTS.rewardsApp;
 }
 
 export async function fetchRewardsMember(email: string): Promise<RewardsMember> {
@@ -104,6 +110,7 @@ export function getRewardsIntegrationStatus() {
   return {
     configured: rewardsConfigured(),
     syncEnabled: syncEnabled(),
-    mode: rewardsConfigured() ? ("live" as const) : ("mock" as const),
+    mode: rewardsConfigured() ? ("live" as const) : ("local" as const),
+    appUrl: getRewardsAppUrl(),
   };
 }

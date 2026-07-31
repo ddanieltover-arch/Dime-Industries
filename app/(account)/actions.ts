@@ -9,6 +9,7 @@ import {
   type AccountAddress,
 } from "@/lib/account/prefs";
 import { validateProductCode } from "@/lib/account/validate-product";
+import { withEffectiveCatalog } from "@/lib/catalog/effective";
 import { z } from "zod";
 
 export type AccountActionState = {
@@ -128,7 +129,7 @@ export async function submitProductValidation(
 ): Promise<AccountActionState> {
   await requireUser();
   const code = String(formData.get("code") ?? "");
-  const result = validateProductCode(code);
+  const result = await withEffectiveCatalog(() => validateProductCode(code));
   if (!result.ok) return { error: result.message };
   revalidatePath("/account/validate");
   return {

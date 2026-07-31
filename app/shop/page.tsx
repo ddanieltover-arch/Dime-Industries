@@ -1,8 +1,8 @@
 // app/shop/page.tsx
 import type { Metadata } from "next";
 import { getAgeGateState } from "@/lib/compliance/age-gate";
-import { listProducts, parseCatalogSearchParams, withCatalogSource } from "@/lib/catalog";
-import { loadEffectiveCatalog } from "@/lib/catalog/effective";
+import { listProducts, parseCatalogSearchParams } from "@/lib/catalog";
+import { withEffectiveCatalog } from "@/lib/catalog/effective";
 import { CatalogPageShell } from "@/components/catalog/catalog-page";
 
 export const metadata: Metadata = {
@@ -22,9 +22,8 @@ export default async function ShopPage({ searchParams }: { searchParams: SearchP
     jurisdiction: ageGate.jurisdiction,
   };
 
-  const catalog = ageGate.ageVerified ? await loadEffectiveCatalog() : [];
   const result = ageGate.ageVerified
-    ? withCatalogSource(catalog, () => listProducts(filters))
+    ? await withEffectiveCatalog(() => listProducts(filters))
     : { items: [], total: 0, page: 1, pageSize: 24, facets: { categories: [], lines: [], strains: [], potencyBands: [], formats: [] } };
 
   return (

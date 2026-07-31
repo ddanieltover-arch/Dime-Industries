@@ -8,17 +8,36 @@ export function isDatabaseUrlConfigured() {
   return Boolean(process.env.DATABASE_URL?.trim());
 }
 
+/** Prefer Supabase transaction pooler (6543) to avoid session-mode slot exhaustion. */
+export function normalizeDatabaseUrl(raw: string): string {
+  try {
+    const u = new URL(raw);
+    if (u.hostname.includes("pooler.supabase.com") && (u.port === "5432" || u.port === "")) {
+      u.port = "6543";
+    }
+    return u.toString();
+  } catch {
+    return raw;
+  }
+}
+
 let cached: ReturnType<typeof drizzle<typeof schema>> | null = null;
 let cachedSql: ReturnType<typeof postgres> | null = null;
 
 /** Server-only Drizzle client. Prefer service/pooled DATABASE_URL for writes. */
 export function getDb() {
-  const url = process.env.DATABASE_URL?.trim();
-  if (!url) {
+  const raw = process.env.DATABASE_URL?.trim();
+  if (!raw) {
     throw new Error("DATABASE_URL is not configured");
   }
   if (!cached) {
-    cachedSql = postgres(url, { prepare: false, max: 5 });
+    const url = normalizeDatabaseUrl(raw);
+    const local = /localhost|127\.0\.0\.1/.test(url);
+    cachedSql = postgres(url, {
+      prepare: false,
+      max: 5,
+      ...(local ? {} : { ssl: "require" as const }),
+    });
     cached = drizzle(cachedSql, { schema });
   }
   return cached;

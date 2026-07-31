@@ -1,9 +1,20 @@
-# COA & Rewards API Contracts (D-21)
+# COA & Rewards / Assistant API Contracts (D-21)
 
-**Status:** Adapter-ready — live hosts optional via env  
+**Status:** Live against public DIME reference hosts (overridable via env)  
 **Authority:** Architecture (COA + Rewards are integrations, not rebuilds)
 
-When base URLs are unset, adapters run in **mock** mode so storefront/dev never block on external systems.
+When bases are unset, adapters use the public hosts linked from [dimeindustries.com](https://dimeindustries.com/). Set a base to `off` to force mock/local.
+
+---
+
+## Discovered reference hosts
+
+| System | Host | API shape |
+|---|---|---|
+| Lab / COA | `https://coas-7d1e18b1a038.herokuapp.com` | `GET /api/coas?q=&limit=` → `{ data, pagination }`; detail `/coa/{id}` |
+| AI Budtender | `https://budtender-bdf452c7c488.herokuapp.com` | `POST /chat` body `{ message }` → `{ reply }` |
+| Rewards app | `https://rewards.dimeindustries.com` | OAuth SPA — **no** public `/v1/members` REST |
+| Serial validate | `https://dime-serial-validator-cd1cd.firebaseapp.com` | Firebase validator UI |
 
 ---
 
@@ -11,71 +22,57 @@ When base URLs are unset, adapters run in **mock** mode so storefront/dev never 
 
 | Variable | Purpose |
 |---|---|
-| `COA_API_BASE` | Origin for COA host (no trailing slash), e.g. `https://coa.example.com` |
+| `COA_API_BASE` | Override COA origin (default: Heroku lab host). `off` = mock |
 | `COA_API_KEY` | Optional bearer/API key |
-| `REWARDS_API_BASE` | Origin for DIME Rewards |
+| `ASSISTANT_API_BASE` | Override Budtender origin (default: Heroku). `off` = mock |
+| `ASSISTANT_API_KEY` | Optional bearer/API key |
+| `REWARDS_API_BASE` | REST Rewards origin — **only** if you have a contract-compatible host + key |
 | `REWARDS_API_KEY` | Optional bearer/API key |
-| `REWARDS_SYNC_ENABLED` | `true` to push earn/redeem events to Rewards host |
+| `REWARDS_SYNC_ENABLED` | `true` to push earn/redeem events to Rewards REST host |
+| `REWARDS_APP_URL` | Consumer link to legacy Rewards SPA (default: rewards.dimeindustries.com) |
 
 ---
 
-## COA — expected HTTP contract
+## COA — live Heroku shape (default)
 
-### `GET {COA_API_BASE}/v1/coa?sku={sku}`
+### `GET {COA_API_BASE}/api/coas?q={query}&limit=5`
 
-**Headers:** `Authorization: Bearer {COA_API_KEY}` (if key set), `Accept: application/json`
+Adapter searches by product name, then SKU-derived query. Maps first hit to:
 
-**200 response:**
+- `documentUrl` → `{COA_API_BASE}/coa/{id}`
+- `thcPct` / `cbdPct` / `labName` / `testedAt` from row fields
+- `status` `passed` → `published`
 
-```json
-{
-  "sku": "LR-GELATO-1G",
-  "productName": "Live Reserve Gelato 1g",
-  "labName": "Example Analytics",
-  "testedAt": "2026-06-01T00:00:00.000Z",
-  "documentUrl": "https://coa.example.com/docs/lr-gelato-1g.pdf",
-  "thcPct": 78.2,
-  "cbdPct": 0.4,
-  "status": "published"
-}
-```
+### Fallback contract (custom hosts)
 
-**404:** SKU unknown — adapter falls back to catalog `coaUrl`.  
-**Timeout:** 3s — fail soft to catalog URL.
+`GET {COA_API_BASE}/v1/coa?sku={sku}` as previously documented.
 
-Allow-list: requests only to `COA_API_BASE` origin (no user-supplied hosts).
+**Timeout:** 3–4s — fail soft to catalog URL.
 
 ---
 
-## Rewards — expected HTTP contract
+## Assistant — live Budtender shape (default)
 
-### `GET {REWARDS_API_BASE}/v1/members/{email}`
-
-**200:**
+### `POST {ASSISTANT_API_BASE}/chat`
 
 ```json
-{
-  "email": "buyer@example.com",
-  "externalId": "rw_abc",
-  "pointsBalance": 1200,
-  "tier": "reserve"
-}
+{ "message": "What is Miami Ice?" }
 ```
 
-### `POST {REWARDS_API_BASE}/v1/events`
+**200:** `{ "reply": "..." }` (also accepts `{ "answer" }` on `/v1/chat` for custom hosts)
 
-```json
-{
-  "email": "buyer@example.com",
-  "type": "earn" | "redeem" | "adjust",
-  "points": 100,
-  "reason": "order ord_…",
-  "idempotencyKey": "ord_…:earn"
-}
-```
+---
 
-**200/201:** `{ "ok": true, "balance": 1300 }`  
-Failures are logged; local loyalty ledger remains source of truth for checkout.
+## Rewards — local-first
+
+On-site loyalty (`/account/loyalty`, checkout earn/redeem) remains source of truth.
+
+`rewards.dimeindustries.com` is linked as the legacy member app. REST sync (`REWARDS_API_BASE` + `REWARDS_SYNC_ENABLED=true`) stays optional until a contract-compatible host is provided.
+
+### Optional REST (when configured)
+
+`GET {REWARDS_API_BASE}/v1/members/{email}`  
+`POST {REWARDS_API_BASE}/v1/events`
 
 ---
 
@@ -83,7 +80,9 @@ Failures are logged; local loyalty ledger remains source of truth for checkout.
 
 | Module | Role |
 |---|---|
-| `lib/integrations/coa/` | Fetch + fallback |
-| `lib/integrations/rewards/` | Member read + event push |
-| Product PDP | Prefer live `documentUrl`, else seed `coaUrl` |
+| `lib/integrations/hosts.ts` | Default public origins |
+| `lib/integrations/coa/` | Heroku `/api/coas` + contract fallback |
+| `lib/integrations/assistant/` | Budtender `/chat` + `/v1/chat` fallback |
+| `lib/integrations/rewards/` | Optional REST + `REWARDS_APP_URL` link |
+| Product PDP / Lab Results | Prefer live COA document URL |
 | Loyalty earn/redeem | Optional Rewards sync when enabled |

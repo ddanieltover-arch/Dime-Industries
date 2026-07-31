@@ -1,7 +1,8 @@
 // lib/data/products.ts
 // Home page adapter over the Catalog Service (Sprint 1).
 
-import { listProducts, type ProductCardModel } from "@/lib/catalog";
+import { listProducts, withCatalogSource, type ProductCardModel } from "@/lib/catalog";
+import { loadEffectiveCatalog } from "@/lib/catalog/effective";
 import { CATALOG_LINES } from "@/lib/catalog/seed-catalog";
 
 export type FeaturedProduct = ProductCardModel;
@@ -13,14 +14,16 @@ export type ProductLineSection = {
 };
 
 export async function getFeaturedProductLines(): Promise<ProductLineSection[]> {
-  await new Promise((r) => setTimeout(r, 0));
+  const catalog = await loadEffectiveCatalog();
 
-  return CATALOG_LINES.map((line) => {
-    const { items } = listProducts({
-      line: line.slug,
-      sort: "popularity",
-      pageSize: 6,
-    });
-    return { slug: line.slug, name: line.name, products: items };
-  }).filter((section) => section.products.length > 0);
+  return withCatalogSource(catalog, () =>
+    CATALOG_LINES.map((line) => {
+      const { items } = listProducts({
+        line: line.slug,
+        sort: "popularity",
+        pageSize: 6,
+      });
+      return { slug: line.slug, name: line.name, products: items };
+    }).filter((section) => section.products.length > 0)
+  );
 }

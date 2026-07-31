@@ -22,9 +22,9 @@ Being direct about this, since it's easy for a well-documented repo to look more
 - **Database schema, RLS policies, and migrations** (`db/`) — including `0004`–`0007` commerce tables.
 - **Wholesale (Sprint 14 / Phase 2)** — apply → admin approve → `/wholesale/shop` + NET-30/60 or Bitcoin upfront checkout.
 - **Integrations & growth finance (Sprint 15)** — COA/Rewards adapters, loyalty redeem at checkout, affiliate payouts, load-test script.
-- **Deployment infrastructure** (`.github/`, `vercel.json`, Sentry configs, `docs/DEPLOYMENT.md` and friends) — ready for owner-driven cutover to dimeindustries.us.
+- **Deployment infrastructure** (`.github/`, `vercel.json`, Sentry configs, `docs/DEPLOYMENT.md` and friends) — production app live at `https://dime-industries.vercel.app`.
 
-**Owner-gated:** production DNS/Vercel cutover — see `docs/44-owner-cutover.md` and `docs/45-sprint-15-progress.md`.
+**Owner-gated (final step):** point `dimeindustries.us` DNS at Vercel — follow **`docs/46-cutover-owner-actions.md`** (also `docs/44-owner-cutover.md`). Verify with `npm run cutover:verify:once`.
 
 ## Getting started
 

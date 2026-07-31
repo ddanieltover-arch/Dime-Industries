@@ -13,10 +13,16 @@
     "test:unit:watch": "vitest",
     "test:e2e": "playwright test",
     "smoke": "node scripts/smoke-production.mjs",
+    "cutover:verify": "node scripts/verify-domain-cutover.mjs",
+    "cutover:verify:once": "node scripts/verify-domain-cutover.mjs --once",
     "load:checkout": "node scripts/load-checkout-reserve.mjs",
     "load:checkout:probe": "node scripts/load-checkout-reserve.mjs --probe",
     "db:seed": "tsx db/seed.ts",
-    "catalog:import": "node scripts/import-brand-catalog.mjs"
+    "catalog:import": "node scripts/import-brand-catalog.mjs",
+    "catalog:prices": "node scripts/apply-reference-prices.mjs",
+    "catalog:seed-db": "tsx db/seed-brand-catalog.ts",
+    "catalog:sync-images": "node scripts/sync-catalog-images.mjs",
+    "catalog:refresh-images": "node scripts/refresh-catalog-images.mjs"
   },
   "dependencies": {
     "@radix-ui/react-dialog": "^1.1.0",

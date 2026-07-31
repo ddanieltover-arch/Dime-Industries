@@ -85,7 +85,7 @@ const DEFAULT_PAGES: CmsPage[] = [
   {
     slug: "legal/terms",
     title: "Terms of Service",
-    body: "By using this platform you confirm you are 21+ (or a qualifying medical patient where applicable) and that cannabis products are legal in your jurisdiction.\n\n### Orders\nOrders are fulfilled only where permitted. Prices exclude tax until checkout. Placeholder catalog pricing may appear until the official price sheet is applied.\n\n### Accounts\nYou are responsible for keeping login credentials secure and for activity under your account.\n\n### Changes\nWe may update these terms; continued use after notice constitutes acceptance.",
+    body: "By using this platform you confirm you are 21+ (or a qualifying medical patient where applicable) and that cannabis products are legal in your jurisdiction.\n\n### Orders\nOrders are fulfilled only where permitted. Prices exclude tax until checkout. Retail prices are sourced from licensed marketplace menus (Eaze CA; Rolling Releaf MA where noted) and may differ by jurisdiction or format.\n\n### Accounts\nYou are responsible for keeping login credentials secure and for activity under your account.\n\n### Changes\nWe may update these terms; continued use after notice constitutes acceptance.",
     status: "published",
     updatedAt: "2026-07-01T00:00:00.000Z",
   },

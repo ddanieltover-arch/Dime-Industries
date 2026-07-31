@@ -2,6 +2,7 @@
 import "server-only";
 import { getAdminCatalog } from "@/lib/admin/catalog-overrides";
 import { loadInventoryOverlay } from "@/lib/inventory";
+import { withCatalogSource } from "./query";
 import type { CatalogProduct } from "./types";
 
 export async function loadEffectiveCatalog(): Promise<CatalogProduct[]> {
@@ -16,3 +17,9 @@ export async function loadEffectiveCatalog(): Promise<CatalogProduct[]> {
     ),
   }));
 }
+
+export async function withEffectiveCatalog<T>(fn: () => T): Promise<T> {
+  const catalog = await loadEffectiveCatalog();
+  return withCatalogSource(catalog, fn);
+}
+

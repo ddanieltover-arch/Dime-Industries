@@ -2,6 +2,7 @@
 "use server";
 
 import { validateProductCode } from "@/lib/account/validate-product";
+import { withEffectiveCatalog } from "@/lib/catalog/effective";
 
 export type PublicValidateState = {
   error?: string;
@@ -15,11 +16,13 @@ export async function submitPublicValidation(
   formData: FormData
 ): Promise<PublicValidateState> {
   const code = String(formData.get("code") ?? "");
-  const result = validateProductCode(code);
-  if (!result.ok) return { error: result.message };
-  return {
-    success: true,
-    message: `${result.message} (${result.productName} · ${result.sku})`,
-    productSlug: result.productSlug,
-  };
+  return withEffectiveCatalog(() => {
+    const result = validateProductCode(code);
+    if (!result.ok) return { error: result.message };
+    return {
+      success: true,
+      message: `${result.message} (${result.productName} · ${result.sku})`,
+      productSlug: result.productSlug,
+    };
+  });
 }

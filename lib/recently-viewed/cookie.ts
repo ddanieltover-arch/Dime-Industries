@@ -2,7 +2,8 @@
 import "server-only";
 import { cookies } from "next/headers";
 import { z } from "zod";
-import { getProductBySlug, toProductCard } from "@/lib/catalog";
+import { getProductBySlug, toProductCard, withCatalogSource } from "@/lib/catalog";
+import { loadEffectiveCatalog } from "@/lib/catalog/effective";
 import type { ProductCardModel } from "@/lib/catalog/types";
 import { pushRecentSlug, RECENT_MAX } from "./logic";
 
@@ -28,8 +29,10 @@ export async function recordProductView(
   slug: string,
   jurisdiction?: string | null
 ): Promise<void> {
-  // Only record if the product is visible in this jurisdiction
-  if (!getProductBySlug(slug, jurisdiction ?? null)) return;
+  const visible = await withCatalogSource(await loadEffectiveCatalog(), () =>
+    getProductBySlug(slug, jurisdiction ?? null)
+  );
+  if (!visible) return;
   const next = pushRecentSlug(await readRecentSlugs(), slug);
   const store = await cookies();
   store.set(RECENT_COOKIE, encodeURIComponent(JSON.stringify({ slugs: next })), {
@@ -46,12 +49,15 @@ export async function getRecentlyViewedCards(
   excludeSlug?: string
 ): Promise<ProductCardModel[]> {
   const slugs = await readRecentSlugs();
-  const cards: ProductCardModel[] = [];
-  for (const slug of slugs) {
-    if (excludeSlug && slug === excludeSlug) continue;
-    const product = getProductBySlug(slug, jurisdiction ?? null);
-    if (!product) continue;
-    cards.push(toProductCard(product));
-  }
-  return cards;
+  const catalog = await loadEffectiveCatalog();
+  return withCatalogSource(catalog, () => {
+    const cards: ProductCardModel[] = [];
+    for (const slug of slugs) {
+      if (excludeSlug && slug === excludeSlug) continue;
+      const product = getProductBySlug(slug, jurisdiction ?? null);
+      if (!product) continue;
+      cards.push(toProductCard(product));
+    }
+    return cards;
+  });
 }

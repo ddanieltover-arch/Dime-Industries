@@ -7,9 +7,8 @@ import {
   CATALOG_LINES,
   listProducts,
   parseCatalogSearchParams,
-  withCatalogSource,
 } from "@/lib/catalog";
-import { loadEffectiveCatalog } from "@/lib/catalog/effective";
+import { withEffectiveCatalog } from "@/lib/catalog/effective";
 import { CatalogPageShell } from "@/components/catalog/catalog-page";
 
 type Params = Promise<{ category: string; line: string }>;
@@ -59,7 +58,7 @@ export default async function LinePage({
   };
 
   const result = ageGate.ageVerified
-    ? withCatalogSource(await loadEffectiveCatalog(), () => listProducts(filters))
+    ? await withEffectiveCatalog(() => listProducts(filters))
     : {
         items: [],
         total: 0,

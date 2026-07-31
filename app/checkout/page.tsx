@@ -60,16 +60,17 @@ export default async function CheckoutPage({ searchParams }: { searchParams: Sea
     ? (await import("@/lib/loyalty/store")).getLoyaltyAccount(profile.email).then((a) => a.pointsBalance)
     : Promise.resolve(0);
   const balance = await loyaltyBalance;
+  const checkoutJurisdiction = ageGate.jurisdiction ?? "CA";
   const pricing =
-    ageGate.ageVerified && ageGate.jurisdiction
-      ? computePricing(cart.lines, ageGate.jurisdiction, coupon, loyalty)
+    ageGate.ageVerified && cart.lines.length
+      ? computePricing(cart.lines, checkoutJurisdiction, coupon, loyalty)
       : null;
 
   return (
     <>
       <AgeGateDialog initiallyOpen={!ageGate.ageVerified} />
 
-      {!ageGate.ageVerified || !ageGate.jurisdiction ? null : cart.lines.length === 0 ? (
+      {!ageGate.ageVerified ? null : cart.lines.length === 0 ? (
         <div className="mx-auto max-w-3xl px-4 py-16 text-center sm:px-6">
           <h1 className="font-[var(--font-display)] text-[var(--scale-3xl)] text-[var(--color-ink)]">
             Checkout
@@ -119,7 +120,7 @@ export default async function CheckoutPage({ searchParams }: { searchParams: Sea
             )}
             <div className="mt-8">
               <CheckoutForm
-                jurisdiction={ageGate.jurisdiction}
+                jurisdiction={checkoutJurisdiction}
                 pricing={pricing!}
                 defaultEmail={profile?.email}
               />

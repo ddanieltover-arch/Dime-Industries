@@ -1,6 +1,7 @@
 // lib/catalog/query.ts
-// Catalog query layer — pure functions over CatalogProduct[]. Swap the data
-// source (seed → Drizzle) without changing filter/sort contracts.
+// Catalog query layer — pure functions over CatalogProduct[].
+// Storefront loads Postgres via loadEffectiveCatalog() → withCatalogSource();
+// unit tests and offline fallback use SEED_CATALOG.
 
 import type {
   CatalogFacetCounts,

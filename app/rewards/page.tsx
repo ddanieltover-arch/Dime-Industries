@@ -1,6 +1,7 @@
 // app/rewards/page.tsx
 import type { Metadata } from "next";
 import Link from "next/link";
+import { getRewardsAppUrl } from "@/lib/integrations/rewards/client";
 
 export const metadata: Metadata = {
   title: "Rewards",
@@ -15,6 +16,8 @@ const TIERS = [
 ];
 
 export default function RewardsPage() {
+  const rewardsApp = getRewardsAppUrl();
+
   return (
     <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8 lg:py-16">
       <div className="mx-auto max-w-3xl text-center">
@@ -22,8 +25,8 @@ export default function RewardsPage() {
           DIME Rewards
         </h1>
         <p className="mt-4 text-[var(--scale-base)] text-[var(--color-ink-soft)]">
-          Validate your products, shop online, and earn points toward discounts and early access. Syncs with the live
-          rewards host when configured.
+          Validate your products, shop online, and earn points toward discounts and early access. On-site loyalty is
+          live now; the legacy Rewards app remains available for existing members.
         </p>
         <div className="mt-8 flex flex-wrap justify-center gap-3">
           <Link
@@ -44,6 +47,14 @@ export default function RewardsPage() {
           >
             Validate a product
           </Link>
+          <a
+            href={rewardsApp}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="rounded-full border border-white/40 px-8 py-3 font-[var(--font-display)] text-[var(--scale-xs)] uppercase tracking-[0.16em] text-white hover:border-[var(--color-resin)] hover:text-[var(--color-resin)]"
+          >
+            Legacy Rewards app
+          </a>
         </div>
       </div>
 

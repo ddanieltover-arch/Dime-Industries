@@ -1,6 +1,7 @@
 // lib/integrations/assistant/client.ts
 import "server-only";
 import { SEED_CATALOG } from "@/lib/catalog/seed-catalog";
+import { resolveAssistantApiBase } from "@/lib/integrations/hosts";
 
 export type AssistantReply = {
   answer: string;
@@ -8,10 +9,10 @@ export type AssistantReply = {
 };
 
 function assistantConfigured() {
-  return Boolean(process.env.ASSISTANT_API_BASE?.trim());
+  return Boolean(resolveAssistantApiBase());
 }
 
-function mockAnswer(message: string): string {
+function mockAnswer(message: string, catalogSizeByLine: Record<string, number>): string {
   const q = message.toLowerCase();
   if (/validat|authentic|counterfeit|warranty/.test(q)) {
     return "Scratch the code on your package and enter it at /validate. That confirms authenticity and unlocks limited warranty plus rewards when you are signed in.";
@@ -36,7 +37,8 @@ function mockAnswer(message: string): string {
         : /collab/.test(q)
           ? "collabs"
           : "signature";
-    const count = SEED_CATALOG.filter((p) => p.lineSlug === line).length;
+    const count =
+      catalogSizeByLine[line] ?? SEED_CATALOG.filter((p) => p.lineSlug === line).length;
     return `We carry ${count} products in that line. Browse /shop/vapes/${line} to see the full assortment.`;
   }
   if (/edible|gumm|softgel/.test(q)) {
@@ -45,43 +47,71 @@ function mockAnswer(message: string): string {
   return "I can help with products, validation, lab results, rewards, and finding DIME near you. Try asking about a line (Signature, Live Reserve), Validate, or Find DIME. For account issues, contact support@dimeindustries.us.";
 }
 
+async function postChat(
+  base: string,
+  path: string,
+  message: string
+): Promise<string | null> {
+  const url = new URL(path, base.endsWith("/") ? base : `${base}/`);
+  if (url.origin !== new URL(base).origin) return null;
+
+  const headers: HeadersInit = {
+    Accept: "application/json",
+    "Content-Type": "application/json",
+  };
+  const key = process.env.ASSISTANT_API_KEY?.trim();
+  if (key) headers.Authorization = `Bearer ${key}`;
+
+  const res = await fetch(url, {
+    method: "POST",
+    headers,
+    body: JSON.stringify({ message }),
+    signal: AbortSignal.timeout(12000),
+  });
+  if (!res.ok) return null;
+  const data = (await res.json()) as { answer?: string; reply?: string; message?: string };
+  const text = (data.answer || data.reply || data.message || "").trim();
+  return text || null;
+}
+
 export async function askAssistant(message: string): Promise<AssistantReply> {
   const trimmed = message.trim().slice(0, 1000);
   if (!trimmed) {
     return { answer: "Ask me about DIME products, validation, lab results, or stores.", source: "mock" };
   }
 
-  const base = process.env.ASSISTANT_API_BASE?.trim();
+  const base = resolveAssistantApiBase();
   if (base) {
     try {
-      const url = new URL("/v1/chat", base);
-      const headers: HeadersInit = {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      };
-      const key = process.env.ASSISTANT_API_KEY?.trim();
-      if (key) headers.Authorization = `Bearer ${key}`;
-      const res = await fetch(url, {
-        method: "POST",
-        headers,
-        body: JSON.stringify({ message: trimmed }),
-        signal: AbortSignal.timeout(8000),
-      });
-      if (res.ok) {
-        const data = (await res.json()) as { answer?: string };
-        if (data.answer?.trim()) return { answer: data.answer.trim(), source: "live" };
+      // DIME Budtender Heroku uses POST /chat → { reply }; generic contract uses /v1/chat → { answer }.
+      for (const path of ["/chat", "/v1/chat"]) {
+        const text = await postChat(base, path, trimmed);
+        if (text) return { answer: text, source: "live" };
       }
     } catch (err) {
       console.warn("[assistant] live fetch failed", err);
     }
   }
 
-  return { answer: mockAnswer(trimmed), source: assistantConfigured() ? "mock" : "mock" };
+  try {
+    const { loadEffectiveCatalog } = await import("@/lib/catalog/effective");
+    const catalog = await loadEffectiveCatalog();
+    const byLine: Record<string, number> = {};
+    for (const p of catalog) {
+      if (!p.lineSlug) continue;
+      byLine[p.lineSlug] = (byLine[p.lineSlug] ?? 0) + 1;
+    }
+    return { answer: mockAnswer(trimmed, byLine), source: "mock" };
+  } catch {
+    return { answer: mockAnswer(trimmed, {}), source: "mock" };
+  }
 }
 
 export function getAssistantIntegrationStatus() {
+  const base = resolveAssistantApiBase();
   return {
-    configured: assistantConfigured(),
-    mode: assistantConfigured() ? ("live" as const) : ("mock" as const),
+    configured: Boolean(base),
+    mode: base ? ("live" as const) : ("mock" as const),
+    base: base ?? null,
   };
 }

@@ -1,11 +1,11 @@
 // lib/catalog/seed-catalog.ts
 // Brand catalog imported from dimeindustries.com via scripts/import-brand-catalog.mjs
-// PLACEHOLDER_PRICING — replace retail prices from owner price sheet before go-live.
+// REFERENCE_PRICING — retail prices from Eaze/Rolling Releaf sheet (see reference-price-sheet.ts).
 
 import type { CatalogProduct } from "./types";
-import { BRAND_CATALOG, PLACEHOLDER_PRICING } from "./brand-catalog.generated";
+import { BRAND_CATALOG, PLACEHOLDER_PRICING, REFERENCE_PRICING } from "./brand-catalog.generated";
 
-export { PLACEHOLDER_PRICING };
+export { PLACEHOLDER_PRICING, REFERENCE_PRICING };
 
 export const CATALOG_CATEGORIES = [
   { slug: "vapes", name: "Vapes" },

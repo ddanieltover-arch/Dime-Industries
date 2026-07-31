@@ -28,15 +28,26 @@
 | `NEXT_PUBLIC_SENTRY_DSN` | Recommended | |
 | `SENTRY_ORG` / `SENTRY_PROJECT` / `SENTRY_AUTH_TOKEN` | For source maps | |
 | `ALLOW_DEMO_AUTH` | **Must be unset/false** | Production fail-closed |
+| `COA_API_BASE` | Optional | Empty → public DIME lab host; `off` → mock |
+| `ASSISTANT_API_BASE` | Optional | Empty → Budtender Heroku; `off` → mock |
+| `REWARDS_APP_URL` | Optional | Default legacy SPA `https://rewards.dimeindustries.com` |
+| `REWARDS_API_BASE` / `REWARDS_API_KEY` | Optional | Only with REST-compatible Rewards host |
 
 GitHub Environment `production` secrets: `PRODUCTION_DATABASE_URL`, `VERCEL_PRODUCTION_TOKEN`.
 
 ## DNS / domain
 
-1. In Vercel project `dime-production`, add domain `dimeindustries.us` (+ `www` if desired).
-2. At the DNS host, create the records Vercel shows (typically A/ALIAS/CNAME).
+Follow **`docs/44-owner-cutover.md` §3** (current status + typical records).
+
+1. In the production Vercel project, add domain `dimeindustries.us` (+ `www`).
+2. At the registrar (`registrar-servers.com` NS), create the records Vercel shows (typically apex `A` `76.76.21.21`, `www` `CNAME` `cname.vercel-dns.com`).
 3. Wait for TLS certificate issued (Vercel dashboard → Domains).
-4. Confirm `https://dimeindustries.us/api/health` before announcing launch.
+4. Confirm with:
+
+```bash
+node scripts/verify-domain-cutover.mjs --once
+node scripts/smoke-production.mjs https://dimeindustries.us
+```
 
 ## Cutover steps
 

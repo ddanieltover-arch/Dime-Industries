@@ -1,9 +1,10 @@
 // lib/admin/catalog-overrides.ts
-// Admin edits layered over the seed catalog until products table is the source of truth.
+// Admin edits layered over the catalog (Postgres when seeded, else seed file).
 
 import "server-only";
 import { cookies } from "next/headers";
 import { z } from "zod";
+import { loadCatalogFromDatabase } from "@/lib/catalog/catalog-db";
 import { SEED_CATALOG } from "@/lib/catalog/seed-catalog";
 import type { CatalogProduct, CatalogVariant } from "@/lib/catalog/types";
 import { isGrowthDatabaseMode } from "@/lib/db/growth-mode";
@@ -77,8 +78,9 @@ function applyVariant(v: CatalogVariant, patch?: z.infer<typeof variantOverrideS
 }
 
 export async function getAdminCatalog(): Promise<CatalogProduct[]> {
-  const overrides = await readOverrides();
-  return SEED_CATALOG.map((product) => {
+  const [overrides, fromDb] = await Promise.all([readOverrides(), loadCatalogFromDatabase()]);
+  const base = fromDb ?? SEED_CATALOG;
+  return base.map((product) => {
     const o = overrides[product.id];
     if (!o) return product;
     return {

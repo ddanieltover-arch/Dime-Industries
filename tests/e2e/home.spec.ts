@@ -12,7 +12,7 @@ test.describe("Home page", () => {
   test("blocks catalog content behind the age gate on first visit", async ({ page }) => {
     await page.goto("/");
 
-    const dialog = page.getByRole("dialog", { name: /age verification required/i });
+    const dialog = page.getByRole("dialog", { name: /are you over 21/i });
     await expect(dialog).toBeVisible();
 
     // Real content must not be reachable while the gate is up.
@@ -23,42 +23,26 @@ test.describe("Home page", () => {
     await expect(dialog).toBeVisible();
   });
 
-  test("confirming 21+ and a launch-state jurisdiction reveals the page", async ({ page }) => {
+  test("confirming 21+ reveals the page", async ({ page }) => {
     await page.goto("/");
 
-    await page.getByRole("button", { name: /I'm 21 or older/i }).click();
-    await page.getByLabel(/which state are you in/i).selectOption("CA");
-    await page.getByRole("button", { name: /continue/i }).click();
+    await page.getByRole("button", { name: /^yes$/i }).click();
 
     await expect(page.getByRole("dialog")).toHaveCount(0);
-    await expect(
-      page.getByRole("heading", { name: /Every cartridge, tested and dated/i })
-    ).toBeVisible();
-  });
-
-  test("shows the not-available message for a non-launch state", async ({ page }) => {
-    await page.goto("/");
-
-    await page.getByRole("button", { name: /I'm 21 or older/i }).click();
-    await page.getByLabel(/which state are you in/i).selectOption("OTHER");
-    await page.getByRole("button", { name: /continue/i }).click();
-
-    await expect(page.getByText(/not yet available in your area/i)).toBeVisible();
+    await expect(page.getByRole("heading", { name: /elevate your experience/i })).toBeVisible();
   });
 
   test("under-21 selection shows the blocking message, not the site", async ({ page }) => {
     await page.goto("/");
 
-    await page.getByRole("button", { name: /I'm under 21/i }).click();
+    await page.getByRole("button", { name: /^no$/i }).click();
     await expect(page.getByText(/must be 21 or older/i)).toBeVisible();
     await expect(page.getByRole("dialog")).toBeVisible();
   });
 
   test("theme toggle switches between light and dark", async ({ page }) => {
     await page.goto("/");
-    await page.getByRole("button", { name: /I'm 21 or older/i }).click();
-    await page.getByLabel(/which state are you in/i).selectOption("CA");
-    await page.getByRole("button", { name: /continue/i }).click();
+    await page.getByRole("button", { name: /^yes$/i }).click();
 
     const toggle = page.getByRole("button", { name: /switch to dark mode/i });
     await toggle.click();

@@ -54,10 +54,10 @@ export default async function WholesaleCheckoutPage({
   }
 
   const cart = await getWholesaleCartSnapshot();
-  const pricing =
-    gate.ageVerified && gate.jurisdiction
-      ? computePricing(cart.lines, gate.jurisdiction, null)
-      : null;
+  const checkoutJurisdiction = gate.jurisdiction ?? "CA";
+  const pricing = gate.ageVerified
+    ? computePricing(cart.lines, checkoutJurisdiction, null)
+    : null;
 
   if (cart.lines.length === 0) {
     return (
@@ -93,7 +93,7 @@ export default async function WholesaleCheckoutPage({
         <div className="mt-8">
           <WholesaleCheckoutForm
             email={buyer.email}
-            jurisdiction={gate.jurisdiction ?? "CA"}
+            jurisdiction={checkoutJurisdiction}
             defaultTerms={buyer.account.defaultPaymentTerms}
             pricing={pricing}
           />

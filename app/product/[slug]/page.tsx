@@ -14,7 +14,9 @@ import {
   getRelatedProducts,
   listAllActiveSlugs,
   primaryVariant,
+  withCatalogSource,
 } from "@/lib/catalog";
+import { loadEffectiveCatalog } from "@/lib/catalog/effective";
 import { getRecentlyViewedCards } from "@/lib/recently-viewed/cookie";
 import { readWishlistIds } from "@/lib/wishlist";
 import { formatPct, formatPrice } from "@/lib/format";
@@ -27,7 +29,7 @@ export async function generateStaticParams() {
 
 export async function generateMetadata({ params }: { params: Params }): Promise<Metadata> {
   const { slug } = await params;
-  const product = getProductBySlug(slug);
+  const product = await withCatalogSource(await loadEffectiveCatalog(), () => getProductBySlug(slug));
   if (!product) return { title: "Product" };
   const v = primaryVariant(product);
   return {
@@ -57,16 +59,19 @@ export default async function ProductDetailPage({ params }: { params: Params }) 
     return <AgeGateDialog initiallyOpen />;
   }
 
-  const product = getProductBySlug(slug, ageGate.jurisdiction);
+  const catalog = await loadEffectiveCatalog();
+  const product = withCatalogSource(catalog, () => getProductBySlug(slug, ageGate.jurisdiction));
   if (!product) notFound();
 
-  const related = getRelatedProducts(product, ageGate.jurisdiction);
+  const related = withCatalogSource(catalog, () =>
+    getRelatedProducts(product, ageGate.jurisdiction)
+  );
   const recent = await getRecentlyViewedCards(ageGate.jurisdiction, product.slug);
   const wishlistIds = await readWishlistIds();
   const v = primaryVariant(product);
   const primarySaved = wishlistIds.includes(v.id);
   const { fetchCoaBySku } = await import("@/lib/integrations/coa/client");
-  const coa = await fetchCoaBySku(v.sku, product.coaUrl);
+  const coa = await fetchCoaBySku(v.sku, product.coaUrl, product.name);
   const gallery = product.galleryUrls.length > 0 ? product.galleryUrls : product.imageUrl ? [product.imageUrl] : [];
 
   const jsonLd = {

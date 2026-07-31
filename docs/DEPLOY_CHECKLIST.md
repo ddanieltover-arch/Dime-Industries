@@ -2,7 +2,7 @@
 
 Complete every item before checking the confirmation box in `deploy-production.yml`'s manual trigger. This checklist is the actual gate — the workflow's checkbox input just proves someone looked at it, it can't verify any of these for you.
 
-Also read `docs/GO_LIVE.md` for the dimeindustries.us cutover sequence.
+Also read `docs/GO_LIVE.md` and **`docs/44-owner-cutover.md`** for the dimeindustries.us cutover sequence.
 
 ## Before triggering the workflow
 
@@ -26,7 +26,7 @@ Also read `docs/GO_LIVE.md` for the dimeindustries.us cutover sequence.
 
 ## After the deploy
 
-- [ ] `node scripts/smoke-production.mjs https://dimeindustries.us` passes.
+- [ ] `node scripts/smoke-production.mjs https://dimeindustries.us` passes (or `node scripts/verify-domain-cutover.mjs` then smoke).
 - [ ] Manually: age gate → shop → add to cart → checkout (mock or live).
 - [ ] Watch Sentry for 15 minutes for new error signatures.
 - [ ] Post the workflow Job Summary wherever the team tracks releases.
@@ -36,8 +36,10 @@ Also read `docs/GO_LIVE.md` for the dimeindustries.us cutover sequence.
 
 - [ ] Migrations `0004`–`0009` applied on production Postgres with `DATABASE_URL` set.
 - [ ] Demo auth disabled (`ALLOW_DEMO_AUTH` unset).
-- [ ] COA/Rewards optional — mock until `COA_API_BASE` / `REWARDS_API_BASE` provided.
-- [ ] Owner cutover steps in `docs/44-owner-cutover.md` completed.
+- [ ] Catalog uses **reference pricing** (Eaze/Rolling Releaf); not placeholder bands.
+- [ ] COA + AI Assistant default to public DIME Heroku hosts (set `COA_API_BASE=off` / `ASSISTANT_API_BASE=off` only to force mock).
+- [ ] Rewards: on-site loyalty is live; optional REST sync only when `REWARDS_API_BASE` + key exist (`rewards.dimeindustries.com` is OAuth SPA).
+- [ ] Owner cutover steps in `docs/44-owner-cutover.md` completed (DNS + TLS on `dimeindustries.us`).
 
 ## Notes
 
