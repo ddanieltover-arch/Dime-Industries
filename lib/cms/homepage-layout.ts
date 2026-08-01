@@ -59,7 +59,52 @@ export const homepageLayoutSchema = z.object({
 });
 
 export const DEFAULT_HOMEPAGE_LAYOUT: HomepageLayout = {
-  sections: HOME_SECTION_IDS.map((id) => ({ id, enabled: true })),
+  sections: [
+    {
+      id: "hero",
+      enabled: true,
+      headline: "Award-winning products",
+      body: "Innovation takes center stage. Explore why DIME leads with potent, delicious cannabis — lab-tested vapes, edibles, and prerolls.",
+      ctaLabel: "Shop now",
+      ctaHref: "/shop",
+    },
+    { id: "banner", enabled: true },
+    { id: "trust", enabled: true },
+    { id: "categories", enabled: true },
+    { id: "awards", enabled: true },
+    { id: "bundles", enabled: true },
+    { id: "product-lines", enabled: true },
+    {
+      id: "rewards",
+      enabled: true,
+      headline: "Tap. Scan. Start earning.",
+      body: "Join DIME Rewards — validate products, activate warranty, and earn points toward discounts, merch, and early access.",
+      ctaLabel: "Join rewards",
+      ctaHref: "/rewards",
+    },
+    {
+      id: "locator",
+      enabled: true,
+      headline: "Walk.Run.Drive.",
+      body: "Find a neighborhood retailer that stocks DIME near you.",
+      ctaLabel: "Find DIME",
+      ctaHref: "/locations",
+    },
+    {
+      id: "validate",
+      enabled: true,
+      headline: "Validate your product",
+      body: "Confirm your DIME product is genuine. Scratch the code, verify here, activate limited warranty, and claim rewards when you sign in.",
+      ctaLabel: "Validate now",
+      ctaHref: "/validate",
+    },
+    {
+      id: "newsletter",
+      enabled: true,
+      headline: "Members newsletter",
+      body: "Drops, promotions, and early access — straight to your inbox.",
+    },
+  ],
 };
 
 function trimOpt(value: string | undefined): string | undefined {

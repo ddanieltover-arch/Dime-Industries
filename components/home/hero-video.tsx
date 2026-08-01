@@ -7,7 +7,7 @@ import Link from "next/link";
 export function HeroVideo({
   eyebrow = "Elevate your experience",
   headline = "Award-winning products",
-  body = "Explore our products to see why we're award-winning — lab-tested vapes, edibles, and prerolls.",
+  body = "Innovation takes center stage. Explore why DIME leads with potent, delicious cannabis — lab-tested vapes, edibles, and prerolls.",
   ctaLabel = "Shop now",
   ctaHref = "/shop",
 }: {

@@ -157,48 +157,11 @@ export function CheckoutForm({ jurisdiction, pricing, defaultEmail, defaults }: 
           Pay with Bitcoin via Paybis. You will be redirected to complete the crypto payment.
         </p>
 
-        <aside className="border border-[var(--color-border)] bg-[var(--color-surface)] p-5">
-          <h3 className="font-[var(--font-display)] text-[10px] uppercase tracking-[0.14em] text-[var(--color-ink)]">
-            Order summary
-          </h3>
-          <dl className="mt-4 space-y-2.5 text-[var(--scale-sm)]">
-            <div className="flex justify-between">
-              <dt className="text-[var(--color-ink-soft)]">Subtotal</dt>
-              <dd className="text-[var(--color-ink)]">{formatPrice(pricing.subtotalCents)}</dd>
-            </div>
-            {pricing.discountCents > 0 ? (
-              <div className="flex justify-between">
-                <dt className="text-[var(--color-terp)]">{pricing.discountLabel ?? "Discount"}</dt>
-                <dd className="text-[var(--color-terp)]">−{formatPrice(pricing.discountCents)}</dd>
-              </div>
-            ) : null}
-            {pricing.loyaltyDiscountCents > 0 ? (
-              <div className="flex justify-between">
-                <dt className="text-[var(--color-terp)]">
-                  Loyalty ({pricing.loyaltyPointsRedeemed} pts)
-                </dt>
-                <dd className="text-[var(--color-terp)]">
-                  −{formatPrice(pricing.loyaltyDiscountCents)}
-                </dd>
-              </div>
-            ) : null}
-            <div className="flex justify-between">
-              <dt className="text-[var(--color-ink-soft)]">{pricing.taxLabel}</dt>
-              <dd className="text-[var(--color-ink)]">{formatPrice(pricing.taxCents)}</dd>
-            </div>
-            <div className="flex justify-between">
-              <dt className="text-[var(--color-ink-soft)]">{pricing.shippingLabel}</dt>
-              <dd className="text-[var(--color-ink)]">{formatPrice(pricing.shippingCents)}</dd>
-            </div>
-            <div className="flex justify-between border-t border-[var(--color-border)] pt-3 font-[var(--font-display)] text-[var(--scale-base)]">
-              <dt className="text-[var(--color-ink)]">Total</dt>
-              <dd className="text-[var(--color-resin-strong)]">{formatPrice(pricing.totalCents)}</dd>
-            </div>
-          </dl>
-          <p className="mt-3 text-[var(--scale-xs)] text-[var(--color-ink-muted)]">
-            No hidden fees. Every charge is shown before you pay.
-          </p>
-        </aside>
+        <p className="text-[var(--scale-xs)] text-[var(--color-ink-muted)]">
+          Full totals — including tax and shipping — appear in the order summary beside this form.
+          Total due:{" "}
+          <span className="text-[var(--color-resin)]">{formatPrice(pricing.totalCents)}</span>
+        </p>
 
         <label className="flex items-start gap-3 text-[var(--scale-sm)] text-[var(--color-ink)]">
           <input type="checkbox" name="confirmAge" className="mt-1 accent-[var(--color-resin)]" required />
@@ -213,7 +176,7 @@ export function CheckoutForm({ jurisdiction, pricing, defaultEmail, defaults }: 
         </p>
       ) : null}
 
-      <button type="submit" disabled={pending} className="btn-primary w-full sm:w-auto">
+      <button type="submit" disabled={pending} className="btn-primary w-full">
         {pending ? "Starting payment…" : "Pay with Bitcoin"}
       </button>
     </form>

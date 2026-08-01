@@ -8,7 +8,7 @@ export const revalidate = 300;
 
 export const metadata: Metadata = {
   title: "Medical Privacy Policy",
-  description: "How DIME handles medical patient information when medical flows are enabled.",
+  description: "How DIME handles medical patient information if medical flows are enabled — access, retention, and launch status.",
   alternates: { canonical: "/legal/medical-privacy" },
 };
 
@@ -19,7 +19,7 @@ export default async function MedicalPrivacyPage() {
   return (
     <LegalDocument
       title={page.title}
-      intro="Notice for medical patient flows — access controls and how medical status is used at launch."
+      intro="How medical patient data is treated if medical flows are enabled — and what applies at the flat 21+ launch gate."
       body={page.body}
       currentHref="/legal/medical-privacy"
     />

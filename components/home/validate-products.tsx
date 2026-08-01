@@ -3,8 +3,8 @@ import Image from "next/image";
 import Link from "next/link";
 
 export function ValidateProducts({
-  headline = "Verify your products",
-  body = "Protect against counterfeits. Verify and register your DIME product for warranty support — and earn rewards when you scan in the app.",
+  headline = "Validate your product",
+  body = "Confirm your DIME product is genuine. Scratch the code, verify here, activate limited warranty, and claim rewards when you sign in.",
   ctaLabel = "Validate now",
   ctaHref = "/validate",
 }: {

@@ -8,7 +8,7 @@ export const revalidate = 300;
 
 export const metadata: Metadata = {
   title: "Terms of Service",
-  description: "Terms of use for the DIME Industries storefront — age requirements, orders, and accounts.",
+  description: "Terms for shopping on dimeindustries.us — eligibility, orders, accounts, validation, and rewards.",
   alternates: { canonical: "/legal/terms" },
 };
 
@@ -19,7 +19,7 @@ export default async function TermsPage() {
   return (
     <LegalDocument
       title={page.title}
-      intro="Rules for using the DIME storefront — age eligibility, orders, accounts, and updates."
+      intro="Eligibility, orders, accounts, product validation, rewards, and your responsibilities on this Site."
       body={page.body}
       currentHref="/legal/terms"
     />

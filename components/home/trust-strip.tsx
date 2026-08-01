@@ -2,9 +2,9 @@
 import Link from "next/link";
 
 const ITEMS = [
-  { label: "Third-party lab tested", detail: "Every batch, every time", href: "/lab-results" },
-  { label: "Licensed in CA & MA", detail: "State-regulated manufacturing", href: "/locations" },
-  { label: "Verify authenticity", detail: "Scan & protect every product", href: "/validate" },
+  { label: "Third-party lab tested", detail: "COAs on pack and online", href: "/lab-results" },
+  { label: "Find DIME nearby", detail: "Retailers across regulated markets", href: "/locations" },
+  { label: "Validate authenticity", detail: "Scratch, verify, unlock warranty", href: "/validate" },
 ];
 
 export function TrustStrip() {

@@ -43,41 +43,77 @@ const COLUMNS = [
       { href: "/legal/medical-privacy", label: "Medical Privacy" },
     ],
   },
-];
+] as const;
 
 export function SiteFooter() {
+  const year = new Date().getFullYear();
+
   return (
-    <footer className="border-t border-[var(--color-border)] bg-[var(--color-surface)] pb-[calc(3.5rem+env(safe-area-inset-bottom))] lg:pb-0">
-      <div className="mx-auto max-w-7xl px-[var(--container-pad-x)] py-14 lg:py-16">
-        <div className="grid grid-cols-2 gap-10 md:grid-cols-6">
-          <div className="col-span-2 md:col-span-2">
-            <div className="relative h-9 w-36">
-              <Image src="/brand/logo.png" alt="DIME" fill className="object-contain object-left" sizes="144px" />
+    <footer className="relative overflow-hidden border-t border-[var(--color-border)] bg-[var(--color-bg)] pb-[calc(3.5rem+env(safe-area-inset-bottom))] lg:pb-0">
+      <div
+        className="pointer-events-none absolute inset-0 opacity-[0.07]"
+        style={{
+          backgroundImage: "url(/brand/concrete.jpg)",
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+        }}
+        aria-hidden
+      />
+      <div
+        className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_10%_0%,rgba(201,177,56,0.1),transparent_45%)]"
+        aria-hidden
+      />
+
+      <div className="relative mx-auto max-w-7xl px-[var(--container-pad-x)] pt-14 lg:pt-16">
+        <div className="flex flex-col gap-8 border-b border-[var(--color-border)] pb-10 lg:flex-row lg:items-end lg:justify-between">
+          <div className="max-w-md">
+            <div className="relative h-10 w-40">
+              <Image
+                src="/brand/logo.png"
+                alt="DIME Industries"
+                fill
+                className="object-contain object-left"
+                sizes="160px"
+              />
             </div>
-            <p className="mt-2 font-[var(--font-script)] text-[var(--scale-lg)] text-[var(--color-resin)]">
+            <p className="mt-3 font-[var(--font-script)] text-[var(--scale-xl)] text-[var(--color-resin)]">
               Elevate your experience
             </p>
-            <p className="mt-3 text-[var(--scale-xs)] uppercase tracking-[0.12em] text-[var(--color-ink-muted)]">
+            <p className="mt-3 text-[var(--scale-xs)] uppercase tracking-[0.14em] text-[var(--color-ink-muted)]">
               Est. 2016 · Official site of DIME Industries
             </p>
-            <p className="mt-4 max-w-xs text-[var(--scale-sm)] leading-relaxed text-[var(--color-ink-soft)]">
+            <p className="mt-4 text-[var(--scale-sm)] leading-relaxed text-[var(--color-ink-soft)]">
               For use only by adults 21 and older, or qualifying medical patients. Keep out of reach of children.
             </p>
           </div>
 
+          <div className="flex flex-wrap gap-3">
+            <Link href="/shop" className="btn-primary">
+              Shop now
+            </Link>
+            <Link href="/locations" className="btn-outline">
+              Find DIME
+            </Link>
+            <Link href="/contact" className="btn-outline">
+              Contact
+            </Link>
+          </div>
+        </div>
+
+        <div className="grid grid-cols-2 gap-x-8 gap-y-10 py-12 sm:grid-cols-4">
           {COLUMNS.map((col) => (
             <div key={col.heading}>
-              <h3 className="font-[var(--font-display)] text-[var(--scale-xs)] uppercase tracking-[0.16em] text-[var(--color-resin)]">
+              <h3 className="font-[var(--font-display)] text-[10px] uppercase tracking-[0.18em] text-[var(--color-resin)]">
                 {col.heading}
               </h3>
-              <ul className="mt-4 space-y-2.5">
-                {col.links.map((l) => (
-                  <li key={l.href}>
+              <ul className="mt-5 space-y-3" role="list">
+                {col.links.map((link) => (
+                  <li key={link.href}>
                     <Link
-                      href={l.href}
-                      className="text-[var(--scale-sm)] text-[var(--color-ink-soft)] transition-colors hover:text-[var(--color-resin)]"
+                      href={link.href}
+                      className="text-[var(--scale-sm)] text-[var(--color-ink-soft)] transition-colors duration-[var(--motion-fast)] hover:text-[var(--color-resin)]"
                     >
-                      {l.label}
+                      {link.label}
                     </Link>
                   </li>
                 ))}
@@ -86,25 +122,33 @@ export function SiteFooter() {
           ))}
         </div>
 
-        <div className="mt-12 border-t border-[var(--color-border)] pt-8">
-          <p className="font-[var(--font-display)] text-[10px] uppercase tracking-[0.14em] text-[var(--color-ink-muted)]">
-            Licensing
-          </p>
-          <div className="mt-3 grid gap-6 sm:grid-cols-2 text-[var(--scale-xs)] leading-relaxed">
-            <div className="space-y-1 text-[var(--color-ink-soft)]">
-              <p>CA: C11-0000470-LIC</p>
-              <p>AZ: 00000040ESDX57445071</p>
-              <p>OK: PAAA-VYX6-QCHO</p>
-              <p>NM: CCD-MICB-2022-0043-MANU</p>
+        <div className="border-t border-[var(--color-border)] py-10">
+          <div className="flex flex-col gap-8 lg:flex-row lg:justify-between">
+            <div className="max-w-sm">
+              <p className="font-[var(--font-display)] text-[10px] uppercase tracking-[0.18em] text-[var(--color-resin)]">
+                Licensing
+              </p>
+              <ul className="mt-4 space-y-1.5 text-[var(--scale-xs)] leading-relaxed text-[var(--color-ink-soft)]" role="list">
+                <li>CA: C11-0000470-LIC</li>
+                <li>AZ: 00000040ESDX57445071</li>
+                <li>OK: PAAA-VYX6-QCHO</li>
+                <li>NM: CCD-MICB-2022-0043-MANU</li>
+              </ul>
             </div>
-            <div className="space-y-1 text-[var(--color-ink-muted)]">
+            <div className="max-w-xl space-y-2 text-[var(--scale-xs)] leading-relaxed text-[var(--color-ink-muted)]">
               <p>Bud Technology Distribution — Adult and Medical — License C11-0001413-LIC (CA)</p>
               <p>Bud Technology Manufacturing — Adult and Medical — License CDPH-0003528 (CA)</p>
               <p>Massachusetts licensing information available at checkout for MA-fulfilled orders.</p>
             </div>
           </div>
-          <p className="mt-6 text-[var(--scale-xs)] text-[var(--color-ink-muted)]">
-            © {new Date().getFullYear()} DIME Industries. 21+ only.
+        </div>
+
+        <div className="flex flex-col gap-3 border-t border-[var(--color-border)] py-6 sm:flex-row sm:items-center sm:justify-between">
+          <p className="text-[var(--scale-xs)] text-[var(--color-ink-muted)]">
+            © {year} DIME Industries. 21+ only.
+          </p>
+          <p className="font-[var(--font-display)] text-[10px] uppercase tracking-[0.14em] text-[var(--color-ink-muted)]">
+            Lab-tested · Licensed · Award-winning
           </p>
         </div>
       </div>

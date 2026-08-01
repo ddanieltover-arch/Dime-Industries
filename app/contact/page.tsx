@@ -64,15 +64,18 @@ export default function ContactPage() {
             Contact
           </h1>
           <p className="contact-rise mt-4 max-w-md text-[var(--scale-base)] leading-relaxed text-white/80 [animation-delay:140ms]">
-            Order help, wholesale questions, or general support — reach the team in one place.
+            Inquiries and support for orders, wholesale, careers, and privacy — one inbox for the DIME team.
           </p>
           <div className="contact-rise mt-8 flex flex-wrap gap-3 [animation-delay:200ms]">
             <a href="#contact-form" className="btn-primary">
               Send a message
             </a>
-            <a href={`mailto:${SUPPORT}`} className="btn-outline-light">
-              Email us
-            </a>
+            <Link href="/locations" className="btn-outline-light">
+              Find DIME
+            </Link>
+            <Link href="/validate" className="btn-outline-light">
+              Validate
+            </Link>
           </div>
         </div>
       </section>

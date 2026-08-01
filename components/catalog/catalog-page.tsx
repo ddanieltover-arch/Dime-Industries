@@ -1,12 +1,23 @@
 // components/catalog/catalog-page.tsx
+import Image from "next/image";
+import Link from "next/link";
 import { AgeGateDialog } from "@/components/shared/age-gate-dialog";
 import { ActiveFilterChips, hasActiveCatalogFilters } from "@/components/catalog/active-filter-chips";
 import { CatalogFilters } from "@/components/catalog/catalog-filters";
 import { CatalogPagination } from "@/components/catalog/catalog-pagination";
 import { CatalogToolbar } from "@/components/catalog/catalog-toolbar";
 import { ProductGrid } from "@/components/catalog/product-grid";
+import { CATALOG_CATEGORIES } from "@/lib/catalog";
 import { applyLiveCoaToCards } from "@/lib/integrations/coa/client";
 import type { CatalogFacetCounts, CatalogFilters as Filters, ProductCardModel } from "@/lib/catalog/types";
+
+const CATEGORY_HERO: Record<string, string> = {
+  vapes: "/brand/category-vapes.webp",
+  edibles: "/brand/category-edibles.webp",
+  prerolls: "/brand/category-prerolls.webp",
+  "live-reserve": "/brand/category-live-reserve.webp",
+  gummies: "/brand/category-gummies.webp",
+};
 
 type Props = {
   title: string;
@@ -19,7 +30,16 @@ type Props = {
   page?: number;
   pageSize?: number;
   facets: CatalogFacetCounts;
+  /** Optional full-bleed hero image; defaults by category or shop poster */
+  heroImage?: string;
 };
+
+function resolveHero(basePath: string, heroImage?: string) {
+  if (heroImage) return heroImage;
+  const category = basePath.split("/")[2];
+  if (category && CATEGORY_HERO[category]) return CATEGORY_HERO[category];
+  return "/brand/hero-poster.webp";
+}
 
 export async function CatalogPageShell({
   title,
@@ -32,57 +52,121 @@ export async function CatalogPageShell({
   page = 1,
   pageSize = 24,
   facets,
+  heroImage,
 }: Props) {
   const hasFilters = hasActiveCatalogFilters(filters, basePath);
   const items = ageVerified ? await applyLiveCoaToCards(rawItems) : rawItems;
+  const hero = resolveHero(basePath, heroImage);
+  const activeCategory = basePath.startsWith("/shop/") ? basePath.split("/")[2] : undefined;
 
   return (
     <>
       <AgeGateDialog initiallyOpen={!ageVerified} />
 
       {!ageVerified ? null : (
-        <div className="mx-auto max-w-7xl px-[var(--container-pad-x)] py-10 lg:py-14">
-          <header className="mb-10 max-w-2xl border-b border-[var(--color-border)] pb-8">
-            <p className="font-[var(--font-display)] text-[10px] uppercase tracking-[0.18em] text-[var(--color-resin)]">
-              Shop
-            </p>
-            <h1 className="section-title mt-2">{title}</h1>
-            {description ? (
-              <p className="mt-3 text-[var(--scale-base)] text-[var(--color-ink-soft)]">{description}</p>
-            ) : null}
-          </header>
+        <>
+          <section className="relative isolate overflow-hidden border-b border-[var(--color-border)]">
+            <Image
+              src={hero}
+              alt=""
+              fill
+              priority
+              className="object-cover object-center"
+              sizes="100vw"
+            />
+            <div className="media-veil absolute inset-0" aria-hidden />
+            <div
+              className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_75%_30%,rgba(201,177,56,0.14),transparent_50%)]"
+              aria-hidden
+            />
 
-          <div className="grid gap-10 lg:grid-cols-[15rem_1fr] lg:gap-12">
-            <div className="hidden lg:block">
-              <CatalogFilters basePath={basePath} filters={filters} facets={facets} />
+            <div className="relative mx-auto max-w-7xl px-[var(--container-pad-x)] pb-10 pt-24 sm:pb-12 sm:pt-28">
+              <p className="section-eyebrow">DIME</p>
+              <h1 className="mt-2 max-w-xl font-[var(--font-display)] text-[clamp(2rem,5vw,3.5rem)] uppercase leading-[0.95] tracking-[0.06em] text-white">
+                {title}
+              </h1>
+              {description ? (
+                <p className="mt-3 max-w-lg text-[var(--scale-base)] leading-relaxed text-white/80">
+                  {description}
+                </p>
+              ) : null}
+
+              <nav aria-label="Shop categories" className="mt-8">
+                <ul className="flex flex-wrap gap-2" role="list">
+                  <li>
+                    <Link
+                      href="/shop"
+                      className={`inline-flex border px-4 py-2 font-[var(--font-display)] text-[10px] uppercase tracking-[0.14em] transition-colors duration-[var(--motion-fast)] ${
+                        !activeCategory
+                          ? "border-[var(--color-resin)] bg-[var(--color-resin)] text-black"
+                          : "border-white/35 text-white hover:border-[var(--color-resin)] hover:text-[var(--color-resin)]"
+                      }`}
+                      aria-current={!activeCategory ? "page" : undefined}
+                    >
+                      All
+                    </Link>
+                  </li>
+                  {CATALOG_CATEGORIES.map((cat) => {
+                    const active = activeCategory === cat.slug;
+                    return (
+                      <li key={cat.slug}>
+                        <Link
+                          href={`/shop/${cat.slug}`}
+                          className={`inline-flex border px-4 py-2 font-[var(--font-display)] text-[10px] uppercase tracking-[0.14em] transition-colors duration-[var(--motion-fast)] ${
+                            active
+                              ? "border-[var(--color-resin)] bg-[var(--color-resin)] text-black"
+                              : "border-white/35 text-white hover:border-[var(--color-resin)] hover:text-[var(--color-resin)]"
+                          }`}
+                          aria-current={active ? "page" : undefined}
+                        >
+                          {cat.name}
+                        </Link>
+                      </li>
+                    );
+                  })}
+                </ul>
+              </nav>
             </div>
+          </section>
 
-            <div className="space-y-6">
-              <CatalogToolbar basePath={basePath} filters={filters} total={total} />
-
-              <ActiveFilterChips basePath={basePath} filters={filters} />
-
-              <details className="border border-[var(--color-border)] lg:hidden">
-                <summary className="cursor-pointer list-none px-4 py-3 font-[var(--font-display)] text-[var(--scale-xs)] uppercase tracking-[0.14em] text-[var(--color-ink)] [&::-webkit-details-marker]:hidden">
+          <div className="mx-auto max-w-7xl px-[var(--container-pad-x)] py-10 lg:py-12">
+            <div className="grid gap-10 lg:grid-cols-[15rem_1fr] lg:gap-12">
+              <aside className="hidden lg:block">
+                <p className="font-[var(--font-display)] text-[10px] uppercase tracking-[0.18em] text-[var(--color-resin)]">
                   Filters
-                </summary>
-                <div className="border-t border-[var(--color-border)] px-4 py-4">
+                </p>
+                <div className="mt-4 border border-[var(--color-border)] bg-[var(--color-surface)] p-4">
                   <CatalogFilters basePath={basePath} filters={filters} facets={facets} />
                 </div>
-              </details>
+              </aside>
 
-              <ProductGrid products={items} basePath={basePath} hasActiveFilters={hasFilters} />
+              <div className="space-y-6">
+                <CatalogToolbar basePath={basePath} filters={filters} total={total} />
 
-              <CatalogPagination
-                basePath={basePath}
-                filters={filters}
-                total={total}
-                page={page}
-                pageSize={pageSize}
-              />
+                <ActiveFilterChips basePath={basePath} filters={filters} />
+
+                <details className="border border-[var(--color-border)] bg-[var(--color-surface)] lg:hidden">
+                  <summary className="cursor-pointer list-none px-4 py-3 font-[var(--font-display)] text-[var(--scale-xs)] uppercase tracking-[0.14em] text-[var(--color-ink)] [&::-webkit-details-marker]:hidden">
+                    Filters
+                  </summary>
+                  <div className="border-t border-[var(--color-border)] px-4 py-4">
+                    <CatalogFilters basePath={basePath} filters={filters} facets={facets} />
+                  </div>
+                </details>
+
+                <ProductGrid products={items} basePath={basePath} hasActiveFilters={hasFilters} />
+
+                <CatalogPagination
+                  basePath={basePath}
+                  filters={filters}
+                  total={total}
+                  page={page}
+                  pageSize={pageSize}
+                />
+              </div>
             </div>
           </div>
-        </div>
+        </>
       )}
     </>
   );

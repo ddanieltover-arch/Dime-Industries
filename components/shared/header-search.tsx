@@ -169,7 +169,7 @@ export function HeaderSearch() {
           setOpen((v) => !v);
           window.setTimeout(() => inputRef.current?.focus(), 0);
         }}
-        className="nav-link border border-[var(--color-border)] px-3 py-2 hover:border-[var(--color-resin)]"
+        className="border border-[var(--color-border-interactive)] px-3 py-2 font-[var(--font-display)] text-[var(--scale-xs)] uppercase tracking-[0.14em] text-[var(--color-ink-soft)] transition-[border-color,color,background-color] duration-[var(--motion-fast)] hover:border-[var(--color-resin)] hover:text-[var(--color-resin)]"
       >
         Search
       </button>

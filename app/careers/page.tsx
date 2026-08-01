@@ -51,7 +51,7 @@ export default function CareersPage() {
             Careers
           </h1>
           <p className="careers-rise mt-4 max-w-md text-[var(--scale-base)] leading-relaxed text-white/80 [animation-delay:140ms]">
-            Build with a licensed brand that engineers its own hardware and sets a high bar for craft.
+            Join DIME Industries — award-winning cannabis hardware and products, built with craft, compliance, and brand excellence.
           </p>
           <div className="careers-rise mt-8 flex flex-wrap gap-3 [animation-delay:200ms]">
             <a href={`mailto:${SUPPORT}?subject=Careers%20inquiry`} className="btn-primary">

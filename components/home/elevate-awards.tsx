@@ -41,8 +41,9 @@ export function ElevateAwards() {
             Award-winning products
           </h2>
           <p className="mt-5 max-w-lg text-[var(--scale-base)] leading-relaxed text-white/75">
-            Innovation takes center stage. Our commitment to craft has earned recognition across
-            leading industry publications — shop the lineup that set the bar.
+            Innovation takes center stage. Our commitment to excellence has earned recognition
+            across leading industry publications — shop the lineup that set the bar for potent,
+            delicious cannabis.
           </p>
           <div className="mt-8 flex flex-wrap gap-3">
             <Link href="/shop" className="btn-primary">

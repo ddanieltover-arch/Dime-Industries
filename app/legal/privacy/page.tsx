@@ -8,7 +8,7 @@ export const revalidate = 300;
 
 export const metadata: Metadata = {
   title: "Privacy Policy",
-  description: "How DIME Industries collects and uses account, order, and device data.",
+  description: "How DIME Industries collects, uses, and shares account, order, and device data — and how to make privacy requests.",
   alternates: { canonical: "/legal/privacy" },
 };
 
@@ -19,7 +19,7 @@ export default async function PrivacyPage() {
   return (
     <LegalDocument
       title={page.title}
-      intro="What we collect to run the storefront — and what we don't do with your information."
+      intro="What we collect to run the storefront, how we use it, and how to make privacy requests."
       body={page.body}
       currentHref="/legal/privacy"
     />

@@ -5,7 +5,7 @@ import { POINTS_PER_DOLLAR, REDEEM_POINTS_PER_DOLLAR } from "@/lib/loyalty/const
 export function RewardsTeaser({
   pointsBalance,
   signedIn,
-  headline = "Earn on every order",
+  headline = "Tap. Scan. Start earning.",
   body,
   ctaLabel,
   ctaHref,
@@ -17,8 +17,10 @@ export function RewardsTeaser({
   ctaLabel?: string;
   ctaHref?: string;
 }) {
-  const defaultBody = `Get ${POINTS_PER_DOLLAR} point per dollar spent. Redeem ${REDEEM_POINTS_PER_DOLLAR} points for $1 off at checkout — and validate products for warranty + rewards credit.`;
-  const primaryHref = ctaHref ?? (signedIn ? "/account/loyalty" : "/signup");
+  const defaultBody =
+    body ??
+    `Join DIME Rewards — validate products, activate warranty, and earn ${POINTS_PER_DOLLAR} point per dollar (${REDEEM_POINTS_PER_DOLLAR} pts = $1 off at checkout).`;
+  const primaryHref = ctaHref ?? (signedIn ? "/account/loyalty" : "/rewards");
   const primaryLabel = ctaLabel ?? (signedIn ? "View my points" : "Join rewards");
 
   return (
@@ -35,7 +37,7 @@ export function RewardsTeaser({
             {headline}
           </h2>
           <p className="mt-4 max-w-xl text-[var(--scale-base)] leading-relaxed text-[var(--color-ink-soft)]">
-            {body ?? defaultBody}
+            {defaultBody}
           </p>
           {signedIn && typeof pointsBalance === "number" ? (
             <p className="mt-4 font-[var(--font-display)] text-[var(--scale-sm)] uppercase tracking-[0.1em] text-[var(--color-resin)]">

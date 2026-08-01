@@ -29,7 +29,7 @@ export default async function ShopPage({ searchParams }: { searchParams: SearchP
   return (
     <CatalogPageShell
       title="Shop"
-      description="Potency-first catalog. Every active SKU is jurisdiction-gated for California and Massachusetts."
+      description="Lab-tested vapes, edibles, prerolls, and accessories — filter by strain, potency, and format. Available in California and Massachusetts."
       basePath="/shop"
       ageVerified={ageGate.ageVerified}
       filters={filters}
