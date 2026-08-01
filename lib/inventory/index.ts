@@ -28,5 +28,11 @@ export async function syncInventoryQuantity(variantId: string, quantityOnHand: n
 
 export async function loadInventoryOverlay(): Promise<Record<string, number>> {
   if (!isGrowthDatabaseMode()) return {};
-  return inventoryDb.readAllInventoryQuantities();
+  if (process.env.NEXT_PHASE === "phase-production-build") return {};
+  try {
+    return await inventoryDb.readAllInventoryQuantities();
+  } catch (err) {
+    console.error("[inventory] overlay read failed", err);
+    return {};
+  }
 }

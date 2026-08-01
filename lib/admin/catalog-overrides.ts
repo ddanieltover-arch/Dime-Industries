@@ -54,8 +54,16 @@ async function writeOverridesCookie(products: CatalogOverrides): Promise<void> {
 }
 
 async function readOverrides(): Promise<CatalogOverrides> {
+  if (process.env.NEXT_PHASE === "phase-production-build") {
+    return {};
+  }
   if (isGrowthDatabaseMode()) {
-    return overridesDb.dbReadCatalogOverrides();
+    try {
+      return await overridesDb.dbReadCatalogOverrides();
+    } catch (err) {
+      console.error("[catalog-overrides] db read failed, using empty overrides", err);
+      return {};
+    }
   }
   return readOverridesCookie();
 }

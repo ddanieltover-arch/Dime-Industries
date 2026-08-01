@@ -211,22 +211,54 @@ async function writeJar(jar: CmsJar): Promise<void> {
   });
 }
 
+function isProductionBuild(): boolean {
+  return process.env.NEXT_PHASE === "phase-production-build";
+}
+
+/** Deduplicate seed across parallel static/ISR renders (one seed per process). */
+let dbCmsReady: Promise<boolean> | null = null;
+
 async function useDbCms(): Promise<boolean> {
+  // Static generation must not wait on Postgres — parallel CMS pages were
+  // exhausting the pool and hitting Next's 60s page timeout on Vercel.
+  if (isProductionBuild()) return false;
+
   const { isGrowthDatabaseMode } = await import("@/lib/db/growth-mode");
   if (!isGrowthDatabaseMode()) return false;
-  const { dbSeedCmsIfEmpty } = await import("./cms-db");
-  await dbSeedCmsIfEmpty(DEFAULT_PAGES, DEFAULT_POSTS, DEFAULT_BANNER);
-  return true;
+
+  if (!dbCmsReady) {
+    dbCmsReady = (async () => {
+      const { dbSeedCmsIfEmpty } = await import("./cms-db");
+      await dbSeedCmsIfEmpty(DEFAULT_PAGES, DEFAULT_POSTS, DEFAULT_BANNER);
+      return true;
+    })().catch((err) => {
+      console.error("[cms] database unavailable, falling back to defaults", err);
+      dbCmsReady = null;
+      return false;
+    });
+  }
+  return dbCmsReady;
+}
+
+function publishedOnly<T extends { status: string }>(items: T[], includeDrafts: boolean): T[] {
+  return includeDrafts ? items : items.filter((p) => p.status === "published");
 }
 
 export async function listCmsPages(includeDrafts = false): Promise<CmsPage[]> {
+  if (isProductionBuild()) {
+    return publishedOnly(DEFAULT_PAGES, includeDrafts);
+  }
   if (await useDbCms()) {
-    const { dbListCmsPages } = await import("./cms-db");
-    const pages = await dbListCmsPages();
-    return includeDrafts ? pages : pages.filter((p) => p.status === "published");
+    try {
+      const { dbListCmsPages } = await import("./cms-db");
+      return publishedOnly(await dbListCmsPages(), includeDrafts);
+    } catch (err) {
+      console.error("[cms] list pages failed, using defaults", err);
+      return publishedOnly(DEFAULT_PAGES, includeDrafts);
+    }
   }
   const { pages } = await readJar();
-  return includeDrafts ? pages : pages.filter((p) => p.status === "published");
+  return publishedOnly(pages, includeDrafts);
 }
 
 export async function getCmsPage(slug: string, includeDrafts = false): Promise<CmsPage | null> {
@@ -248,15 +280,23 @@ export async function upsertCmsPage(page: CmsPage): Promise<void> {
 }
 
 export async function listBlogPosts(includeDrafts = false): Promise<BlogPost[]> {
+  const sortPosts = (posts: BlogPost[]) =>
+    publishedOnly(posts, includeDrafts).sort((a, b) => b.publishedAt.localeCompare(a.publishedAt));
+
+  if (isProductionBuild()) {
+    return sortPosts(DEFAULT_POSTS);
+  }
   if (await useDbCms()) {
-    const { dbListBlogPosts } = await import("./cms-db");
-    const posts = await dbListBlogPosts();
-    const list = includeDrafts ? posts : posts.filter((p) => p.status === "published");
-    return list.sort((a, b) => b.publishedAt.localeCompare(a.publishedAt));
+    try {
+      const { dbListBlogPosts } = await import("./cms-db");
+      return sortPosts(await dbListBlogPosts());
+    } catch (err) {
+      console.error("[cms] list posts failed, using defaults", err);
+      return sortPosts(DEFAULT_POSTS);
+    }
   }
   const { posts } = await readJar();
-  const list = includeDrafts ? posts : posts.filter((p) => p.status === "published");
-  return list.sort((a, b) => b.publishedAt.localeCompare(a.publishedAt));
+  return sortPosts(posts);
 }
 
 export async function getBlogPost(slug: string, includeDrafts = false): Promise<BlogPost | null> {
@@ -278,9 +318,17 @@ export async function upsertBlogPost(post: BlogPost): Promise<void> {
 }
 
 export async function getHomepageBanner(): Promise<HomepageBanner> {
+  if (isProductionBuild()) {
+    return DEFAULT_BANNER;
+  }
   if (await useDbCms()) {
-    const { dbGetBanner } = await import("./cms-db");
-    return (await dbGetBanner()) ?? DEFAULT_BANNER;
+    try {
+      const { dbGetBanner } = await import("./cms-db");
+      return (await dbGetBanner()) ?? DEFAULT_BANNER;
+    } catch (err) {
+      console.error("[cms] banner failed, using defaults", err);
+      return DEFAULT_BANNER;
+    }
   }
   return (await readJar()).banner;
 }

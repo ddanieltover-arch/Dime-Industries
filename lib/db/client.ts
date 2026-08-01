@@ -8,7 +8,11 @@ export function isDatabaseUrlConfigured() {
   return Boolean(process.env.DATABASE_URL?.trim());
 }
 
-/** Prefer Supabase transaction pooler (6543) to avoid session-mode slot exhaustion. */
+/**
+ * Prefer Supabase transaction pooler (6543) when the URL points at the
+ * session pooler port — avoids slot exhaustion under parallel SSR.
+ * Leave explicit ports and direct DB hosts unchanged.
+ */
 export function normalizeDatabaseUrl(raw: string): string {
   try {
     const u = new URL(raw);
@@ -36,6 +40,10 @@ export function getDb() {
     cachedSql = postgres(url, {
       prepare: false,
       max: 5,
+      // Fail fast during builds / cold starts instead of hanging until Next's 60s page timeout.
+      connect_timeout: 10,
+      idle_timeout: 20,
+      max_lifetime: 60 * 5,
       ...(local ? {} : { ssl: "require" as const }),
     });
     cached = drizzle(cachedSql, { schema });

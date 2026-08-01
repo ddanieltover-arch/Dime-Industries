@@ -6,6 +6,9 @@ import { getCmsPage } from "@/lib/cms/store";
 
 type Params = Promise<{ slug: string[] }>;
 
+/** ISR so post-build requests can pick up DB CMS edits without blocking Vercel SSG. */
+export const revalidate = 300;
+
 export async function generateStaticParams() {
   return [
     { slug: ["about"] },

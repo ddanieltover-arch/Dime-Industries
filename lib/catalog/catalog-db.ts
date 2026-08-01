@@ -53,6 +53,9 @@ function num(value: string | null | undefined, fallback = 0): number {
  */
 export const loadCatalogFromDatabase = cache(async (): Promise<CatalogProduct[] | null> => {
   if (!isGrowthDatabaseMode() || !isDatabaseUrlConfigured()) return null;
+  // Avoid Postgres during `next build` SSG — parallel product/shop pages + a cold
+  // pool previously stalled workers past Next's 60s static timeout on Vercel.
+  if (process.env.NEXT_PHASE === "phase-production-build") return null;
 
   try {
     const db = getDb();
