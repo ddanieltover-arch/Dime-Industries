@@ -19,13 +19,13 @@ export async function subscribeToNewsletter(
     return { error: "Enter a valid email address." };
   }
 
-  // TODO(Integrations phase): write to a real subscriber list via Resend
-  // (or whatever list-management piece that phase settles on) instead of
-  // this no-op. Intentionally not touching the database directly here since
-  // there's no `newsletter_subscribers` table in the shipped schema yet —
-  // adding one silently, outside of Database Mode, would bypass the process
-  // this whole build has been following.
-  await new Promise((r) => setTimeout(r, 400));
+  try {
+    const { notifyNewsletterSignup } = await import("@/lib/email/notifications");
+    await notifyNewsletterSignup(parsed.data.email);
+  } catch (err) {
+    console.warn("[newsletter] email failed", err);
+    return { error: "Could not complete signup. Please try again." };
+  }
 
   return { success: true };
 }

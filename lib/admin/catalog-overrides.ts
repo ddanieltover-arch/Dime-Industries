@@ -9,8 +9,12 @@ import { SEED_CATALOG } from "@/lib/catalog/seed-catalog";
 import type { CatalogProduct, CatalogVariant } from "@/lib/catalog/types";
 import { isGrowthDatabaseMode } from "@/lib/db/growth-mode";
 import * as overridesDb from "./catalog-overrides-db";
+import { hasProductOverride, type CatalogOverrides, type ProductOverride } from "./catalog-override-logic";
 
 export const ADMIN_CATALOG_COOKIE = "dime_admin_catalog";
+
+export type { ProductOverride, CatalogOverrides };
+export { hasProductOverride };
 
 const variantOverrideSchema = z.object({
   retailPriceCents: z.number().int().nonnegative().optional(),
@@ -26,9 +30,6 @@ const productOverrideSchema = z.object({
 const jarSchema = z.object({
   products: z.record(productOverrideSchema),
 });
-
-export type ProductOverride = z.infer<typeof productOverrideSchema>;
-export type CatalogOverrides = Record<string, ProductOverride>;
 
 async function readOverridesCookie(): Promise<CatalogOverrides> {
   const store = await cookies();
@@ -85,10 +86,19 @@ function applyVariant(v: CatalogVariant, patch?: z.infer<typeof variantOverrideS
   };
 }
 
+export async function getCatalogOverrides(): Promise<CatalogOverrides> {
+  return readOverrides();
+}
+
 export async function getAdminCatalog(): Promise<CatalogProduct[]> {
-  const [overrides, fromDb] = await Promise.all([readOverrides(), loadCatalogFromDatabase()]);
+  const [overrides, fromDb, categoryOverrides] = await Promise.all([
+    readOverrides(),
+    loadCatalogFromDatabase(),
+    import("@/lib/admin/categories-store").then((m) => m.getCategoryOverrides()),
+  ]);
+  const { applyCategoryNameOverrides } = await import("@/lib/admin/categories-store");
   const base = fromDb ?? SEED_CATALOG;
-  return base.map((product) => {
+  const withProductOverrides = base.map((product) => {
     const o = overrides[product.id];
     if (!o) return product;
     return {
@@ -98,6 +108,7 @@ export async function getAdminCatalog(): Promise<CatalogProduct[]> {
       variants: product.variants.map((v) => applyVariant(v, o.variants?.[v.id])),
     };
   });
+  return applyCategoryNameOverrides(withProductOverrides, categoryOverrides);
 }
 
 export async function getAdminProduct(productId: string): Promise<CatalogProduct | null> {
@@ -105,6 +116,7 @@ export async function getAdminProduct(productId: string): Promise<CatalogProduct
   return all.find((p) => p.id === productId) ?? null;
 }
 
+/** Overrides only — never create catalog rows. Unknown ids are rejected by callers. */
 export async function patchProductOverride(
   productId: string,
   patch: ProductOverride
@@ -118,6 +130,14 @@ export async function patchProductOverride(
   };
   await writeOverrides(current);
   return current;
+}
+
+export async function clearProductOverride(productId: string): Promise<boolean> {
+  const current = await readOverrides();
+  if (!(productId in current)) return false;
+  delete current[productId];
+  await writeOverrides(current);
+  return true;
 }
 
 export async function adjustInventory(

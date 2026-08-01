@@ -4,10 +4,12 @@
 import { revalidatePath } from "next/cache";
 import { requireAdmin } from "@/lib/auth/session";
 import { appendAudit } from "@/lib/admin/audit";
+import { normalizeHomepageLayout } from "@/lib/cms/homepage-layout";
 import {
   getHomepageBanner,
   listBlogPosts,
   saveHomepageBanner,
+  saveHomepageLayout,
   upsertBlogPost,
   upsertCmsPage,
 } from "@/lib/cms/store";
@@ -124,6 +126,31 @@ export async function saveBannerAction(
   });
   revalidateGrowth();
   return { success: true, message: "Banner saved." };
+}
+
+export async function saveHomepageLayoutAction(
+  _prev: AdminActionState,
+  formData: FormData
+): Promise<AdminActionState> {
+  const admin = await requireAdmin();
+  const raw = String(formData.get("layout") ?? "");
+  let parsed: unknown;
+  try {
+    parsed = JSON.parse(raw);
+  } catch {
+    return { error: "Invalid layout payload." };
+  }
+  const layout = normalizeHomepageLayout(parsed);
+  await saveHomepageLayout(layout);
+  await appendAudit({
+    actorEmail: admin.email,
+    action: "homepage_layout_update",
+    entity: "cms",
+    entityId: "homepage-layout",
+    detail: `${layout.sections.filter((s) => s.enabled).length}/${layout.sections.length} enabled`,
+  });
+  revalidateGrowth();
+  return { success: true, message: "Homepage layout saved." };
 }
 
 export async function saveCouponAction(

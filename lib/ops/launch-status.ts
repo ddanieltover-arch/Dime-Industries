@@ -152,8 +152,8 @@ export function getLaunchStatus(env: Env = process.env): LaunchStatus {
       ok: resend || !isProd,
       severity: "warning",
       message: resend
-        ? "Resend configured for order email."
-        : "RESEND_API_KEY unset — order confirmation emails dry-run only.",
+        ? "Resend configured for transactional email (orders, forms, admin alerts)."
+        : "RESEND_API_KEY unset — transactional emails dry-run only.",
     },
     {
       id: "sentry",
@@ -162,6 +162,13 @@ export function getLaunchStatus(env: Env = process.env): LaunchStatus {
       message: sentry
         ? "Sentry DSN configured."
         : "NEXT_PUBLIC_SENTRY_DSN unset — errors will not report remotely.",
+    },
+    {
+      id: "seo_surfaces",
+      ok: true,
+      severity: "info",
+      message:
+        "SEO present: metadata/canonicals, robots.txt, sitemap.xml, JSON-LD (Product/Org/FAQ). Not SEO automation — no admin rank/keyword tools.",
     },
     {
       id: "paybis_webhook_persist",

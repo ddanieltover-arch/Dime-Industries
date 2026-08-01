@@ -35,7 +35,7 @@ export default function AppMarketingPage() {
           href="https://apps.apple.com"
           target="_blank"
           rel="noopener noreferrer"
-          className="rounded-full border border-white/40 px-8 py-3 font-[var(--font-display)] text-[var(--scale-xs)] uppercase tracking-[0.16em] text-white hover:border-[var(--color-resin)]"
+          className="rounded-full border border-[var(--color-border-interactive)] px-8 py-3 font-[var(--font-display)] text-[var(--scale-xs)] uppercase tracking-[0.16em] text-[var(--color-ink)] hover:border-[var(--color-resin)]"
         >
           App Store
         </a>
@@ -43,7 +43,7 @@ export default function AppMarketingPage() {
           href="https://play.google.com/store"
           target="_blank"
           rel="noopener noreferrer"
-          className="rounded-full border border-white/40 px-8 py-3 font-[var(--font-display)] text-[var(--scale-xs)] uppercase tracking-[0.16em] text-white hover:border-[var(--color-resin)]"
+          className="rounded-full border border-[var(--color-border-interactive)] px-8 py-3 font-[var(--font-display)] text-[var(--scale-xs)] uppercase tracking-[0.16em] text-[var(--color-ink)] hover:border-[var(--color-resin)]"
         >
           Google Play
         </a>

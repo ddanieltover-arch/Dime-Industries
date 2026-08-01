@@ -187,8 +187,12 @@ export async function completeMockPayment(orderId: string): Promise<{ error?: st
 
   const paid = await orders.getById(orderId);
   if (paid) {
-    const { sendEmail, orderConfirmationEmail } = await import("@/lib/email/resend");
-    await sendEmail(orderConfirmationEmail(paid));
+    try {
+      const { notifyOrderConfirmed } = await import("@/lib/email/notifications");
+      await notifyOrderConfirmed(paid);
+    } catch (err) {
+      console.warn("[checkout] email failed", err);
+    }
     if ((paid.loyaltyPointsRedeemed ?? 0) > 0) {
       const { adjustLoyaltyPoints } = await import("@/lib/loyalty/store");
       await adjustLoyaltyPoints(

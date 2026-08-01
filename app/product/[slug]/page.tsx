@@ -1,21 +1,28 @@
 // app/product/[slug]/page.tsx
 import type { Metadata } from "next";
-import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { AgeGateDialog } from "@/components/shared/age-gate-dialog";
+import { ProductGallery } from "@/components/catalog/product-gallery";
 import { ProductGrid } from "@/components/catalog/product-grid";
 import { AddToCartForm } from "@/components/cart/add-to-cart-form";
 import { WishlistToggle } from "@/components/cart/wishlist-toggle";
+import { LoyaltyEarnCallout } from "@/components/product/loyalty-earn-callout";
+import { ProductRatingSummary, ProductReviews } from "@/components/product/product-reviews";
 import { RecordProductView } from "@/components/catalog/record-product-view";
 import { getAgeGateState } from "@/lib/compliance/age-gate";
+import { getCurrentProfile } from "@/lib/auth/session";
+import { listApprovedReviewsForProduct } from "@/lib/admin/reviews-store";
+import { averageRating } from "@/lib/reviews/logic";
 import {
   getProductBySlug,
   getRelatedProducts,
   listAllActiveSlugs,
   primaryVariant,
   withCatalogSource,
+  isBundleProduct,
 } from "@/lib/catalog";
+import { BundleContents } from "@/components/catalog/bundle-contents";
 import { loadEffectiveCatalog } from "@/lib/catalog/effective";
 import { getRecentlyViewedCards } from "@/lib/recently-viewed/cookie";
 import { readWishlistIds } from "@/lib/wishlist";
@@ -39,7 +46,7 @@ export async function generateMetadata({ params }: { params: Params }): Promise<
     openGraph: {
       title: product.name,
       description: `${formatPct(v.thcPct)} THC · ${product.lineName ?? product.categoryName}`,
-      images: product.imageUrl ? [product.imageUrl] : undefined,
+      images: product.imageUrl ? [product.imageUrl] : ["/brand/og.png"],
     },
   };
 }
@@ -67,12 +74,24 @@ export default async function ProductDetailPage({ params }: { params: Params }) 
     getRelatedProducts(product, ageGate.jurisdiction)
   );
   const recent = await getRecentlyViewedCards(ageGate.jurisdiction, product.slug);
+  const { applyLiveCoaToCards } = await import("@/lib/integrations/coa/client");
+  const [relatedLive, recentLive] = await Promise.all([
+    applyLiveCoaToCards(related),
+    applyLiveCoaToCards(recent),
+  ]);
   const wishlistIds = await readWishlistIds();
+  const profile = await getCurrentProfile();
+  const approvedReviews = await listApprovedReviewsForProduct({
+    id: product.id,
+    slug: product.slug,
+  });
+  const reviewAvg = averageRating(approvedReviews);
   const v = primaryVariant(product);
   const primarySaved = wishlistIds.includes(v.id);
   const { fetchCoaBySku } = await import("@/lib/integrations/coa/client");
   const coa = await fetchCoaBySku(v.sku, product.coaUrl, product.name);
-  const gallery = product.galleryUrls.length > 0 ? product.galleryUrls : product.imageUrl ? [product.imageUrl] : [];
+  const gallery =
+    product.galleryUrls.length > 0 ? product.galleryUrls : product.imageUrl ? [product.imageUrl] : [];
 
   const jsonLd = {
     "@context": "https://schema.org",
@@ -92,6 +111,17 @@ export default async function ProductDetailPage({ params }: { params: Params }) 
           : "https://schema.org/OutOfStock",
       url: `https://dimeindustries.us/product/${product.slug}`,
     },
+    ...(approvedReviews.length && reviewAvg != null
+      ? {
+          aggregateRating: {
+            "@type": "AggregateRating",
+            ratingValue: reviewAvg,
+            reviewCount: approvedReviews.length,
+            bestRating: 5,
+            worstRating: 1,
+          },
+        }
+      : {}),
   };
 
   return (
@@ -104,9 +134,12 @@ export default async function ProductDetailPage({ params }: { params: Params }) 
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
 
-      <article className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
-        <nav aria-label="Breadcrumb" className="mb-6 text-[var(--scale-sm)] text-[var(--color-ink-soft)]">
-          <ol className="flex flex-wrap gap-2">
+      <article className="mx-auto max-w-7xl px-[var(--container-pad-x)] py-10 lg:py-14">
+        <nav
+          aria-label="Breadcrumb"
+          className="mb-8 text-[var(--scale-xs)] uppercase tracking-[0.12em] text-[var(--color-ink-muted)]"
+        >
+          <ol className="flex flex-wrap items-center gap-2 font-[var(--font-display)]">
             <li>
               <Link href="/shop" className="hover:text-[var(--color-resin)]">
                 Shop
@@ -138,83 +171,86 @@ export default async function ProductDetailPage({ params }: { params: Params }) 
           </ol>
         </nav>
 
-        <div className="grid gap-10 lg:grid-cols-2">
-          <div className="space-y-3">
-            <div className="relative aspect-square overflow-hidden border border-[var(--color-border)] bg-[var(--color-surface)]">
-              {gallery[0] ? (
-                <Image
-                  src={gallery[0]}
-                  alt={product.name}
-                  fill
-                  priority
-                  className="object-contain p-6"
-                  sizes="(max-width: 1024px) 100vw, 50vw"
-                />
-              ) : (
-                <div className="flex h-full items-center justify-center font-[var(--font-display)] uppercase tracking-[0.14em] text-[var(--color-ink-soft)]">
-                  {v.sku}
-                </div>
-              )}
-            </div>
-            {gallery.length > 1 ? (
-              <ul className="grid grid-cols-4 gap-2" role="list">
-                {gallery.slice(0, 4).map((src) => (
-                  <li key={src} className="relative aspect-square border border-[var(--color-border)] bg-[var(--color-surface)]">
-                    <Image src={src} alt="" fill className="object-contain p-2" sizes="120px" />
-                  </li>
-                ))}
-              </ul>
-            ) : null}
-          </div>
+        <div className="grid gap-10 lg:grid-cols-2 lg:items-start lg:gap-14">
+          <ProductGallery images={gallery} productName={product.name} fallbackLabel={v.sku} />
 
-          <div>
-            <p className="font-[var(--font-display)] text-[var(--scale-xs)] uppercase tracking-[0.16em] text-[var(--color-resin)]">
-              {STRAIN_LABEL[product.strainType]}
-              {product.lineName ? ` · ${product.lineName}` : ""}
+          <div className="lg:sticky lg:top-[5.5rem] lg:self-start">
+            <p className="font-[var(--font-display)] text-[10px] uppercase tracking-[0.16em] text-[var(--color-resin)]">
+              {isBundleProduct(product)
+                ? "Bundle"
+                : STRAIN_LABEL[product.strainType]}
+              {!isBundleProduct(product) && product.lineName ? ` · ${product.lineName}` : ""}
             </p>
-            <h1 className="mt-2 font-[var(--font-display)] text-[var(--scale-2xl)] uppercase leading-tight tracking-[0.04em] text-[var(--color-ink)] sm:text-[var(--scale-3xl)]">
+            <h1 className="mt-3 font-[var(--font-display)] text-[clamp(1.75rem,4vw,2.75rem)] uppercase leading-[1.05] tracking-[0.04em] text-[var(--color-ink)]">
               {product.name}
             </h1>
 
-            <dl className="mt-6 flex flex-wrap gap-6">
+            <p className="mt-4 font-[var(--font-display)] text-[var(--scale-xl)] text-[var(--color-resin-strong)]">
+              {formatPrice(v.retailPriceCents)}
+              {product.compareAtPriceCents != null &&
+              product.compareAtPriceCents > v.retailPriceCents ? (
+                <span className="ml-3 text-[var(--scale-base)] text-[var(--color-ink-muted)] line-through">
+                  {formatPrice(product.compareAtPriceCents)}
+                </span>
+              ) : null}
+            </p>
+            <ProductRatingSummary reviews={approvedReviews} />
+            {product.compareAtPriceCents != null &&
+            product.compareAtPriceCents > v.retailPriceCents ? (
+              <p className="mt-2 text-[var(--scale-sm)] text-[var(--color-resin)]">
+                Save {formatPrice(product.compareAtPriceCents - v.retailPriceCents)} versus buying
+                separately
+              </p>
+            ) : null}
+
+            <dl className="mt-8 grid grid-cols-3 gap-4 border-y border-[var(--color-border)] py-6">
               <div>
-                <dt className="font-[var(--font-display)] text-[10px] uppercase tracking-[0.14em] text-[var(--color-ink-soft)]">
+                <dt className="font-[var(--font-display)] text-[10px] uppercase tracking-[0.14em] text-[var(--color-ink-muted)]">
                   THC
                 </dt>
-                <dd className="font-[var(--font-display)] text-[var(--scale-xl)] text-[var(--color-ink)]">
+                <dd className="mt-1 font-[var(--font-display)] text-[var(--scale-xl)] text-[var(--color-ink)]">
                   {formatPct(v.thcPct)}
                 </dd>
               </div>
               <div>
-                <dt className="font-[var(--font-display)] text-[10px] uppercase tracking-[0.14em] text-[var(--color-ink-soft)]">
+                <dt className="font-[var(--font-display)] text-[10px] uppercase tracking-[0.14em] text-[var(--color-ink-muted)]">
                   CBD
                 </dt>
-                <dd className="font-[var(--font-display)] text-[var(--scale-xl)] text-[var(--color-ink)]">
+                <dd className="mt-1 font-[var(--font-display)] text-[var(--scale-xl)] text-[var(--color-ink)]">
                   {formatPct(v.cbdPct)}
                 </dd>
               </div>
               {v.cbnPct != null ? (
                 <div>
-                  <dt className="font-[var(--font-display)] text-[10px] uppercase tracking-[0.14em] text-[var(--color-ink-soft)]">
+                  <dt className="font-[var(--font-display)] text-[10px] uppercase tracking-[0.14em] text-[var(--color-ink-muted)]">
                     CBN
                   </dt>
-                  <dd className="font-[var(--font-display)] text-[var(--scale-xl)] text-[var(--color-ink)]">
+                  <dd className="mt-1 font-[var(--font-display)] text-[var(--scale-xl)] text-[var(--color-ink)]">
                     {formatPct(v.cbnPct)}
                   </dd>
                 </div>
-              ) : null}
+              ) : (
+                <div>
+                  <dt className="font-[var(--font-display)] text-[10px] uppercase tracking-[0.14em] text-[var(--color-ink-muted)]">
+                    Format
+                  </dt>
+                  <dd className="mt-1 text-[var(--scale-sm)] text-[var(--color-ink)]">{v.weightOrFormat}</dd>
+                </div>
+              )}
             </dl>
 
             <p className="mt-6 text-[var(--scale-base)] leading-relaxed text-[var(--color-ink-soft)]">
               {product.description}
             </p>
 
+            <BundleContents bundle={product} catalog={catalog} />
+
             {product.effects.length > 0 ? (
-              <ul className="mt-4 flex flex-wrap gap-2" aria-label="Effects">
+              <ul className="mt-5 flex flex-wrap gap-2" aria-label="Effects">
                 {product.effects.map((effect) => (
                   <li
                     key={effect}
-                    className="border border-[var(--color-border)] px-3 py-1 font-[var(--font-display)] text-[10px] uppercase tracking-[0.12em] text-[var(--color-ink-soft)]"
+                    className="border border-[var(--color-border)] px-3 py-1.5 font-[var(--font-display)] text-[10px] uppercase tracking-[0.12em] text-[var(--color-ink-soft)]"
                   >
                     {effect}
                   </li>
@@ -222,10 +258,10 @@ export default async function ProductDetailPage({ params }: { params: Params }) 
               </ul>
             ) : null}
 
-            <section className="mt-8" aria-labelledby="variants-heading">
+            <section className="mt-10" aria-labelledby="variants-heading">
               <h2
                 id="variants-heading"
-                className="font-[var(--font-display)] text-[var(--scale-sm)] uppercase tracking-[0.14em] text-[var(--color-resin)]"
+                className="font-[var(--font-display)] text-[10px] uppercase tracking-[0.16em] text-[var(--color-resin)]"
               >
                 Formats
               </h2>
@@ -233,13 +269,13 @@ export default async function ProductDetailPage({ params }: { params: Params }) 
                 {product.variants.map((variant) => (
                   <li
                     key={variant.id}
-                    className="flex items-center justify-between border border-[var(--color-border)] bg-[var(--color-surface-raised)] px-4 py-3"
+                    className="flex items-center justify-between bg-[var(--color-surface)] px-4 py-3"
                   >
                     <div>
                       <p className="font-[var(--font-display)] uppercase tracking-[0.06em] text-[var(--color-ink)]">
                         {variant.weightOrFormat}
                       </p>
-                      <p className="text-[var(--scale-xs)] text-[var(--color-ink-soft)]">
+                      <p className="text-[var(--scale-xs)] text-[var(--color-ink-muted)]">
                         {variant.sku}
                         {variant.quantityOnHand <= 0
                           ? " · Out of stock"
@@ -254,49 +290,57 @@ export default async function ProductDetailPage({ params }: { params: Params }) 
                   </li>
                 ))}
               </ul>
-              <p className="mt-2 text-[var(--scale-xs)] text-[var(--color-ink-soft)]">
-                Placeholder pricing until the official price sheet is applied.
-              </p>
             </section>
 
-            <div className="mt-8 space-y-4">
+            <div className="mt-8 space-y-4 border border-[var(--color-border)] bg-[var(--color-surface)] p-5">
               <AddToCartForm variants={product.variants} defaultVariantId={v.id} />
               <WishlistToggle variantId={v.id} initiallySaved={primarySaved} />
             </div>
 
-            <p className="mt-6 text-[var(--scale-sm)]">
+            <div className="mt-4">
+              <LoyaltyEarnCallout priceCents={v.retailPriceCents} signedIn={Boolean(profile)} />
+            </div>
+
+            <div className="mt-6 flex flex-wrap gap-x-6 gap-y-2">
               <Link
                 href={`/lab-results?sku=${encodeURIComponent(v.sku)}`}
-                className="font-[var(--font-display)] text-[var(--scale-xs)] uppercase tracking-[0.14em] text-[var(--color-resin)] underline-offset-4 hover:underline"
+                className="nav-link text-[var(--color-resin)] hover:text-[var(--color-resin-hover)]"
               >
                 View lab results / COA
-                {coa?.source === "live" ? " (live host)" : ""}
+                {coa?.source === "live" ? " (live)" : ""}
               </Link>
-            </p>
+              <Link
+                href="/validate"
+                className="nav-link text-[var(--color-resin)] hover:text-[var(--color-resin-hover)]"
+              >
+                Validate product
+              </Link>
+            </div>
           </div>
         </div>
 
-        {related.length > 0 ? (
-          <section className="mt-16" aria-labelledby="related-heading">
-            <h2
-              id="related-heading"
-              className="mb-6 font-[var(--font-display)] text-[var(--scale-xl)] uppercase tracking-[0.08em] text-[var(--color-ink)]"
-            >
+        <ProductReviews
+          productSlug={product.slug}
+          productName={product.name}
+          reviews={approvedReviews}
+          signedIn={Boolean(profile)}
+        />
+
+        {relatedLive.length > 0 ? (
+          <section className="mt-20 border-t border-[var(--color-border)] pt-14" aria-labelledby="related-heading">
+            <h2 id="related-heading" className="section-title mb-8">
               Related in {product.categoryName}
             </h2>
-            <ProductGrid products={related} />
+            <ProductGrid products={relatedLive} />
           </section>
         ) : null}
 
-        {recent.length > 0 ? (
+        {recentLive.length > 0 ? (
           <section className="mt-16" aria-labelledby="recent-heading">
-            <h2
-              id="recent-heading"
-              className="mb-6 font-[var(--font-display)] text-[var(--scale-xl)] uppercase tracking-[0.08em] text-[var(--color-ink)]"
-            >
+            <h2 id="recent-heading" className="section-title mb-8">
               Recently viewed
             </h2>
-            <ProductGrid products={recent} />
+            <ProductGrid products={recentLive} />
           </section>
         ) : null}
       </article>

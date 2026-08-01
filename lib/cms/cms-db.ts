@@ -3,20 +3,28 @@ import "server-only";
 import { desc, eq } from "drizzle-orm";
 import { commerceBlogPosts, commerceCmsPages, siteSettings } from "@/db/schema";
 import { getDb } from "@/lib/db/client";
-import type { BlogPost, CmsPage, HomepageBanner } from "./types";
+import { normalizeHomepageLayout } from "./homepage-layout";
+import type { BlogPost, CmsPage, HomepageBanner, HomepageLayout } from "./types";
 
 const BANNER_KEY = "homepage_banner";
+const LAYOUT_KEY = "homepage_layout";
 
 export async function dbListCmsPages(): Promise<CmsPage[]> {
   const db = getDb();
   const rows = await db.select().from(commerceCmsPages);
-  return rows.map((r) => ({
-    slug: r.slug,
-    title: r.title,
-    body: r.body,
-    status: r.status as CmsPage["status"],
-    updatedAt: r.updatedAt.toISOString(),
-  }));
+  return rows.map((r) => {
+    const updatedAt =
+      r.updatedAt instanceof Date && !Number.isNaN(r.updatedAt.getTime())
+        ? r.updatedAt.toISOString()
+        : new Date(0).toISOString();
+    return {
+      slug: r.slug,
+      title: r.title,
+      body: r.body,
+      status: r.status as CmsPage["status"],
+      updatedAt,
+    };
+  });
 }
 
 export async function dbUpsertCmsPage(page: CmsPage): Promise<void> {
@@ -44,15 +52,25 @@ export async function dbUpsertCmsPage(page: CmsPage): Promise<void> {
 export async function dbListBlogPosts(): Promise<BlogPost[]> {
   const db = getDb();
   const rows = await db.select().from(commerceBlogPosts).orderBy(desc(commerceBlogPosts.publishedAt));
-  return rows.map((r) => ({
-    slug: r.slug,
-    title: r.title,
-    excerpt: r.excerpt,
-    body: r.body,
-    status: r.status as BlogPost["status"],
-    publishedAt: r.publishedAt.toISOString(),
-    updatedAt: r.updatedAt.toISOString(),
-  }));
+  return rows.map((r) => {
+    const publishedAt =
+      r.publishedAt instanceof Date && !Number.isNaN(r.publishedAt.getTime())
+        ? r.publishedAt.toISOString()
+        : new Date(0).toISOString();
+    const updatedAt =
+      r.updatedAt instanceof Date && !Number.isNaN(r.updatedAt.getTime())
+        ? r.updatedAt.toISOString()
+        : publishedAt;
+    return {
+      slug: r.slug,
+      title: r.title,
+      excerpt: r.excerpt,
+      body: r.body,
+      status: r.status as BlogPost["status"],
+      publishedAt,
+      updatedAt,
+    };
+  });
 }
 
 export async function dbUpsertBlogPost(post: BlogPost): Promise<void> {
@@ -92,7 +110,7 @@ export async function dbGetBanner(): Promise<HomepageBanner | null> {
     enabled: Boolean(v.enabled),
     headline: String(v.headline),
     body: String(v.body ?? ""),
-    ctaLabel: String(v.ctaLabel ?? "Shop"),
+    ctaLabel: String(v.ctaLabel ?? "Shop now"),
     ctaHref: String(v.ctaHref ?? "/shop"),
   };
 }
@@ -108,19 +126,45 @@ export async function dbSaveBanner(banner: HomepageBanner): Promise<void> {
     });
 }
 
+export async function dbGetHomepageLayout(): Promise<HomepageLayout | null> {
+  const db = getDb();
+  const rows = await db.select().from(siteSettings).where(eq(siteSettings.key, LAYOUT_KEY)).limit(1);
+  const value = rows[0]?.value;
+  if (!value || typeof value !== "object") return null;
+  return normalizeHomepageLayout(value);
+}
+
+export async function dbSaveHomepageLayout(layout: HomepageLayout): Promise<void> {
+  const db = getDb();
+  const normalized = normalizeHomepageLayout(layout);
+  await db
+    .insert(siteSettings)
+    .values({ key: LAYOUT_KEY, value: normalized })
+    .onConflictDoUpdate({
+      target: siteSettings.key,
+      set: { value: normalized },
+    });
+}
+
 export async function dbSeedCmsIfEmpty(
   pages: CmsPage[],
   posts: BlogPost[],
-  banner: HomepageBanner
+  banner: HomepageBanner,
+  layout: HomepageLayout
 ): Promise<void> {
+  // Insert any missing default slugs (do not overwrite admin edits).
   const existing = await dbListCmsPages();
-  if (existing.length === 0) {
-    for (const page of pages) await dbUpsertCmsPage(page);
+  const existingSlugs = new Set(existing.map((p) => p.slug));
+  for (const page of pages) {
+    if (!existingSlugs.has(page.slug)) await dbUpsertCmsPage(page);
   }
   const existingPosts = await dbListBlogPosts();
-  if (existingPosts.length === 0) {
-    for (const post of posts) await dbUpsertBlogPost(post);
+  const existingPostSlugs = new Set(existingPosts.map((p) => p.slug));
+  for (const post of posts) {
+    if (!existingPostSlugs.has(post.slug)) await dbUpsertBlogPost(post);
   }
   const existingBanner = await dbGetBanner();
   if (!existingBanner) await dbSaveBanner(banner);
+  const existingLayout = await dbGetHomepageLayout();
+  if (!existingLayout) await dbSaveHomepageLayout(layout);
 }

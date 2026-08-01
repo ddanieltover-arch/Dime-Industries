@@ -110,11 +110,17 @@ export default async function AccountDashboardPage() {
       </section>
 
       <section className="flex flex-wrap gap-4 text-[var(--scale-sm)]">
-        <Link href="/account/validate" className="text-[var(--color-resin-strong)] underline-offset-4 hover:underline">
-          Validate a product
+        <Link href="/account/profile" className="text-[var(--color-resin-strong)] underline-offset-4 hover:underline">
+          Edit profile
         </Link>
         <Link href="/account/addresses" className="text-[var(--color-ink-soft)] underline-offset-4 hover:underline">
           Manage addresses
+        </Link>
+        <Link href="/account/notifications" className="text-[var(--color-ink-soft)] underline-offset-4 hover:underline">
+          Notifications &amp; cookies
+        </Link>
+        <Link href="/account/validate" className="text-[var(--color-ink-soft)] underline-offset-4 hover:underline">
+          Validate a product
         </Link>
       </section>
     </div>

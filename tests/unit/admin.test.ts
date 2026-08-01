@@ -3,6 +3,7 @@ import { withCatalogSource, listProducts, getCatalogSource } from "../../lib/cat
 import type { CatalogProduct } from "../../lib/catalog/types";
 import { adminOrderKpis } from "../../lib/admin/orders-admin";
 import type { CheckoutOrder } from "../../lib/checkout/types";
+import { hasProductOverride } from "../../lib/admin/catalog-override-logic";
 import { hasAtLeastRole } from "../../lib/auth/roles";
 
 const sample: CatalogProduct = {
@@ -73,5 +74,16 @@ describe("admin role gate", () => {
     expect(hasAtLeastRole("admin", "admin")).toBe(true);
     expect(hasAtLeastRole("customer", "admin")).toBe(false);
     expect(hasAtLeastRole("admin", "customer")).toBe(true);
+  });
+});
+
+describe("product overrides (not create)", () => {
+  it("detects name/status/price overrides only", () => {
+    expect(hasProductOverride({}, "p-1")).toBe(false);
+    expect(hasProductOverride({ "p-1": { name: "Renamed" } }, "p-1")).toBe(true);
+    expect(hasProductOverride({ "p-1": { status: "draft" } }, "p-1")).toBe(true);
+    expect(
+      hasProductOverride({ "p-1": { variants: { v1: { retailPriceCents: 100 } } } }, "p-1")
+    ).toBe(true);
   });
 });

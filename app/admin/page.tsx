@@ -34,7 +34,11 @@ export default async function AdminDashboardPage() {
           Dashboard
         </h2>
         <p className="mt-2 text-[var(--scale-sm)] text-[var(--color-ink-soft)]">
-          Session-scoped admin data until Supabase writes are enabled in staging.
+          Sales and ops KPIs only — no separate analytics product. CSV exports live under{" "}
+          <Link href="/admin/reports" className="text-[var(--color-resin)] underline-offset-4 hover:underline">
+            Reports
+          </Link>
+          .
         </p>
         <p className="mt-3 text-[var(--scale-sm)]">
           <Link
@@ -51,22 +55,49 @@ export default async function AdminDashboardPage() {
         </p>
       </section>
 
-      <section className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        {[
-          { label: "Revenue (paid)", value: formatPrice(kpis.revenueCents) },
-          { label: "Orders", value: String(kpis.orderCount) },
-          { label: "Active products", value: String(activeProducts) },
-          { label: "Pending reviews", value: String(pendingReviews.length) },
-        ].map((card) => (
-          <div key={card.label} className="border border-[var(--color-border)] bg-[var(--color-surface)] p-4">
-            <p className="font-[var(--font-mono)] text-[var(--scale-xs)] text-[var(--color-ink-soft)]">
-              {card.label}
-            </p>
-            <p className="mt-2 font-[var(--font-display)] text-[var(--scale-2xl)] text-[var(--color-ink)]">
-              {card.value}
-            </p>
-          </div>
-        ))}
+      <section>
+        <h3 className="font-[var(--font-display)] text-[var(--scale-lg)] text-[var(--color-ink)]">
+          Sales
+        </h3>
+        <div className="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          {[
+            { label: "Revenue (paid)", value: formatPrice(kpis.revenueCents) },
+            { label: "Paid orders", value: String(kpis.paidCount) },
+            { label: "AOV", value: formatPrice(kpis.aovCents) },
+            { label: "Pending payment", value: String(kpis.pendingCount) },
+          ].map((card) => (
+            <div key={card.label} className="border border-[var(--color-border)] bg-[var(--color-surface)] p-4">
+              <p className="font-[var(--font-mono)] text-[var(--scale-xs)] text-[var(--color-ink-soft)]">
+                {card.label}
+              </p>
+              <p className="mt-2 font-[var(--font-display)] text-[var(--scale-2xl)] text-[var(--color-ink)]">
+                {card.value}
+              </p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <section>
+        <h3 className="font-[var(--font-display)] text-[var(--scale-lg)] text-[var(--color-ink)]">
+          Catalog &amp; queue
+        </h3>
+        <div className="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          {[
+            { label: "Active products", value: String(activeProducts) },
+            { label: "Pending reviews", value: String(pendingReviews.length) },
+            { label: "Low-stock variants", value: String(lowStock) },
+          ].map((card) => (
+            <div key={card.label} className="border border-[var(--color-border)] bg-[var(--color-surface)] p-4">
+              <p className="font-[var(--font-mono)] text-[var(--scale-xs)] text-[var(--color-ink-soft)]">
+                {card.label}
+              </p>
+              <p className="mt-2 font-[var(--font-display)] text-[var(--scale-2xl)] text-[var(--color-ink)]">
+                {card.value}
+              </p>
+            </div>
+          ))}
+        </div>
       </section>
 
       <section className="grid gap-4 sm:grid-cols-3 text-[var(--scale-sm)]">
@@ -78,6 +109,12 @@ export default async function AdminDashboardPage() {
         </Link>
         <Link href="/admin/reviews" className="border border-[var(--color-border)] p-4 hover:bg-[var(--color-surface)]">
           Moderate reviews →
+        </Link>
+        <Link href="/admin/reports" className="border border-[var(--color-border)] p-4 hover:bg-[var(--color-surface)]">
+          Reports (CSV) →
+        </Link>
+        <Link href="/admin/settings" className="border border-[var(--color-border)] p-4 hover:bg-[var(--color-surface)]">
+          Settings →
         </Link>
       </section>
     </div>

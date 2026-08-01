@@ -12,9 +12,9 @@ export function CouponForm({ appliedCode }: { appliedCode: string | null }) {
   if (appliedCode) {
     return (
       <div className="flex flex-wrap items-center justify-between gap-2 text-[var(--scale-sm)]">
-        <p className="text-[var(--color-terp)]">Coupon {appliedCode} applied</p>
+        <p className="text-[var(--color-resin)]">Coupon {appliedCode} applied</p>
         <form action={removeCoupon}>
-          <button type="submit" className="text-[var(--color-ink-soft)] underline-offset-4 hover:underline">
+          <button type="submit" className="nav-link text-[var(--color-ink-muted)] hover:text-[var(--color-flag)]">
             Remove
           </button>
         </form>
@@ -31,13 +31,9 @@ export function CouponForm({ appliedCode }: { appliedCode: string | null }) {
         id="coupon-code"
         name="code"
         placeholder="Coupon code"
-        className="min-w-[8rem] flex-1 rounded-[var(--radius-sm)] border border-[var(--color-border-interactive)] bg-[var(--color-surface-raised)] px-3 py-2 text-[var(--scale-sm)] text-[var(--color-ink)]"
+        className="field-input min-w-[8rem] flex-1"
       />
-      <button
-        type="submit"
-        disabled={pending}
-        className="rounded-[var(--radius-sm)] border border-[var(--color-border-interactive)] px-3 py-2 text-[var(--scale-sm)] text-[var(--color-ink)] disabled:opacity-60"
-      >
+      <button type="submit" disabled={pending} className="btn-outline shrink-0 px-5 py-3">
         {pending ? "…" : "Apply"}
       </button>
       {state.error ? (
@@ -46,7 +42,7 @@ export function CouponForm({ appliedCode }: { appliedCode: string | null }) {
         </p>
       ) : null}
       {state.success ? (
-        <p role="status" className="w-full text-[var(--scale-xs)] text-[var(--color-terp)]">
+        <p role="status" className="w-full text-[var(--scale-xs)] text-[var(--color-resin)]">
           {state.message}
         </p>
       ) : null}

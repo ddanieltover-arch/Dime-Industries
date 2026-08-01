@@ -1,7 +1,13 @@
 // components/cms/cms-article.tsx
 import { renderCmsBody } from "@/lib/cms/render";
 
-export function CmsArticle({ title, body }: { title: string; body: string }) {
+export function CmsArticle({
+  title,
+  body,
+}: {
+  title: string;
+  body: string;
+}) {
   const blocks = renderCmsBody(body);
   return (
     <article className="mx-auto max-w-3xl px-4 py-12 sm:px-6 lg:py-16">

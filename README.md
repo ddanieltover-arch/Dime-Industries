@@ -14,7 +14,7 @@ Being direct about this, since it's easy for a well-documented repo to look more
 - **Customer account (Sprint 4)** — `/login` + `/account` portal (orders, profile, addresses, notifications, validate); demo session without Supabase; Resend order email (dry-run when unset).
 - **Admin (Sprint 5)** — `/admin` dashboard, products/inventory/orders/reviews/customers/audit; demo admin role; catalog overrides apply to storefront.
 - **CMS & growth (Sprint 6)** — CMS pages + blog, homepage banner, coupons at cart/checkout, loyalty + affiliate account/admin surfaces, `/r/[code]` referrals.
-- **Hardening (Sprint 7)** — security headers, rate limits, production demo-auth/webhook guards, SEO robots/sitemap expansion, Playwright config + critical-path e2e.
+- **Hardening (Sprint 7)** — security headers, rate limits, production demo-auth/webhook guards, SEO present (robots/sitemap/metadata/JSON-LD — not SEO automation), Playwright config + critical-path e2e.
 - **Go-live prep (Sprint 8)** — `docs/GO_LIVE.md`, refreshed deploy checklist/env docs, smoke script, CI/deploy workflow hardening; production `next build` verified.
 - **Post-launch review (Sprint 9)** — readiness (`/api/ready`), admin launch status, soft-launch debt backlog, soak runbook, orders repository seam.
 - **DB orders (Sprint 10)** — `commerce_orders` + Drizzle repository; Paybis webhook can mark paid; `ORDERS_PERSISTENCE=auto`.

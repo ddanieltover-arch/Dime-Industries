@@ -2,56 +2,70 @@
 import Image from "next/image";
 import Link from "next/link";
 
+const GALLERY = [
+  {
+    src: "/brand/awards-hardware.webp",
+    alt: "Industry award trophies on dark concrete",
+    className: "col-span-2 aspect-[16/10]",
+  },
+  {
+    src: "/brand/awards-medals.webp",
+    alt: "Gold award medals and engraved plaque",
+    className: "aspect-[4/5]",
+  },
+  {
+    src: "/brand/awards.webp",
+    alt: "DIME award-winning product lineup",
+    className: "aspect-[4/5]",
+  },
+] as const;
+
 export function ElevateAwards() {
   return (
-    <section
-      aria-labelledby="elevate-heading"
-      className="relative overflow-hidden border-y border-[var(--color-border)]"
-    >
+    <section aria-labelledby="elevate-heading" className="relative overflow-hidden bg-black">
       <div className="absolute inset-0">
         <Image
-          src="/brand/hero-poster.jpg"
+          src="/brand/awards-hardware.webp"
           alt=""
           fill
-          className="object-cover opacity-35"
+          className="object-cover opacity-25"
           sizes="100vw"
         />
-        <div className="absolute inset-0 bg-black/70" />
+        <div className="absolute inset-0 bg-gradient-to-r from-black via-black/90 to-black/60" />
       </div>
 
-      <div className="relative mx-auto grid max-w-7xl gap-10 px-4 py-16 sm:px-6 lg:grid-cols-2 lg:px-8 lg:py-24">
+      <div className="relative mx-auto grid max-w-7xl items-center gap-12 px-[var(--container-pad-x)] py-[var(--section-y)] lg:grid-cols-2 lg:gap-16">
         <div>
-          <p className="font-[var(--font-script)] text-[var(--scale-xl)] text-[var(--color-resin)] sm:text-[var(--scale-2xl)]">
-            Elevate your experience
-          </p>
-          <h2
-            id="elevate-heading"
-            className="mt-3 font-[var(--font-display)] text-[var(--scale-xl)] uppercase tracking-[0.06em] text-white sm:text-[var(--scale-2xl)]"
-          >
-            Award winning products
+          <p className="section-eyebrow">Elevate your experience</p>
+          <h2 id="elevate-heading" className="section-title mt-3 text-white">
+            Award-winning products
           </h2>
-          <p className="mt-4 max-w-lg text-[var(--scale-base)] leading-relaxed text-white/75">
-            At DIME Industries, innovation takes center stage. Our unwavering commitment to excellence has
-            garnered more than 30 prestigious awards and recognition in leading industry publications.
-            We&apos;ve established our position as a market leader in delivering the most potent, delicious
-            cannabis experience.
+          <p className="mt-5 max-w-lg text-[var(--scale-base)] leading-relaxed text-white/75">
+            Innovation takes center stage. Our commitment to craft has earned recognition across
+            leading industry publications — shop the lineup that set the bar.
           </p>
-          <Link
-            href="/shop"
-            className="mt-8 inline-block rounded-full bg-[var(--color-resin)] px-8 py-3 font-[var(--font-display)] text-[var(--scale-xs)] uppercase tracking-[0.16em] text-black transition-colors hover:bg-[var(--color-resin-hover)]"
-          >
-            Learn more
-          </Link>
+          <div className="mt-8 flex flex-wrap gap-3">
+            <Link href="/shop" className="btn-primary">
+              Shop now
+            </Link>
+            <Link href="/about" className="btn-outline-light">
+              Our story
+            </Link>
+          </div>
         </div>
 
-        <div className="relative min-h-[280px] overflow-hidden lg:min-h-[360px]">
-          <Image
-            src="/brand/hero-poster.jpg"
-            alt="DIME award-winning product lineup"
-            fill
-            className="object-cover"
-            sizes="(max-width: 1024px) 100vw, 50vw"
-          />
+        <div className="grid grid-cols-2 gap-3">
+          {GALLERY.map((shot) => (
+            <div key={shot.src} className={`relative overflow-hidden ${shot.className}`}>
+              <Image
+                src={shot.src}
+                alt={shot.alt}
+                fill
+                className="object-cover"
+                sizes="(max-width: 1024px) 100vw, 50vw"
+              />
+            </div>
+          ))}
         </div>
       </div>
     </section>

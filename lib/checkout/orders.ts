@@ -48,6 +48,10 @@ const orderSchema = z.object({
   wholesaleBusinessName: z.string().nullable().optional(),
   loyaltyPointsRedeemed: z.number().int().nonnegative().optional(),
   loyaltyDiscountCents: z.number().int().nonnegative().optional(),
+  carrier: z.string().nullable().optional(),
+  trackingNumber: z.string().nullable().optional(),
+  trackingUrl: z.string().nullable().optional(),
+  shippedAt: z.string().nullable().optional(),
 });
 
 const jarSchema = z.object({

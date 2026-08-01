@@ -2,6 +2,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { OrderTrackingPanel } from "@/components/checkout/order-tracking";
 import { getOrderById, markOrderPaid } from "@/lib/checkout";
 import { persistCartLines } from "@/lib/cart";
 import { formatPrice } from "@/lib/format";
@@ -37,15 +38,13 @@ export default async function ConfirmationPage({
   const paid = order.status === "payment_confirmed";
 
   return (
-    <div className="mx-auto max-w-2xl px-4 py-16 sm:px-6">
-      <p className="font-[var(--font-mono)] text-[var(--scale-xs)] uppercase tracking-wide text-[var(--color-ink-soft)]">
+    <div className="mx-auto max-w-3xl px-[var(--container-pad-x)] py-16 lg:py-20">
+      <p className="font-[var(--font-display)] text-[10px] uppercase tracking-[0.18em] text-[var(--color-resin)]">
         {paid ? "Payment confirmed" : "Order pending payment"}
       </p>
-      <h1 className="mt-2 font-[var(--font-display)] text-[var(--scale-3xl)] text-[var(--color-ink)]">
-        {paid ? "Thank you" : "Awaiting payment"}
-      </h1>
-      <p className="mt-3 text-[var(--scale-sm)] text-[var(--color-ink-soft)]">
-        Order <span className="font-[var(--font-mono)] text-[var(--color-ink)]">{order.id}</span>
+      <h1 className="section-title mt-3">{paid ? "Thank you" : "Awaiting payment"}</h1>
+      <p className="mt-4 text-[var(--scale-sm)] text-[var(--color-ink-soft)]">
+        Order <span className="text-[var(--color-ink)]">{order.id}</span>
         {paid
           ? order.paymentMethod === "net_terms"
             ? ` is accepted on ${order.paymentTerms?.toUpperCase() ?? "NET"} terms.`
@@ -59,82 +58,84 @@ export default async function ConfirmationPage({
         </p>
       ) : null}
 
-      <section className="mt-10 border border-[var(--color-border)] bg-[var(--color-surface)] p-6">
-        <h2 className="font-[var(--font-display)] text-[var(--scale-lg)] text-[var(--color-ink)]">
-          Receipt
-        </h2>
-        <ul className="mt-4 space-y-2 text-[var(--scale-sm)]" role="list">
-          {order.lines.map((line) => (
-            <li key={line.variantId} className="flex justify-between gap-4">
-              <span className="text-[var(--color-ink)]">
-                {line.productName} × {line.quantity}
-              </span>
-              <span className="font-[var(--font-mono)] text-[var(--color-ink-soft)]">
-                {formatPrice(line.unitPriceCents * line.quantity)}
-              </span>
-            </li>
-          ))}
-        </ul>
-        <dl className="mt-6 space-y-2 border-t border-[var(--color-border)] pt-4 text-[var(--scale-sm)]">
-          <div className="flex justify-between">
-            <dt className="text-[var(--color-ink-soft)]">Subtotal</dt>
-            <dd>{formatPrice(order.subtotalCents)}</dd>
-          </div>
-          {order.discountCents > 0 ? (
-            <div className="flex justify-between">
-              <dt className="text-[var(--color-terp)]">
-                {order.discountLabel ?? "Discount"}
-              </dt>
-              <dd className="text-[var(--color-terp)]">−{formatPrice(order.discountCents)}</dd>
-            </div>
-          ) : null}
-          {(order.loyaltyDiscountCents ?? 0) > 0 ? (
-            <div className="flex justify-between">
-              <dt className="text-[var(--color-terp)]">
-                Loyalty ({order.loyaltyPointsRedeemed ?? 0} pts)
-              </dt>
-              <dd className="text-[var(--color-terp)]">
-                −{formatPrice(order.loyaltyDiscountCents ?? 0)}
-              </dd>
-            </div>
-          ) : null}
-          <div className="flex justify-between">
-            <dt className="text-[var(--color-ink-soft)]">{order.taxLabel}</dt>
-            <dd>{formatPrice(order.taxCents)}</dd>
-          </div>
-          <div className="flex justify-between">
-            <dt className="text-[var(--color-ink-soft)]">{order.shippingLabel}</dt>
-            <dd>{formatPrice(order.shippingCents)}</dd>
-          </div>
-          <div className="flex justify-between font-[var(--font-display)] text-[var(--scale-base)]">
-            <dt>Total</dt>
-            <dd>{formatPrice(order.totalCents)}</dd>
-          </div>
-        </dl>
-        <p className="mt-4 text-[var(--scale-xs)] text-[var(--color-ink-soft)]">
-          Ship to {order.address.fullName}, {order.address.line1}, {order.address.city},{" "}
-          {order.address.state} {order.address.postalCode}. A confirmation email is sent when Resend is
-          configured (dry-run logged locally otherwise).
-        </p>
-      </section>
+      <div className="mt-10 grid gap-6 lg:grid-cols-[1.1fr_0.9fr]">
+        <OrderTrackingPanel order={order} />
 
-      <div className="mt-8 flex flex-wrap gap-4">
-        <Link
-          href="/account/orders"
-          className="text-[var(--scale-sm)] text-[var(--color-resin-strong)] underline-offset-4 hover:underline"
-        >
-          View in account
+        <section className="border border-[var(--color-border)] bg-[var(--color-surface)] p-6">
+          <h2 className="font-[var(--font-display)] text-[10px] uppercase tracking-[0.16em] text-[var(--color-resin)]">
+            Receipt
+          </h2>
+          <ul className="mt-5 space-y-3 text-[var(--scale-sm)]" role="list">
+            {order.lines.map((line) => (
+              <li key={line.variantId} className="flex justify-between gap-4">
+                <span className="text-[var(--color-ink)]">
+                  {line.productName} × {line.quantity}
+                </span>
+                <span className="text-[var(--color-ink-soft)]">
+                  {formatPrice(line.unitPriceCents * line.quantity)}
+                </span>
+              </li>
+            ))}
+          </ul>
+          <dl className="mt-6 space-y-2.5 border-t border-[var(--color-border)] pt-4 text-[var(--scale-sm)]">
+            <div className="flex justify-between">
+              <dt className="text-[var(--color-ink-soft)]">Subtotal</dt>
+              <dd>{formatPrice(order.subtotalCents)}</dd>
+            </div>
+            {order.discountCents > 0 ? (
+              <div className="flex justify-between">
+                <dt className="text-[var(--color-terp)]">{order.discountLabel ?? "Discount"}</dt>
+                <dd className="text-[var(--color-terp)]">−{formatPrice(order.discountCents)}</dd>
+              </div>
+            ) : null}
+            {(order.loyaltyDiscountCents ?? 0) > 0 ? (
+              <div className="flex justify-between">
+                <dt className="text-[var(--color-terp)]">
+                  Loyalty ({order.loyaltyPointsRedeemed ?? 0} pts)
+                </dt>
+                <dd className="text-[var(--color-terp)]">
+                  −{formatPrice(order.loyaltyDiscountCents ?? 0)}
+                </dd>
+              </div>
+            ) : null}
+            <div className="flex justify-between">
+              <dt className="text-[var(--color-ink-soft)]">{order.taxLabel}</dt>
+              <dd>{formatPrice(order.taxCents)}</dd>
+            </div>
+            <div className="flex justify-between">
+              <dt className="text-[var(--color-ink-soft)]">{order.shippingLabel}</dt>
+              <dd>{formatPrice(order.shippingCents)}</dd>
+            </div>
+            <div className="flex justify-between border-t border-[var(--color-border)] pt-3 font-[var(--font-display)] text-[var(--scale-base)]">
+              <dt>Total</dt>
+              <dd className="text-[var(--color-resin-strong)]">{formatPrice(order.totalCents)}</dd>
+            </div>
+          </dl>
+          <p className="mt-4 text-[var(--scale-xs)] text-[var(--color-ink-muted)]">
+            Ship to {order.address.fullName}, {order.address.line1}, {order.address.city},{" "}
+            {order.address.state} {order.address.postalCode}.
+          </p>
+          <p className="mt-2 text-[var(--scale-xs)] text-[var(--color-ink-muted)]">
+            Payment:{" "}
+            {order.paymentMethod === "net_terms"
+              ? `${order.paymentTerms?.toUpperCase() ?? "NET"} terms`
+              : `Bitcoin (${order.paymentMode ?? "pending"})`}
+            . A confirmation email is sent when Resend is configured.
+          </p>
+        </section>
+      </div>
+
+      <div className="mt-10 flex flex-wrap gap-4">
+        <Link href={`/account/orders/${order.id}`} className="btn-primary">
+          Track in account
         </Link>
-        <Link
-          href="/shop"
-          className="text-[var(--scale-sm)] text-[var(--color-ink-soft)] underline-offset-4 hover:underline"
-        >
+        <Link href="/shop" className="btn-outline">
           Continue shopping
         </Link>
         {!paid && order.paymentMode === "mock" ? (
           <Link
             href={`/checkout/mock-pay/${order.id}`}
-            className="text-[var(--scale-sm)] text-[var(--color-ink-soft)] underline-offset-4 hover:underline"
+            className="nav-link self-center text-[var(--color-ink-soft)]"
           >
             Resume mock payment
           </Link>

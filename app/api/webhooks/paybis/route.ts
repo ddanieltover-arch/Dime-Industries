@@ -82,8 +82,8 @@ export async function POST(request: Request) {
         console.warn("[paybis.webhook] loyalty/affiliate side effects failed", err);
       }
       try {
-        const { sendEmail, orderConfirmationEmail } = await import("@/lib/email/resend");
-        await sendEmail(orderConfirmationEmail(paid));
+        const { notifyOrderConfirmed } = await import("@/lib/email/notifications");
+        await notifyOrderConfirmed(paid);
       } catch (err) {
         console.warn("[paybis.webhook] email side effect failed", err);
       }

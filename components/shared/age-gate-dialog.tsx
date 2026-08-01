@@ -18,8 +18,6 @@ export function AgeGateDialog({ initiallyOpen }: { initiallyOpen: boolean }) {
 
   useEffect(() => {
     if (!gateSucceeded) return;
-    // Hard reload picks up httpOnly age cookies reliably (router.refresh can
-    // leave the client on a stale tree and trip the error boundary).
     window.location.replace(window.location.pathname);
   }, [gateSucceeded]);
 
@@ -45,31 +43,46 @@ export function AgeGateDialog({ initiallyOpen }: { initiallyOpen: boolean }) {
       aria-modal="true"
       aria-labelledby="age-gate-title"
       aria-describedby="age-gate-description"
-      className="flex min-h-[70vh] items-center justify-center bg-black px-6 py-16"
+      className="relative flex min-h-[78vh] items-center justify-center overflow-hidden bg-black px-6 py-20"
     >
-      <div className="w-full max-w-lg text-center">
-        <div className="relative mx-auto mb-8 h-12 w-40">
-          <Image src="/brand/logo.png" alt="DIME" fill className="object-contain" sizes="160px" priority />
+      <div
+        className="pointer-events-none absolute inset-0 opacity-40"
+        style={{
+          backgroundImage: "url(/brand/concrete.jpg)",
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+        }}
+        aria-hidden="true"
+      />
+      <div className="absolute inset-0 bg-gradient-to-b from-black via-black/85 to-black" aria-hidden="true" />
+
+      <div className="relative w-full max-w-lg text-center">
+        <div className="relative mx-auto mb-10 h-14 w-44">
+          <Image src="/brand/logo.png" alt="DIME" fill className="object-contain" sizes="176px" priority />
         </div>
+
+        <p className="section-eyebrow text-[var(--scale-xl)] sm:text-[var(--scale-2xl)]">
+          Elevate your experience
+        </p>
 
         <h1
           id="age-gate-title"
           ref={headingRef}
           tabIndex={-1}
-          className="font-[var(--font-display)] text-[var(--scale-2xl)] uppercase tracking-[0.08em] text-white outline-none sm:text-[var(--scale-3xl)]"
+          className="mt-3 font-[var(--font-display)] text-[var(--scale-2xl)] uppercase tracking-[0.08em] text-white outline-none sm:text-[var(--scale-3xl)]"
         >
           Are you over 21?
         </h1>
 
         <p
           id="age-gate-description"
-          className="mx-auto mt-4 max-w-md text-[var(--scale-sm)] leading-relaxed text-white/70"
+          className="mx-auto mt-5 max-w-md text-[var(--scale-sm)] leading-relaxed text-white/70"
         >
           By clicking Yes and entering DIME Industries&apos; site, I confirm I&apos;m at least 21 or a
           qualified patient, and I agree to the Terms of Service and Privacy Policy.
         </p>
 
-        <form action={formAction} className="mt-10 space-y-4">
+        <form action={formAction} className="mt-12 space-y-4">
           {state.error && (
             <p role="alert" className="text-[var(--scale-sm)] text-[var(--color-flag)]">
               {state.error}
@@ -77,22 +90,10 @@ export function AgeGateDialog({ initiallyOpen }: { initiallyOpen: boolean }) {
           )}
 
           <div className="flex flex-wrap items-center justify-center gap-4 pt-2">
-            <button
-              type="submit"
-              name="isOfAge"
-              value="no"
-              formNoValidate
-              className="min-w-[7.5rem] rounded-full border border-white/40 px-8 py-3 font-[var(--font-display)] text-[var(--scale-sm)] uppercase tracking-[0.14em] text-white transition-colors hover:border-[var(--color-resin)] hover:text-[var(--color-resin)]"
-            >
+            <button type="submit" name="isOfAge" value="no" formNoValidate className="btn-outline-light min-w-[8rem]">
               No
             </button>
-            <button
-              type="submit"
-              name="isOfAge"
-              value="yes"
-              disabled={pending}
-              className="min-w-[7.5rem] rounded-full bg-[var(--color-resin)] px-8 py-3 font-[var(--font-display)] text-[var(--scale-sm)] uppercase tracking-[0.14em] text-black transition-colors hover:bg-[var(--color-resin-hover)] disabled:opacity-60"
-            >
+            <button type="submit" name="isOfAge" value="yes" disabled={pending} className="btn-primary min-w-[8rem]">
               {pending ? "Checking…" : "Yes"}
             </button>
           </div>

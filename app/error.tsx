@@ -12,31 +12,25 @@ export default function HomeError({ error, reset }: { error: Error & { digest?: 
   }, [error]);
 
   return (
-    <div role="alert" className="mx-auto max-w-2xl px-4 py-24 text-center sm:px-6">
-      <h1 className="font-[var(--font-display)] text-[var(--scale-2xl)] text-[var(--color-ink)]">
-        Something went wrong loading this page
-      </h1>
-      <p className="mt-3 text-[var(--scale-base)] text-[var(--color-ink-soft)]">
+    <div role="alert" className="mx-auto max-w-2xl px-[var(--container-pad-x)] py-24 text-center">
+      <p className="font-[var(--font-display)] text-[10px] uppercase tracking-[0.18em] text-[var(--color-resin)]">
+        Error
+      </p>
+      <h1 className="section-title mt-3">Something went wrong</h1>
+      <p className="mt-4 text-[var(--scale-base)] text-[var(--color-ink-soft)]">
         This wasn&apos;t your mistake — try again, or head back to the homepage.
       </p>
       {process.env.NODE_ENV !== "production" || error.digest ? (
-        <p className="mt-4 break-all font-mono text-[var(--scale-xs)] text-[var(--color-ink-soft)]">
+        <p className="mt-4 break-all font-[var(--font-mono)] text-[var(--scale-xs)] text-[var(--color-ink-muted)]">
           {error.message}
           {error.digest ? ` · ${error.digest}` : ""}
         </p>
       ) : null}
-      <div className="mt-8 flex justify-center gap-3">
-        <button
-          type="button"
-          onClick={reset}
-          className="rounded-[var(--radius-sm)] bg-[var(--color-resin-strong)] px-6 py-3 text-[var(--scale-sm)] font-medium text-[var(--color-surface)] hover:bg-[var(--color-resin-hover)]"
-        >
+      <div className="mt-10 flex flex-wrap justify-center gap-3">
+        <button type="button" onClick={reset} className="btn-primary">
           Try again
         </button>
-        <a
-          href="/"
-          className="rounded-[var(--radius-sm)] border border-[var(--color-border)] px-6 py-3 text-[var(--scale-sm)] text-[var(--color-ink)] hover:bg-[var(--color-surface)]"
-        >
+        <a href="/" className="btn-outline">
           Go home
         </a>
       </div>

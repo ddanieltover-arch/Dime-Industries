@@ -4,6 +4,7 @@
 
 import type { CatalogProduct } from "./types";
 import { BRAND_CATALOG, PLACEHOLDER_PRICING, REFERENCE_PRICING } from "./brand-catalog.generated";
+import { materializeBundles } from "./bundles";
 
 export { PLACEHOLDER_PRICING, REFERENCE_PRICING };
 
@@ -12,6 +13,7 @@ export const CATALOG_CATEGORIES = [
   { slug: "edibles", name: "Edibles" },
   { slug: "prerolls", name: "Prerolls" },
   { slug: "accessories", name: "Accessories" },
+  { slug: "bundles", name: "Bundles" },
 ] as const;
 
 export const CATALOG_LINES = [
@@ -41,8 +43,8 @@ const PREROLL_PLACEHOLDER: CatalogProduct = {
   coaUrl: "/lab-results?sku=DIMEPACK_DOUBLE_DS",
   createdAt: "2026-06-01T00:00:00.000Z",
   popularityScore: 80,
-  imageUrl: "/brand/hero-poster.jpg",
-  galleryUrls: ["/brand/hero-poster.jpg"],
+  imageUrl: "/brand/hero-poster.webp",
+  galleryUrls: ["/brand/hero-poster.webp"],
   brandPath: "/products/prerolls",
   variants: [
     {
@@ -58,4 +60,7 @@ const PREROLL_PLACEHOLDER: CatalogProduct = {
   ],
 };
 
-export const SEED_CATALOG: CatalogProduct[] = [...BRAND_CATALOG, PREROLL_PLACEHOLDER];
+export const SEED_CATALOG: CatalogProduct[] = (() => {
+  const base = [...BRAND_CATALOG, PREROLL_PLACEHOLDER];
+  return [...base, ...materializeBundles(base)];
+})();

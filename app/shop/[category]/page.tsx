@@ -66,6 +66,8 @@ export default async function CategoryPage({
       filters={filters}
       items={result.items}
       total={result.total}
+      page={result.page}
+      pageSize={result.pageSize}
       facets={result.facets}
     />
   );

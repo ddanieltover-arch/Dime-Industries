@@ -40,7 +40,17 @@ export function toProductCard(product: CatalogProduct): ProductCardModel {
     thcPct: v.thcPct,
     cbdPct: v.cbdPct,
     variantCount: product.variants.length,
+    primaryVariantId: v.id,
+    inStock: product.variants.some((variant) => variant.quantityOnHand > 0),
     imageUrl: product.imageUrl,
+    primarySku: v.sku,
+    coaUrl: product.coaUrl,
+    coaLive: false,
+    isBundle: Boolean(product.bundleComponents?.length) || product.categorySlug === "bundles",
+    compareAtPriceCents:
+      product.compareAtPriceCents != null && product.compareAtPriceCents > v.retailPriceCents
+        ? product.compareAtPriceCents
+        : null,
   };
 }
 

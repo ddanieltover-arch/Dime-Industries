@@ -1,34 +1,38 @@
 // components/home/store-locator-teaser.tsx
 import Link from "next/link";
 
-export function StoreLocatorTeaser() {
+export function StoreLocatorTeaser({
+  headline = "Walk.Run.Drive.",
+  body = "Find a neighborhood retailer that stocks DIME near you.",
+  ctaLabel = "Find DIME",
+  ctaHref = "/locations",
+}: {
+  headline?: string;
+  body?: string;
+  ctaLabel?: string;
+  ctaHref?: string;
+} = {}) {
   return (
     <section
       aria-labelledby="locator-heading"
-      className="relative overflow-hidden bg-[var(--color-surface)]"
+      className="relative overflow-hidden"
       style={{
         backgroundImage: "url(/brand/concrete.jpg)",
         backgroundSize: "cover",
         backgroundPosition: "center",
       }}
     >
-      <div className="absolute inset-0 bg-black/75" />
-      <div className="relative mx-auto max-w-7xl px-4 py-16 text-center sm:px-6 lg:px-8 lg:py-24">
+      <div className="absolute inset-0 bg-black/78" />
+      <div className="relative mx-auto max-w-7xl px-[var(--container-pad-x)] py-[var(--section-y)] text-center">
         <h2
           id="locator-heading"
-          className="font-[var(--font-display)] text-[var(--scale-2xl)] uppercase tracking-[0.12em] text-white sm:text-[var(--scale-3xl)]"
+          className="font-[var(--font-display)] text-[clamp(2rem,5vw,3.5rem)] uppercase tracking-[0.14em] text-white"
         >
-          Walk.Run.Drive.
+          {headline}
         </h2>
-        <p className="mx-auto mt-4 max-w-2xl text-[var(--scale-base)] text-white/75">
-          Looking for DIME near you? Browse our map to find a neighborhood retailer that stocks your favorite
-          DIME Industries products.
-        </p>
-        <Link
-          href="/locations"
-          className="mt-8 inline-block rounded-full border border-[var(--color-resin)] px-8 py-3 font-[var(--font-display)] text-[var(--scale-xs)] uppercase tracking-[0.16em] text-[var(--color-resin)] transition-colors hover:bg-[var(--color-resin)] hover:text-black"
-        >
-          Find DIME
+        <p className="mx-auto mt-4 max-w-lg text-[var(--scale-base)] text-white/75">{body}</p>
+        <Link href={ctaHref} className="btn-outline mt-8">
+          {ctaLabel}
         </Link>
       </div>
     </section>

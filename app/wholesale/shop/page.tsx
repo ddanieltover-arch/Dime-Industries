@@ -39,50 +39,45 @@ export default async function WholesaleShopPage() {
   );
 
   return (
-    <div className="mx-auto max-w-6xl px-4 py-10 sm:px-6 lg:px-8">
-      <div className="flex flex-wrap items-end justify-between gap-4">
+    <div className="mx-auto max-w-6xl px-[var(--container-pad-x)] py-10 lg:py-14">
+      <div className="flex flex-wrap items-end justify-between gap-4 border-b border-[var(--color-border)] pb-8">
         <div>
-          <h1 className="font-[var(--font-display)] text-[var(--scale-3xl)] text-[var(--color-ink)]">
-            Wholesale shop
-          </h1>
+          <p className="font-[var(--font-display)] text-[10px] uppercase tracking-[0.18em] text-[var(--color-resin)]">
+            B2B
+          </p>
+          <h1 className="section-title mt-2">Wholesale shop</h1>
           <p className="mt-2 text-[var(--scale-sm)] text-[var(--color-ink-soft)]">
             Prices reflect wholesale tiers. MOQ applies per SKU.
           </p>
         </div>
-        <Link
-          href="/wholesale/checkout"
-          className="rounded-[var(--radius-sm)] bg-[var(--color-resin-strong)] px-4 py-2 text-[var(--scale-sm)] text-[var(--color-surface)]"
-        >
+        <Link href="/wholesale/checkout" className="btn-primary">
           Checkout ({cart.itemCount}) · {formatPrice(cart.subtotalCents)}
         </Link>
       </div>
 
-      <ul className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+      <ul className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {products.map((product) => {
           const variant = product.variants[0];
           if (!variant) return null;
           const retail = catalog
             .find((p) => p.id === product.id)
             ?.variants.find((v) => v.id === variant.id);
-          const meta = resolveWholesaleVariantPrice(
-            retail ?? variant,
-            overrides
-          );
+          const meta = resolveWholesaleVariantPrice(retail ?? variant, overrides);
           return (
-            <li key={product.id} className="border border-[var(--color-border)] p-4">
-              <h2 className="font-[var(--font-display)] text-[var(--scale-lg)] text-[var(--color-ink)]">
+            <li key={product.id} className="bg-[var(--color-surface)] p-5">
+              <h2 className="font-[var(--font-display)] uppercase tracking-[0.04em] text-[var(--color-ink)]">
                 {product.name}
               </h2>
               <p className="mt-1 text-[var(--scale-sm)] text-[var(--color-ink-soft)]">
                 {variant.weightOrFormat} · SKU {variant.sku}
               </p>
-              <p className="mt-3 text-[var(--color-ink)]">
+              <p className="mt-3 font-[var(--font-display)] text-[var(--color-resin-strong)]">
                 {formatPrice(meta.wholesalePriceCents)}
-                <span className="ml-2 text-[var(--scale-sm)] text-[var(--color-ink-soft)] line-through">
+                <span className="ml-2 text-[var(--scale-sm)] font-normal text-[var(--color-ink-muted)] line-through">
                   {formatPrice(meta.retailPriceCents)}
                 </span>
               </p>
-              <p className="mt-1 text-[var(--scale-xs)] text-[var(--color-ink-soft)]">
+              <p className="mt-1 text-[var(--scale-xs)] text-[var(--color-ink-muted)]">
                 MOQ {meta.minQuantity} · stock {variant.quantityOnHand}
               </p>
               <form action={addWholesaleCartItemForm} className="mt-4 flex gap-2">
@@ -92,12 +87,9 @@ export default async function WholesaleShopPage() {
                   name="quantity"
                   min={meta.minQuantity}
                   defaultValue={meta.minQuantity}
-                  className="w-20 border border-[var(--color-border)] px-2 py-1 text-[var(--scale-sm)]"
+                  className="field-input w-20 px-3"
                 />
-                <button
-                  type="submit"
-                  className="border border-[var(--color-border)] px-3 py-1 text-[var(--scale-sm)] hover:bg-[var(--color-surface)]"
-                >
+                <button type="submit" className="btn-outline px-4 py-3">
                   Add
                 </button>
               </form>
@@ -108,10 +100,15 @@ export default async function WholesaleShopPage() {
 
       {cart.lines.length > 0 ? (
         <section className="mt-12 border-t border-[var(--color-border)] pt-8">
-          <h2 className="font-[var(--font-display)] text-[var(--scale-xl)]">Cart</h2>
+          <h2 className="font-[var(--font-display)] text-[10px] uppercase tracking-[0.16em] text-[var(--color-resin)]">
+            Cart
+          </h2>
           <ul className="mt-4 space-y-3">
             {cart.lines.map((line) => (
-              <li key={line.variantId} className="flex flex-wrap items-center justify-between gap-3 text-[var(--scale-sm)]">
+              <li
+                key={line.variantId}
+                className="flex flex-wrap items-center justify-between gap-3 text-[var(--scale-sm)]"
+              >
                 <span>
                   {line.productName} · {formatPrice(line.unitPriceCents)}
                 </span>
@@ -122,9 +119,9 @@ export default async function WholesaleShopPage() {
                     name="quantity"
                     min={cart.moqByVariant[line.variantId] ?? WHOLESALE_DEFAULT_MOQ}
                     defaultValue={line.quantity}
-                    className="w-20 border border-[var(--color-border)] px-2 py-1"
+                    className="field-input w-20 px-3"
                   />
-                  <button type="submit" className="underline underline-offset-4">
+                  <button type="submit" className="nav-link text-[var(--color-resin)]">
                     Update
                   </button>
                 </form>

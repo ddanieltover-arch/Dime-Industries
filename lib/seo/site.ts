@@ -1,4 +1,10 @@
 // lib/seo/site.ts
+/**
+ * SEO is present in the storefront (metadata, canonicals, robots, sitemap, JSON-LD).
+ * There is no SEO automation product — no admin keyword tools, auto-generated
+ * content engines, or rank-tracking integrations. Paths below are curated lists.
+ */
+
 /** Canonical production origin — used by robots, sitemap, and JSON-LD. */
 export const SITE_URL = "https://dimeindustries.us";
 
@@ -20,6 +26,7 @@ export const SEO_STATIC_PATHS = [
   "/careers",
   "/promotions",
   "/links",
+  "/cookies",
   "/validate",
   "/lab-results",
   "/rewards",

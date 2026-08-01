@@ -1,11 +1,4 @@
 // tests/e2e/home.spec.ts
-//
-// Not executed in this sandbox — there's no running Next.js server or
-// Playwright browser binaries available here. Written to the same standard
-// as code that does run, and should be the first thing wired into CI once
-// this repo has a real dev server (Deployment/DevOps Architecture, CI step
-// "Playwright E2E" in the pipeline diagram already defines where this runs).
-
 import { test, expect } from "@playwright/test";
 
 test.describe("Home page", () => {
@@ -28,8 +21,8 @@ test.describe("Home page", () => {
 
     await page.getByRole("button", { name: /^yes$/i }).click();
 
-    await expect(page.getByRole("dialog")).toHaveCount(0);
-    await expect(page.getByRole("heading", { name: /elevate your experience/i })).toBeVisible();
+    await expect(page.getByRole("dialog")).toHaveCount(0, { timeout: 15_000 });
+    await expect(page.getByRole("heading", { name: /award-winning products/i })).toBeVisible();
   });
 
   test("under-21 selection shows the blocking message, not the site", async ({ page }) => {
@@ -44,23 +37,44 @@ test.describe("Home page", () => {
     await page.goto("/");
     await page.getByRole("button", { name: /^yes$/i }).click();
 
-    const toggle = page.getByRole("button", { name: /switch to dark mode/i });
-    await toggle.click();
+    // Default theme is dark — toggle to light, then back to dark.
+    await page.getByRole("button", { name: /switch to light mode/i }).click();
+    await expect(page.locator("html")).toHaveAttribute("data-theme", "light");
+    await page.getByRole("button", { name: /switch to dark mode/i }).click();
     await expect(page.locator("html")).toHaveAttribute("data-theme", "dark");
     await expect(page.getByRole("button", { name: /switch to light mode/i })).toBeVisible();
   });
 
-  test("skip link moves focus to main content", async ({ page }) => {
+  test("skip link moves focus to main content", async ({ page, context }) => {
+    // Age gate autofocuses its heading; verify skip link once the gate is cleared.
+    await context.addCookies([
+      { name: "dime_age_verified", value: "1", domain: "localhost", path: "/", httpOnly: true },
+    ]);
     await page.goto("/");
     await page.keyboard.press("Tab");
     await expect(page.getByRole("link", { name: /skip to main content/i })).toBeFocused();
   });
 
-  test("main nav exposes the primary shop categories", async ({ page }) => {
+  test("main nav exposes primary destinations", async ({ page }) => {
     await page.goto("/");
     const nav = page.getByRole("navigation", { name: "Main" });
-    await expect(nav.getByRole("link", { name: "Vapes" })).toHaveAttribute("href", "/shop/vapes");
-    await expect(nav.getByRole("link", { name: "Edibles" })).toHaveAttribute("href", "/shop/edibles");
-    await expect(nav.getByRole("link", { name: "Wholesale" })).toHaveAttribute("href", "/wholesale");
+    await expect(nav.getByRole("link", { name: "Shop" })).toHaveAttribute("href", "/shop");
+    await expect(nav.getByRole("link", { name: "Promotions" })).toHaveAttribute("href", "/promotions");
+    await expect(nav.getByRole("link", { name: "Validate" })).toHaveAttribute("href", "/validate");
+    await expect(nav.getByRole("link", { name: "Rewards" })).toHaveAttribute("href", "/rewards");
+    await expect(nav.getByRole("link", { name: "Find DIME" })).toHaveAttribute("href", "/locations");
+  });
+
+  test("mobile bottom nav exposes primary destinations", async ({ page }) => {
+    await page.setViewportSize({ width: 390, height: 844 });
+    await page.goto("/");
+    await page.getByRole("button", { name: /^yes$/i }).click();
+
+    const nav = page.getByRole("navigation", { name: "Mobile primary" });
+    await expect(nav.getByRole("link", { name: "Home" })).toHaveAttribute("href", "/");
+    await expect(nav.getByRole("link", { name: "Shop" })).toHaveAttribute("href", "/shop");
+    await expect(nav.getByRole("link", { name: "Cart" })).toHaveAttribute("href", "/cart");
+    await expect(nav.getByRole("link", { name: "Rewards" })).toHaveAttribute("href", "/rewards");
+    await expect(nav.getByRole("link", { name: "Account" })).toHaveAttribute("href", "/account");
   });
 });

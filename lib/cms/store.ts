@@ -2,7 +2,8 @@
 import "server-only";
 import { cookies } from "next/headers";
 import { z } from "zod";
-import type { BlogPost, CmsPage, HomepageBanner } from "./types";
+import { DEFAULT_HOMEPAGE_LAYOUT, normalizeHomepageLayout } from "./homepage-layout";
+import type { BlogPost, CmsPage, HomepageBanner, HomepageLayout } from "./types";
 
 export const CMS_COOKIE = "dime_cms";
 
@@ -36,6 +37,7 @@ const jarSchema = z.object({
   pages: z.array(pageSchema),
   posts: z.array(postSchema),
   banner: bannerSchema,
+  layout: z.unknown().optional(),
   seeded: z.boolean().optional(),
 });
 
@@ -43,37 +45,37 @@ const DEFAULT_PAGES: CmsPage[] = [
   {
     slug: "about",
     title: "About Us",
-    body: "DIME Industries is a licensed cannabis brand founded in 2016. We make award-winning vapes, gummies, softgels, and prerolls — and we engineer our own hardware instead of buying generic parts.\n\n### Our commitment\nInnovation takes center stage. Our unwavering commitment to excellence has garnered more than 30 prestigious awards and recognition in leading industry publications.\n\n### Where we sell\nShop online for delivery in California and Massachusetts. Find neighborhood retailers nationwide via Find DIME.",
+    body: "DIME Industries is a licensed cannabis brand founded in 2016. We make award-winning vapes, gummies, softgels, and prerolls — and we engineer our own hardware instead of buying generic parts.\n\n### Elevate your experience\nInnovation takes center stage. Our commitment to excellence has earned recognition across leading industry publications — explore the lineup to see why we're award-winning.\n\n### Where we sell\nShop now for delivery in California and Massachusetts. Find neighborhood retailers nationwide via Find DIME.",
     status: "published",
-    updatedAt: "2026-07-01T00:00:00.000Z",
+    updatedAt: "2026-08-01T00:00:00.000Z",
   },
   {
     slug: "faq",
     title: "Frequently Asked Questions",
-    body: "### What is DIME Industries?\nDIME Industries is a licensed cannabis brand founded in 2016. DIME makes vapes, gummies, softgels, and prerolls, and engineers its own hardware. The brand has won more than 100 industry awards.\n\n### Where can I find the closest store?\nUse Find DIME on this site to browse locations by state, or shop online for CA and MA delivery.\n\n### How do I know my DIME product is authentic?\nScratch the validation code on the package, then register it at Validate. Validation confirms authenticity and unlocks limited warranty, loyalty points, and early access.\n\n### What products does DIME make?\nAll-in-one vapes, tanks, 510-thread batteries, gummies, softgels, and prerolls across Signature, Live Reserve, Balanced, Rosin, State Exclusive, and Collaborations lines.\n\n### Does DIME run sales or a rewards program?\nYes. See Promotions for current offers. Rewards members earn points, discounts, and early access when they validate products and shop.\n\n### Will another brand's battery work with a DIME tank?\nMost 510 batteries work, but air-draw batteries without a button and weaker batteries under 3.7v often fail. Use a DIME 5th Gen battery for best results.\n\n### What is the shelf life of edibles?\nSeveral months when stored cool and dry.",
+    body: "### What is DIME Industries?\nDIME Industries is a licensed cannabis brand founded in 2016. DIME makes vapes, gummies, softgels, and prerolls, and engineers its own hardware. The brand has won more than 100 industry awards. Shop now at the online catalog.\n\n### Where can I find the closest store?\nUse Find DIME on this site to browse locations by state, or shop online for CA and MA delivery.\n\n### How do I know my DIME product is authentic?\nScratch the validation code on the package, then register it at Validate. Validation confirms authenticity and unlocks limited warranty, loyalty points, and early access.\n\n### What products does DIME make?\nAll-in-one vapes, tanks, 510-thread batteries, gummies, softgels, and prerolls across Signature, Live Reserve, Balanced, Rosin, State Exclusive, and Collaborations lines.\n\n### Does DIME run sales or a rewards program?\nYes. See Promotions for current offers. Rewards members earn points, discounts, and early access when they validate products and shop.\n\n### Will another brand's battery work with a DIME tank?\nMost 510 batteries work, but air-draw batteries without a button and weaker batteries under 3.7v often fail. Use a DIME 5th Gen battery for best results.\n\n### What is the shelf life of edibles?\nSeveral months when stored cool and dry.",
     status: "published",
-    updatedAt: "2026-07-01T00:00:00.000Z",
+    updatedAt: "2026-08-01T00:00:00.000Z",
   },
   {
     slug: "contact",
     title: "Contact",
-    body: "### Customer support\nsupport@dimeindustries.us\n\n### Wholesale\nwholesale@dimeindustries.us · Apply at /wholesale\n\n### Privacy requests\nprivacy@dimeindustries.us\n\nInclude your order ID from the confirmation email for order issues. For authenticity or warranty, use Validate with your package code.",
+    body: "### Email\nsupport@dimeindustries.us\n\nOne inbox for customer support, wholesale, privacy, and careers. Apply for wholesale at /wholesale.\n\nInclude your order ID from the confirmation email for order issues. For authenticity or warranty, use Validate with your package code.",
     status: "published",
     updatedAt: "2026-07-01T00:00:00.000Z",
   },
   {
     slug: "careers",
     title: "Careers",
-    body: "### Build with DIME\nWe're always looking for people who care about craft hardware, compliance, and brand excellence.\n\n### How to apply\nSend a short intro and resume to careers@dimeindustries.us with the role you're interested in.\n\n### Culture\nLab-tested standards apply to how we work too — clear ownership, quality over shortcuts, and respect for regulated markets.",
+    body: "### Build with DIME\nWe're always looking for people who care about craft hardware, compliance, and brand excellence.\n\n### How to apply\nSend a short intro and resume to support@dimeindustries.us with the role you're interested in.\n\n### Culture\nLab-tested standards apply to how we work too — clear ownership, quality over shortcuts, and respect for regulated markets.",
     status: "published",
     updatedAt: "2026-07-01T00:00:00.000Z",
   },
   {
     slug: "promotions",
     title: "Promotions",
-    body: "### Current offers\nCheck back often for drops, bundle deals, and member-only promotions.\n\n### Rewards members\nValidate your products and shop while logged in to earn points toward discounts and early access.\n\n### Stay notified\nJoin the members newsletter on the homepage for drop alerts.",
+    body: "### Elevate your experience\nExplore award-winning DIME products — then grab what's on offer. Lab-tested vapes, edibles, and prerolls ready to shop.\n\n### Shop now\nBrowse the full catalog or jump straight to [Shop vapes](/shop/vapes).\n\n### Current offers\nCheck back often for drops, bundle deals, and member-only promotions.\n\n### Rewards members\nValidate your products and shop while logged in to earn points toward discounts and early access.\n\n### Stay notified\nJoin the members newsletter on the homepage for drop alerts.",
     status: "published",
-    updatedAt: "2026-07-01T00:00:00.000Z",
+    updatedAt: "2026-08-01T00:00:00.000Z",
   },
   {
     slug: "links",
@@ -92,7 +94,7 @@ const DEFAULT_PAGES: CmsPage[] = [
   {
     slug: "legal/privacy",
     title: "Privacy Policy",
-    body: "We collect account, order, and device data needed to operate the storefront, process payments, and meet compliance obligations.\n\n### What we don't do\nWe do not sell personal information.\n\n### Requests\nContact privacy@dimeindustries.us for access, correction, or deletion requests where applicable.",
+    body: "We collect account, order, and device data needed to operate the storefront, process payments, and meet compliance obligations.\n\n### What we don't do\nWe do not sell personal information.\n\n### Requests\nContact support@dimeindustries.us for access, correction, or deletion requests where applicable.",
     status: "published",
     updatedAt: "2026-07-01T00:00:00.000Z",
   },
@@ -106,21 +108,21 @@ const DEFAULT_PAGES: CmsPage[] = [
   {
     slug: "legal/returns",
     title: "Returns Policy",
-    body: "Defective hardware may be eligible for exchange when validated through our product registration flow and purchased from a licensed source.\n\nContact support with photos, retailer details, and your order ID.",
+    body: "### Eligible returns\nDefective hardware may be eligible for exchange or refund when purchased from a licensed source and validated through our product registration flow.\n\n### How to request\n1. Sign in and open the paid order under Account → Orders.\n2. Submit a return request with the reason and details.\n3. Track status under Account → Returns. Support may approve, deny, or mark the refund complete.\n\n### Contact\nInclude photos, retailer details, order ID, and validation code when relevant. Policy questions: support@dimeindustries.us.",
     status: "published",
-    updatedAt: "2026-07-01T00:00:00.000Z",
+    updatedAt: "2026-08-01T00:00:00.000Z",
   },
   {
     slug: "legal/wholesale-rewards",
     title: "Wholesale Rewards Terms",
-    body: "Wholesale rewards, if offered, are available only to approved wholesale accounts in good standing.\n\nPoints, rebates, or incentives may be adjusted or revoked for policy violations, chargebacks, or inactive accounts. Contact wholesale@dimeindustries.us for program details.",
+    body: "Wholesale rewards, if offered, are available only to approved wholesale accounts in good standing.\n\nPoints, rebates, or incentives may be adjusted or revoked for policy violations, chargebacks, or inactive accounts. Contact support@dimeindustries.us for program details.",
     status: "published",
     updatedAt: "2026-07-01T00:00:00.000Z",
   },
   {
     slug: "wholesale",
     title: "Wholesale",
-    body: "Apply at /wholesale for DIME B2B pricing. Approved accounts get wholesale tiers with NET-30, NET-60, or Bitcoin upfront.\n\nQuestions: wholesale@dimeindustries.us",
+    body: "Apply at /wholesale for DIME B2B pricing. Approved accounts get wholesale tiers with NET-30, NET-60, or Bitcoin upfront.\n\nQuestions: support@dimeindustries.us",
     status: "published",
     updatedAt: "2026-07-01T00:00:00.000Z",
   },
@@ -168,7 +170,7 @@ const DEFAULT_POSTS: BlogPost[] = [
 const DEFAULT_BANNER: HomepageBanner = {
   enabled: true,
   headline: "Elevate your experience",
-  body: "Explore award-winning DIME vapes, edibles, and prerolls — lab-tested and ready to shop.",
+  body: "Explore our products to see why we're award-winning — lab-tested vapes, edibles, and prerolls.",
   ctaLabel: "Shop now",
   ctaHref: "/shop",
 };
@@ -177,26 +179,37 @@ type CmsJar = {
   pages: CmsPage[];
   posts: BlogPost[];
   banner: HomepageBanner;
+  layout: HomepageLayout;
 };
+
+function emptyJar(): CmsJar {
+  return {
+    pages: DEFAULT_PAGES,
+    posts: DEFAULT_POSTS,
+    banner: DEFAULT_BANNER,
+    layout: DEFAULT_HOMEPAGE_LAYOUT,
+  };
+}
 
 async function readJar(): Promise<CmsJar> {
   const store = await cookies();
   const raw = store.get(CMS_COOKIE)?.value;
   if (!raw) {
-    return { pages: DEFAULT_PAGES, posts: DEFAULT_POSTS, banner: DEFAULT_BANNER };
+    return emptyJar();
   }
   try {
     const parsed = jarSchema.safeParse(JSON.parse(decodeURIComponent(raw)));
     if (!parsed.success) {
-      return { pages: DEFAULT_PAGES, posts: DEFAULT_POSTS, banner: DEFAULT_BANNER };
+      return emptyJar();
     }
     return {
       pages: parsed.data.pages.length ? parsed.data.pages : DEFAULT_PAGES,
       posts: parsed.data.posts.length ? parsed.data.posts : DEFAULT_POSTS,
       banner: parsed.data.banner,
+      layout: normalizeHomepageLayout(parsed.data.layout ?? DEFAULT_HOMEPAGE_LAYOUT),
     };
   } catch {
-    return { pages: DEFAULT_PAGES, posts: DEFAULT_POSTS, banner: DEFAULT_BANNER };
+    return emptyJar();
   }
 }
 
@@ -218,6 +231,27 @@ function isProductionBuild(): boolean {
 /** Deduplicate seed across parallel static/ISR renders (one seed per process). */
 let dbCmsReady: Promise<boolean> | null = null;
 
+/** Fail open to cookie/defaults when Postgres is slow or pool-exhausted. */
+const CMS_DB_READY_TIMEOUT_MS = 4_000;
+
+function mergeMissingDefaultPages(pages: CmsPage[]): CmsPage[] {
+  if (pages.length === 0) return DEFAULT_PAGES;
+  const bySlug = new Map(pages.map((p) => [p.slug, p]));
+  for (const page of DEFAULT_PAGES) {
+    if (!bySlug.has(page.slug)) bySlug.set(page.slug, page);
+  }
+  return Array.from(bySlug.values());
+}
+
+function mergeMissingDefaultPosts(posts: BlogPost[]): BlogPost[] {
+  if (posts.length === 0) return DEFAULT_POSTS;
+  const bySlug = new Map(posts.map((p) => [p.slug, p]));
+  for (const post of DEFAULT_POSTS) {
+    if (!bySlug.has(post.slug)) bySlug.set(post.slug, post);
+  }
+  return Array.from(bySlug.values());
+}
+
 async function useDbCms(): Promise<boolean> {
   // Static generation must not wait on Postgres — parallel CMS pages were
   // exhausting the pool and hitting Next's 60s page timeout on Vercel.
@@ -229,7 +263,7 @@ async function useDbCms(): Promise<boolean> {
   if (!dbCmsReady) {
     dbCmsReady = (async () => {
       const { dbSeedCmsIfEmpty } = await import("./cms-db");
-      await dbSeedCmsIfEmpty(DEFAULT_PAGES, DEFAULT_POSTS, DEFAULT_BANNER);
+      await dbSeedCmsIfEmpty(DEFAULT_PAGES, DEFAULT_POSTS, DEFAULT_BANNER, DEFAULT_HOMEPAGE_LAYOUT);
       return true;
     })().catch((err) => {
       console.error("[cms] database unavailable, falling back to defaults", err);
@@ -237,7 +271,17 @@ async function useDbCms(): Promise<boolean> {
       return false;
     });
   }
-  return dbCmsReady;
+
+  try {
+    return await Promise.race([
+      dbCmsReady,
+      new Promise<boolean>((resolve) => {
+        setTimeout(() => resolve(false), CMS_DB_READY_TIMEOUT_MS);
+      }),
+    ]);
+  } catch {
+    return false;
+  }
 }
 
 function publishedOnly<T extends { status: string }>(items: T[], includeDrafts: boolean): T[] {
@@ -251,19 +295,34 @@ export async function listCmsPages(includeDrafts = false): Promise<CmsPage[]> {
   if (await useDbCms()) {
     try {
       const { dbListCmsPages } = await import("./cms-db");
-      return publishedOnly(await dbListCmsPages(), includeDrafts);
+      return publishedOnly(mergeMissingDefaultPages(await dbListCmsPages()), includeDrafts);
     } catch (err) {
       console.error("[cms] list pages failed, using defaults", err);
       return publishedOnly(DEFAULT_PAGES, includeDrafts);
     }
   }
   const { pages } = await readJar();
-  return publishedOnly(pages, includeDrafts);
+  return publishedOnly(mergeMissingDefaultPages(pages), includeDrafts);
 }
 
 export async function getCmsPage(slug: string, includeDrafts = false): Promise<CmsPage | null> {
-  const pages = await listCmsPages(includeDrafts);
-  return pages.find((p) => p.slug === slug) ?? null;
+  try {
+    const pages = await Promise.race([
+      listCmsPages(includeDrafts),
+      new Promise<CmsPage[]>((_, reject) => {
+        setTimeout(() => reject(new Error("cms list timeout")), CMS_DB_READY_TIMEOUT_MS + 1_500);
+      }),
+    ]);
+    const hit = pages.find((p) => p.slug === slug);
+    if (hit) return hit;
+  } catch (err) {
+    console.error("[cms] get page failed, using defaults", err);
+  }
+  // Built-in seed so nav/footer CMS routes never 404 on incomplete or slow DB/cookie jars.
+  const fallback = DEFAULT_PAGES.find((p) => p.slug === slug);
+  if (!fallback) return null;
+  if (!includeDrafts && fallback.status !== "published") return null;
+  return fallback;
 }
 
 export async function upsertCmsPage(page: CmsPage): Promise<void> {
@@ -289,14 +348,14 @@ export async function listBlogPosts(includeDrafts = false): Promise<BlogPost[]> 
   if (await useDbCms()) {
     try {
       const { dbListBlogPosts } = await import("./cms-db");
-      return sortPosts(await dbListBlogPosts());
+      return sortPosts(mergeMissingDefaultPosts(await dbListBlogPosts()));
     } catch (err) {
       console.error("[cms] list posts failed, using defaults", err);
       return sortPosts(DEFAULT_POSTS);
     }
   }
   const { posts } = await readJar();
-  return sortPosts(posts);
+  return sortPosts(mergeMissingDefaultPosts(posts));
 }
 
 export async function getBlogPost(slug: string, includeDrafts = false): Promise<BlogPost | null> {
@@ -341,5 +400,34 @@ export async function saveHomepageBanner(banner: HomepageBanner): Promise<void> 
   }
   const jar = await readJar();
   jar.banner = banner;
+  await writeJar(jar);
+}
+
+export async function getHomepageLayout(): Promise<HomepageLayout> {
+  if (isProductionBuild()) {
+    return DEFAULT_HOMEPAGE_LAYOUT;
+  }
+  if (await useDbCms()) {
+    try {
+      const { dbGetHomepageLayout } = await import("./cms-db");
+      const fromDb = await dbGetHomepageLayout();
+      return fromDb ? normalizeHomepageLayout(fromDb) : DEFAULT_HOMEPAGE_LAYOUT;
+    } catch (err) {
+      console.error("[cms] homepage layout failed, using defaults", err);
+      return DEFAULT_HOMEPAGE_LAYOUT;
+    }
+  }
+  return (await readJar()).layout;
+}
+
+export async function saveHomepageLayout(layout: HomepageLayout): Promise<void> {
+  const normalized = normalizeHomepageLayout(layout);
+  if (await useDbCms()) {
+    const { dbSaveHomepageLayout } = await import("./cms-db");
+    await dbSaveHomepageLayout(normalized);
+    return;
+  }
+  const jar = await readJar();
+  jar.layout = normalized;
   await writeJar(jar);
 }

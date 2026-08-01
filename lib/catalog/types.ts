@@ -49,6 +49,10 @@ export type CatalogProduct = {
   galleryUrls: string[];
   /** Source path on dimeindustries.com */
   brandPath: string | null;
+  /** When set, this SKU is a package of other catalog products */
+  bundleComponents?: { productSlug: string; quantity: number }[];
+  /** Pre-discount sum of component retail (for savings UI) */
+  compareAtPriceCents?: number | null;
 };
 
 /** Card-facing projection used by ProductCard and home rails */
@@ -62,7 +66,21 @@ export type ProductCardModel = {
   thcPct: number;
   cbdPct: number;
   variantCount: number;
+  /** Primary (lowest-price) variant — used for grid-level add to cart */
+  primaryVariantId: string;
+  /** True when at least one variant has stock */
+  inStock: boolean;
   imageUrl: string | null;
+  /** Primary variant SKU — lab results / COA lookups */
+  primarySku: string;
+  /** Catalog COA document URL when present */
+  coaUrl: string | null;
+  /** True when the live lab host returned a COA for this SKU */
+  coaLive: boolean;
+  /** Bundle package (category bundles or explicit components) */
+  isBundle: boolean;
+  /** Strikethrough price when bundle saves vs components */
+  compareAtPriceCents: number | null;
 };
 
 export type CatalogFilters = {

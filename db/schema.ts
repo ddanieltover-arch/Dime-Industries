@@ -556,6 +556,27 @@ export const commerceAffiliatePayouts = pgTable("commerce_affiliate_payouts", {
   paidAt: timestamp("paid_at", { withTimezone: true }),
 });
 
+export const commerceReturns = pgTable(
+  "commerce_returns",
+  {
+    id: text("id").primaryKey(),
+    orderId: text("order_id").notNull(),
+    email: text("email").notNull(),
+    status: text("status").notNull().default("requested"),
+    reason: text("reason").notNull(),
+    details: text("details"),
+    adminNote: text("admin_note"),
+    createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+    updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow(),
+    resolvedAt: timestamp("resolved_at", { withTimezone: true }),
+  },
+  (t) => ({
+    byEmailCreated: index("commerce_returns_email_idx").on(t.email, t.createdAt),
+    byOrder: index("commerce_returns_order_idx").on(t.orderId),
+    byStatus: index("commerce_returns_status_idx").on(t.status, t.createdAt),
+  })
+);
+
 // ---------------------------------------------------------------------------
 // Relations (Drizzle relational query API)
 // ---------------------------------------------------------------------------

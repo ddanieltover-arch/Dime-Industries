@@ -14,14 +14,15 @@ export function PublicValidateForm() {
   const [state, formAction, pending] = useActionState(submitPublicValidation, initial);
 
   return (
-    <form action={formAction} className="mx-auto max-w-md space-y-4">
-      <label className="block font-[var(--font-display)] text-[var(--scale-xs)] uppercase tracking-[0.14em] text-[var(--color-resin)]">
+    <form action={formAction} className="space-y-4">
+      <label className="block font-[var(--font-display)] text-[10px] uppercase tracking-[0.16em] text-[var(--color-resin)]">
         Validation code
         <input
           name="code"
           required
           placeholder="Scratch code or product SKU"
-          className="mt-2 w-full rounded-full border border-[var(--color-border-interactive)] bg-[var(--color-surface)] px-5 py-3 text-[var(--scale-sm)] text-[var(--color-ink)]"
+          autoComplete="off"
+          className="field-input mt-2"
         />
       </label>
       <p className="text-[var(--scale-xs)] text-[var(--color-ink-soft)]">
@@ -56,11 +57,7 @@ export function PublicValidateForm() {
           </p>
         </div>
       ) : null}
-      <button
-        type="submit"
-        disabled={pending}
-        className="w-full rounded-full bg-[var(--color-resin)] px-8 py-3 font-[var(--font-display)] text-[var(--scale-xs)] uppercase tracking-[0.16em] text-black hover:bg-[var(--color-resin-hover)] disabled:opacity-60"
-      >
+      <button type="submit" disabled={pending} className="btn-primary w-full">
         {pending ? "Checking…" : "Validate"}
       </button>
     </form>

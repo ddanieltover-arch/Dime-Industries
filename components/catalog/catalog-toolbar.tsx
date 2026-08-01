@@ -27,8 +27,8 @@ export function CatalogToolbar({ basePath, filters, total }: Props) {
   const { action } = buildAction(basePath, filters);
 
   return (
-    <div className="flex flex-col gap-4 border-b border-[var(--color-border)] pb-4 sm:flex-row sm:items-end sm:justify-between">
-      <p className="font-[var(--font-mono)] text-[var(--scale-sm)] text-[var(--color-ink-soft)]">
+    <div className="flex flex-col gap-4 border-b border-[var(--color-border)] pb-5 sm:flex-row sm:items-end sm:justify-between">
+      <p className="font-[var(--font-display)] text-[10px] uppercase tracking-[0.14em] text-[var(--color-ink-soft)]">
         Showing <span className="text-[var(--color-ink)]">{total}</span>{" "}
         {total === 1 ? "result" : "results"}
       </p>
@@ -46,7 +46,7 @@ export function CatalogToolbar({ basePath, filters, total }: Props) {
             name="q"
             defaultValue={filters.q ?? ""}
             placeholder="Strain, line, SKU…"
-            className="min-w-[12rem] rounded-[var(--radius-sm)] border border-[var(--color-border-interactive)] bg-[var(--color-surface-raised)] px-3 py-2 text-[var(--scale-sm)] text-[var(--color-ink)]"
+            className="min-w-[12rem] rounded-[var(--radius-pill)] border border-[var(--color-border-interactive)] bg-[var(--color-surface)] px-4 py-2.5 text-[var(--scale-sm)] text-[var(--color-ink)]"
           />
         </label>
 
@@ -55,7 +55,7 @@ export function CatalogToolbar({ basePath, filters, total }: Props) {
           <select
             name="sort"
             defaultValue={filters.sort ?? "popularity"}
-            className="rounded-[var(--radius-sm)] border border-[var(--color-border-interactive)] bg-[var(--color-surface-raised)] px-3 py-2 text-[var(--scale-sm)] text-[var(--color-ink)]"
+            className="rounded-[var(--radius-pill)] border border-[var(--color-border-interactive)] bg-[var(--color-surface)] px-4 py-2.5 text-[var(--scale-sm)] text-[var(--color-ink)]"
           >
             {SORT_OPTIONS.map((opt) => (
               <option key={opt.value} value={opt.value}>
@@ -65,10 +65,7 @@ export function CatalogToolbar({ basePath, filters, total }: Props) {
           </select>
         </label>
 
-        <button
-          type="submit"
-          className="rounded-[var(--radius-sm)] bg-[var(--color-resin-strong)] px-4 py-2 text-[var(--scale-sm)] text-[var(--color-surface)] transition-colors hover:bg-[var(--color-resin-hover)]"
-        >
+        <button type="submit" className="btn-primary py-2.5">
           Apply
         </button>
 

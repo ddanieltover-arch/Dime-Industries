@@ -26,8 +26,8 @@ export const BRAND_CATALOG: CatalogProduct[] = [{
     coaUrl: "/lab-results?sku=5TH_GEN_BATTERY",
     createdAt: "2026-06-01T00:00:00.000Z",
     popularityScore: 57,
-    imageUrl: "/catalog/5th-gen-battery/primary.jpg",
-    galleryUrls: ["/catalog/5th-gen-battery/primary.jpg"],
+    imageUrl: "/catalog/5th-gen-battery/primary.webp",
+    galleryUrls: ["/catalog/5th-gen-battery/primary.webp"],
     brandPath: "/products/accessories/5th-gen-battery",
     variants: [
       {
@@ -58,8 +58,8 @@ export const BRAND_CATALOG: CatalogProduct[] = [{
     coaUrl: "/lab-results?sku=5TH_GEN_MINI",
     createdAt: "2026-06-01T00:00:00.000Z",
     popularityScore: 64,
-    imageUrl: "/catalog/5th-gen-mini/primary.jpg",
-    galleryUrls: ["/catalog/5th-gen-mini/primary.jpg"],
+    imageUrl: "/catalog/5th-gen-mini/primary.webp",
+    galleryUrls: ["/catalog/5th-gen-mini/primary.webp"],
     brandPath: "/products/accessories/5th-gen-mini",
     variants: [
       {
@@ -90,8 +90,8 @@ export const BRAND_CATALOG: CatalogProduct[] = [{
     coaUrl: "/lab-results?sku=AFTERNOON",
     createdAt: "2026-06-01T00:00:00.000Z",
     popularityScore: 78,
-    imageUrl: "/catalog/afternoon/primary.jpg",
-    galleryUrls: ["/catalog/afternoon/primary.jpg"],
+    imageUrl: "/catalog/afternoon/primary.webp",
+    galleryUrls: ["/catalog/afternoon/primary.webp"],
     brandPath: "/products/softgels/afternoon",
     variants: [
       {
@@ -122,8 +122,8 @@ export const BRAND_CATALOG: CatalogProduct[] = [{
     coaUrl: "/lab-results?sku=BANANA_MAC",
     createdAt: "2026-06-01T00:00:00.000Z",
     popularityScore: 54,
-    imageUrl: "/catalog/banana-mac/primary.jpg",
-    galleryUrls: ["/catalog/banana-mac/primary.jpg"],
+    imageUrl: "/catalog/banana-mac/primary.webp",
+    galleryUrls: ["/catalog/banana-mac/primary.webp"],
     brandPath: "/products/vapes/live-reserve-line/banana-mac",
     variants: [
       {
@@ -154,8 +154,8 @@ export const BRAND_CATALOG: CatalogProduct[] = [{
     coaUrl: "/lab-results?sku=BANANA_PUNCH",
     createdAt: "2026-06-01T00:00:00.000Z",
     popularityScore: 57,
-    imageUrl: "/catalog/banana-punch/primary.jpg",
-    galleryUrls: ["/catalog/banana-punch/primary.jpg"],
+    imageUrl: "/catalog/banana-punch/primary.webp",
+    galleryUrls: ["/catalog/banana-punch/primary.webp"],
     brandPath: "/products/vapes/signature-line/banana-punch",
     variants: [
       {
@@ -186,8 +186,8 @@ export const BRAND_CATALOG: CatalogProduct[] = [{
     coaUrl: "/lab-results?sku=BERRY_WHITE",
     createdAt: "2026-06-01T00:00:00.000Z",
     popularityScore: 64,
-    imageUrl: "/catalog/berry-white/primary.jpg",
-    galleryUrls: ["/catalog/berry-white/primary.jpg"],
+    imageUrl: "/catalog/berry-white/primary.webp",
+    galleryUrls: ["/catalog/berry-white/primary.webp"],
     brandPath: "/products/vapes/signature-line/berry-white",
     variants: [
       {
@@ -218,8 +218,8 @@ export const BRAND_CATALOG: CatalogProduct[] = [{
     coaUrl: "/lab-results?sku=BIRTHDAY_CAKE",
     createdAt: "2026-06-01T00:00:00.000Z",
     popularityScore: 79,
-    imageUrl: "/catalog/birthday-cake/primary.jpg",
-    galleryUrls: ["/catalog/birthday-cake/primary.jpg"],
+    imageUrl: "/catalog/birthday-cake/primary.webp",
+    galleryUrls: ["/catalog/birthday-cake/primary.webp"],
     brandPath: "/products/vapes/collaborations/birthday-cake",
     variants: [
       {
@@ -250,8 +250,8 @@ export const BRAND_CATALOG: CatalogProduct[] = [{
     coaUrl: "/lab-results?sku=BLACK_ICE",
     createdAt: "2026-06-01T00:00:00.000Z",
     popularityScore: 87,
-    imageUrl: "/catalog/black-ice/primary.jpg",
-    galleryUrls: ["/catalog/black-ice/primary.jpg"],
+    imageUrl: "/catalog/black-ice/primary.webp",
+    galleryUrls: ["/catalog/black-ice/primary.webp"],
     brandPath: "/products/vapes/rosin-line/black-ice",
     variants: [
       {
@@ -282,8 +282,8 @@ export const BRAND_CATALOG: CatalogProduct[] = [{
     coaUrl: "/lab-results?sku=BLACKBERRY_OG",
     createdAt: "2026-06-01T00:00:00.000Z",
     popularityScore: 56,
-    imageUrl: "/catalog/blackberry-og/primary.jpg",
-    galleryUrls: ["/catalog/blackberry-og/primary.jpg"],
+    imageUrl: "/catalog/blackberry-og/primary.webp",
+    galleryUrls: ["/catalog/blackberry-og/primary.webp"],
     brandPath: "/products/vapes/signature-line/blackberry-og",
     variants: [
       {
@@ -314,8 +314,8 @@ export const BRAND_CATALOG: CatalogProduct[] = [{
     coaUrl: "/lab-results?sku=BLUE_RASPBERRY",
     createdAt: "2026-06-01T00:00:00.000Z",
     popularityScore: 56,
-    imageUrl: "/catalog/blue-raspberry/primary.jpg",
-    galleryUrls: ["/catalog/blue-raspberry/primary.jpg"],
+    imageUrl: "/catalog/blue-raspberry/primary.webp",
+    galleryUrls: ["/catalog/blue-raspberry/primary.webp"],
     brandPath: "/products/gummies/balanced/blue-raspberry",
     variants: [
       {
@@ -346,8 +346,8 @@ export const BRAND_CATALOG: CatalogProduct[] = [{
     coaUrl: "/lab-results?sku=BLUEBERRY",
     createdAt: "2026-06-01T00:00:00.000Z",
     popularityScore: 70,
-    imageUrl: "/catalog/blueberry/primary.jpg",
-    galleryUrls: ["/catalog/blueberry/primary.jpg"],
+    imageUrl: "/catalog/blueberry/primary.webp",
+    galleryUrls: ["/catalog/blueberry/primary.webp"],
     brandPath: "/products/gummies/rosin/blueberry",
     variants: [
       {
@@ -378,8 +378,8 @@ export const BRAND_CATALOG: CatalogProduct[] = [{
     coaUrl: "/lab-results?sku=BLUEBERRY_LEMON_HAZE",
     createdAt: "2026-06-01T00:00:00.000Z",
     popularityScore: 63,
-    imageUrl: "/catalog/blueberry-lemon-haze/primary.jpg",
-    galleryUrls: ["/catalog/blueberry-lemon-haze/primary.jpg"],
+    imageUrl: "/catalog/blueberry-lemon-haze/primary.webp",
+    galleryUrls: ["/catalog/blueberry-lemon-haze/primary.webp"],
     brandPath: "/products/vapes/signature-line/blueberry-lemon-haze",
     variants: [
       {
@@ -410,8 +410,8 @@ export const BRAND_CATALOG: CatalogProduct[] = [{
     coaUrl: "/lab-results?sku=BOMBSICLE",
     createdAt: "2026-06-01T00:00:00.000Z",
     popularityScore: 94,
-    imageUrl: "/catalog/bombsicle/primary.jpg",
-    galleryUrls: ["/catalog/bombsicle/primary.jpg"],
+    imageUrl: "/catalog/bombsicle/primary.webp",
+    galleryUrls: ["/catalog/bombsicle/primary.webp"],
     brandPath: "/products/vapes/state-exclusive/bombsicle",
     variants: [
       {
@@ -442,8 +442,8 @@ export const BRAND_CATALOG: CatalogProduct[] = [{
     coaUrl: "/lab-results?sku=CACTUS_CHILL",
     createdAt: "2026-06-01T00:00:00.000Z",
     popularityScore: 51,
-    imageUrl: "/catalog/cactus-chill/primary.jpg",
-    galleryUrls: ["/catalog/cactus-chill/primary.jpg"],
+    imageUrl: "/catalog/cactus-chill/primary.webp",
+    galleryUrls: ["/catalog/cactus-chill/primary.webp"],
     brandPath: "/products/vapes/state-exclusive/cactus-chill",
     variants: [
       {
@@ -474,8 +474,8 @@ export const BRAND_CATALOG: CatalogProduct[] = [{
     coaUrl: "/lab-results?sku=CANTALOUPE_DREAM",
     createdAt: "2026-06-01T00:00:00.000Z",
     popularityScore: 70,
-    imageUrl: "/catalog/cantaloupe-dream/primary.jpg",
-    galleryUrls: ["/catalog/cantaloupe-dream/primary.jpg"],
+    imageUrl: "/catalog/cantaloupe-dream/primary.webp",
+    galleryUrls: ["/catalog/cantaloupe-dream/primary.webp"],
     brandPath: "/products/vapes/signature-line/cantaloupe-dream",
     variants: [
       {
@@ -506,8 +506,8 @@ export const BRAND_CATALOG: CatalogProduct[] = [{
     coaUrl: "/lab-results?sku=CHOCOLOPE",
     createdAt: "2026-06-01T00:00:00.000Z",
     popularityScore: 61,
-    imageUrl: "/catalog/chocolope/primary.jpg",
-    galleryUrls: ["/catalog/chocolope/primary.jpg"],
+    imageUrl: "/catalog/chocolope/primary.webp",
+    galleryUrls: ["/catalog/chocolope/primary.webp"],
     brandPath: "/products/vapes/live-reserve-line/chocolope",
     variants: [
       {
@@ -538,8 +538,8 @@ export const BRAND_CATALOG: CatalogProduct[] = [{
     coaUrl: "/lab-results?sku=DIME_OG",
     createdAt: "2026-06-01T00:00:00.000Z",
     popularityScore: 68,
-    imageUrl: "/catalog/dime-og/primary.jpg",
-    galleryUrls: ["/catalog/dime-og/primary.jpg"],
+    imageUrl: "/catalog/dime-og/primary.webp",
+    galleryUrls: ["/catalog/dime-og/primary.webp"],
     brandPath: "/products/vapes/live-reserve-line/dime-og",
     variants: [
       {
@@ -570,8 +570,8 @@ export const BRAND_CATALOG: CatalogProduct[] = [{
     coaUrl: "/lab-results?sku=EVENING",
     createdAt: "2026-06-01T00:00:00.000Z",
     popularityScore: 85,
-    imageUrl: "/catalog/evening/primary.jpg",
-    galleryUrls: ["/catalog/evening/primary.jpg"],
+    imageUrl: "/catalog/evening/primary.webp",
+    galleryUrls: ["/catalog/evening/primary.webp"],
     brandPath: "/products/softgels/evening",
     variants: [
       {
@@ -602,8 +602,8 @@ export const BRAND_CATALOG: CatalogProduct[] = [{
     coaUrl: "/lab-results?sku=FORBIDDEN_APPLE",
     createdAt: "2026-06-01T00:00:00.000Z",
     popularityScore: 77,
-    imageUrl: "/catalog/forbidden-apple/primary.jpg",
-    galleryUrls: ["/catalog/forbidden-apple/primary.jpg"],
+    imageUrl: "/catalog/forbidden-apple/primary.webp",
+    galleryUrls: ["/catalog/forbidden-apple/primary.webp"],
     brandPath: "/products/vapes/signature-line/forbidden-apple",
     variants: [
       {
@@ -634,8 +634,8 @@ export const BRAND_CATALOG: CatalogProduct[] = [{
     coaUrl: "/lab-results?sku=GARLIC_COOKIES",
     createdAt: "2026-06-01T00:00:00.000Z",
     popularityScore: 66,
-    imageUrl: "/catalog/garlic-cookies/primary.jpg",
-    galleryUrls: ["/catalog/garlic-cookies/primary.jpg"],
+    imageUrl: "/catalog/garlic-cookies/primary.webp",
+    galleryUrls: ["/catalog/garlic-cookies/primary.webp"],
     brandPath: "/products/vapes/rosin-line/garlic-cookies",
     variants: [
       {
@@ -666,8 +666,8 @@ export const BRAND_CATALOG: CatalogProduct[] = [{
     coaUrl: "/lab-results?sku=GRAPE_LIMEADE",
     createdAt: "2026-06-01T00:00:00.000Z",
     popularityScore: 75,
-    imageUrl: "/catalog/grape-limeade/primary.jpg",
-    galleryUrls: ["/catalog/grape-limeade/primary.jpg"],
+    imageUrl: "/catalog/grape-limeade/primary.webp",
+    galleryUrls: ["/catalog/grape-limeade/primary.webp"],
     brandPath: "/products/vapes/live-reserve-line/grape-limeade",
     variants: [
       {
@@ -698,8 +698,8 @@ export const BRAND_CATALOG: CatalogProduct[] = [{
     coaUrl: "/lab-results?sku=GRAPES_N_CREAM",
     createdAt: "2026-06-01T00:00:00.000Z",
     popularityScore: 73,
-    imageUrl: "/catalog/grapes-n-cream/primary.jpg",
-    galleryUrls: ["/catalog/grapes-n-cream/primary.jpg"],
+    imageUrl: "/catalog/grapes-n-cream/primary.webp",
+    galleryUrls: ["/catalog/grapes-n-cream/primary.webp"],
     brandPath: "/products/vapes/rosin-line/grapes-n-cream",
     variants: [
       {
@@ -730,8 +730,8 @@ export const BRAND_CATALOG: CatalogProduct[] = [{
     coaUrl: "/lab-results?sku=GUAVALICIOUS",
     createdAt: "2026-06-01T00:00:00.000Z",
     popularityScore: 84,
-    imageUrl: "/catalog/guavalicious/primary.jpg",
-    galleryUrls: ["/catalog/guavalicious/primary.jpg"],
+    imageUrl: "/catalog/guavalicious/primary.webp",
+    galleryUrls: ["/catalog/guavalicious/primary.webp"],
     brandPath: "/products/vapes/signature-line/guavalicious",
     variants: [
       {
@@ -762,8 +762,8 @@ export const BRAND_CATALOG: CatalogProduct[] = [{
     coaUrl: "/lab-results?sku=HUCKLEBERRY",
     createdAt: "2026-06-01T00:00:00.000Z",
     popularityScore: 92,
-    imageUrl: "/catalog/huckleberry/primary.jpg",
-    galleryUrls: ["/catalog/huckleberry/primary.jpg"],
+    imageUrl: "/catalog/huckleberry/primary.webp",
+    galleryUrls: ["/catalog/huckleberry/primary.webp"],
     brandPath: "/products/gummies/balanced/huckleberry",
     variants: [
       {
@@ -794,8 +794,8 @@ export const BRAND_CATALOG: CatalogProduct[] = [{
     coaUrl: "/lab-results?sku=HUCKLEBERRY_JAM",
     createdAt: "2026-06-01T00:00:00.000Z",
     popularityScore: 58,
-    imageUrl: "/catalog/huckleberry-jam/primary.jpg",
-    galleryUrls: ["/catalog/huckleberry-jam/primary.jpg"],
+    imageUrl: "/catalog/huckleberry-jam/primary.webp",
+    galleryUrls: ["/catalog/huckleberry-jam/primary.webp"],
     brandPath: "/products/vapes/state-exclusive/huckleberry-jam",
     variants: [
       {
@@ -826,8 +826,8 @@ export const BRAND_CATALOG: CatalogProduct[] = [{
     coaUrl: "/lab-results?sku=JET_FUEL",
     createdAt: "2026-06-01T00:00:00.000Z",
     popularityScore: 82,
-    imageUrl: "/catalog/jet-fuel/primary.jpg",
-    galleryUrls: ["/catalog/jet-fuel/primary.jpg"],
+    imageUrl: "/catalog/jet-fuel/primary.webp",
+    galleryUrls: ["/catalog/jet-fuel/primary.webp"],
     brandPath: "/products/vapes/live-reserve-line/jet-fuel",
     variants: [
       {
@@ -858,8 +858,8 @@ export const BRAND_CATALOG: CatalogProduct[] = [{
     coaUrl: "/lab-results?sku=KEY_LIME_PIE",
     createdAt: "2026-06-01T00:00:00.000Z",
     popularityScore: 91,
-    imageUrl: "/catalog/key-lime-pie/primary.jpg",
-    galleryUrls: ["/catalog/key-lime-pie/primary.jpg"],
+    imageUrl: "/catalog/key-lime-pie/primary.webp",
+    galleryUrls: ["/catalog/key-lime-pie/primary.webp"],
     brandPath: "/products/vapes/signature-line/key-lime-pie",
     variants: [
       {
@@ -890,8 +890,8 @@ export const BRAND_CATALOG: CatalogProduct[] = [{
     coaUrl: "/lab-results?sku=KING_LOUIS_XIII",
     createdAt: "2026-06-01T00:00:00.000Z",
     popularityScore: 89,
-    imageUrl: "/catalog/king-louis-xiii/primary.jpg",
-    galleryUrls: ["/catalog/king-louis-xiii/primary.jpg"],
+    imageUrl: "/catalog/king-louis-xiii/primary.webp",
+    galleryUrls: ["/catalog/king-louis-xiii/primary.webp"],
     brandPath: "/products/vapes/live-reserve-line/king-louis-xiii",
     variants: [
       {
@@ -922,8 +922,8 @@ export const BRAND_CATALOG: CatalogProduct[] = [{
     coaUrl: "/lab-results?sku=KUSHMINT",
     createdAt: "2026-06-01T00:00:00.000Z",
     popularityScore: 96,
-    imageUrl: "/catalog/kushmint/primary.jpg",
-    galleryUrls: ["/catalog/kushmint/primary.jpg"],
+    imageUrl: "/catalog/kushmint/primary.webp",
+    galleryUrls: ["/catalog/kushmint/primary.webp"],
     brandPath: "/products/vapes/live-reserve-line/kushmint",
     variants: [
       {
@@ -954,8 +954,8 @@ export const BRAND_CATALOG: CatalogProduct[] = [{
     coaUrl: "/lab-results?sku=LEMON_POUND_CAKE",
     createdAt: "2026-06-01T00:00:00.000Z",
     popularityScore: 81,
-    imageUrl: "/catalog/lemon-pound-cake/primary.jpg",
-    galleryUrls: ["/catalog/lemon-pound-cake/primary.jpg"],
+    imageUrl: "/catalog/lemon-pound-cake/primary.webp",
+    galleryUrls: ["/catalog/lemon-pound-cake/primary.webp"],
     brandPath: "/products/vapes/balanced-line/lemon-pound-cake",
     variants: [
       {
@@ -986,8 +986,8 @@ export const BRAND_CATALOG: CatalogProduct[] = [{
     coaUrl: "/lab-results?sku=LIME_SHERBANGER",
     createdAt: "2026-06-01T00:00:00.000Z",
     popularityScore: 63,
-    imageUrl: "/catalog/lime-sherbanger/primary.jpg",
-    galleryUrls: ["/catalog/lime-sherbanger/primary.jpg"],
+    imageUrl: "/catalog/lime-sherbanger/primary.webp",
+    galleryUrls: ["/catalog/lime-sherbanger/primary.webp"],
     brandPath: "/products/vapes/signature-line/lime-sherbanger",
     variants: [
       {
@@ -1018,8 +1018,8 @@ export const BRAND_CATALOG: CatalogProduct[] = [{
     coaUrl: "/lab-results?sku=MANGO_DIESEL",
     createdAt: "2026-06-01T00:00:00.000Z",
     popularityScore: 98,
-    imageUrl: "/catalog/mango-diesel/primary.jpg",
-    galleryUrls: ["/catalog/mango-diesel/primary.jpg"],
+    imageUrl: "/catalog/mango-diesel/primary.webp",
+    galleryUrls: ["/catalog/mango-diesel/primary.webp"],
     brandPath: "/products/vapes/signature-line/mango-diesel",
     variants: [
       {
@@ -1050,8 +1050,8 @@ export const BRAND_CATALOG: CatalogProduct[] = [{
     coaUrl: "/lab-results?sku=MIAMI_ICE",
     createdAt: "2026-06-01T00:00:00.000Z",
     popularityScore: 53,
-    imageUrl: "/catalog/miami-ice/primary.jpg",
-    galleryUrls: ["/catalog/miami-ice/primary.jpg"],
+    imageUrl: "/catalog/miami-ice/primary.webp",
+    galleryUrls: ["/catalog/miami-ice/primary.webp"],
     brandPath: "/products/vapes/live-reserve-line/miami-ice",
     variants: [
       {
@@ -1082,8 +1082,8 @@ export const BRAND_CATALOG: CatalogProduct[] = [{
     coaUrl: "/lab-results?sku=MINT_OG",
     createdAt: "2026-06-01T00:00:00.000Z",
     popularityScore: 88,
-    imageUrl: "/catalog/mint-og/primary.jpg",
-    galleryUrls: ["/catalog/mint-og/primary.jpg"],
+    imageUrl: "/catalog/mint-og/primary.webp",
+    galleryUrls: ["/catalog/mint-og/primary.webp"],
     brandPath: "/products/vapes/balanced-line/mint-og",
     variants: [
       {
@@ -1114,8 +1114,8 @@ export const BRAND_CATALOG: CatalogProduct[] = [{
     coaUrl: "/lab-results?sku=MORNING",
     createdAt: "2026-06-01T00:00:00.000Z",
     popularityScore: 71,
-    imageUrl: "/catalog/morning/primary.jpg",
-    galleryUrls: ["/catalog/morning/primary.jpg"],
+    imageUrl: "/catalog/morning/primary.webp",
+    galleryUrls: ["/catalog/morning/primary.webp"],
     brandPath: "/products/softgels/morning",
     variants: [
       {
@@ -1146,8 +1146,8 @@ export const BRAND_CATALOG: CatalogProduct[] = [{
     coaUrl: "/lab-results?sku=MOWIE_WOWIE",
     createdAt: "2026-06-01T00:00:00.000Z",
     popularityScore: 95,
-    imageUrl: "/catalog/mowie-wowie/primary.jpg",
-    galleryUrls: ["/catalog/mowie-wowie/primary.jpg"],
+    imageUrl: "/catalog/mowie-wowie/primary.webp",
+    galleryUrls: ["/catalog/mowie-wowie/primary.webp"],
     brandPath: "/products/vapes/balanced-line/mowie-wowie",
     variants: [
       {
@@ -1178,8 +1178,8 @@ export const BRAND_CATALOG: CatalogProduct[] = [{
     coaUrl: "/lab-results?sku=PAPAYA",
     createdAt: "2026-06-01T00:00:00.000Z",
     popularityScore: 60,
-    imageUrl: "/catalog/papaya/primary.jpg",
-    galleryUrls: ["/catalog/papaya/primary.jpg"],
+    imageUrl: "/catalog/papaya/primary.webp",
+    galleryUrls: ["/catalog/papaya/primary.webp"],
     brandPath: "/products/vapes/live-reserve-line/papaya",
     variants: [
       {
@@ -1210,8 +1210,8 @@ export const BRAND_CATALOG: CatalogProduct[] = [{
     coaUrl: "/lab-results?sku=PARADISE_PASSION",
     createdAt: "2026-06-01T00:00:00.000Z",
     popularityScore: 55,
-    imageUrl: "/catalog/paradise-passion/primary.jpg",
-    galleryUrls: ["/catalog/paradise-passion/primary.jpg"],
+    imageUrl: "/catalog/paradise-passion/primary.webp",
+    galleryUrls: ["/catalog/paradise-passion/primary.webp"],
     brandPath: "/products/vapes/signature-line/paradise-passion",
     variants: [
       {
@@ -1242,8 +1242,8 @@ export const BRAND_CATALOG: CatalogProduct[] = [{
     coaUrl: "/lab-results?sku=PEACH",
     createdAt: "2026-06-01T00:00:00.000Z",
     popularityScore: 99,
-    imageUrl: "/catalog/peach/primary.jpg",
-    galleryUrls: ["/catalog/peach/primary.jpg"],
+    imageUrl: "/catalog/peach/primary.webp",
+    galleryUrls: ["/catalog/peach/primary.webp"],
     brandPath: "/products/gummies/balanced/peach",
     variants: [
       {
@@ -1274,8 +1274,8 @@ export const BRAND_CATALOG: CatalogProduct[] = [{
     coaUrl: "/lab-results?sku=PEACH_ICE_T",
     createdAt: "2026-06-01T00:00:00.000Z",
     popularityScore: 86,
-    imageUrl: "/catalog/peach-ice-t/primary.jpg",
-    galleryUrls: ["/catalog/peach-ice-t/primary.jpg"],
+    imageUrl: "/catalog/peach-ice-t/primary.webp",
+    galleryUrls: ["/catalog/peach-ice-t/primary.webp"],
     brandPath: "/products/vapes/collaborations/peach-ice-t",
     variants: [
       {
@@ -1306,8 +1306,8 @@ export const BRAND_CATALOG: CatalogProduct[] = [{
     coaUrl: "/lab-results?sku=PEACH_KUSH",
     createdAt: "2026-06-01T00:00:00.000Z",
     popularityScore: 62,
-    imageUrl: "/catalog/peach-kush/primary.jpg",
-    galleryUrls: ["/catalog/peach-kush/primary.jpg"],
+    imageUrl: "/catalog/peach-kush/primary.webp",
+    galleryUrls: ["/catalog/peach-kush/primary.webp"],
     brandPath: "/products/vapes/signature-line/peach-kush",
     variants: [
       {
@@ -1338,8 +1338,8 @@ export const BRAND_CATALOG: CatalogProduct[] = [{
     coaUrl: "/lab-results?sku=PEACH_MOJITO",
     createdAt: "2026-06-01T00:00:00.000Z",
     popularityScore: 67,
-    imageUrl: "/catalog/peach-mojito/primary.jpg",
-    galleryUrls: ["/catalog/peach-mojito/primary.jpg"],
+    imageUrl: "/catalog/peach-mojito/primary.webp",
+    galleryUrls: ["/catalog/peach-mojito/primary.webp"],
     brandPath: "/products/vapes/live-reserve-line/peach-mojito",
     variants: [
       {
@@ -1370,8 +1370,8 @@ export const BRAND_CATALOG: CatalogProduct[] = [{
     coaUrl: "/lab-results?sku=PINA_COLADA",
     createdAt: "2026-06-01T00:00:00.000Z",
     popularityScore: 69,
-    imageUrl: "/catalog/pina-colada/primary.jpg",
-    galleryUrls: ["/catalog/pina-colada/primary.jpg"],
+    imageUrl: "/catalog/pina-colada/primary.webp",
+    galleryUrls: ["/catalog/pina-colada/primary.webp"],
     brandPath: "/products/vapes/signature-line/pina-colada",
     variants: [
       {
@@ -1402,8 +1402,8 @@ export const BRAND_CATALOG: CatalogProduct[] = [{
     coaUrl: "/lab-results?sku=PINEAPPLE_KUSH",
     createdAt: "2026-06-01T00:00:00.000Z",
     popularityScore: 93,
-    imageUrl: "/catalog/pineapple-kush/primary.jpg",
-    galleryUrls: ["/catalog/pineapple-kush/primary.jpg"],
+    imageUrl: "/catalog/pineapple-kush/primary.webp",
+    galleryUrls: ["/catalog/pineapple-kush/primary.webp"],
     brandPath: "/products/vapes/collaborations/pineapple-kush",
     variants: [
       {
@@ -1434,8 +1434,8 @@ export const BRAND_CATALOG: CatalogProduct[] = [{
     coaUrl: "/lab-results?sku=PINK_LEMON_HAZE",
     createdAt: "2026-06-01T00:00:00.000Z",
     popularityScore: 76,
-    imageUrl: "/catalog/pink-lemon-haze/primary.jpg",
-    galleryUrls: ["/catalog/pink-lemon-haze/primary.jpg"],
+    imageUrl: "/catalog/pink-lemon-haze/primary.webp",
+    galleryUrls: ["/catalog/pink-lemon-haze/primary.webp"],
     brandPath: "/products/vapes/signature-line/pink-lemon-haze",
     variants: [
       {
@@ -1466,8 +1466,8 @@ export const BRAND_CATALOG: CatalogProduct[] = [{
     coaUrl: "/lab-results?sku=PINK_ROSE",
     createdAt: "2026-06-01T00:00:00.000Z",
     popularityScore: 99,
-    imageUrl: "/catalog/pink-rose/primary.jpg",
-    galleryUrls: ["/catalog/pink-rose/primary.jpg"],
+    imageUrl: "/catalog/pink-rose/primary.webp",
+    galleryUrls: ["/catalog/pink-rose/primary.webp"],
     brandPath: "/products/vapes/signature-line/pink-rose",
     variants: [
       {
@@ -1498,8 +1498,8 @@ export const BRAND_CATALOG: CatalogProduct[] = [{
     coaUrl: "/lab-results?sku=PLH",
     createdAt: "2026-06-01T00:00:00.000Z",
     popularityScore: 84,
-    imageUrl: "/catalog/plh/primary.jpg",
-    galleryUrls: ["/catalog/plh/primary.jpg"],
+    imageUrl: "/catalog/plh/primary.webp",
+    galleryUrls: ["/catalog/plh/primary.webp"],
     brandPath: "/products/gummies/rosin/plh",
     variants: [
       {
@@ -1530,8 +1530,8 @@ export const BRAND_CATALOG: CatalogProduct[] = [{
     coaUrl: "/lab-results?sku=RED_PLUM",
     createdAt: "2026-06-01T00:00:00.000Z",
     popularityScore: 83,
-    imageUrl: "/catalog/red-plum/primary.jpg",
-    galleryUrls: ["/catalog/red-plum/primary.jpg"],
+    imageUrl: "/catalog/red-plum/primary.webp",
+    galleryUrls: ["/catalog/red-plum/primary.webp"],
     brandPath: "/products/vapes/signature-line/red-plum",
     variants: [
       {
@@ -1562,8 +1562,8 @@ export const BRAND_CATALOG: CatalogProduct[] = [{
     coaUrl: "/lab-results?sku=ROYAL_PEAR",
     createdAt: "2026-06-01T00:00:00.000Z",
     popularityScore: 90,
-    imageUrl: "/catalog/royal-pear/primary.jpg",
-    galleryUrls: ["/catalog/royal-pear/primary.jpg"],
+    imageUrl: "/catalog/royal-pear/primary.webp",
+    galleryUrls: ["/catalog/royal-pear/primary.webp"],
     brandPath: "/products/vapes/signature-line/royal-pear",
     variants: [
       {
@@ -1594,8 +1594,8 @@ export const BRAND_CATALOG: CatalogProduct[] = [{
     coaUrl: "/lab-results?sku=SOUR_GRAPE",
     createdAt: "2026-06-01T00:00:00.000Z",
     popularityScore: 78,
-    imageUrl: "/catalog/sour-grape/primary.jpg",
-    galleryUrls: ["/catalog/sour-grape/primary.jpg"],
+    imageUrl: "/catalog/sour-grape/primary.webp",
+    galleryUrls: ["/catalog/sour-grape/primary.webp"],
     brandPath: "/products/vapes/signature-line/sour-grape",
     variants: [
       {
@@ -1626,8 +1626,8 @@ export const BRAND_CATALOG: CatalogProduct[] = [{
     coaUrl: "/lab-results?sku=SOUR_TANGIE",
     createdAt: "2026-06-01T00:00:00.000Z",
     popularityScore: 59,
-    imageUrl: "/catalog/sour-tangie/primary.jpg",
-    galleryUrls: ["/catalog/sour-tangie/primary.jpg"],
+    imageUrl: "/catalog/sour-tangie/primary.webp",
+    galleryUrls: ["/catalog/sour-tangie/primary.webp"],
     brandPath: "/products/vapes/rosin-line/sour-tangie",
     variants: [
       {
@@ -1658,8 +1658,8 @@ export const BRAND_CATALOG: CatalogProduct[] = [{
     coaUrl: "/lab-results?sku=STRAWBERRY_COUGH",
     createdAt: "2026-06-01T00:00:00.000Z",
     popularityScore: 71,
-    imageUrl: "/catalog/strawberry-cough/primary.jpg",
-    galleryUrls: ["/catalog/strawberry-cough/primary.jpg"],
+    imageUrl: "/catalog/strawberry-cough/primary.webp",
+    galleryUrls: ["/catalog/strawberry-cough/primary.webp"],
     brandPath: "/products/vapes/signature-line/strawberry-cough",
     variants: [
       {
@@ -1690,8 +1690,8 @@ export const BRAND_CATALOG: CatalogProduct[] = [{
     coaUrl: "/lab-results?sku=SUNSET_SHERBERT",
     createdAt: "2026-06-01T00:00:00.000Z",
     popularityScore: 80,
-    imageUrl: "/catalog/sunset-sherbert/primary.jpg",
-    galleryUrls: ["/catalog/sunset-sherbert/primary.jpg"],
+    imageUrl: "/catalog/sunset-sherbert/primary.webp",
+    galleryUrls: ["/catalog/sunset-sherbert/primary.webp"],
     brandPath: "/products/vapes/rosin-line/sunset-sherbert",
     variants: [
       {
@@ -1722,8 +1722,8 @@ export const BRAND_CATALOG: CatalogProduct[] = [{
     coaUrl: "/lab-results?sku=TROPICAL_KIWI",
     createdAt: "2026-06-01T00:00:00.000Z",
     popularityScore: 85,
-    imageUrl: "/catalog/tropical-kiwi/primary.jpg",
-    galleryUrls: ["/catalog/tropical-kiwi/primary.jpg"],
+    imageUrl: "/catalog/tropical-kiwi/primary.webp",
+    galleryUrls: ["/catalog/tropical-kiwi/primary.webp"],
     brandPath: "/products/vapes/signature-line/tropical-kiwi",
     variants: [
       {
@@ -1754,8 +1754,8 @@ export const BRAND_CATALOG: CatalogProduct[] = [{
     coaUrl: "/lab-results?sku=TROPICALI",
     createdAt: "2026-06-01T00:00:00.000Z",
     popularityScore: 65,
-    imageUrl: "/catalog/tropicali/primary.jpg",
-    galleryUrls: ["/catalog/tropicali/primary.jpg"],
+    imageUrl: "/catalog/tropicali/primary.webp",
+    galleryUrls: ["/catalog/tropicali/primary.webp"],
     brandPath: "/products/vapes/state-exclusive/tropicali",
     variants: [
       {
@@ -1786,8 +1786,8 @@ export const BRAND_CATALOG: CatalogProduct[] = [{
     coaUrl: "/lab-results?sku=WATERMELON",
     createdAt: "2026-06-01T00:00:00.000Z",
     popularityScore: 77,
-    imageUrl: "/catalog/watermelon/primary.jpg",
-    galleryUrls: ["/catalog/watermelon/primary.jpg"],
+    imageUrl: "/catalog/watermelon/primary.webp",
+    galleryUrls: ["/catalog/watermelon/primary.webp"],
     brandPath: "/products/gummies/rosin/watermelon",
     variants: [
       {
@@ -1818,8 +1818,8 @@ export const BRAND_CATALOG: CatalogProduct[] = [{
     coaUrl: "/lab-results?sku=WATERMELON_KUSH",
     createdAt: "2026-06-01T00:00:00.000Z",
     popularityScore: 97,
-    imageUrl: "/catalog/watermelon-kush/primary.jpg",
-    galleryUrls: ["/catalog/watermelon-kush/primary.jpg"],
+    imageUrl: "/catalog/watermelon-kush/primary.webp",
+    galleryUrls: ["/catalog/watermelon-kush/primary.webp"],
     brandPath: "/products/vapes/signature-line/watermelon-kush",
     variants: [
       {
@@ -1850,8 +1850,8 @@ export const BRAND_CATALOG: CatalogProduct[] = [{
     coaUrl: "/lab-results?sku=WATERMELON_OG",
     createdAt: "2026-06-01T00:00:00.000Z",
     popularityScore: 74,
-    imageUrl: "/catalog/watermelon-og/primary.jpg",
-    galleryUrls: ["/catalog/watermelon-og/primary.jpg"],
+    imageUrl: "/catalog/watermelon-og/primary.webp",
+    galleryUrls: ["/catalog/watermelon-og/primary.webp"],
     brandPath: "/products/vapes/live-reserve-line/watermelon-og",
     variants: [
       {
@@ -1882,8 +1882,8 @@ export const BRAND_CATALOG: CatalogProduct[] = [{
     coaUrl: "/lab-results?sku=WEDDING_CAKE",
     createdAt: "2026-06-01T00:00:00.000Z",
     popularityScore: 92,
-    imageUrl: "/catalog/wedding-cake/primary.jpg",
-    galleryUrls: ["/catalog/wedding-cake/primary.jpg"],
+    imageUrl: "/catalog/wedding-cake/primary.webp",
+    galleryUrls: ["/catalog/wedding-cake/primary.webp"],
     brandPath: "/products/vapes/signature-line/wedding-cake",
     variants: [
       {
@@ -1914,8 +1914,8 @@ export const BRAND_CATALOG: CatalogProduct[] = [{
     coaUrl: "/lab-results?sku=WHITE_FIRE_OG",
     createdAt: "2026-06-01T00:00:00.000Z",
     popularityScore: 52,
-    imageUrl: "/catalog/white-fire-og/primary.jpg",
-    galleryUrls: ["/catalog/white-fire-og/primary.jpg"],
+    imageUrl: "/catalog/white-fire-og/primary.webp",
+    galleryUrls: ["/catalog/white-fire-og/primary.webp"],
     brandPath: "/products/vapes/rosin-line/white-fire-og",
     variants: [
       {
@@ -1946,8 +1946,8 @@ export const BRAND_CATALOG: CatalogProduct[] = [{
     coaUrl: "/lab-results?sku=WHOA_SI_WHOA",
     createdAt: "2026-06-01T00:00:00.000Z",
     popularityScore: 50,
-    imageUrl: "/catalog/whoa-si-whoa/primary.jpg",
-    galleryUrls: ["/catalog/whoa-si-whoa/primary.jpg"],
+    imageUrl: "/catalog/whoa-si-whoa/primary.webp",
+    galleryUrls: ["/catalog/whoa-si-whoa/primary.webp"],
     brandPath: "/products/vapes/collaborations/whoa-si-whoa",
     variants: [
       {
@@ -1978,8 +1978,8 @@ export const BRAND_CATALOG: CatalogProduct[] = [{
     coaUrl: "/lab-results?sku=ZIA_FRESCA",
     createdAt: "2026-06-01T00:00:00.000Z",
     popularityScore: 72,
-    imageUrl: "/catalog/zia-fresca/primary.jpg",
-    galleryUrls: ["/catalog/zia-fresca/primary.jpg"],
+    imageUrl: "/catalog/zia-fresca/primary.webp",
+    galleryUrls: ["/catalog/zia-fresca/primary.webp"],
     brandPath: "/products/vapes/state-exclusive/zia-fresca",
     variants: [
       {

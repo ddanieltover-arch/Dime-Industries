@@ -20,7 +20,7 @@ export function ValidateForm() {
           name="code"
           required
           placeholder="e.g. LR-GELATO-1G or LR-GELATO-1G-AB12"
-          className="mt-1 w-full rounded-[var(--radius-sm)] border border-[var(--color-border-interactive)] bg-[var(--color-surface-raised)] px-3 py-2 font-[var(--font-mono)] text-[var(--scale-sm)] text-[var(--color-ink)]"
+          className="field-input mt-1.5 font-[var(--font-mono)]"
         />
       </label>
       <p className="text-[var(--scale-xs)] text-[var(--color-ink-soft)]">
@@ -32,15 +32,11 @@ export function ValidateForm() {
         </p>
       ) : null}
       {state.success ? (
-        <p role="status" className="text-[var(--scale-sm)] text-[var(--color-terp)]">
+        <p role="status" className="text-[var(--scale-sm)] text-[var(--color-resin)]">
           {state.message}
         </p>
       ) : null}
-      <button
-        type="submit"
-        disabled={pending}
-        className="rounded-[var(--radius-sm)] bg-[var(--color-resin-strong)] px-4 py-2 text-[var(--scale-sm)] text-[var(--color-surface)] hover:bg-[var(--color-resin-hover)] disabled:opacity-60"
-      >
+      <button type="submit" disabled={pending} className="btn-primary">
         {pending ? "Checking…" : "Validate product"}
       </button>
     </form>

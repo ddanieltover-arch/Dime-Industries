@@ -1,4 +1,5 @@
 // app/robots.ts
+// Static disallow list — SEO present, not automation.
 import type { MetadataRoute } from "next";
 import { SEO_DISALLOW_PATHS, SITE_URL } from "@/lib/seo/site";
 

@@ -3,7 +3,7 @@ import "server-only";
 import { isOrdersDatabaseMode } from "@/lib/checkout/repository";
 
 /**
- * Cart/wishlist/CMS/coupons/loyalty/affiliate/catalog overrides/inventory/wholesale
+ * Cart/wishlist/CMS/coupons/loyalty/affiliate/catalog overrides/inventory/wholesale/returns
  * share the same DATABASE_URL auto-gate as orders
  * (ORDERS_PERSISTENCE=auto|database|cookie).
  */

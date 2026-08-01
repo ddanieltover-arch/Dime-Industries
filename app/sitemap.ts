@@ -1,4 +1,5 @@
 // app/sitemap.ts
+// Curated + catalog routes — not an SEO automation engine.
 import type { MetadataRoute } from "next";
 import { CATALOG_CATEGORIES, CATALOG_LINES, listAllActiveSlugs } from "@/lib/catalog";
 import { absoluteUrl, SEO_BLOG_SLUGS, SEO_STATIC_PATHS } from "@/lib/seo/site";

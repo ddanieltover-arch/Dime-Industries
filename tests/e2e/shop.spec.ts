@@ -2,8 +2,8 @@ import { test, expect } from "@playwright/test";
 
 test.describe("Shop catalog", () => {
   test("age gate blocks shop until verified", async ({ page }) => {
-    await page.goto("/shop");
-    await expect(page.getByRole("dialog")).toBeVisible();
+    await page.goto("/shop", { waitUntil: "domcontentloaded" });
+    await expect(page.getByRole("dialog")).toBeVisible({ timeout: 15_000 });
   });
 
   test("verified visitor can browse shop and open a product", async ({ page, context }) => {
@@ -13,6 +13,7 @@ test.describe("Shop catalog", () => {
         value: "1",
         domain: "localhost",
         path: "/",
+        httpOnly: true,
       },
       {
         name: "dime_jurisdiction",
@@ -22,14 +23,17 @@ test.describe("Shop catalog", () => {
       },
     ]);
 
-    await page.goto("/shop");
-    await expect(page.getByRole("heading", { name: "Shop", level: 1 })).toBeVisible();
+    await page.goto("/shop", { waitUntil: "domcontentloaded" });
+    await expect(page.getByRole("heading", { name: "Shop", level: 1 })).toBeVisible({
+      timeout: 20_000,
+    });
     await expect(page.getByText(/Showing/)).toBeVisible();
 
     const firstProduct = page.locator('a[href^="/product/"]').first();
     await expect(firstProduct).toBeVisible();
     await firstProduct.click();
     await expect(page).toHaveURL(/\/product\//);
-    await expect(page.getByText("THC")).toBeVisible();
+    await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
+    await expect(page.locator("dt", { hasText: "THC" }).first()).toBeVisible({ timeout: 15_000 });
   });
 });

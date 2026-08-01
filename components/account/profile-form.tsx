@@ -27,20 +27,11 @@ export function ProfileForm({
       </p>
       <label className="block text-[var(--scale-xs)] text-[var(--color-ink-soft)]">
         Display name
-        <input
-          name="displayName"
-          defaultValue={displayName}
-          className="mt-1 w-full rounded-[var(--radius-sm)] border border-[var(--color-border-interactive)] bg-[var(--color-surface-raised)] px-3 py-2 text-[var(--scale-sm)] text-[var(--color-ink)]"
-        />
+        <input name="displayName" defaultValue={displayName} className="field-input mt-1.5" />
       </label>
       <label className="block text-[var(--scale-xs)] text-[var(--color-ink-soft)]">
         Phone
-        <input
-          name="phone"
-          defaultValue={phone}
-          autoComplete="tel"
-          className="mt-1 w-full rounded-[var(--radius-sm)] border border-[var(--color-border-interactive)] bg-[var(--color-surface-raised)] px-3 py-2 text-[var(--scale-sm)] text-[var(--color-ink)]"
-        />
+        <input name="phone" defaultValue={phone} autoComplete="tel" className="field-input mt-1.5" />
       </label>
       {state.error ? (
         <p role="alert" className="text-[var(--scale-sm)] text-[var(--color-flag)]">
@@ -48,15 +39,11 @@ export function ProfileForm({
         </p>
       ) : null}
       {state.success ? (
-        <p role="status" className="text-[var(--scale-sm)] text-[var(--color-terp)]">
+        <p role="status" className="text-[var(--scale-sm)] text-[var(--color-resin)]">
           {state.message}
         </p>
       ) : null}
-      <button
-        type="submit"
-        disabled={pending}
-        className="rounded-[var(--radius-sm)] bg-[var(--color-resin-strong)] px-4 py-2 text-[var(--scale-sm)] text-[var(--color-surface)] hover:bg-[var(--color-resin-hover)] disabled:opacity-60"
-      >
+      <button type="submit" disabled={pending} className="btn-primary">
         {pending ? "Saving…" : "Save profile"}
       </button>
     </form>

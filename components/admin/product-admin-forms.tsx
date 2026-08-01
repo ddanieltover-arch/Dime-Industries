@@ -3,6 +3,7 @@
 
 import { useActionState } from "react";
 import {
+  clearAdminProductOverride,
   updateAdminProduct,
   updateAdminVariantPrice,
   type AdminActionState,
@@ -24,7 +25,7 @@ export function ProductStatusForm({
     <form action={action} className="flex flex-wrap items-end gap-2">
       <input type="hidden" name="productId" value={productId} />
       <label className="text-[var(--scale-xs)] text-[var(--color-ink-soft)]">
-        Name
+        Display name override
         <input
           name="name"
           defaultValue={name}
@@ -32,7 +33,7 @@ export function ProductStatusForm({
         />
       </label>
       <label className="text-[var(--scale-xs)] text-[var(--color-ink-soft)]">
-        Status
+        Status override
         <select
           name="status"
           defaultValue={status}
@@ -48,13 +49,35 @@ export function ProductStatusForm({
         disabled={pending}
         className="rounded-[var(--radius-sm)] bg-[var(--color-resin-strong)] px-3 py-1.5 text-[var(--scale-sm)] text-[var(--color-surface)] disabled:opacity-60"
       >
-        Save
+        {pending ? "Saving…" : "Save override"}
       </button>
       {state.message ? (
         <span className="text-[var(--scale-xs)] text-[var(--color-terp)]">{state.message}</span>
       ) : null}
       {state.error ? (
         <span className="text-[var(--scale-xs)] text-[var(--color-flag)]">{state.error}</span>
+      ) : null}
+    </form>
+  );
+}
+
+export function ClearProductOverrideForm({ productId }: { productId: string }) {
+  const [state, action, pending] = useActionState(clearAdminProductOverride, initial);
+  return (
+    <form action={action} className="inline">
+      <input type="hidden" name="productId" value={productId} />
+      <button
+        type="submit"
+        disabled={pending}
+        className="text-[var(--scale-xs)] text-[var(--color-ink-muted)] underline-offset-4 hover:text-[var(--color-flag)] hover:underline disabled:opacity-60"
+      >
+        {pending ? "Clearing…" : "Clear overrides"}
+      </button>
+      {state.message ? (
+        <span className="ml-2 text-[var(--scale-xs)] text-[var(--color-terp)]">{state.message}</span>
+      ) : null}
+      {state.error ? (
+        <span className="ml-2 text-[var(--scale-xs)] text-[var(--color-flag)]">{state.error}</span>
       ) : null}
     </form>
   );
@@ -86,7 +109,7 @@ export function VariantPriceForm({
         className="w-24 rounded-[var(--radius-sm)] border border-[var(--color-border-interactive)] bg-[var(--color-surface-raised)] px-2 py-1 text-[var(--scale-sm)]"
       />
       <button type="submit" disabled={pending} className="text-[var(--scale-xs)] text-[var(--color-resin-strong)] underline-offset-4 hover:underline">
-        Update ¢
+        Override ¢
       </button>
       {state.error ? <span className="text-[var(--scale-xs)] text-[var(--color-flag)]">{state.error}</span> : null}
     </form>

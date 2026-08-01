@@ -7,26 +7,21 @@ export default async function AccountLayout({ children }: { children: React.Reac
   const profile = await requireUser();
 
   return (
-    <div className="mx-auto max-w-5xl px-4 py-10 sm:px-6 lg:px-8">
-      <div className="flex flex-wrap items-end justify-between gap-4">
+    <div className="mx-auto max-w-5xl px-[var(--container-pad-x)] py-10 lg:py-14">
+      <div className="flex flex-wrap items-end justify-between gap-4 border-b border-[var(--color-border)] pb-8">
         <div>
-          <p className="font-[var(--font-mono)] text-[var(--scale-xs)] uppercase tracking-wide text-[var(--color-ink-soft)]">
+          <p className="font-[var(--font-display)] text-[10px] uppercase tracking-[0.18em] text-[var(--color-resin)]">
             Customer account
           </p>
-          <h1 className="font-[var(--font-display)] text-[var(--scale-2xl)] text-[var(--color-ink)]">
-            {profile.email}
-          </h1>
+          <h1 className="section-title mt-2">{profile.email}</h1>
         </div>
         <form action={signOut}>
-          <button
-            type="submit"
-            className="text-[var(--scale-sm)] text-[var(--color-ink-soft)] underline-offset-4 hover:underline"
-          >
+          <button type="submit" className="btn-outline px-5 py-2.5">
             Sign out
           </button>
         </form>
       </div>
-      <div className="mt-6">
+      <div className="mt-2">
         <AccountNav />
       </div>
       <div className="mt-8">{children}</div>

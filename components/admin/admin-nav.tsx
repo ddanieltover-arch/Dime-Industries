@@ -7,17 +7,21 @@ import { usePathname } from "next/navigation";
 const LINKS = [
   { href: "/admin", label: "Dashboard" },
   { href: "/admin/launch", label: "Launch" },
-  { href: "/admin/products", label: "Products" },
+  { href: "/admin/products", label: "Product overrides" },
+  { href: "/admin/categories", label: "Categories" },
   { href: "/admin/inventory", label: "Inventory" },
   { href: "/admin/orders", label: "Orders" },
+  { href: "/admin/returns", label: "Returns" },
   { href: "/admin/reviews", label: "Reviews" },
   { href: "/admin/customers", label: "Customers" },
+  { href: "/admin/reports", label: "Reports" },
   { href: "/admin/cms", label: "CMS" },
   { href: "/admin/blog", label: "Blog" },
   { href: "/admin/coupons", label: "Coupons" },
   { href: "/admin/loyalty", label: "Loyalty" },
   { href: "/admin/affiliate", label: "Affiliate" },
   { href: "/admin/wholesale", label: "Wholesale" },
+  { href: "/admin/settings", label: "Settings" },
   { href: "/admin/audit", label: "Audit" },
 ];
 

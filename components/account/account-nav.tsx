@@ -7,6 +7,7 @@ import { usePathname } from "next/navigation";
 const LINKS = [
   { href: "/account", label: "Overview" },
   { href: "/account/orders", label: "Orders" },
+  { href: "/account/returns", label: "Returns" },
   { href: "/account/profile", label: "Profile" },
   { href: "/account/addresses", label: "Addresses" },
   { href: "/account/loyalty", label: "Loyalty" },
@@ -21,7 +22,7 @@ export function AccountNav() {
 
   return (
     <nav aria-label="Account" className="border-b border-[var(--color-border)]">
-      <ul className="flex gap-4 overflow-x-auto px-4 py-3 sm:px-0">
+      <ul className="flex gap-5 overflow-x-auto py-3">
         {LINKS.map((link) => {
           const active =
             link.href === "/account"
@@ -32,10 +33,10 @@ export function AccountNav() {
               <Link
                 href={link.href}
                 aria-current={active ? "page" : undefined}
-                className={`text-[var(--scale-sm)] underline-offset-4 ${
+                className={`font-[var(--font-display)] text-[10px] uppercase tracking-[0.14em] transition-colors ${
                   active
-                    ? "text-[var(--color-ink)] underline"
-                    : "text-[var(--color-ink-soft)] hover:text-[var(--color-ink)]"
+                    ? "text-[var(--color-resin)]"
+                    : "text-[var(--color-ink-soft)] hover:text-[var(--color-resin)]"
                 }`}
               >
                 {link.label}

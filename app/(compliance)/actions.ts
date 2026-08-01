@@ -2,6 +2,7 @@
 "use server";
 
 import { cookies } from "next/headers";
+import { SITE_MIN_AGE } from "@/lib/compliance/jurisdictions";
 
 export type AgeGateActionState = {
   error?: string;
@@ -15,7 +16,7 @@ export async function confirmAgeGate(
   const isOfAge = formData.get("isOfAge") === "yes";
 
   if (!isOfAge) {
-    return { error: "You must be 21 or older to enter this site." };
+    return { error: `You must be ${SITE_MIN_AGE} or older to enter this site.` };
   }
 
   try {

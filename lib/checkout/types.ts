@@ -36,6 +36,11 @@ export type CheckoutOrder = {
   wholesaleBusinessName?: string | null;
   loyaltyPointsRedeemed?: number;
   loyaltyDiscountCents?: number;
+  /** Optional fulfillment / tracking (admin or ops may set later) */
+  carrier?: string | null;
+  trackingNumber?: string | null;
+  trackingUrl?: string | null;
+  shippedAt?: string | null;
 };
 
 export type CreateOrderInput = {

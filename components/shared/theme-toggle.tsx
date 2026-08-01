@@ -23,9 +23,9 @@ export function ThemeToggle() {
       onClick={() => setTheme(isDark ? "light" : "dark")}
       aria-label={isDark ? "Switch to light mode" : "Switch to dark mode"}
       aria-pressed={isDark}
-      className="flex h-9 w-9 items-center justify-center rounded-[var(--radius-sm)] border border-[var(--color-border)] text-[var(--color-ink)] transition-colors hover:bg-[var(--color-surface-raised)]"
+      className="flex h-9 w-9 items-center justify-center border border-[var(--color-border)] font-[var(--font-display)] text-[10px] uppercase tracking-[0.12em] text-[var(--color-ink-soft)] transition-colors hover:border-[var(--color-resin)] hover:text-[var(--color-resin)]"
     >
-      <span aria-hidden="true">{isDark ? "☀" : "☾"}</span>
+      <span aria-hidden="true">{isDark ? "LT" : "DK"}</span>
     </button>
   );
 }

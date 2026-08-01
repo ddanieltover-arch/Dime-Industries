@@ -3,12 +3,8 @@
 
 import { useActionState } from "react";
 import Link from "next/link";
-import {
-  signInWithEmail,
-  signInWithGoogle,
-  signInDemo,
-  type AuthActionState,
-} from "@/app/(auth)/actions";
+import { signInWithEmail, signInDemo, type AuthActionState } from "@/app/(auth)/actions";
+import { GoogleSignInButton } from "@/components/auth/google-sign-in-button";
 
 const initial: AuthActionState = {};
 
@@ -25,11 +21,12 @@ export function LoginForm({
   const [demoState, demoAction, demoPending] = useActionState(signInDemo, initial);
 
   return (
-    <div className="mx-auto w-full max-w-md space-y-8 px-4 py-16">
+    <div className="mx-auto w-full max-w-md space-y-8 px-[var(--container-pad-x)] py-16">
       <div>
-        <h1 className="font-[var(--font-display)] text-[var(--scale-3xl)] text-[var(--color-ink)]">
-          Sign in
-        </h1>
+        <p className="font-[var(--font-display)] text-[10px] uppercase tracking-[0.18em] text-[var(--color-resin)]">
+          Account
+        </p>
+        <h1 className="section-title mt-2">Sign in</h1>
         <p className="mt-2 text-[var(--scale-sm)] text-[var(--color-ink-soft)]">
           Access orders, wishlist sync, and account preferences.
         </p>
@@ -43,8 +40,8 @@ export function LoginForm({
 
       {errorParam === "auth_misconfigured" ? (
         <p role="alert" className="text-[var(--scale-sm)] text-[var(--color-flag)]">
-          Authentication is not configured for this environment. Set Supabase keys or
-          ALLOW_DEMO_AUTH=true for emergency demo access.
+          Authentication is not configured for this environment. Set Supabase keys or ALLOW_DEMO_AUTH=true for
+          emergency demo access.
         </p>
       ) : null}
 
@@ -53,13 +50,7 @@ export function LoginForm({
           <form action={formAction} className="space-y-4">
             <label className="block text-[var(--scale-xs)] text-[var(--color-ink-soft)]">
               Email
-              <input
-                type="email"
-                name="email"
-                required
-                autoComplete="email"
-                className="mt-1 w-full rounded-[var(--radius-sm)] border border-[var(--color-border-interactive)] bg-[var(--color-surface-raised)] px-3 py-2 text-[var(--scale-sm)] text-[var(--color-ink)]"
-              />
+              <input type="email" name="email" required autoComplete="email" className="field-input mt-1.5" />
             </label>
             <label className="block text-[var(--scale-xs)] text-[var(--color-ink-soft)]">
               Password
@@ -68,7 +59,7 @@ export function LoginForm({
                 name="password"
                 required
                 autoComplete="current-password"
-                className="mt-1 w-full rounded-[var(--radius-sm)] border border-[var(--color-border-interactive)] bg-[var(--color-surface-raised)] px-3 py-2 text-[var(--scale-sm)] text-[var(--color-ink)]"
+                className="field-input mt-1.5"
               />
             </label>
             {state.error ? (
@@ -76,27 +67,16 @@ export function LoginForm({
                 {state.error}
               </p>
             ) : null}
-            <button
-              type="submit"
-              disabled={pending}
-              className="w-full rounded-[var(--radius-sm)] bg-[var(--color-resin-strong)] px-4 py-3 text-[var(--scale-sm)] text-[var(--color-surface)] hover:bg-[var(--color-resin-hover)] disabled:opacity-60"
-            >
+            <button type="submit" disabled={pending} className="btn-primary w-full">
               {pending ? "Signing in…" : "Sign in"}
             </button>
           </form>
 
-          <form action={signInWithGoogle}>
-            <button
-              type="submit"
-              className="w-full rounded-[var(--radius-sm)] border border-[var(--color-border-interactive)] px-4 py-3 text-[var(--scale-sm)] text-[var(--color-ink)] hover:bg-[var(--color-surface)]"
-            >
-              Continue with Google
-            </button>
-          </form>
+          <GoogleSignInButton />
 
           <p className="text-center text-[var(--scale-sm)] text-[var(--color-ink-soft)]">
             No account?{" "}
-            <Link href="/signup" className="text-[var(--color-resin-strong)] underline-offset-4 hover:underline">
+            <Link href="/signup" className="text-[var(--color-resin)] underline-offset-4 hover:underline">
               Create one
             </Link>
           </p>
@@ -104,8 +84,7 @@ export function LoginForm({
       ) : (
         <form action={demoAction} className="space-y-4">
           <p className="text-[var(--scale-sm)] text-[var(--color-ink-soft)]">
-            Supabase is not configured in this environment. Use a demo customer session for local
-            account pages.
+            Supabase is not configured in this environment. Use a demo customer session for local account pages.
           </p>
           <input type="hidden" name="next" value={nextPath} />
           <label className="block text-[var(--scale-xs)] text-[var(--color-ink-soft)]">
@@ -115,7 +94,7 @@ export function LoginForm({
               name="email"
               required
               defaultValue="customer@example.com"
-              className="mt-1 w-full rounded-[var(--radius-sm)] border border-[var(--color-border-interactive)] bg-[var(--color-surface-raised)] px-3 py-2 text-[var(--scale-sm)] text-[var(--color-ink)]"
+              className="field-input mt-1.5"
             />
           </label>
           <label className="block text-[var(--scale-xs)] text-[var(--color-ink-soft)]">
@@ -123,7 +102,7 @@ export function LoginForm({
             <select
               name="role"
               defaultValue={nextPath.startsWith("/admin") ? "admin" : "customer"}
-              className="mt-1 w-full rounded-[var(--radius-sm)] border border-[var(--color-border-interactive)] bg-[var(--color-surface-raised)] px-3 py-2 text-[var(--scale-sm)] text-[var(--color-ink)]"
+              className="field-input mt-1.5"
             >
               <option value="customer">Customer</option>
               <option value="wholesale">Wholesale</option>
@@ -135,11 +114,7 @@ export function LoginForm({
               {demoState.error}
             </p>
           ) : null}
-          <button
-            type="submit"
-            disabled={demoPending}
-            className="w-full rounded-[var(--radius-sm)] bg-[var(--color-resin-strong)] px-4 py-3 text-[var(--scale-sm)] text-[var(--color-surface)] hover:bg-[var(--color-resin-hover)] disabled:opacity-60"
-          >
+          <button type="submit" disabled={demoPending} className="btn-primary w-full">
             {demoPending ? "Starting…" : "Continue to account"}
           </button>
         </form>

@@ -16,9 +16,19 @@ export async function requestPayoutAction(
   const amountCents = Math.round(amountDollars * 100);
   const result = await requestAffiliatePayout(profile.email, amountCents);
   if (!result.ok) return { error: result.error };
+  try {
+    const { notifyPayoutRequest } = await import("@/lib/email/notifications");
+    await notifyPayoutRequest({
+      id: result.payout.id,
+      email: result.payout.email,
+      amountCents: result.payout.amountCents,
+    });
+  } catch (err) {
+    console.warn("[affiliate] payout email failed", err);
+  }
   revalidatePath("/account/affiliate");
   revalidatePath("/admin/affiliate");
-  return { success: "Payout request submitted." };
+  return { success: "Payout request submitted. Check your email for confirmation." };
 }
 
 export async function adminReviewPayoutAction(

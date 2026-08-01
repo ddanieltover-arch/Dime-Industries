@@ -5,6 +5,7 @@ import { useActionState } from "react";
 import {
   addAccountAddress,
   removeAccountAddress,
+  setDefaultAccountAddress,
   type AccountActionState,
 } from "@/app/(account)/actions";
 import type { AccountAddress } from "@/lib/account/prefs";
@@ -14,6 +15,7 @@ const initial: AccountActionState = {};
 export function AddressesPanel({ addresses }: { addresses: AccountAddress[] }) {
   const [addState, addAction, addPending] = useActionState(addAccountAddress, initial);
   const [removeState, removeAction] = useActionState(removeAccountAddress, initial);
+  const [defaultState, defaultAction] = useActionState(setDefaultAccountAddress, initial);
 
   return (
     <div className="space-y-10">
@@ -24,13 +26,13 @@ export function AddressesPanel({ addresses }: { addresses: AccountAddress[] }) {
           addresses.map((address) => (
             <li
               key={address.id}
-              className="flex flex-wrap items-start justify-between gap-3 border border-[var(--color-border)] bg-[var(--color-surface-raised)] p-4"
+              className="flex flex-wrap items-start justify-between gap-3 bg-[var(--color-surface)] p-5"
             >
               <div>
-                <p className="font-[var(--font-display)] text-[var(--color-ink)]">
+                <p className="font-[var(--font-display)] uppercase tracking-[0.04em] text-[var(--color-ink)]">
                   {address.label}
                   {address.isDefault ? (
-                    <span className="ml-2 font-[var(--font-mono)] text-[var(--scale-xs)] text-[var(--color-ink-soft)]">
+                    <span className="ml-2 font-[var(--font-display)] text-[10px] uppercase tracking-[0.14em] text-[var(--color-resin)]">
                       default
                     </span>
                   ) : null}
@@ -42,55 +44,77 @@ export function AddressesPanel({ addresses }: { addresses: AccountAddress[] }) {
                   {address.city}, {address.state} {address.postalCode}
                 </p>
               </div>
-              <form action={removeAction}>
-                <input type="hidden" name="addressId" value={address.id} />
-                <button
-                  type="submit"
-                  className="text-[var(--scale-sm)] text-[var(--color-ink-soft)] underline-offset-4 hover:text-[var(--color-flag)] hover:underline"
-                >
-                  Remove
-                </button>
-              </form>
+              <div className="flex flex-col items-end gap-2">
+                {!address.isDefault ? (
+                  <form action={defaultAction}>
+                    <input type="hidden" name="addressId" value={address.id} />
+                    <button
+                      type="submit"
+                      className="nav-link text-[var(--color-resin)] hover:text-[var(--color-resin-hover)]"
+                    >
+                      Make default
+                    </button>
+                  </form>
+                ) : null}
+                <form action={removeAction}>
+                  <input type="hidden" name="addressId" value={address.id} />
+                  <button
+                    type="submit"
+                    className="nav-link text-[var(--color-ink-muted)] hover:text-[var(--color-flag)]"
+                  >
+                    Remove
+                  </button>
+                </form>
+              </div>
             </li>
           ))
         )}
       </ul>
 
+      {(defaultState.success || defaultState.error) && (
+        <p
+          role={defaultState.error ? "alert" : "status"}
+          className={`text-[var(--scale-sm)] ${defaultState.error ? "text-[var(--color-flag)]" : "text-[var(--color-resin)]"}`}
+        >
+          {defaultState.error ?? defaultState.message}
+        </p>
+      )}
+
       <form action={addAction} className="max-w-lg space-y-3 border-t border-[var(--color-border)] pt-8">
-        <h3 className="font-[var(--font-display)] text-[var(--scale-lg)] text-[var(--color-ink)]">
+        <h3 className="font-[var(--font-display)] text-[10px] uppercase tracking-[0.16em] text-[var(--color-resin)]">
           Add address
         </h3>
         <label className="block text-[var(--scale-xs)] text-[var(--color-ink-soft)]">
           Label
-          <input name="label" required placeholder="Home" className="mt-1 w-full rounded-[var(--radius-sm)] border border-[var(--color-border-interactive)] bg-[var(--color-surface-raised)] px-3 py-2 text-[var(--scale-sm)] text-[var(--color-ink)]" />
+          <input name="label" required placeholder="Home" className="field-input mt-1.5" />
         </label>
         <label className="block text-[var(--scale-xs)] text-[var(--color-ink-soft)]">
           Street
-          <input name="line1" required className="mt-1 w-full rounded-[var(--radius-sm)] border border-[var(--color-border-interactive)] bg-[var(--color-surface-raised)] px-3 py-2 text-[var(--scale-sm)] text-[var(--color-ink)]" />
+          <input name="line1" required className="field-input mt-1.5" />
         </label>
         <label className="block text-[var(--scale-xs)] text-[var(--color-ink-soft)]">
           Apt (optional)
-          <input name="line2" className="mt-1 w-full rounded-[var(--radius-sm)] border border-[var(--color-border-interactive)] bg-[var(--color-surface-raised)] px-3 py-2 text-[var(--scale-sm)] text-[var(--color-ink)]" />
+          <input name="line2" className="field-input mt-1.5" />
         </label>
         <div className="grid gap-3 sm:grid-cols-3">
           <label className="block text-[var(--scale-xs)] text-[var(--color-ink-soft)]">
             City
-            <input name="city" required className="mt-1 w-full rounded-[var(--radius-sm)] border border-[var(--color-border-interactive)] bg-[var(--color-surface-raised)] px-3 py-2 text-[var(--scale-sm)] text-[var(--color-ink)]" />
+            <input name="city" required className="field-input mt-1.5" />
           </label>
           <label className="block text-[var(--scale-xs)] text-[var(--color-ink-soft)]">
             State
-            <select name="state" required defaultValue="CA" className="mt-1 w-full rounded-[var(--radius-sm)] border border-[var(--color-border-interactive)] bg-[var(--color-surface-raised)] px-3 py-2 text-[var(--scale-sm)] text-[var(--color-ink)]">
+            <select name="state" required defaultValue="CA" className="field-input mt-1.5">
               <option value="CA">CA</option>
               <option value="MA">MA</option>
             </select>
           </label>
           <label className="block text-[var(--scale-xs)] text-[var(--color-ink-soft)]">
             ZIP
-            <input name="postalCode" required className="mt-1 w-full rounded-[var(--radius-sm)] border border-[var(--color-border-interactive)] bg-[var(--color-surface-raised)] px-3 py-2 text-[var(--scale-sm)] text-[var(--color-ink)]" />
+            <input name="postalCode" required className="field-input mt-1.5" />
           </label>
         </div>
-        <label className="flex items-center gap-2 text-[var(--scale-sm)] text-[var(--color-ink)]">
-          <input type="checkbox" name="isDefault" />
+        <label className="flex items-center gap-3 text-[var(--scale-sm)] text-[var(--color-ink)]">
+          <input type="checkbox" name="isDefault" className="accent-[var(--color-resin)]" />
           Set as default
         </label>
         {addState.error ? (
@@ -98,16 +122,17 @@ export function AddressesPanel({ addresses }: { addresses: AccountAddress[] }) {
             {addState.error}
           </p>
         ) : null}
+        {addState.fieldErrors ? (
+          <p role="alert" className="text-[var(--scale-sm)] text-[var(--color-flag)]">
+            Check address fields and try again.
+          </p>
+        ) : null}
         {addState.success || removeState.success ? (
-          <p role="status" className="text-[var(--scale-sm)] text-[var(--color-terp)]">
+          <p role="status" className="text-[var(--scale-sm)] text-[var(--color-resin)]">
             {addState.message ?? removeState.message}
           </p>
         ) : null}
-        <button
-          type="submit"
-          disabled={addPending}
-          className="rounded-[var(--radius-sm)] bg-[var(--color-resin-strong)] px-4 py-2 text-[var(--scale-sm)] text-[var(--color-surface)] hover:bg-[var(--color-resin-hover)] disabled:opacity-60"
-        >
+        <button type="submit" disabled={addPending} className="btn-primary">
           {addPending ? "Saving…" : "Save address"}
         </button>
       </form>

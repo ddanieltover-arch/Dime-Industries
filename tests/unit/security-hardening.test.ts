@@ -101,6 +101,12 @@ describe("SEO helpers", () => {
     expect(SEO_DISALLOW_PATHS).toContain("/checkout");
     expect(SEO_DISALLOW_PATHS).toContain("/wishlist");
   });
+
+  it("includes public cookie prefs in static sitemap paths", async () => {
+    const { SEO_STATIC_PATHS } = await import("../../lib/seo/site");
+    expect(SEO_STATIC_PATHS).toContain("/cookies");
+    expect(SEO_STATIC_PATHS).toContain("/faq");
+  });
 });
 
 describe("lateral role gates", () => {

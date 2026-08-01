@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#0e0e0e" />
+    <title>Offline · DIME</title>
+    <style>
+      :root {
+        color-scheme: dark;
+        --bg: #0e0e0e;
+        --ink: #f3eee4;
+        --soft: #a39a88;
+        --resin: #c9b138;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        min-height: 100dvh;
+        display: grid;
+        place-items: center;
+        padding: 2rem;
+        background: radial-gradient(ellipse at 30% 0%, #1a1814 0%, var(--bg) 55%);
+        color: var(--ink);
+        font-family: "Segoe UI", system-ui, sans-serif;
+        text-align: center;
+      }
+      h1 {
+        margin: 0;
+        font-size: clamp(1.75rem, 5vw, 2.5rem);
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+      }
+      p {
+        margin: 1rem auto 0;
+        max-width: 28rem;
+        color: var(--soft);
+        line-height: 1.55;
+      }
+      a {
+        display: inline-block;
+        margin-top: 1.75rem;
+        padding: 0.75rem 1.25rem;
+        border: 1px solid var(--resin);
+        color: var(--resin);
+        text-decoration: none;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        font-size: 0.75rem;
+      }
+      a:hover {
+        background: var(--resin);
+        color: #111;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <p style="color: var(--resin); letter-spacing: 0.18em; text-transform: uppercase; font-size: 0.7rem">
+        DIME Industries
+      </p>
+      <h1>You're offline</h1>
+      <p>
+        This page isn&apos;t cached yet. Reconnect to browse the shop, validate products, or manage your
+        account.
+      </p>
+      <a href="/">Try again</a>
+    </main>
+  </body>
+</html>

@@ -61,10 +61,10 @@ export default async function WholesaleCheckoutPage({
 
   if (cart.lines.length === 0) {
     return (
-      <div className="mx-auto max-w-3xl px-4 py-16 text-center sm:px-6">
-        <h1 className="font-[var(--font-display)] text-[var(--scale-3xl)]">Wholesale checkout</h1>
+      <div className="mx-auto max-w-3xl px-[var(--container-pad-x)] py-16 text-center">
+        <h1 className="section-title">Wholesale checkout</h1>
         <p className="mt-4 text-[var(--color-ink-soft)]">Your wholesale cart is empty.</p>
-        <Link href="/wholesale/shop" className="mt-6 inline-block underline underline-offset-4">
+        <Link href="/wholesale/shop" className="btn-primary mt-8">
           Back to shop
         </Link>
       </div>
@@ -72,24 +72,27 @@ export default async function WholesaleCheckoutPage({
   }
 
   return (
-    <div className="mx-auto grid max-w-7xl gap-10 px-4 py-10 lg:grid-cols-[1fr_20rem] sm:px-6 lg:px-8">
+    <div className="mx-auto grid max-w-7xl gap-10 px-[var(--container-pad-x)] py-10 lg:grid-cols-[1fr_22rem] lg:py-14">
       <div>
-        <h1 className="font-[var(--font-display)] text-[var(--scale-3xl)] text-[var(--color-ink)]">
-          Wholesale checkout
-        </h1>
-        <p className="mt-2 text-[var(--scale-sm)] text-[var(--color-ink-soft)]">
-          {buyer.account.businessName} · default {termsLabel(buyer.account.defaultPaymentTerms)}
-        </p>
-        {paymentError ? (
-          <p role="alert" className="mt-4 text-[var(--scale-sm)] text-[var(--color-flag)]">
-            Payment was not completed. You can retry or switch to NET terms.
+        <header className="border-b border-[var(--color-border)] pb-8">
+          <p className="font-[var(--font-display)] text-[10px] uppercase tracking-[0.18em] text-[var(--color-resin)]">
+            B2B
           </p>
-        ) : null}
-        {cart.subtotalCents < WHOLESALE_MIN_ORDER_CENTS ? (
-          <p role="alert" className="mt-4 text-[var(--scale-sm)] text-[var(--color-flag)]">
-            Minimum order is {formatPrice(WHOLESALE_MIN_ORDER_CENTS)}.
+          <h1 className="section-title mt-2">Wholesale checkout</h1>
+          <p className="mt-2 text-[var(--scale-sm)] text-[var(--color-ink-soft)]">
+            {buyer.account.businessName} · default {termsLabel(buyer.account.defaultPaymentTerms)}
           </p>
-        ) : null}
+          {paymentError ? (
+            <p role="alert" className="mt-4 text-[var(--scale-sm)] text-[var(--color-flag)]">
+              Payment was not completed. You can retry or switch to NET terms.
+            </p>
+          ) : null}
+          {cart.subtotalCents < WHOLESALE_MIN_ORDER_CENTS ? (
+            <p role="alert" className="mt-4 text-[var(--scale-sm)] text-[var(--color-flag)]">
+              Minimum order is {formatPrice(WHOLESALE_MIN_ORDER_CENTS)}.
+            </p>
+          ) : null}
+        </header>
         <div className="mt-8">
           <WholesaleCheckoutForm
             email={buyer.email}
@@ -99,9 +102,11 @@ export default async function WholesaleCheckoutPage({
           />
         </div>
       </div>
-      <aside className="border border-[var(--color-border)] bg-[var(--color-surface)] p-4 h-fit">
-        <h2 className="font-[var(--font-display)] text-[var(--scale-lg)]">Summary</h2>
-        <ul className="mt-4 space-y-2 text-[var(--scale-sm)]">
+      <aside className="h-fit border border-[var(--color-border)] bg-[var(--color-surface)] p-6">
+        <h2 className="font-[var(--font-display)] text-[10px] uppercase tracking-[0.16em] text-[var(--color-resin)]">
+          Summary
+        </h2>
+        <ul className="mt-5 space-y-3 text-[var(--scale-sm)]">
           {cart.lines.map((l) => (
             <li key={l.variantId} className="flex justify-between gap-2">
               <span>
@@ -112,22 +117,22 @@ export default async function WholesaleCheckoutPage({
           ))}
         </ul>
         {pricing ? (
-          <dl className="mt-4 space-y-1 border-t border-[var(--color-border)] pt-4 text-[var(--scale-sm)]">
+          <dl className="mt-5 space-y-2 border-t border-[var(--color-border)] pt-4 text-[var(--scale-sm)]">
             <div className="flex justify-between">
-              <dt>Subtotal</dt>
+              <dt className="text-[var(--color-ink-soft)]">Subtotal</dt>
               <dd>{formatPrice(pricing.subtotalCents)}</dd>
             </div>
             <div className="flex justify-between">
-              <dt>Tax</dt>
+              <dt className="text-[var(--color-ink-soft)]">Tax</dt>
               <dd>{formatPrice(pricing.taxCents)}</dd>
             </div>
             <div className="flex justify-between">
-              <dt>Shipping</dt>
+              <dt className="text-[var(--color-ink-soft)]">Shipping</dt>
               <dd>{formatPrice(pricing.shippingCents)}</dd>
             </div>
-            <div className="flex justify-between font-medium">
+            <div className="flex justify-between border-t border-[var(--color-border)] pt-3 font-[var(--font-display)]">
               <dt>Total</dt>
-              <dd>{formatPrice(pricing.totalCents)}</dd>
+              <dd className="text-[var(--color-resin-strong)]">{formatPrice(pricing.totalCents)}</dd>
             </div>
           </dl>
         ) : null}

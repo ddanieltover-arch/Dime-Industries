@@ -2,11 +2,21 @@
 import Image from "next/image";
 import Link from "next/link";
 
-export function ValidateProducts() {
+export function ValidateProducts({
+  headline = "Verify your products",
+  body = "Protect against counterfeits. Verify and register your DIME product for warranty support — and earn rewards when you scan in the app.",
+  ctaLabel = "Validate now",
+  ctaHref = "/validate",
+}: {
+  headline?: string;
+  body?: string;
+  ctaLabel?: string;
+  ctaHref?: string;
+} = {}) {
   return (
-    <section aria-labelledby="validate-heading" className="bg-[var(--color-bg)]">
-      <div className="mx-auto grid max-w-7xl items-center gap-10 px-4 py-16 sm:px-6 lg:grid-cols-2 lg:px-8 lg:py-24">
-        <div className="relative min-h-[260px] overflow-hidden sm:min-h-[340px]">
+    <section aria-labelledby="validate-heading" className="section-pad bg-[var(--color-bg)]">
+      <div className="mx-auto grid max-w-7xl items-center gap-12 px-[var(--container-pad-x)] lg:grid-cols-2">
+        <div className="relative aspect-[4/3] min-h-[240px] overflow-hidden bg-[var(--color-surface)] sm:min-h-[320px]">
           <Image
             src="/brand/validate.png"
             alt="Validate your DIME products"
@@ -16,22 +26,17 @@ export function ValidateProducts() {
           />
         </div>
         <div>
-          <h2
-            id="validate-heading"
-            className="font-[var(--font-display)] text-[var(--scale-xl)] uppercase tracking-[0.08em] text-white sm:text-[var(--scale-2xl)]"
-          >
-            Verify your products
-          </h2>
-          <p className="mt-4 max-w-lg text-[var(--scale-base)] leading-relaxed text-[var(--color-ink-soft)]">
-            Every DIME Industries product is backed by a limited &ldquo;no hassle&rdquo; warranty. Verify and
-            register your product in the event there&apos;s an issue that keeps you from enjoying a session.
-            Earn rewards when you scan them on the app.
+          <p className="font-[var(--font-display)] text-[10px] uppercase tracking-[0.18em] text-[var(--color-resin)]">
+            Authenticity
           </p>
-          <Link
-            href="/validate"
-            className="mt-8 inline-block rounded-full bg-[var(--color-resin)] px-8 py-3 font-[var(--font-display)] text-[var(--scale-xs)] uppercase tracking-[0.16em] text-black transition-colors hover:bg-[var(--color-resin-hover)]"
-          >
-            Learn more
+          <h2 id="validate-heading" className="section-title mt-2">
+            {headline}
+          </h2>
+          <p className="mt-5 max-w-lg text-[var(--scale-base)] leading-relaxed text-[var(--color-ink-soft)]">
+            {body}
+          </p>
+          <Link href={ctaHref} className="btn-primary mt-8">
+            {ctaLabel}
           </Link>
         </div>
       </div>

@@ -29,21 +29,22 @@ export function NotificationsForm({
           ["productAlerts", "Product & drop alerts", productAlerts],
         ] as const
       ).map(([name, label, checked]) => (
-        <label key={name} className="flex items-start gap-2 text-[var(--scale-sm)] text-[var(--color-ink)]">
-          <input type="checkbox" name={name} defaultChecked={checked} className="mt-1" />
+        <label key={name} className="flex items-start gap-3 text-[var(--scale-sm)] text-[var(--color-ink)]">
+          <input
+            type="checkbox"
+            name={name}
+            defaultChecked={checked}
+            className="mt-1 accent-[var(--color-resin)]"
+          />
           <span>{label}</span>
         </label>
       ))}
       {state.success ? (
-        <p role="status" className="text-[var(--scale-sm)] text-[var(--color-terp)]">
+        <p role="status" className="text-[var(--scale-sm)] text-[var(--color-resin)]">
           {state.message}
         </p>
       ) : null}
-      <button
-        type="submit"
-        disabled={pending}
-        className="rounded-[var(--radius-sm)] bg-[var(--color-resin-strong)] px-4 py-2 text-[var(--scale-sm)] text-[var(--color-surface)] hover:bg-[var(--color-resin-hover)] disabled:opacity-60"
-      >
+      <button type="submit" disabled={pending} className="btn-primary">
         {pending ? "Saving…" : "Save preferences"}
       </button>
     </form>

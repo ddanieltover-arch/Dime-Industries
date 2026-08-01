@@ -1,0 +1,67 @@
+// components/catalog/product-gallery.tsx
+"use client";
+
+import { useState } from "react";
+import Image from "next/image";
+
+type Props = {
+  images: string[];
+  productName: string;
+  fallbackLabel: string;
+};
+
+export function ProductGallery({ images, productName, fallbackLabel }: Props) {
+  const [active, setActive] = useState(0);
+  const current = images[active] ?? null;
+
+  if (!current) {
+    return (
+      <div className="relative aspect-square overflow-hidden bg-[var(--color-surface)]">
+        <div className="flex h-full items-center justify-center font-[var(--font-display)] uppercase tracking-[0.14em] text-[var(--color-ink-muted)]">
+          {fallbackLabel}
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="space-y-3">
+      <div className="relative aspect-square overflow-hidden bg-[var(--color-surface)]">
+        <Image
+          key={current}
+          src={current}
+          alt={productName}
+          fill
+          priority
+          className="object-contain p-8"
+          sizes="(max-width: 1024px) 100vw, 50vw"
+        />
+      </div>
+
+      {images.length > 1 ? (
+        <ul className="grid grid-cols-4 gap-2" role="list">
+          {images.map((src, index) => {
+            const selected = index === active;
+            return (
+              <li key={`${src}-${index}`}>
+                <button
+                  type="button"
+                  onClick={() => setActive(index)}
+                  aria-label={`View image ${index + 1} of ${images.length}`}
+                  aria-pressed={selected}
+                  className={`relative aspect-square w-full overflow-hidden bg-[var(--color-surface)] transition-colors ${
+                    selected
+                      ? "ring-2 ring-[var(--color-resin)] ring-offset-2 ring-offset-[var(--color-bg)]"
+                      : "hover:ring-1 hover:ring-[var(--color-border-interactive)]"
+                  }`}
+                >
+                  <Image src={src} alt="" fill className="object-contain p-2" sizes="120px" />
+                </button>
+              </li>
+            );
+          })}
+        </ul>
+      ) : null}
+    </div>
+  );
+}

@@ -89,7 +89,21 @@ export async function submitWholesaleApplication(
   if (!created && account.status === "pending") {
     return { success: "Application already pending review." };
   }
-  return { success: "Application submitted. An admin will review your account." };
+
+  try {
+    const { notifyWholesaleApplication } = await import("@/lib/email/notifications");
+    await notifyWholesaleApplication({
+      email: parsed.data.email,
+      businessName: parsed.data.businessName,
+      licenseNumber: parsed.data.licenseNumber,
+      resaleCertUrl: parsed.data.resaleCertUrl || undefined,
+      preferredTerms: parsed.data.preferredTerms,
+    });
+  } catch (err) {
+    console.warn("[wholesale] application email failed", err);
+  }
+
+  return { success: "Application submitted. Check your email — an admin will review your account." };
 }
 
 export async function addWholesaleCartItem(
@@ -309,8 +323,8 @@ export async function startWholesaleCheckout(
     await commitInventoryForOrder(order.id);
     await clearWholesaleCart();
     try {
-      const { sendEmail, orderConfirmationEmail } = await import("@/lib/email/resend");
-      await sendEmail(orderConfirmationEmail(order));
+      const { notifyOrderConfirmed } = await import("@/lib/email/notifications");
+      await notifyOrderConfirmed(order);
     } catch (err) {
       console.warn("[wholesale] email failed", err);
     }

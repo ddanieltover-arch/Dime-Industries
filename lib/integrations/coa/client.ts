@@ -160,6 +160,61 @@ export async function fetchCoaBySku(
   return catalogCoaFallback(sku, catalogUrl);
 }
 
+/**
+ * Lightweight live probe for catalog cards — fewer remote calls than full fetchCoaBySku.
+ * Returns true only when the live host answers for this SKU/name.
+ */
+export async function probeCoaLive(
+  sku: string,
+  productName?: string | null
+): Promise<boolean> {
+  if (!coaConfigured()) return false;
+
+  try {
+    const contract = await fetchContractV1(sku);
+    if (contract) return true;
+
+    const q =
+      productName?.replace(/\s*[|:–—-].*$/, "").trim() ||
+      searchQueryFromSku(sku) ||
+      sku;
+    if (q.length < 2) return false;
+    const row = await searchHerokuCoas(q);
+    return Boolean(row?.id);
+  } catch {
+    return false;
+  }
+}
+
+/** Mark cards with a live lab COA. Skips SKUs without a catalog COA URL. Chunks remote probes. */
+export async function applyLiveCoaToCards(
+  cards: import("@/lib/catalog/types").ProductCardModel[]
+): Promise<import("@/lib/catalog/types").ProductCardModel[]> {
+  if (!coaConfigured() || cards.length === 0) {
+    return cards.map((c) => ({ ...c, coaLive: false }));
+  }
+
+  const CHUNK = 6;
+  const liveBySku = new Map<string, boolean>();
+  const candidates = cards.filter((c) => c.coaUrl && c.primarySku);
+
+  for (let i = 0; i < candidates.length; i += CHUNK) {
+    const chunk = candidates.slice(i, i + CHUNK);
+    const results = await Promise.all(
+      chunk.map(async (c) => {
+        const live = await probeCoaLive(c.primarySku, c.name);
+        return [c.primarySku, live] as const;
+      })
+    );
+    for (const [sku, live] of results) liveBySku.set(sku, live);
+  }
+
+  return cards.map((c) => ({
+    ...c,
+    coaLive: Boolean(c.coaUrl && liveBySku.get(c.primarySku)),
+  }));
+}
+
 export function getCoaIntegrationStatus() {
   const base = resolveCoaApiBase();
   return {

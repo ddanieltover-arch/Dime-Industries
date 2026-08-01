@@ -46,6 +46,11 @@ export default async function CheckoutPage({ searchParams }: { searchParams: Sea
     ? await getCartSnapshot()
     : { lines: [], itemCount: 0, subtotalCents: 0 };
   const profile = await getCurrentProfile();
+  const accountPrefs = profile
+    ? await (await import("@/lib/account/prefs")).getAccountPrefs()
+    : null;
+  const defaultAddress =
+    accountPrefs?.addresses.find((a) => a.isDefault) ?? accountPrefs?.addresses[0] ?? null;
   const coupon =
     ageGate.ageVerified && cart.lines.length
       ? await resolveAppliedCoupon(cart.subtotalCents)
@@ -71,81 +76,90 @@ export default async function CheckoutPage({ searchParams }: { searchParams: Sea
       <AgeGateDialog initiallyOpen={!ageGate.ageVerified} />
 
       {!ageGate.ageVerified ? null : cart.lines.length === 0 ? (
-        <div className="mx-auto max-w-3xl px-4 py-16 text-center sm:px-6">
-          <h1 className="font-[var(--font-display)] text-[var(--scale-3xl)] text-[var(--color-ink)]">
-            Checkout
-          </h1>
+        <div className="mx-auto max-w-3xl px-[var(--container-pad-x)] py-20 text-center">
+          <h1 className="section-title">Checkout</h1>
           <p className="mt-4 text-[var(--color-ink-soft)]">Your cart is empty.</p>
-          <Link
-            href="/shop"
-            className="mt-6 inline-block text-[var(--color-resin-strong)] underline-offset-4 hover:underline"
-          >
+          <Link href="/shop" className="btn-primary mt-8">
             Return to shop
           </Link>
         </div>
       ) : (
-        <div className="mx-auto grid max-w-7xl gap-10 px-4 py-10 lg:grid-cols-[1fr_20rem] sm:px-6 lg:px-8">
+        <div className="mx-auto grid max-w-7xl gap-12 px-[var(--container-pad-x)] py-10 lg:grid-cols-[1fr_22rem] lg:py-14">
           <div>
-            <h1 className="font-[var(--font-display)] text-[var(--scale-3xl)] text-[var(--color-ink)]">
-              Checkout
-            </h1>
-            {!isPaybisLiveConfigured() ? (
-              <p className="mt-2 text-[var(--scale-sm)] text-[var(--color-ink-soft)]">
-                Paybis credentials are not configured — checkout will use the mock Bitcoin payment flow.
+            <header className="border-b border-[var(--color-border)] pb-8">
+              <p className="font-[var(--font-display)] text-[10px] uppercase tracking-[0.18em] text-[var(--color-resin)]">
+                Secure checkout
               </p>
-            ) : null}
-            {paymentError ? (
-              <p role="alert" className="mt-4 text-[var(--scale-sm)] text-[var(--color-flag)]">
-                Payment was not completed. You can try again below.
-              </p>
-            ) : null}
-            <div className="mt-6">
+              <h1 className="section-title mt-2">Checkout</h1>
+              {!isPaybisLiveConfigured() ? (
+                <p className="mt-3 text-[var(--scale-sm)] text-[var(--color-ink-soft)]">
+                  Paybis credentials are not configured — checkout will use the mock Bitcoin payment flow.
+                </p>
+              ) : null}
+              {paymentError ? (
+                <p role="alert" className="mt-4 text-[var(--scale-sm)] text-[var(--color-flag)]">
+                  Payment was not completed. You can try again below.
+                </p>
+              ) : null}
+            </header>
+
+            <div className="mt-8 space-y-4">
               <CouponForm appliedCode={pricing?.couponCode ?? null} />
-            </div>
-            {profile ? (
-              <div className="mt-4">
+              {profile ? (
                 <LoyaltyRedeemForm
                   balance={balance}
                   appliedPoints={pricing?.loyaltyPointsRedeemed ?? 0}
                   appliedDiscountCents={pricing?.loyaltyDiscountCents ?? 0}
                 />
-              </div>
-            ) : (
-              <p className="mt-4 text-[var(--scale-sm)] text-[var(--color-ink-soft)]">
-                <Link href="/login?next=/checkout" className="underline underline-offset-4">
-                  Sign in
-                </Link>{" "}
-                to redeem loyalty points.
-              </p>
-            )}
-            <div className="mt-8">
+              ) : (
+                <p className="text-[var(--scale-sm)] text-[var(--color-ink-soft)]">
+                  <Link href="/login?next=/checkout" className="text-[var(--color-resin)] underline-offset-4 hover:underline">
+                    Sign in
+                  </Link>{" "}
+                  to redeem loyalty points.
+                </p>
+              )}
+            </div>
+
+            <div className="mt-10">
               <CheckoutForm
                 jurisdiction={checkoutJurisdiction}
                 pricing={pricing!}
                 defaultEmail={profile?.email}
+                defaults={{
+                  fullName: accountPrefs?.displayName || undefined,
+                  line1: defaultAddress?.line1,
+                  line2: defaultAddress?.line2,
+                  city: defaultAddress?.city,
+                  state: defaultAddress?.state,
+                  postalCode: defaultAddress?.postalCode,
+                }}
               />
             </div>
           </div>
 
-          <aside className="h-fit border border-[var(--color-border)] bg-[var(--color-surface)] p-5">
-            <h2 className="font-[var(--font-display)] text-[var(--scale-lg)] text-[var(--color-ink)]">
+          <aside className="h-fit border border-[var(--color-border)] bg-[var(--color-surface)] p-6">
+            <h2 className="font-[var(--font-display)] text-[10px] uppercase tracking-[0.16em] text-[var(--color-resin)]">
               Items
             </h2>
-            <ul className="mt-4 space-y-3" role="list">
+            <ul className="mt-5 space-y-4" role="list">
               {cart.lines.map((line) => (
-                <li key={line.variantId} className="text-[var(--scale-sm)]">
-                  <p className="text-[var(--color-ink)]">
+                <li key={line.variantId} className="border-b border-[var(--color-border)] pb-4 text-[var(--scale-sm)] last:border-0 last:pb-0">
+                  <p className="font-[var(--font-display)] uppercase tracking-[0.04em] text-[var(--color-ink)]">
                     {line.productName}{" "}
                     <span className="text-[var(--color-ink-soft)]">× {line.quantity}</span>
                   </p>
-                  <p className="font-[var(--font-mono)] text-[var(--scale-xs)] text-[var(--color-ink-soft)]">
+                  <p className="mt-1 text-[var(--scale-xs)] text-[var(--color-ink-muted)]">
                     {line.weightOrFormat} · {formatPrice(line.unitPriceCents * line.quantity)}
                   </p>
                 </li>
               ))}
             </ul>
-            <p className="mt-4 text-[var(--scale-xs)] text-[var(--color-ink-soft)]">
-              <Link href="/cart" className="underline-offset-4 hover:underline">
+            <p className="mt-5">
+              <Link
+                href="/cart"
+                className="font-[var(--font-display)] text-[10px] uppercase tracking-[0.14em] text-[var(--color-ink-soft)] hover:text-[var(--color-resin)]"
+              >
                 Edit cart
               </Link>
             </p>

@@ -62,6 +62,17 @@ export default async function AdminReviewsPage() {
               <span className="font-[var(--font-mono)] text-[var(--color-ink-soft)]">{review.status}</span>
               {" · "}
               {review.productName} · {review.rating}/5
+              {review.productSlug ? (
+                <>
+                  {" · "}
+                  <a
+                    href={`/product/${review.productSlug}`}
+                    className="text-[var(--color-resin)] underline-offset-4 hover:underline"
+                  >
+                    PDP
+                  </a>
+                </>
+              ) : null}
             </li>
           ))}
         </ul>

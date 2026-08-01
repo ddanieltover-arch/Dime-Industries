@@ -31,51 +31,48 @@ export default async function CartPage() {
       <AgeGateDialog initiallyOpen={!ageGate.ageVerified} />
 
       {!ageGate.ageVerified ? null : (
-        <div className="mx-auto max-w-3xl px-4 py-10 sm:px-6 lg:px-8">
-          <h1 className="font-[var(--font-display)] text-[var(--scale-3xl)] text-[var(--color-ink)]">
-            Cart
-          </h1>
+        <div className="mx-auto max-w-5xl px-[var(--container-pad-x)] py-10 lg:py-14">
+          <header className="border-b border-[var(--color-border)] pb-8">
+            <p className="font-[var(--font-display)] text-[10px] uppercase tracking-[0.18em] text-[var(--color-resin)]">
+              Bag
+            </p>
+            <h1 className="section-title mt-2">Cart</h1>
+          </header>
 
           {cart.lines.length === 0 ? (
-            <div className="mt-10 border border-dashed border-[var(--color-border)] px-6 py-16 text-center">
-              <p className="font-[var(--font-display)] text-[var(--scale-lg)] text-[var(--color-ink)]">
+            <div className="mt-12 border border-dashed border-[var(--color-border)] px-6 py-20 text-center">
+              <p className="font-[var(--font-display)] text-[var(--scale-lg)] uppercase tracking-[0.08em] text-[var(--color-ink)]">
                 Your cart is empty
               </p>
-              <Link
-                href="/shop"
-                className="mt-4 inline-block text-[var(--scale-sm)] text-[var(--color-resin-strong)] underline-offset-4 hover:underline"
-              >
+              <Link href="/shop" className="btn-primary mt-6">
                 Continue shopping
               </Link>
             </div>
           ) : (
-            <>
-              <ul className="mt-8 space-y-6" role="list">
+            <div className="mt-10 grid gap-10 lg:grid-cols-[1fr_20rem]">
+              <ul className="space-y-4" role="list">
                 {cart.lines.map((line) => (
-                  <li
-                    key={line.variantId}
-                    className="border border-[var(--color-border)] bg-[var(--color-surface-raised)] p-4"
-                  >
-                    <div className="flex flex-col gap-3 sm:flex-row sm:justify-between">
+                  <li key={line.variantId} className="bg-[var(--color-surface)] p-5">
+                    <div className="flex flex-col gap-4 sm:flex-row sm:justify-between">
                       <div>
                         <Link
                           href={`/product/${line.productSlug}`}
-                          className="font-[var(--font-display)] text-[var(--scale-lg)] text-[var(--color-ink)] hover:text-[var(--color-resin)]"
+                          className="font-[var(--font-display)] text-[var(--scale-lg)] uppercase tracking-[0.04em] text-[var(--color-ink)] hover:text-[var(--color-resin)]"
                         >
                           {line.productName}
                         </Link>
-                        <p className="text-[var(--scale-sm)] text-[var(--color-ink-soft)]">
+                        <p className="mt-1 text-[var(--scale-sm)] text-[var(--color-ink-soft)]">
                           {line.lineName} · {line.weightOrFormat}
                         </p>
-                        <p className="mt-1 font-[var(--font-mono)] text-[var(--scale-xs)] text-[var(--color-ink-soft)]">
+                        <p className="mt-1 font-[var(--font-display)] text-[10px] uppercase tracking-[0.12em] text-[var(--color-ink-muted)]">
                           THC {line.thcPct}% · CBD {line.cbdPct}% · {line.sku}
                         </p>
-                        <p className="mt-2 text-[var(--scale-base)] text-[var(--color-ink)]">
+                        <p className="mt-3 text-[var(--scale-sm)] text-[var(--color-ink-soft)]">
                           {formatPrice(line.unitPriceCents)} each
                         </p>
                       </div>
                       <div className="sm:text-right">
-                        <p className="font-[var(--font-display)] text-[var(--scale-lg)] text-[var(--color-ink)]">
+                        <p className="font-[var(--font-display)] text-[var(--scale-lg)] text-[var(--color-resin-strong)]">
                           {formatPrice(line.unitPriceCents * line.quantity)}
                         </p>
                         <div className="mt-3">
@@ -91,14 +88,14 @@ export default async function CartPage() {
                 ))}
               </ul>
 
-              <aside className="mt-10 border border-[var(--color-border)] bg-[var(--color-surface)] p-6">
-                <h2 className="font-[var(--font-display)] text-[var(--scale-lg)] text-[var(--color-ink)]">
+              <aside className="h-fit border border-[var(--color-border)] bg-[var(--color-surface)] p-6">
+                <h2 className="font-[var(--font-display)] text-[10px] uppercase tracking-[0.16em] text-[var(--color-resin)]">
                   Order summary
                 </h2>
                 <div className="mt-4">
                   <CouponForm appliedCode={coupon?.code ?? null} />
                 </div>
-                <dl className="mt-4 space-y-2 text-[var(--scale-sm)]">
+                <dl className="mt-5 space-y-2.5 text-[var(--scale-sm)]">
                   <div className="flex justify-between">
                     <dt className="text-[var(--color-ink-soft)]">Subtotal ({cart.itemCount} items)</dt>
                     <dd className="text-[var(--color-ink)]">{formatPrice(cart.subtotalCents)}</dd>
@@ -111,30 +108,27 @@ export default async function CartPage() {
                   ) : null}
                   <div className="flex justify-between">
                     <dt className="text-[var(--color-ink-soft)]">Tax</dt>
-                    <dd className="text-[var(--color-ink-soft)]">Calculated at checkout</dd>
+                    <dd className="text-[var(--color-ink-muted)]">At checkout</dd>
                   </div>
                   <div className="flex justify-between">
                     <dt className="text-[var(--color-ink-soft)]">Shipping</dt>
-                    <dd className="text-[var(--color-ink-soft)]">Calculated at checkout</dd>
+                    <dd className="text-[var(--color-ink-muted)]">At checkout</dd>
                   </div>
                 </dl>
-                <p className="mt-4 text-[var(--scale-xs)] text-[var(--color-ink-soft)]">
-                  No hidden fees — every charge is itemized before you pay. Try WELCOME10 or SAVE5.
+                <p className="mt-4 text-[var(--scale-xs)] text-[var(--color-ink-muted)]">
+                  No hidden fees — every charge is itemized before you pay.
                 </p>
-                <Link
-                  href="/checkout"
-                  className="mt-6 block w-full rounded-[var(--radius-sm)] bg-[var(--color-resin-strong)] px-4 py-3 text-center text-[var(--scale-sm)] text-[var(--color-surface)] hover:bg-[var(--color-resin-hover)]"
-                >
+                <Link href="/checkout" className="btn-primary mt-6 w-full">
                   Proceed to checkout
                 </Link>
                 <Link
                   href="/shop"
-                  className="mt-3 block text-center text-[var(--scale-sm)] text-[var(--color-resin-strong)] underline-offset-4 hover:underline"
+                  className="mt-4 block text-center font-[var(--font-display)] text-[10px] uppercase tracking-[0.14em] text-[var(--color-ink-soft)] hover:text-[var(--color-resin)]"
                 >
                   Continue shopping
                 </Link>
               </aside>
-            </>
+            </div>
           )}
         </div>
       )}

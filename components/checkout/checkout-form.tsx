@@ -16,6 +16,14 @@ type Props = {
   jurisdiction: LaunchJurisdiction;
   pricing: PricingBreakdown;
   defaultEmail?: string;
+  defaults?: {
+    fullName?: string;
+    line1?: string;
+    line2?: string;
+    city?: string;
+    state?: LaunchJurisdiction;
+    postalCode?: string;
+  };
 };
 
 function FieldError({ errors }: { errors?: string[] }) {
@@ -27,13 +35,20 @@ function FieldError({ errors }: { errors?: string[] }) {
   );
 }
 
-export function CheckoutForm({ jurisdiction, pricing, defaultEmail }: Props) {
+const fieldClass =
+  "mt-1.5 w-full rounded-[var(--radius-pill)] border border-[var(--color-border-interactive)] bg-[var(--color-surface)] px-4 py-3 text-[var(--scale-sm)] text-[var(--color-ink)]";
+
+export function CheckoutForm({ jurisdiction, pricing, defaultEmail, defaults }: Props) {
   const [state, formAction, pending] = useActionState(startCheckout, initial);
+  const shipState = defaults?.state ?? jurisdiction;
 
   return (
-    <form action={formAction} className="space-y-8">
+    <form action={formAction} className="space-y-10">
       <section aria-labelledby="contact-heading" className="space-y-4">
-        <h2 id="contact-heading" className="font-[var(--font-display)] text-[var(--scale-lg)] text-[var(--color-ink)]">
+        <h2
+          id="contact-heading"
+          className="font-[var(--font-display)] text-[10px] uppercase tracking-[0.16em] text-[var(--color-resin)]"
+        >
           Contact
         </h2>
         <label className="block text-[var(--scale-xs)] text-[var(--color-ink-soft)]">
@@ -44,14 +59,17 @@ export function CheckoutForm({ jurisdiction, pricing, defaultEmail }: Props) {
             required
             defaultValue={defaultEmail}
             autoComplete="email"
-            className="mt-1 w-full rounded-[var(--radius-sm)] border border-[var(--color-border-interactive)] bg-[var(--color-surface-raised)] px-3 py-2 text-[var(--scale-sm)] text-[var(--color-ink)]"
+            className={fieldClass}
           />
           <FieldError errors={state.fieldErrors?.email} />
         </label>
       </section>
 
       <section aria-labelledby="shipping-heading" className="space-y-4">
-        <h2 id="shipping-heading" className="font-[var(--font-display)] text-[var(--scale-lg)] text-[var(--color-ink)]">
+        <h2
+          id="shipping-heading"
+          className="font-[var(--font-display)] text-[10px] uppercase tracking-[0.16em] text-[var(--color-resin)]"
+        >
           Shipping
         </h2>
         <p className="text-[var(--scale-sm)] text-[var(--color-ink-soft)]">
@@ -64,7 +82,8 @@ export function CheckoutForm({ jurisdiction, pricing, defaultEmail }: Props) {
             name="fullName"
             required
             autoComplete="name"
-            className="mt-1 w-full rounded-[var(--radius-sm)] border border-[var(--color-border-interactive)] bg-[var(--color-surface-raised)] px-3 py-2 text-[var(--scale-sm)] text-[var(--color-ink)]"
+            defaultValue={defaults?.fullName}
+            className={fieldClass}
           />
           <FieldError errors={state.fieldErrors?.fullName} />
         </label>
@@ -75,7 +94,8 @@ export function CheckoutForm({ jurisdiction, pricing, defaultEmail }: Props) {
             name="line1"
             required
             autoComplete="address-line1"
-            className="mt-1 w-full rounded-[var(--radius-sm)] border border-[var(--color-border-interactive)] bg-[var(--color-surface-raised)] px-3 py-2 text-[var(--scale-sm)] text-[var(--color-ink)]"
+            defaultValue={defaults?.line1}
+            className={fieldClass}
           />
           <FieldError errors={state.fieldErrors?.line1} />
         </label>
@@ -85,7 +105,8 @@ export function CheckoutForm({ jurisdiction, pricing, defaultEmail }: Props) {
           <input
             name="line2"
             autoComplete="address-line2"
-            className="mt-1 w-full rounded-[var(--radius-sm)] border border-[var(--color-border-interactive)] bg-[var(--color-surface-raised)] px-3 py-2 text-[var(--scale-sm)] text-[var(--color-ink)]"
+            defaultValue={defaults?.line2}
+            className={fieldClass}
           />
         </label>
 
@@ -96,19 +117,15 @@ export function CheckoutForm({ jurisdiction, pricing, defaultEmail }: Props) {
               name="city"
               required
               autoComplete="address-level2"
-              className="mt-1 w-full rounded-[var(--radius-sm)] border border-[var(--color-border-interactive)] bg-[var(--color-surface-raised)] px-3 py-2 text-[var(--scale-sm)] text-[var(--color-ink)]"
+              defaultValue={defaults?.city}
+              className={fieldClass}
             />
             <FieldError errors={state.fieldErrors?.city} />
           </label>
 
           <label className="block text-[var(--scale-xs)] text-[var(--color-ink-soft)]">
             State
-            <select
-              name="state"
-              required
-              defaultValue={jurisdiction}
-              className="mt-1 w-full rounded-[var(--radius-sm)] border border-[var(--color-border-interactive)] bg-[var(--color-surface-raised)] px-3 py-2 text-[var(--scale-sm)] text-[var(--color-ink)]"
-            >
+            <select name="state" required defaultValue={shipState} className={fieldClass}>
               <option value="CA">California</option>
               <option value="MA">Massachusetts</option>
             </select>
@@ -121,7 +138,8 @@ export function CheckoutForm({ jurisdiction, pricing, defaultEmail }: Props) {
               name="postalCode"
               required
               autoComplete="postal-code"
-              className="mt-1 w-full rounded-[var(--radius-sm)] border border-[var(--color-border-interactive)] bg-[var(--color-surface-raised)] px-3 py-2 text-[var(--scale-sm)] text-[var(--color-ink)]"
+              defaultValue={defaults?.postalCode}
+              className={fieldClass}
             />
             <FieldError errors={state.fieldErrors?.postalCode} />
           </label>
@@ -129,30 +147,29 @@ export function CheckoutForm({ jurisdiction, pricing, defaultEmail }: Props) {
       </section>
 
       <section aria-labelledby="payment-heading" className="space-y-4">
-        <h2 id="payment-heading" className="font-[var(--font-display)] text-[var(--scale-lg)] text-[var(--color-ink)]">
+        <h2
+          id="payment-heading"
+          className="font-[var(--font-display)] text-[10px] uppercase tracking-[0.16em] text-[var(--color-resin)]"
+        >
           Payment
         </h2>
         <p className="text-[var(--scale-sm)] text-[var(--color-ink-soft)]">
           Pay with Bitcoin via Paybis. You will be redirected to complete the crypto payment.
         </p>
 
-        <aside className="border border-[var(--color-border)] bg-[var(--color-surface)] p-4">
-          <h3 className="font-[var(--font-display)] text-[var(--scale-base)] text-[var(--color-ink)]">
+        <aside className="border border-[var(--color-border)] bg-[var(--color-surface)] p-5">
+          <h3 className="font-[var(--font-display)] text-[10px] uppercase tracking-[0.14em] text-[var(--color-ink)]">
             Order summary
           </h3>
-          <dl className="mt-3 space-y-2 text-[var(--scale-sm)]">
+          <dl className="mt-4 space-y-2.5 text-[var(--scale-sm)]">
             <div className="flex justify-between">
               <dt className="text-[var(--color-ink-soft)]">Subtotal</dt>
               <dd className="text-[var(--color-ink)]">{formatPrice(pricing.subtotalCents)}</dd>
             </div>
             {pricing.discountCents > 0 ? (
               <div className="flex justify-between">
-                <dt className="text-[var(--color-terp)]">
-                  {pricing.discountLabel ?? "Discount"}
-                </dt>
-                <dd className="text-[var(--color-terp)]">
-                  −{formatPrice(pricing.discountCents)}
-                </dd>
+                <dt className="text-[var(--color-terp)]">{pricing.discountLabel ?? "Discount"}</dt>
+                <dd className="text-[var(--color-terp)]">−{formatPrice(pricing.discountCents)}</dd>
               </div>
             ) : null}
             {pricing.loyaltyDiscountCents > 0 ? (
@@ -173,23 +190,18 @@ export function CheckoutForm({ jurisdiction, pricing, defaultEmail }: Props) {
               <dt className="text-[var(--color-ink-soft)]">{pricing.shippingLabel}</dt>
               <dd className="text-[var(--color-ink)]">{formatPrice(pricing.shippingCents)}</dd>
             </div>
-            <div className="flex justify-between border-t border-[var(--color-border)] pt-2 font-[var(--font-display)] text-[var(--scale-base)]">
+            <div className="flex justify-between border-t border-[var(--color-border)] pt-3 font-[var(--font-display)] text-[var(--scale-base)]">
               <dt className="text-[var(--color-ink)]">Total</dt>
-              <dd className="text-[var(--color-ink)]">{formatPrice(pricing.totalCents)}</dd>
+              <dd className="text-[var(--color-resin-strong)]">{formatPrice(pricing.totalCents)}</dd>
             </div>
           </dl>
-          <p className="mt-3 text-[var(--scale-xs)] text-[var(--color-ink-soft)]">
+          <p className="mt-3 text-[var(--scale-xs)] text-[var(--color-ink-muted)]">
             No hidden fees. Every charge is shown before you pay.
           </p>
         </aside>
 
-        <label className="flex items-start gap-2 text-[var(--scale-sm)] text-[var(--color-ink)]">
-          <input
-            type="checkbox"
-            name="confirmAge"
-            className="mt-1"
-            required
-          />
+        <label className="flex items-start gap-3 text-[var(--scale-sm)] text-[var(--color-ink)]">
+          <input type="checkbox" name="confirmAge" className="mt-1 accent-[var(--color-resin)]" required />
           <span>I confirm I am 21 years of age or older and the shipping address is accurate.</span>
         </label>
         <FieldError errors={state.fieldErrors?.confirmAge} />
@@ -201,11 +213,7 @@ export function CheckoutForm({ jurisdiction, pricing, defaultEmail }: Props) {
         </p>
       ) : null}
 
-      <button
-        type="submit"
-        disabled={pending}
-        className="w-full rounded-[var(--radius-sm)] bg-[var(--color-resin-strong)] px-4 py-3 text-[var(--scale-sm)] text-[var(--color-surface)] hover:bg-[var(--color-resin-hover)] disabled:opacity-60 sm:w-auto"
-      >
+      <button type="submit" disabled={pending} className="btn-primary w-full sm:w-auto">
         {pending ? "Starting payment…" : "Pay with Bitcoin"}
       </button>
     </form>

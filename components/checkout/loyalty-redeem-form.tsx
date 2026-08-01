@@ -46,13 +46,9 @@ export function LoyaltyRedeemForm({
           max={balance}
           defaultValue={appliedPoints || ""}
           placeholder="Points to redeem"
-          className="w-40 border border-[var(--color-border)] px-2 py-1 text-[var(--scale-sm)]"
+          className="field-input w-40"
         />
-        <button
-          type="submit"
-          disabled={pending}
-          className="border border-[var(--color-border)] px-3 py-1 text-[var(--scale-sm)]"
-        >
+        <button type="submit" disabled={pending} className="btn-outline px-5 py-3">
           {pending ? "Updating…" : "Apply points"}
         </button>
         {appliedPoints > 0 ? (
@@ -61,7 +57,7 @@ export function LoyaltyRedeemForm({
             name="points"
             value="0"
             disabled={pending}
-            className="text-[var(--scale-sm)] underline underline-offset-4"
+            className="nav-link self-center text-[var(--color-ink-muted)]"
           >
             Clear
           </button>

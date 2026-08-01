@@ -24,3 +24,30 @@ export type HomepageBanner = {
   ctaLabel: string;
   ctaHref: string;
 };
+
+export type HomepageSectionId =
+  | "hero"
+  | "banner"
+  | "trust"
+  | "categories"
+  | "awards"
+  | "bundles"
+  | "product-lines"
+  | "rewards"
+  | "locator"
+  | "validate"
+  | "newsletter";
+
+export type HomepageSection = {
+  id: HomepageSectionId;
+  enabled: boolean;
+  /** Optional copy override (hero / rewards / locator / validate / newsletter). */
+  headline?: string;
+  body?: string;
+  ctaLabel?: string;
+  ctaHref?: string;
+};
+
+export type HomepageLayout = {
+  sections: HomepageSection[];
+};

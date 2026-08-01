@@ -120,7 +120,25 @@ export async function removeAccountAddress(
   }
   await saveAccountPrefs({ ...prefs, addresses });
   revalidatePath("/account/addresses");
+  revalidatePath("/account");
   return { success: true, message: "Address removed." };
+}
+
+export async function setDefaultAccountAddress(
+  _prev: AccountActionState,
+  formData: FormData
+): Promise<AccountActionState> {
+  await requireUser();
+  const id = String(formData.get("addressId") ?? "");
+  const prefs = await getAccountPrefs();
+  if (!prefs.addresses.some((a) => a.id === id)) {
+    return { error: "Address not found." };
+  }
+  const addresses = prefs.addresses.map((a) => ({ ...a, isDefault: a.id === id }));
+  await saveAccountPrefs({ ...prefs, addresses });
+  revalidatePath("/account/addresses");
+  revalidatePath("/checkout");
+  return { success: true, message: "Default address updated." };
 }
 
 export async function submitProductValidation(

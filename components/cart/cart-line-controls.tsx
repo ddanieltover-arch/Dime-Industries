@@ -3,11 +3,9 @@
 
 import { useActionState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import {
-  removeCartItem,
-  updateCartItem,
-  type CommerceActionState,
-} from "@/app/(commerce)/cart-actions";
+import { updateCartItem, type CommerceActionState } from "@/app/(commerce)/cart-actions";
+import { CartRemoveButton } from "@/components/cart/cart-remove-button";
+import { useCart } from "@/components/cart/cart-provider";
 
 const initial: CommerceActionState = {};
 
@@ -21,12 +19,16 @@ export function CartLineControls({
   maxQuantity: number;
 }) {
   const [updateState, updateAction, updatePending] = useActionState(updateCartItem, initial);
-  const [removeState, removeAction, removePending] = useActionState(removeCartItem, initial);
   const router = useRouter();
+  const { setItemCount, refreshCart } = useCart();
 
   useEffect(() => {
-    if (updateState.ok || removeState.ok) router.refresh();
-  }, [updateState.ok, removeState.ok, router]);
+    if (updateState.ok && typeof updateState.itemCount === "number") {
+      setItemCount(updateState.itemCount);
+      void refreshCart();
+      router.refresh();
+    }
+  }, [updateState.ok, updateState.itemCount, setItemCount, refreshCart, router]);
 
   return (
     <div className="flex flex-wrap items-center gap-2">
@@ -42,31 +44,22 @@ export function CartLineControls({
           min={1}
           max={maxQuantity}
           defaultValue={quantity}
-          className="w-16 rounded-[var(--radius-sm)] border border-[var(--color-border-interactive)] bg-[var(--color-surface-raised)] px-2 py-1.5 text-[var(--scale-sm)] text-[var(--color-ink)]"
+          className="field-input w-16 px-2 py-1.5"
         />
         <button
           type="submit"
           disabled={updatePending}
-          className="text-[var(--scale-sm)] text-[var(--color-resin-strong)] underline-offset-4 hover:underline disabled:opacity-60"
+          className="nav-link text-[var(--color-resin)] disabled:opacity-60"
         >
           Update
         </button>
       </form>
 
-      <form action={removeAction}>
-        <input type="hidden" name="variantId" value={variantId} />
-        <button
-          type="submit"
-          disabled={removePending}
-          className="text-[var(--scale-sm)] text-[var(--color-ink-soft)] underline-offset-4 hover:text-[var(--color-flag)] hover:underline disabled:opacity-60"
-        >
-          Remove
-        </button>
-      </form>
+      <CartRemoveButton variantId={variantId} />
 
-      {updateState.error || removeState.error ? (
+      {updateState.error ? (
         <p role="alert" className="w-full text-[var(--scale-xs)] text-[var(--color-flag)]">
-          {updateState.error ?? removeState.error}
+          {updateState.error}
         </p>
       ) : null}
     </div>

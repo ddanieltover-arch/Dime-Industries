@@ -22,16 +22,18 @@
     "catalog:prices": "node scripts/apply-reference-prices.mjs",
     "catalog:seed-db": "tsx db/seed-brand-catalog.ts",
     "catalog:sync-images": "node scripts/sync-catalog-images.mjs",
-    "catalog:refresh-images": "node scripts/refresh-catalog-images.mjs"
+    "catalog:refresh-images": "node scripts/refresh-catalog-images.mjs",
+    "images:optimize": "node scripts/optimize-images.mjs"
   },
   "dependencies": {
     "@radix-ui/react-dialog": "^1.1.0",
+    "@sentry/core": "8.55.2",
     "@sentry/nextjs": "^8.35.0",
     "@supabase/ssr": "^0.5.0",
     "@supabase/supabase-js": "^2.45.0",
     "drizzle-orm": "^0.33.0",
     "framer-motion": "^11.5.0",
-    "next": "^15.0.0",
+    "next": "^15.5.22",
     "next-themes": "^0.3.0",
     "postgres": "^3.4.0",
     "react": "^19.0.0",
@@ -53,6 +55,7 @@
     "jsdom": "^25.0.0",
     "postcss": "^8.5.22",
     "server-only": "^0.0.1",
+    "sharp": "^0.35.3",
     "tailwindcss": "^4.3.3",
     "tsx": "^4.19.0",
     "typescript": "^5.6.0",

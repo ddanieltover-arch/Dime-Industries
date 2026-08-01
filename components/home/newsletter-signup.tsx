@@ -6,7 +6,13 @@ import { subscribeToNewsletter, type NewsletterActionState } from "@/app/(market
 
 const initialState: NewsletterActionState = {};
 
-export function NewsletterSignup() {
+export function NewsletterSignup({
+  headline = "Members newsletter",
+  body = "Drops, promotions, and early access — straight to your inbox.",
+}: {
+  headline?: string;
+  body?: string;
+} = {}) {
   const [state, formAction, pending] = useActionState(subscribeToNewsletter, initialState);
 
   return (
@@ -14,20 +20,15 @@ export function NewsletterSignup() {
       aria-labelledby="newsletter-heading"
       className="border-t border-[var(--color-border)] bg-[var(--color-surface)]"
     >
-      <div className="mx-auto max-w-7xl px-4 py-16 text-center sm:px-6 lg:px-8">
-        <h2
-          id="newsletter-heading"
-          className="font-[var(--font-display)] text-[var(--scale-xl)] uppercase tracking-[0.1em] text-white sm:text-[var(--scale-2xl)]"
-        >
-          Access our members only newsletter
+      <div className="mx-auto max-w-7xl px-[var(--container-pad-x)] py-[var(--section-y)] text-center">
+        <h2 id="newsletter-heading" className="section-title">
+          {headline}
         </h2>
-        <p className="mx-auto mt-3 max-w-lg text-[var(--scale-sm)] text-[var(--color-ink-soft)]">
-          Sign up now for drops, promotions, and early access.
-        </p>
+        <p className="mx-auto mt-3 max-w-md text-[var(--scale-sm)] text-[var(--color-ink-soft)]">{body}</p>
 
         {state.success ? (
           <p role="status" className="mt-8 text-[var(--scale-sm)] text-[var(--color-resin)]">
-            You&apos;re on the list — check your inbox to confirm.
+            You&apos;re on the list — check your inbox for a welcome email.
           </p>
         ) : (
           <form action={formAction} className="mx-auto mt-8 flex max-w-md flex-col gap-3 sm:flex-row">
@@ -42,14 +43,10 @@ export function NewsletterSignup() {
               placeholder="Email address"
               aria-invalid={Boolean(state.error)}
               aria-describedby={state.error ? "newsletter-error" : undefined}
-              className="flex-1 rounded-full border border-[var(--color-border-interactive)] bg-[var(--color-bg)] px-5 py-3 text-[var(--scale-sm)] text-[var(--color-ink)]"
+              className="field-input flex-1"
             />
-            <button
-              type="submit"
-              disabled={pending}
-              className="rounded-full bg-[var(--color-resin)] px-8 py-3 font-[var(--font-display)] text-[var(--scale-xs)] uppercase tracking-[0.16em] text-black transition-colors hover:bg-[var(--color-resin-hover)] disabled:opacity-60"
-            >
-              {pending ? "Signing up…" : "Sign up now"}
+            <button type="submit" disabled={pending} className="btn-primary shrink-0">
+              {pending ? "Signing up…" : "Sign up"}
             </button>
           </form>
         )}

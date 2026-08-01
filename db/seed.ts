@@ -32,9 +32,9 @@ async function seed() {
     .returning();
 
   // --- Site settings ---------------------------------------------------
+  // Age gate min age is code-defined (SITE_MIN_AGE) — do not drive UX from min_age.
   await db.insert(schema.siteSettings).values([
     { key: "launch_jurisdictions", value: JSON.stringify(["CA", "MA"]) },
-    { key: "min_age", value: JSON.stringify(21) },
     { key: "feature_flags", value: JSON.stringify({ wholesale_enabled: true, vendor_onboarding: false }) },
   ]);
 

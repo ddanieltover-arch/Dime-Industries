@@ -13,46 +13,23 @@ export function WholesaleApplyForm({ defaultEmail }: { defaultEmail?: string }) 
     <form action={action} className="space-y-4">
       <label className="block text-[var(--scale-xs)] text-[var(--color-ink-soft)]">
         Business email
-        <input
-          name="email"
-          type="email"
-          required
-          defaultValue={defaultEmail}
-          className="mt-1 w-full border border-[var(--color-border)] bg-[var(--color-surface)] px-3 py-2 text-[var(--scale-sm)]"
-        />
+        <input name="email" type="email" required defaultValue={defaultEmail} className="field-input mt-1.5" />
       </label>
       <label className="block text-[var(--scale-xs)] text-[var(--color-ink-soft)]">
         Business name
-        <input
-          name="businessName"
-          required
-          minLength={2}
-          className="mt-1 w-full border border-[var(--color-border)] bg-[var(--color-surface)] px-3 py-2 text-[var(--scale-sm)]"
-        />
+        <input name="businessName" required minLength={2} className="field-input mt-1.5" />
       </label>
       <label className="block text-[var(--scale-xs)] text-[var(--color-ink-soft)]">
         License / resale number
-        <input
-          name="licenseNumber"
-          className="mt-1 w-full border border-[var(--color-border)] bg-[var(--color-surface)] px-3 py-2 text-[var(--scale-sm)]"
-        />
+        <input name="licenseNumber" className="field-input mt-1.5" />
       </label>
       <label className="block text-[var(--scale-xs)] text-[var(--color-ink-soft)]">
         Resale certificate URL (optional)
-        <input
-          name="resaleCertUrl"
-          type="url"
-          placeholder="https://"
-          className="mt-1 w-full border border-[var(--color-border)] bg-[var(--color-surface)] px-3 py-2 text-[var(--scale-sm)]"
-        />
+        <input name="resaleCertUrl" type="url" placeholder="https://" className="field-input mt-1.5" />
       </label>
       <label className="block text-[var(--scale-xs)] text-[var(--color-ink-soft)]">
         Preferred terms
-        <select
-          name="preferredTerms"
-          defaultValue="net30"
-          className="mt-1 w-full border border-[var(--color-border)] bg-[var(--color-surface)] px-3 py-2 text-[var(--scale-sm)]"
-        >
+        <select name="preferredTerms" defaultValue="net30" className="field-input mt-1.5">
           <option value="net30">NET-30</option>
           <option value="net60">NET-60</option>
           <option value="upfront">Pay upfront (Bitcoin)</option>
@@ -64,13 +41,9 @@ export function WholesaleApplyForm({ defaultEmail }: { defaultEmail?: string }) 
         </p>
       ) : null}
       {state.success ? (
-        <p className="text-[var(--scale-sm)] text-[var(--color-terp)]">{state.success}</p>
+        <p className="text-[var(--scale-sm)] text-[var(--color-resin)]">{state.success}</p>
       ) : null}
-      <button
-        type="submit"
-        disabled={pending}
-        className="rounded-[var(--radius-sm)] bg-[var(--color-resin-strong)] px-4 py-2 text-[var(--scale-sm)] text-[var(--color-surface)] disabled:opacity-60"
-      >
+      <button type="submit" disabled={pending} className="btn-primary">
         {pending ? "Submitting…" : "Submit application"}
       </button>
     </form>

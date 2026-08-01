@@ -4,6 +4,7 @@
 import { useActionState } from "react";
 import Link from "next/link";
 import { signUpWithEmail, type AuthActionState } from "@/app/(auth)/actions";
+import { GoogleSignInButton } from "@/components/auth/google-sign-in-button";
 
 const initial: AuthActionState = {};
 
@@ -11,18 +12,19 @@ export function SignupForm() {
   const [state, formAction, pending] = useActionState(signUpWithEmail, initial);
 
   return (
-    <div className="mx-auto w-full max-w-md space-y-8 px-4 py-16">
+    <div className="mx-auto w-full max-w-md space-y-8 px-[var(--container-pad-x)] py-16">
       <div>
-        <h1 className="font-[var(--font-display)] text-[var(--scale-3xl)] text-[var(--color-ink)]">
-          Create account
-        </h1>
+        <p className="font-[var(--font-display)] text-[10px] uppercase tracking-[0.18em] text-[var(--color-resin)]">
+          Account
+        </p>
+        <h1 className="section-title mt-2">Create account</h1>
         <p className="mt-2 text-[var(--scale-sm)] text-[var(--color-ink-soft)]">
           Password must be at least 10 characters with an uppercase letter and a number.
         </p>
       </div>
 
       {state.success ? (
-        <p role="status" className="text-[var(--scale-sm)] text-[var(--color-terp)]">
+        <p role="status" className="text-[var(--scale-sm)] text-[var(--color-resin)]">
           Check your email to verify your account, then{" "}
           <Link href="/login" className="underline-offset-4 hover:underline">
             sign in
@@ -33,13 +35,7 @@ export function SignupForm() {
         <form action={formAction} className="space-y-4">
           <label className="block text-[var(--scale-xs)] text-[var(--color-ink-soft)]">
             Email
-            <input
-              type="email"
-              name="email"
-              required
-              autoComplete="email"
-              className="mt-1 w-full rounded-[var(--radius-sm)] border border-[var(--color-border-interactive)] bg-[var(--color-surface-raised)] px-3 py-2 text-[var(--scale-sm)] text-[var(--color-ink)]"
-            />
+            <input type="email" name="email" required autoComplete="email" className="field-input mt-1.5" />
             {state.fieldErrors?.email ? (
               <span className="mt-1 block text-[var(--color-flag)]">{state.fieldErrors.email[0]}</span>
             ) : null}
@@ -51,7 +47,7 @@ export function SignupForm() {
               name="password"
               required
               autoComplete="new-password"
-              className="mt-1 w-full rounded-[var(--radius-sm)] border border-[var(--color-border-interactive)] bg-[var(--color-surface-raised)] px-3 py-2 text-[var(--scale-sm)] text-[var(--color-ink)]"
+              className="field-input mt-1.5"
             />
             {state.fieldErrors?.password ? (
               <span className="mt-1 block text-[var(--color-flag)]">{state.fieldErrors.password[0]}</span>
@@ -62,19 +58,17 @@ export function SignupForm() {
               {state.error}
             </p>
           ) : null}
-          <button
-            type="submit"
-            disabled={pending}
-            className="w-full rounded-[var(--radius-sm)] bg-[var(--color-resin-strong)] px-4 py-3 text-[var(--scale-sm)] text-[var(--color-surface)] hover:bg-[var(--color-resin-hover)] disabled:opacity-60"
-          >
+          <button type="submit" disabled={pending} className="btn-primary w-full">
             {pending ? "Creating…" : "Create account"}
           </button>
         </form>
       )}
 
+      {!state.success ? <GoogleSignInButton /> : null}
+
       <p className="text-center text-[var(--scale-sm)] text-[var(--color-ink-soft)]">
         Already have an account?{" "}
-        <Link href="/login" className="text-[var(--color-resin-strong)] underline-offset-4 hover:underline">
+        <Link href="/login" className="text-[var(--color-resin)] underline-offset-4 hover:underline">
           Sign in
         </Link>
       </p>

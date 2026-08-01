@@ -3,6 +3,7 @@
 
 import Link from "next/link";
 import * as Dialog from "@radix-ui/react-dialog";
+import { CartRemoveButton } from "@/components/cart/cart-remove-button";
 import { formatPrice } from "@/lib/format";
 import type { CartSnapshot } from "@/lib/cart/types";
 
@@ -16,18 +17,16 @@ export function CartDrawer({ open, onOpenChange, cart }: Props) {
   return (
     <Dialog.Root open={open} onOpenChange={onOpenChange}>
       <Dialog.Portal>
-        <Dialog.Overlay className="fixed inset-0 z-50 bg-[var(--color-ink)]/40 backdrop-blur-sm" />
+        <Dialog.Overlay className="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm" />
         <Dialog.Content
           aria-describedby="cart-drawer-desc"
-          className="fixed right-0 top-0 z-50 flex h-full w-full max-w-md flex-col border-l border-[var(--color-border)] bg-[var(--color-surface-raised)] shadow-[var(--shadow-card)]"
+          className="fixed right-0 top-0 z-50 flex h-full w-full max-w-md flex-col border-l border-[var(--color-border)] bg-[var(--color-bg)] shadow-[var(--shadow-elevated)]"
         >
           <div className="flex items-center justify-between border-b border-[var(--color-border)] px-5 py-4">
-            <Dialog.Title className="font-[var(--font-display)] text-[var(--scale-lg)] text-[var(--color-ink)]">
+            <Dialog.Title className="font-[var(--font-display)] text-[10px] uppercase tracking-[0.16em] text-[var(--color-resin)]">
               Your cart
             </Dialog.Title>
-            <Dialog.Close className="text-[var(--scale-sm)] text-[var(--color-ink-soft)] hover:text-[var(--color-ink)]">
-              Close
-            </Dialog.Close>
+            <Dialog.Close className="nav-link">Close</Dialog.Close>
           </div>
 
           <p id="cart-drawer-desc" className="sr-only">
@@ -52,19 +51,24 @@ export function CartDrawer({ open, onOpenChange, cart }: Props) {
               <ul className="space-y-4" role="list">
                 {cart.lines.map((line) => (
                   <li key={line.variantId} className="border-b border-[var(--color-border)] pb-4">
-                    <Link
-                      href={`/product/${line.productSlug}`}
-                      onClick={() => onOpenChange(false)}
-                      className="font-[var(--font-display)] text-[var(--color-ink)] hover:text-[var(--color-resin)]"
-                    >
-                      {line.productName}
-                    </Link>
-                    <p className="font-[var(--font-mono)] text-[var(--scale-xs)] text-[var(--color-ink-soft)]">
-                      {line.weightOrFormat} · Qty {line.quantity}
-                    </p>
-                    <p className="mt-1 text-[var(--scale-sm)] text-[var(--color-ink)]">
-                      {formatPrice(line.unitPriceCents * line.quantity)}
-                    </p>
+                    <div className="flex items-start justify-between gap-3">
+                      <div className="min-w-0">
+                        <Link
+                          href={`/product/${line.productSlug}`}
+                          onClick={() => onOpenChange(false)}
+                          className="font-[var(--font-display)] text-[var(--color-ink)] hover:text-[var(--color-resin)]"
+                        >
+                          {line.productName}
+                        </Link>
+                        <p className="font-[var(--font-mono)] text-[var(--scale-xs)] text-[var(--color-ink-soft)]">
+                          {line.weightOrFormat} · Qty {line.quantity}
+                        </p>
+                        <p className="mt-1 text-[var(--scale-sm)] text-[var(--color-ink)]">
+                          {formatPrice(line.unitPriceCents * line.quantity)}
+                        </p>
+                      </div>
+                      <CartRemoveButton variantId={line.variantId} />
+                    </div>
                   </li>
                 ))}
               </ul>
@@ -79,19 +83,11 @@ export function CartDrawer({ open, onOpenChange, cart }: Props) {
             <p className="text-[var(--scale-xs)] text-[var(--color-ink-soft)]">
               Tax and shipping calculated at checkout. No hidden fees.
             </p>
-            <Link
-              href="/cart"
-              onClick={() => onOpenChange(false)}
-              className="block rounded-[var(--radius-sm)] border border-[var(--color-border)] px-4 py-3 text-center text-[var(--scale-sm)] text-[var(--color-ink)] hover:bg-[var(--color-surface)]"
-            >
+            <Link href="/cart" onClick={() => onOpenChange(false)} className="btn-outline w-full">
               View cart
             </Link>
             {cart.lines.length > 0 ? (
-              <Link
-                href="/checkout"
-                onClick={() => onOpenChange(false)}
-                className="block rounded-[var(--radius-sm)] bg-[var(--color-resin-strong)] px-4 py-3 text-center text-[var(--scale-sm)] text-[var(--color-surface)] hover:bg-[var(--color-resin-hover)]"
-              >
+              <Link href="/checkout" onClick={() => onOpenChange(false)} className="btn-primary w-full">
                 Checkout
               </Link>
             ) : null}

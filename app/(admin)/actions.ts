@@ -5,6 +5,7 @@ import { revalidatePath } from "next/cache";
 import { requireAdmin } from "@/lib/auth/session";
 import {
   adjustInventory,
+  clearProductOverride,
   getAdminProduct,
   patchProductOverride,
 } from "@/lib/admin/catalog-overrides";
@@ -50,14 +51,14 @@ export async function updateAdminProduct(
 
   await appendAudit({
     actorEmail: admin.email,
-    action: "product_update",
+    action: "product_override",
     entity: "products",
     entityId: productId,
     detail: `status=${status}`,
   });
 
   revalidateAdmin();
-  return { success: true, message: "Product updated." };
+  return { success: true, message: "Override saved." };
 }
 
 export async function updateAdminVariantPrice(
@@ -85,7 +86,33 @@ export async function updateAdminVariantPrice(
   });
 
   revalidateAdmin();
-  return { success: true, message: "Price updated." };
+  return { success: true, message: "Price override saved." };
+}
+
+export async function clearAdminProductOverride(
+  _prev: AdminActionState,
+  formData: FormData
+): Promise<AdminActionState> {
+  const admin = await requireAdmin();
+  const productId = String(formData.get("productId") ?? "");
+  if (!productId) return { error: "Missing product." };
+
+  const product = await getAdminProduct(productId);
+  if (!product) return { error: "Product not found in catalog." };
+
+  const cleared = await clearProductOverride(productId);
+  if (!cleared) return { error: "No override to clear." };
+
+  await appendAudit({
+    actorEmail: admin.email,
+    action: "product_override_clear",
+    entity: "products",
+    entityId: productId,
+    detail: "cleared",
+  });
+
+  revalidateAdmin();
+  return { success: true, message: "Override cleared — catalog base restored." };
 }
 
 export async function updateAdminInventory(
@@ -165,5 +192,8 @@ export async function moderateReview(
 
   revalidatePath("/admin/reviews");
   revalidatePath("/admin");
+  if (updated.productSlug) {
+    revalidatePath(`/product/${updated.productSlug}`);
+  }
   return { success: true, message: `Review marked ${status}.` };
 }

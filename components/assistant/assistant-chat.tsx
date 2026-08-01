@@ -20,14 +20,15 @@ export function AssistantChat() {
   const [state, formAction, pending] = useActionState(submitAssistantMessage, initial);
 
   return (
-    <div className="mx-auto max-w-2xl">
+    <div>
       <div className="mb-6 flex flex-wrap gap-2">
         {SUGGESTIONS.map((s) => (
           <form key={s} action={formAction}>
             <input type="hidden" name="message" value={s} />
             <button
               type="submit"
-              className="rounded-full border border-[var(--color-border)] px-4 py-2 text-[var(--scale-xs)] text-[var(--color-ink-soft)] hover:border-[var(--color-resin)] hover:text-[var(--color-resin)]"
+              disabled={pending}
+              className="border border-[var(--color-border)] bg-[var(--color-bg)] px-4 py-2 font-[var(--font-display)] text-[10px] uppercase tracking-[0.12em] text-[var(--color-ink-soft)] transition-[border-color,color,background-color] duration-[var(--motion-fast)] hover:border-[var(--color-resin)] hover:text-[var(--color-resin)] disabled:opacity-60"
             >
               {s}
             </button>
@@ -36,15 +37,19 @@ export function AssistantChat() {
       </div>
 
       {state.question && state.answer ? (
-        <div className="mb-8 space-y-4 border border-[var(--color-border)] bg-[var(--color-surface)] p-6">
-          <p className="font-[var(--font-display)] text-[var(--scale-xs)] uppercase tracking-[0.14em] text-[var(--color-resin)]">
-            You asked
-          </p>
-          <p className="text-[var(--color-ink)]">{state.question}</p>
-          <p className="font-[var(--font-display)] text-[var(--scale-xs)] uppercase tracking-[0.14em] text-[var(--color-resin)]">
-            Assistant {state.source === "live" ? "(live)" : "(guide)"}
-          </p>
-          <p className="leading-relaxed text-[var(--color-ink-soft)]">{state.answer}</p>
+        <div className="mb-8 space-y-4 border border-[var(--color-border)] bg-[var(--color-bg)] p-5 sm:p-6">
+          <div>
+            <p className="font-[var(--font-display)] text-[10px] uppercase tracking-[0.16em] text-[var(--color-resin)]">
+              You asked
+            </p>
+            <p className="mt-2 text-[var(--color-ink)]">{state.question}</p>
+          </div>
+          <div className="border-t border-[var(--color-border)] pt-4">
+            <p className="font-[var(--font-display)] text-[10px] uppercase tracking-[0.16em] text-[var(--color-resin)]">
+              Assistant {state.source === "live" ? "(live)" : "(guide)"}
+            </p>
+            <p className="mt-2 leading-relaxed text-[var(--color-ink-soft)]">{state.answer}</p>
+          </div>
         </div>
       ) : null}
 
@@ -63,13 +68,9 @@ export function AssistantChat() {
           name="message"
           required
           placeholder="Ask about products, validation, stores…"
-          className="flex-1 rounded-full border border-[var(--color-border-interactive)] bg-[var(--color-surface)] px-5 py-3 text-[var(--scale-sm)] text-[var(--color-ink)]"
+          className="field-input flex-1"
         />
-        <button
-          type="submit"
-          disabled={pending}
-          className="rounded-full bg-[var(--color-resin)] px-8 py-3 font-[var(--font-display)] text-[var(--scale-xs)] uppercase tracking-[0.16em] text-black hover:bg-[var(--color-resin-hover)] disabled:opacity-60"
-        >
+        <button type="submit" disabled={pending} className="btn-primary shrink-0">
           {pending ? "Thinking…" : "Ask"}
         </button>
       </form>

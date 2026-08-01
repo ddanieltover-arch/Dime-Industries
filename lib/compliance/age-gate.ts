@@ -4,6 +4,8 @@
 // dialog is the UX, this is the enforcement half. Checkout re-validates
 // independently against the account's stored jurisdiction (Database
 // Architecture §4.4); this cookie only governs what a guest can *see*.
+//
+// Minimum age (`SITE_MIN_AGE`) is code-defined — not admin-configurable.
 
 import "server-only";
 import { cookies } from "next/headers";
@@ -14,6 +16,7 @@ import {
 
 export {
   LAUNCH_JURISDICTIONS,
+  SITE_MIN_AGE,
   isLaunchJurisdiction,
   type LaunchJurisdiction,
 } from "@/lib/compliance/jurisdictions";

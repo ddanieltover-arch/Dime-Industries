@@ -2,21 +2,20 @@
 import Image from "next/image";
 import Link from "next/link";
 import { ThemeToggle } from "@/components/shared/theme-toggle";
+import { MobileNav } from "@/components/shared/mobile-nav";
+import { MobileBottomNav } from "@/components/shared/mobile-bottom-nav";
+import { HeaderSearch } from "@/components/shared/header-search";
 import { CartHeaderControls } from "@/components/cart/cart-header-controls";
-import { getCartSnapshot } from "@/lib/cart";
 
 const NAV_LINKS = [
   { href: "/shop", label: "Shop" },
-  { href: "/shop/vapes", label: "Vapes" },
-  { href: "/shop/edibles", label: "Edibles" },
-  { href: "/shop/prerolls", label: "Prerolls" },
   { href: "/promotions", label: "Promotions" },
+  { href: "/validate", label: "Validate" },
+  { href: "/rewards", label: "Rewards" },
   { href: "/locations", label: "Find DIME" },
 ];
 
-export async function SiteHeader() {
-  const cart = await getCartSnapshot();
-
+export function SiteHeader() {
   return (
     <>
       <a
@@ -25,27 +24,27 @@ export async function SiteHeader() {
       >
         Skip to main content
       </a>
-      <header className="sticky top-0 z-40 border-b border-[var(--color-border)] bg-[var(--color-bg)]/95 backdrop-blur">
-        <div className="mx-auto flex h-16 max-w-7xl items-center justify-between gap-4 px-4 sm:px-6 lg:px-8">
-          <Link href="/" className="relative h-8 w-[7.5rem] shrink-0 sm:h-9 sm:w-36">
-            <Image
-              src="/brand/logo.png"
-              alt="DIME"
-              fill
-              priority
-              className="object-contain object-left"
-              sizes="144px"
-            />
-          </Link>
+      <header className="sticky top-0 z-40 border-b border-[var(--color-border)] bg-[var(--color-bg)]/90 backdrop-blur-md">
+        <div className="mx-auto flex h-[4.25rem] max-w-7xl items-center justify-between gap-4 px-[var(--container-pad-x)]">
+          <div className="flex items-center gap-3">
+            <MobileNav />
+            <Link href="/" className="relative h-9 w-[8.5rem] shrink-0 sm:h-10 sm:w-40">
+              <Image
+                src="/brand/logo.png"
+                alt="DIME"
+                fill
+                priority
+                className="object-contain object-left"
+                sizes="160px"
+              />
+            </Link>
+          </div>
 
           <nav aria-label="Main" className="hidden lg:block">
-            <ul className="flex items-center gap-5">
+            <ul className="flex items-center gap-6">
               {NAV_LINKS.map((link) => (
                 <li key={link.href}>
-                  <Link
-                    href={link.href}
-                    className="font-[var(--font-display)] text-[var(--scale-xs)] uppercase tracking-[0.12em] text-[var(--color-ink-soft)] transition-colors hover:text-[var(--color-resin)]"
-                  >
+                  <Link href={link.href} className="nav-link">
                     {link.label}
                   </Link>
                 </li>
@@ -53,47 +52,19 @@ export async function SiteHeader() {
             </ul>
           </nav>
 
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2 sm:gap-3">
+            <div className="sm:block">
+              <HeaderSearch />
+            </div>
             <ThemeToggle />
-            <Link
-              href="/assistant"
-              className="hidden font-[var(--font-display)] text-[var(--scale-xs)] uppercase tracking-[0.12em] text-[var(--color-ink-soft)] transition-colors hover:text-[var(--color-resin)] md:block"
-            >
-              Assistant
-            </Link>
-            <Link
-              href="/account"
-              className="hidden font-[var(--font-display)] text-[var(--scale-xs)] uppercase tracking-[0.12em] text-[var(--color-ink-soft)] transition-colors hover:text-[var(--color-resin)] sm:block"
-            >
+            <Link href="/account" className="nav-link hidden sm:inline">
               Account
             </Link>
-            <CartHeaderControls cart={cart} />
+            <CartHeaderControls />
           </div>
         </div>
-
-        <nav aria-label="Main mobile" className="border-t border-[var(--color-border)] px-4 py-2 lg:hidden">
-          <ul className="flex gap-4 overflow-x-auto">
-            {NAV_LINKS.map((link) => (
-              <li key={link.href} className="shrink-0">
-                <Link
-                  href={link.href}
-                  className="font-[var(--font-display)] text-[var(--scale-xs)] uppercase tracking-[0.12em] text-[var(--color-ink-soft)]"
-                >
-                  {link.label}
-                </Link>
-              </li>
-            ))}
-            <li className="shrink-0">
-              <Link
-                href="/wishlist"
-                className="font-[var(--font-display)] text-[var(--scale-xs)] uppercase tracking-[0.12em] text-[var(--color-ink-soft)]"
-              >
-                Wishlist
-              </Link>
-            </li>
-          </ul>
-        </nav>
       </header>
+      <MobileBottomNav />
     </>
   );
 }
