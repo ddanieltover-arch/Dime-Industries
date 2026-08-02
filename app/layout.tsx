@@ -1,8 +1,7 @@
 // app/layout.tsx
 import type { Metadata, Viewport } from "next";
 import { ThemeProvider } from "@/components/shared/theme-provider";
-import { SiteHeader } from "@/components/shared/site-header";
-import { SiteFooter } from "@/components/shared/site-footer";
+import { StorefrontChrome } from "@/components/shared/storefront-chrome";
 import { CartShell } from "@/components/cart/cart-shell";
 import { PwaClient } from "@/components/pwa/pwa-client";
 import { CookieBannerHost } from "@/components/consent/cookie-banner-host";
@@ -65,9 +64,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body>
         <ThemeProvider>
           <CartShell>
-            <SiteHeader />
-            <main id="main-content">{children}</main>
-            <SiteFooter />
+            <StorefrontChrome>
+              <main id="main-content">{children}</main>
+            </StorefrontChrome>
             <PwaClient />
             <CookieBannerHost />
           </CartShell>

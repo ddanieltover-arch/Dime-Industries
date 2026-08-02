@@ -5,6 +5,7 @@ import { requireAdmin } from "@/lib/auth/session";
 import { FAQ_CMS_SLUG } from "@/lib/cms/faq";
 import { getHomepageBanner, getHomepageLayout, listCmsPages } from "@/lib/cms/store";
 import { BannerForm, CmsPageForm, HomepageLayoutForm } from "@/components/admin/growth-admin-forms";
+import { AdminPageHeader } from "@/components/admin/admin-page-header";
 
 export const metadata: Metadata = {
   title: "Admin CMS",
@@ -24,8 +25,13 @@ export default async function AdminCmsPage() {
 
   return (
     <div className="space-y-10">
+      <AdminPageHeader
+        eyebrow="Content"
+        title="CMS"
+        description="Homepage banner, section layout, FAQ, and published pages."
+      />
       <section>
-        <h2 className="font-[var(--font-display)] text-[var(--scale-xl)] text-[var(--color-ink)]">
+        <h2 className="font-[var(--font-display)] text-[var(--scale-lg)] text-[var(--color-ink)]">
           Homepage banner
         </h2>
         <div className="mt-4">
@@ -33,7 +39,7 @@ export default async function AdminCmsPage() {
         </div>
       </section>
       <section>
-        <h2 className="font-[var(--font-display)] text-[var(--scale-xl)] text-[var(--color-ink)]">
+        <h2 className="font-[var(--font-display)] text-[var(--scale-lg)] text-[var(--color-ink)]">
           Homepage builder
         </h2>
         <p className="mt-2 text-[var(--scale-sm)] text-[var(--color-ink-soft)]">
@@ -44,7 +50,7 @@ export default async function AdminCmsPage() {
         </div>
       </section>
       <section>
-        <h2 className="font-[var(--font-display)] text-[var(--scale-xl)] text-[var(--color-ink)]">
+        <h2 className="font-[var(--font-display)] text-[var(--scale-lg)] text-[var(--color-ink)]">
           FAQ
         </h2>
         <p className="mt-2 text-[var(--scale-sm)] text-[var(--color-ink-soft)]">
@@ -64,7 +70,7 @@ export default async function AdminCmsPage() {
         </div>
       </section>
       <section>
-        <h2 className="font-[var(--font-display)] text-[var(--scale-xl)] text-[var(--color-ink)]">
+        <h2 className="font-[var(--font-display)] text-[var(--scale-lg)] text-[var(--color-ink)]">
           Pages
         </h2>
         <p className="mt-2 text-[var(--scale-sm)] text-[var(--color-ink-soft)]">
