@@ -2,7 +2,8 @@
 import "server-only";
 import { cookies } from "next/headers";
 import { z } from "zod";
-import type { BlogPost, CmsPage, HomepageBanner } from "./types";
+import { DEFAULT_HOMEPAGE_LAYOUT, normalizeHomepageLayout } from "./homepage-layout";
+import type { BlogPost, CmsPage, HomepageBanner, HomepageLayout } from "./types";
 
 export const CMS_COOKIE = "dime_cms";
 
@@ -36,6 +37,7 @@ const jarSchema = z.object({
   pages: z.array(pageSchema),
   posts: z.array(postSchema),
   banner: bannerSchema,
+  layout: z.unknown().optional(),
   seeded: z.boolean().optional(),
 });
 
@@ -177,26 +179,37 @@ type CmsJar = {
   pages: CmsPage[];
   posts: BlogPost[];
   banner: HomepageBanner;
+  layout: HomepageLayout;
 };
+
+function emptyJar(): CmsJar {
+  return {
+    pages: DEFAULT_PAGES,
+    posts: DEFAULT_POSTS,
+    banner: DEFAULT_BANNER,
+    layout: DEFAULT_HOMEPAGE_LAYOUT,
+  };
+}
 
 async function readJar(): Promise<CmsJar> {
   const store = await cookies();
   const raw = store.get(CMS_COOKIE)?.value;
   if (!raw) {
-    return { pages: DEFAULT_PAGES, posts: DEFAULT_POSTS, banner: DEFAULT_BANNER };
+    return emptyJar();
   }
   try {
     const parsed = jarSchema.safeParse(JSON.parse(decodeURIComponent(raw)));
     if (!parsed.success) {
-      return { pages: DEFAULT_PAGES, posts: DEFAULT_POSTS, banner: DEFAULT_BANNER };
+      return emptyJar();
     }
     return {
       pages: parsed.data.pages.length ? parsed.data.pages : DEFAULT_PAGES,
       posts: parsed.data.posts.length ? parsed.data.posts : DEFAULT_POSTS,
       banner: parsed.data.banner,
+      layout: normalizeHomepageLayout(parsed.data.layout ?? DEFAULT_HOMEPAGE_LAYOUT),
     };
   } catch {
-    return { pages: DEFAULT_PAGES, posts: DEFAULT_POSTS, banner: DEFAULT_BANNER };
+    return emptyJar();
   }
 }
 
@@ -229,7 +242,7 @@ async function useDbCms(): Promise<boolean> {
   if (!dbCmsReady) {
     dbCmsReady = (async () => {
       const { dbSeedCmsIfEmpty } = await import("./cms-db");
-      await dbSeedCmsIfEmpty(DEFAULT_PAGES, DEFAULT_POSTS, DEFAULT_BANNER);
+      await dbSeedCmsIfEmpty(DEFAULT_PAGES, DEFAULT_POSTS, DEFAULT_BANNER, DEFAULT_HOMEPAGE_LAYOUT);
       return true;
     })().catch((err) => {
       console.error("[cms] database unavailable, falling back to defaults", err);
@@ -341,5 +354,34 @@ export async function saveHomepageBanner(banner: HomepageBanner): Promise<void> 
   }
   const jar = await readJar();
   jar.banner = banner;
+  await writeJar(jar);
+}
+
+export async function getHomepageLayout(): Promise<HomepageLayout> {
+  if (isProductionBuild()) {
+    return DEFAULT_HOMEPAGE_LAYOUT;
+  }
+  if (await useDbCms()) {
+    try {
+      const { dbGetHomepageLayout } = await import("./cms-db");
+      const fromDb = await dbGetHomepageLayout();
+      return fromDb ? normalizeHomepageLayout(fromDb) : DEFAULT_HOMEPAGE_LAYOUT;
+    } catch (err) {
+      console.error("[cms] homepage layout failed, using defaults", err);
+      return DEFAULT_HOMEPAGE_LAYOUT;
+    }
+  }
+  return (await readJar()).layout;
+}
+
+export async function saveHomepageLayout(layout: HomepageLayout): Promise<void> {
+  const normalized = normalizeHomepageLayout(layout);
+  if (await useDbCms()) {
+    const { dbSaveHomepageLayout } = await import("./cms-db");
+    await dbSaveHomepageLayout(normalized);
+    return;
+  }
+  const jar = await readJar();
+  jar.layout = normalized;
   await writeJar(jar);
 }

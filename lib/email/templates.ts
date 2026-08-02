@@ -441,6 +441,66 @@ export function adminPayoutRequestNotification(input: PayoutEmailInput): EmailPa
   };
 }
 
+export type ReturnRequestEmailInput = {
+  id: string;
+  orderId: string;
+  email: string;
+  reason: string;
+};
+
+export function customerReturnRequestConfirmation(input: ReturnRequestEmailInput): EmailPayload {
+  const bodyHtml = [
+    paragraph(
+      "We received your return request and will review it shortly. You’ll get another email when a decision is made."
+    ),
+    detailTable([
+      { label: "Request", value: escapeHtml(input.id) },
+      { label: "Order", value: escapeHtml(input.orderId) },
+      { label: "Reason", value: escapeHtml(input.reason) },
+    ]),
+    ctaButton("View returns", siteUrl("/account/returns")),
+  ].join("");
+
+  return {
+    to: input.email,
+    subject: `Return request received — ${input.orderId}`,
+    html: emailLayout({
+      preheader: `Return request ${input.id} for order ${input.orderId}.`,
+      eyebrow: "Returns",
+      title: "Return request received",
+      bodyHtml,
+    }),
+    text: `Return request ${input.id} for order ${input.orderId} received. Reason: ${input.reason}`,
+  };
+}
+
+export function adminReturnRequestNotification(input: ReturnRequestEmailInput): EmailPayload {
+  const bodyHtml = [
+    paragraph("A customer submitted a return request."),
+    detailTable([
+      { label: "Request", value: escapeHtml(input.id) },
+      { label: "Order", value: escapeHtml(input.orderId) },
+      { label: "Customer", value: escapeHtml(input.email) },
+      { label: "Reason", value: escapeHtml(input.reason) },
+    ]),
+    ctaButton("Review returns", siteUrl("/admin/returns")),
+  ].join("");
+
+  return {
+    to: "",
+    subject: `[DIME] Return request — ${input.orderId}`,
+    html: emailLayout({
+      preheader: `Return ${input.id} from ${input.email}`,
+      eyebrow: "Admin alert",
+      title: "Return request",
+      bodyHtml,
+      footerNote: "Internal notification.",
+    }),
+    text: `Return request ${input.id} for order ${input.orderId} from ${input.email}: ${input.reason}`,
+    replyTo: input.email,
+  };
+}
+
 /** @deprecated Use customerOrderConfirmation — kept for call-site compatibility. */
 export function orderConfirmationEmail(order: OrderEmailInput): EmailPayload {
   return customerOrderConfirmation(order);

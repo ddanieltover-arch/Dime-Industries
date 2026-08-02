@@ -227,12 +227,14 @@ export async function startWholesaleCheckout(
 
   const raw = {
     email: String(formData.get("email") ?? buyer.email),
+    phone: String(formData.get("phone") ?? ""),
     fullName: String(formData.get("fullName") ?? ""),
     line1: String(formData.get("line1") ?? ""),
     line2: String(formData.get("line2") ?? ""),
     city: String(formData.get("city") ?? ""),
     state: String(formData.get("state") ?? ""),
     postalCode: String(formData.get("postalCode") ?? ""),
+    country: String(formData.get("country") ?? "US"),
     confirmAge: formData.get("confirmAge") === "on" ? "on" : "",
   };
   const parsed = checkoutFormSchema.safeParse(raw);
@@ -283,11 +285,13 @@ export async function startWholesaleCheckout(
   const address: CheckoutAddress = {
     fullName: parsed.data.fullName,
     email: parsed.data.email,
+    phone: parsed.data.phone,
     line1: parsed.data.line1,
     line2: parsed.data.line2 || undefined,
     city: parsed.data.city,
     state: parsed.data.state,
     postalCode: parsed.data.postalCode,
+    country: parsed.data.country,
   };
 
   const pricing = computePricing(cart.lines, jurisdiction, null);

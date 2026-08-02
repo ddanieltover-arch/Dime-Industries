@@ -39,12 +39,15 @@ export async function startCheckout(
 
   const raw = {
     email: String(formData.get("email") ?? ""),
+    phone: String(formData.get("phone") ?? ""),
     fullName: String(formData.get("fullName") ?? ""),
     line1: String(formData.get("line1") ?? ""),
     line2: String(formData.get("line2") ?? ""),
     city: String(formData.get("city") ?? ""),
     state: String(formData.get("state") ?? ""),
     postalCode: String(formData.get("postalCode") ?? ""),
+    country: String(formData.get("country") ?? "US"),
+    paymentMethod: String(formData.get("paymentMethod") ?? "paybis_btc"),
     confirmAge: formData.get("confirmAge") === "on" ? "on" : "",
   };
 
@@ -98,11 +101,13 @@ export async function startCheckout(
   const address: CheckoutAddress = {
     fullName: data.fullName,
     email: data.email,
+    phone: data.phone,
     line1: data.line1,
     line2: data.line2 || undefined,
     city: data.city,
     state: data.state,
     postalCode: data.postalCode,
+    country: data.country,
   };
 
   const coupon = await resolveAppliedCoupon(
@@ -125,6 +130,7 @@ export async function startCheckout(
     jurisdiction,
     lines: cart.lines,
     pricing,
+    paymentMethod: data.paymentMethod,
   });
 
   const { reserveInventoryForOrder, releaseInventoryForOrder } = await import("@/lib/inventory");
@@ -136,6 +142,20 @@ export async function startCheckout(
     await orders.update(order.id, { status: "cancelled" });
     await releaseInventoryForOrder(order.id);
     return { error: reserved.error };
+  }
+
+  revalidatePath("/cart");
+  revalidatePath("/checkout");
+
+  // Direct Bitcoin wallet instructions (Paybis is a how-to on that page).
+  if (data.paymentMethod === "paybis_btc") {
+    redirect(`/checkout/bitcoin/${order.id}`);
+  }
+
+  // Manual rails — confirmation shows payment handles; ops verifies offline.
+  const { isManualPaymentMethod } = await import("@/lib/payments/methods");
+  if (isManualPaymentMethod(data.paymentMethod)) {
+    redirect(`/checkout/confirmation/${order.id}`);
   }
 
   const provider = getPaymentProvider();
@@ -155,8 +175,6 @@ export async function startCheckout(
     paymentMode: session.mode,
   });
 
-  revalidatePath("/cart");
-  revalidatePath("/checkout");
   redirect(session.checkoutUrl);
 }
 
@@ -224,4 +242,48 @@ export async function setLoyaltyRedeemPointsAction(
   revalidatePath("/checkout");
   revalidatePath("/cart");
   return {};
+}
+
+export type ReportPaymentState = {
+  error?: string;
+};
+
+/** Customer reports they sent Bitcoin — notify ops; order stays pending until verified. */
+export async function reportBitcoinPayment(
+  orderId: string,
+  _prev: ReportPaymentState,
+  _formData: FormData
+): Promise<ReportPaymentState> {
+  const orders = getOrderRepository();
+  const order = await orders.getById(orderId);
+  if (!order) return { error: "Order not found." };
+  if (order.paymentMethod !== "paybis_btc") {
+    return { error: "This order is not a Bitcoin payment." };
+  }
+  if (order.status === "payment_confirmed") {
+    redirect(`/checkout/confirmation/${order.id}`);
+  }
+
+  try {
+    const { getAdminEmail, sendEmailPayload } = await import("@/lib/email/resend");
+    const { adminOrderNotification } = await import("@/lib/email/templates");
+    const payload = adminOrderNotification(order);
+    await sendEmailPayload({
+      ...payload,
+      to: getAdminEmail(),
+      subject: `[DIME] Bitcoin payment reported — ${order.id}`,
+    });
+  } catch (err) {
+    console.warn("[checkout] bitcoin report email failed", err);
+  }
+
+  await persistCartLines([]);
+  await setAppliedCouponCode(null);
+  const { setRequestedRedeemPoints } = await import("@/lib/loyalty/session-redeem");
+  await setRequestedRedeemPoints(0);
+
+  revalidatePath("/cart");
+  revalidatePath(`/checkout/bitcoin/${orderId}`);
+  revalidatePath(`/checkout/confirmation/${orderId}`);
+  redirect(`/checkout/confirmation/${orderId}?btc_reported=1`);
 }
