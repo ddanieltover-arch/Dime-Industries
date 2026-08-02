@@ -2,6 +2,7 @@
 import Link from "next/link";
 import type { ProductLineSection } from "@/lib/data/products";
 import { ProductCard } from "@/components/catalog/product-card";
+import { Reveal, Stagger, StaggerItem } from "@/components/motion";
 
 export function BundlesRail({ section }: { section: ProductLineSection }) {
   const headingId = "bundles-rail-heading";
@@ -9,7 +10,7 @@ export function BundlesRail({ section }: { section: ProductLineSection }) {
   return (
     <section aria-labelledby={headingId} className="section-pad border-t border-[var(--color-border)]">
       <div className="mx-auto max-w-7xl px-[var(--container-pad-x)]">
-        <div className="mb-8 flex items-end justify-between gap-4">
+        <Reveal className="mb-8 flex items-end justify-between gap-4">
           <div>
             <p className="font-[var(--font-display)] text-[10px] uppercase tracking-[0.18em] text-[var(--color-resin)]">
               Elevate your experience
@@ -27,16 +28,16 @@ export function BundlesRail({ section }: { section: ProductLineSection }) {
           >
             View all
           </Link>
-        </div>
+        </Reveal>
 
         <div className="relative">
-          <ul className="rail-scroll flex gap-4 overflow-x-auto pb-4" role="list">
+          <Stagger as="ul" className="rail-scroll flex gap-4 overflow-x-auto pb-4" role="list">
             {section.products.map((product) => (
-              <li key={product.slug} className="w-[16.5rem] shrink-0 sm:w-[18rem]">
+              <StaggerItem key={product.slug} as="li" className="w-[16.5rem] shrink-0 sm:w-[18rem]">
                 <ProductCard product={product} />
-              </li>
+              </StaggerItem>
             ))}
-          </ul>
+          </Stagger>
           <div
             className="pointer-events-none absolute inset-y-0 right-0 w-12 bg-gradient-to-l from-[var(--color-bg)] to-transparent"
             aria-hidden="true"

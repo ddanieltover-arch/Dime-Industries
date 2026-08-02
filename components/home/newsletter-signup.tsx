@@ -3,6 +3,7 @@
 
 import { useActionState } from "react";
 import { subscribeToNewsletter, type NewsletterActionState } from "@/app/(marketing)/newsletter-actions";
+import { Reveal } from "@/components/motion";
 
 const initialState: NewsletterActionState = {};
 
@@ -22,7 +23,7 @@ export function NewsletterSignup({
       aria-labelledby="newsletter-heading"
       className="border-t border-[var(--color-border)] bg-[var(--color-surface)]"
     >
-      <div className="mx-auto max-w-7xl px-[var(--container-pad-x)] py-[var(--section-y)] text-center">
+      <Reveal className="mx-auto max-w-7xl px-[var(--container-pad-x)] py-[var(--section-y)] text-center">
         <h2 id="newsletter-heading" className="section-title">
           {headline}
         </h2>
@@ -31,7 +32,7 @@ export function NewsletterSignup({
         </p>
 
         {state.success ? (
-          <p role="status" className="mt-8 text-[var(--scale-sm)] text-[var(--color-resin)]">
+          <p role="status" className="status-pulse mt-8 text-[var(--scale-sm)] text-[var(--color-resin)]">
             You&apos;re on the list — check your inbox for a welcome email.
           </p>
         ) : (
@@ -60,7 +61,7 @@ export function NewsletterSignup({
             {state.error}
           </p>
         )}
-      </div>
+      </Reveal>
     </section>
   );
 }

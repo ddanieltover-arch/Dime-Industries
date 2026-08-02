@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { Reveal } from "@/components/motion";
 import { buildFaqPageJsonLd, FAQ_CMS_SLUG, parseFaqEntries } from "@/lib/cms/faq";
 import { getCmsPage } from "@/lib/cms/store";
 import { SITE_URL } from "@/lib/seo/site";
@@ -56,14 +57,14 @@ export default async function FaqPage() {
         />
 
         <div className="relative mx-auto flex min-h-[min(58vh,520px)] max-w-7xl flex-col justify-end px-[var(--container-pad-x)] pb-12 pt-28 sm:pb-16 sm:pt-32">
-          <p className="section-eyebrow faq-rise">DIME</p>
-          <h1 className="faq-rise mt-2 max-w-2xl font-[var(--font-display)] text-[clamp(2.25rem,6vw,3.75rem)] uppercase leading-[0.95] tracking-[0.06em] text-white [animation-delay:80ms]">
+          <p className="section-eyebrow rise">DIME</p>
+          <h1 className="rise rise-delay-1 mt-2 max-w-2xl font-[var(--font-display)] text-[clamp(2.25rem,6vw,3.75rem)] uppercase leading-[0.95] tracking-[0.06em] text-white">
             FAQ
           </h1>
-          <p className="faq-rise mt-4 max-w-md text-[var(--scale-base)] leading-relaxed text-white/80 [animation-delay:140ms]">
+          <p className="rise rise-delay-2 mt-4 max-w-md text-[var(--scale-base)] leading-relaxed text-white/80">
             Answers about the brand, products, rewards, authenticity, and where to shop.
           </p>
-          <div className="faq-rise mt-8 flex flex-wrap gap-3 [animation-delay:200ms]">
+          <div className="rise rise-delay-3 mt-8 flex flex-wrap gap-3">
             <Link href="/contact" className="btn-primary">
               Contact support
             </Link>
@@ -75,7 +76,7 @@ export default async function FaqPage() {
       </section>
 
       <section aria-labelledby="faq-list-heading" className="bg-[var(--color-bg)]">
-        <div className="mx-auto max-w-3xl px-[var(--container-pad-x)] py-[var(--section-y)]">
+        <Reveal className="mx-auto max-w-3xl px-[var(--container-pad-x)] py-[var(--section-y)]">
           <p className="font-[var(--font-display)] text-[10px] uppercase tracking-[0.18em] text-[var(--color-resin)]">
             Common questions
           </p>
@@ -119,14 +120,14 @@ export default async function FaqPage() {
               FAQ content is being updated. Contact sales@dimeindustries.us for help in the meantime.
             </p>
           )}
-        </div>
+        </Reveal>
       </section>
 
       <section
         aria-labelledby="faq-links-heading"
         className="border-t border-[var(--color-border)] bg-[var(--color-surface)]"
       >
-        <div className="mx-auto max-w-7xl px-[var(--container-pad-x)] py-12">
+        <Reveal className="mx-auto max-w-7xl px-[var(--container-pad-x)] py-12">
           <h2
             id="faq-links-heading"
             className="font-[var(--font-display)] text-[10px] uppercase tracking-[0.18em] text-[var(--color-resin)]"
@@ -145,21 +146,8 @@ export default async function FaqPage() {
               </li>
             ))}
           </ul>
-        </div>
+        </Reveal>
       </section>
-
-      <style>{`
-        @keyframes faq-rise {
-          from { opacity: 0; transform: translateY(14px); }
-          to { opacity: 1; transform: translateY(0); }
-        }
-        .faq-rise {
-          animation: faq-rise 0.7s var(--ease-out) both;
-        }
-        @media (prefers-reduced-motion: reduce) {
-          .faq-rise { animation: none !important; }
-        }
-      `}</style>
     </>
   );
 }

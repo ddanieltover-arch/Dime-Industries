@@ -1,5 +1,6 @@
 // components/home/store-locator-teaser.tsx
 import Link from "next/link";
+import { Reveal } from "@/components/motion";
 
 export function StoreLocatorTeaser({
   headline = "Walk.Run.Drive.",
@@ -23,7 +24,7 @@ export function StoreLocatorTeaser({
       }}
     >
       <div className="absolute inset-0 bg-black/78" />
-      <div className="relative mx-auto max-w-7xl px-[var(--container-pad-x)] py-[var(--section-y)] text-center">
+      <Reveal className="relative mx-auto max-w-7xl px-[var(--container-pad-x)] py-[var(--section-y)] text-center">
         <h2
           id="locator-heading"
           className="font-[var(--font-display)] text-[clamp(2rem,5vw,3.5rem)] uppercase tracking-[0.14em] text-white"
@@ -34,7 +35,7 @@ export function StoreLocatorTeaser({
         <Link href={ctaHref} className="btn-outline mt-8">
           {ctaLabel}
         </Link>
-      </div>
+      </Reveal>
     </section>
   );
 }

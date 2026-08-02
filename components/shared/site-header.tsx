@@ -18,12 +18,13 @@ export function SiteHeader() {
       >
         Skip to main content
       </a>
-      <header className="sticky top-0 z-40 border-b border-[var(--color-border)] bg-[var(--color-bg)]/92 backdrop-blur-md">
+      <header className="sticky top-0 z-40 border-b border-[var(--color-border)] bg-[var(--color-bg)]/80 backdrop-blur-xl supports-[backdrop-filter]:bg-[var(--color-bg)]/72">
         <div
-          className="pointer-events-none absolute inset-x-0 bottom-0 h-px bg-gradient-to-r from-transparent via-[var(--color-resin)]/50 to-transparent"
+          className="pointer-events-none absolute inset-x-0 bottom-0 h-px bg-gradient-to-r from-transparent via-[var(--color-resin)]/55 to-transparent"
           aria-hidden
         />
-        <div className="mx-auto flex h-16 max-w-7xl items-center justify-between gap-3 px-[var(--container-pad-x)] lg:gap-4 xl:h-[4.25rem]">
+        <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-[var(--color-resin)]/[0.04] to-transparent" aria-hidden />
+        <div className="relative mx-auto flex h-16 max-w-7xl items-center justify-between gap-3 px-[var(--container-pad-x)] lg:gap-4 xl:h-[4.25rem]">
           <div className="flex min-w-0 shrink-0 items-center gap-2 sm:gap-3">
             <MobileNav />
             <Link

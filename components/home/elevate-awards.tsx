@@ -1,6 +1,7 @@
 // components/home/elevate-awards.tsx
 import Image from "next/image";
 import Link from "next/link";
+import { Reveal, Stagger, StaggerItem } from "@/components/motion";
 
 const GALLERY = [
   {
@@ -35,7 +36,7 @@ export function ElevateAwards() {
       </div>
 
       <div className="relative mx-auto grid max-w-7xl items-center gap-12 px-[var(--container-pad-x)] py-[var(--section-y)] lg:grid-cols-2 lg:gap-16">
-        <div>
+        <Reveal>
           <p className="section-eyebrow">Elevate your experience</p>
           <h2 id="elevate-heading" className="section-title mt-3 text-white">
             Award-winning products
@@ -53,21 +54,24 @@ export function ElevateAwards() {
               Our story
             </Link>
           </div>
-        </div>
+        </Reveal>
 
-        <div className="grid grid-cols-2 gap-3">
+        <Stagger className="grid grid-cols-2 gap-3" staggerDelay={0.08}>
           {GALLERY.map((shot) => (
-            <div key={shot.src} className={`relative overflow-hidden ${shot.className}`}>
+            <StaggerItem
+              key={shot.src}
+              className={`group relative overflow-hidden ${shot.className}`}
+            >
               <Image
                 src={shot.src}
                 alt={shot.alt}
                 fill
-                className="object-cover"
+                className="object-cover transition-transform duration-500 ease-[var(--ease-out)] group-hover:scale-105"
                 sizes="(max-width: 1024px) 100vw, 50vw"
               />
-            </div>
+            </StaggerItem>
           ))}
-        </div>
+        </Stagger>
       </div>
     </section>
   );

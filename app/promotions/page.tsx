@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { BundlesRail } from "@/components/home/bundles-rail";
 import { NewsletterSignup } from "@/components/home/newsletter-signup";
+import { Reveal, Stagger, StaggerItem } from "@/components/motion";
 import { isCouponCurrentlyValid } from "@/lib/coupons/logic";
 import { listCoupons } from "@/lib/coupons/store";
 import type { Coupon } from "@/lib/coupons/types";
@@ -79,14 +80,14 @@ export default async function PromotionsPage() {
         />
 
         <div className="relative mx-auto flex min-h-[min(72vh,640px)] max-w-7xl flex-col justify-end px-[var(--container-pad-x)] pb-14 pt-28 sm:pb-20 sm:pt-32">
-          <p className="section-eyebrow promo-rise">DIME</p>
-          <h1 className="promo-rise mt-2 max-w-xl font-[var(--font-display)] text-[clamp(2.25rem,6vw,4rem)] uppercase leading-[0.95] tracking-[0.06em] text-white [animation-delay:80ms]">
+          <p className="section-eyebrow rise">DIME</p>
+          <h1 className="rise rise-delay-1 mt-2 max-w-xl font-[var(--font-display)] text-[clamp(2.25rem,6vw,4rem)] uppercase leading-[0.95] tracking-[0.06em] text-white">
             Promotions
           </h1>
-          <p className="promo-rise mt-4 max-w-md text-[var(--scale-base)] leading-relaxed text-white/80 [animation-delay:140ms]">
+          <p className="rise rise-delay-2 mt-4 max-w-md text-[var(--scale-base)] leading-relaxed text-white/80">
             Bundle deals, checkout codes, and member perks — lab-tested products ready to shop.
           </p>
-          <div className="promo-rise mt-8 flex flex-wrap gap-3 [animation-delay:200ms]">
+          <div className="rise rise-delay-3 mt-8 flex flex-wrap gap-3">
             <Link href="/shop" className="btn-primary">
               Shop now
             </Link>
@@ -103,22 +104,25 @@ export default async function PromotionsPage() {
         className="border-b border-[var(--color-border)] bg-[var(--color-bg)]"
       >
         <div className="mx-auto max-w-7xl px-[var(--container-pad-x)] py-[var(--section-y)]">
-          <p className="font-[var(--font-display)] text-[10px] uppercase tracking-[0.18em] text-[var(--color-resin)]">
-            Current offers
-          </p>
-          <h2 id="offers-heading" className="section-title mt-2">
-            Checkout codes
-          </h2>
-          <p className="mt-3 max-w-lg text-[var(--scale-sm)] text-[var(--color-ink-soft)]">
-            Apply these codes in your cart before checkout. Offers update as new drops land.
-          </p>
+          <Reveal>
+            <p className="font-[var(--font-display)] text-[10px] uppercase tracking-[0.18em] text-[var(--color-resin)]">
+              Current offers
+            </p>
+            <h2 id="offers-heading" className="section-title mt-2">
+              Checkout codes
+            </h2>
+            <p className="mt-3 max-w-lg text-[var(--scale-sm)] text-[var(--color-ink-soft)]">
+              Apply these codes in your cart before checkout. Offers update as new drops land.
+            </p>
+          </Reveal>
 
           {activeOffers.length > 0 ? (
-            <ul className="mt-10 divide-y divide-[var(--color-border)] border border-[var(--color-border)]" role="list">
+            <Stagger as="ul" className="mt-10 divide-y divide-[var(--color-border)] border border-[var(--color-border)]" role="list">
               {activeOffers.map((coupon) => (
-                <li
+                <StaggerItem
                   key={coupon.id}
-                  className="group flex flex-col gap-4 bg-[var(--color-surface)] px-5 py-5 transition-[background-color] duration-[var(--motion-base)] ease-[var(--ease-out)] hover:bg-[var(--color-surface-raised)] sm:flex-row sm:items-center sm:justify-between sm:px-8"
+                  as="li"
+                  className="group flex flex-col gap-4 bg-[var(--color-surface)] px-5 py-5 transition-[background-color,box-shadow] duration-[var(--motion-base)] ease-[var(--ease-out)] hover:bg-[var(--color-surface-raised)] hover:shadow-[var(--shadow-card)] sm:flex-row sm:items-center sm:justify-between sm:px-8"
                 >
                   <div className="min-w-0">
                     <p className="font-[var(--font-display)] text-[var(--scale-xl)] uppercase tracking-[0.12em] text-[var(--color-resin)]">
@@ -135,11 +139,11 @@ export default async function PromotionsPage() {
                   >
                     Apply in cart
                   </Link>
-                </li>
+                </StaggerItem>
               ))}
-            </ul>
+            </Stagger>
           ) : (
-            <div className="mt-10 border border-[var(--color-border)] bg-[var(--color-surface)] px-6 py-10 text-center">
+            <Reveal className="mt-10 border border-[var(--color-border)] bg-[var(--color-surface)] px-6 py-10 text-center">
               <p className="font-[var(--font-display)] text-[var(--scale-lg)] uppercase tracking-[0.08em] text-[var(--color-ink)]">
                 New drops soon
               </p>
@@ -149,7 +153,7 @@ export default async function PromotionsPage() {
               <Link href="/shop" className="btn-primary mt-6 inline-flex">
                 Browse shop
               </Link>
-            </div>
+            </Reveal>
           )}
         </div>
       </section>
@@ -163,19 +167,21 @@ export default async function PromotionsPage() {
         className="border-t border-[var(--color-border)] bg-[var(--color-bg)]"
       >
         <div className="mx-auto max-w-7xl px-[var(--container-pad-x)] py-[var(--section-y)]">
-          <p className="font-[var(--font-display)] text-[10px] uppercase tracking-[0.18em] text-[var(--color-resin)]">
-            More ways to save
-          </p>
-          <h2 id="paths-heading" className="section-title mt-2">
-            Member perks
-          </h2>
-          <p className="mt-3 max-w-lg text-[var(--scale-sm)] text-[var(--color-ink-soft)]">
-            Codes are only one path — rewards and validation unlock ongoing value.
-          </p>
+          <Reveal>
+            <p className="font-[var(--font-display)] text-[10px] uppercase tracking-[0.18em] text-[var(--color-resin)]">
+              More ways to save
+            </p>
+            <h2 id="paths-heading" className="section-title mt-2">
+              Member perks
+            </h2>
+            <p className="mt-3 max-w-lg text-[var(--scale-sm)] text-[var(--color-ink-soft)]">
+              Codes are only one path — rewards and validation unlock ongoing value.
+            </p>
+          </Reveal>
 
-          <ul className="mt-10 grid gap-px bg-[var(--color-border)] sm:grid-cols-3" role="list">
+          <Stagger as="ul" className="mt-10 grid gap-px bg-[var(--color-border)] sm:grid-cols-3" role="list">
             {PATHS.map((path) => (
-              <li key={path.href} className="bg-[var(--color-surface)] p-6 sm:p-8">
+              <StaggerItem key={path.href} as="li" className="bg-[var(--color-surface)] p-6 sm:p-8">
                 <h3 className="font-[var(--font-display)] text-[var(--scale-lg)] uppercase tracking-[0.08em] text-[var(--color-ink)]">
                   {path.title}
                 </h3>
@@ -186,9 +192,9 @@ export default async function PromotionsPage() {
                 >
                   {path.label} →
                 </Link>
-              </li>
+              </StaggerItem>
             ))}
-          </ul>
+          </Stagger>
         </div>
       </section>
 
@@ -196,19 +202,6 @@ export default async function PromotionsPage() {
         headline="Never miss a drop"
         body="Promotions, limited drops, and early access — straight to your inbox."
       />
-
-      <style>{`
-        @keyframes promo-rise {
-          from { opacity: 0; transform: translateY(14px); }
-          to { opacity: 1; transform: translateY(0); }
-        }
-        .promo-rise {
-          animation: promo-rise 0.7s var(--ease-out) both;
-        }
-        @media (prefers-reduced-motion: reduce) {
-          .promo-rise { animation: none !important; }
-        }
-      `}</style>
     </>
   );
 }

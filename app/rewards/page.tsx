@@ -2,6 +2,7 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
+import { Reveal, Stagger, StaggerItem } from "@/components/motion";
 import { getRewardsAppUrl } from "@/lib/integrations/rewards/client";
 import { POINTS_PER_DOLLAR, REDEEM_POINTS_PER_DOLLAR } from "@/lib/loyalty/constants";
 
@@ -99,15 +100,15 @@ export default function RewardsPage() {
         />
 
         <div className="relative mx-auto flex min-h-[min(72vh,640px)] max-w-7xl flex-col justify-end px-[var(--container-pad-x)] pb-14 pt-28 sm:pb-20 sm:pt-32">
-          <p className="section-eyebrow rewards-rise">Join DIME Rewards</p>
-          <h1 className="rewards-rise mt-2 max-w-xl font-[var(--font-display)] text-[clamp(2.25rem,6vw,4rem)] uppercase leading-[0.95] tracking-[0.06em] text-white [animation-delay:80ms]">
+          <p className="section-eyebrow rise">Join DIME Rewards</p>
+          <h1 className="rise rise-delay-1 mt-2 max-w-xl font-[var(--font-display)] text-[clamp(2.25rem,6vw,4rem)] uppercase leading-[0.95] tracking-[0.06em] text-white">
             Tap. Scan. Start earning.
           </h1>
-          <p className="rewards-rise mt-4 max-w-md text-[var(--scale-base)] leading-relaxed text-white/80 [animation-delay:140ms]">
+          <p className="rise rise-delay-2 mt-4 max-w-md text-[var(--scale-base)] leading-relaxed text-white/80">
             A points-based program with exclusive products and experiences — validate, level up, and redeem on the
             DIME store.
           </p>
-          <div className="rewards-rise mt-8 flex flex-wrap gap-3 [animation-delay:200ms]">
+          <div className="rise rise-delay-3 mt-8 flex flex-wrap gap-3">
             <Link href="/signup" className="btn-primary">
               Join rewards
             </Link>
@@ -123,20 +124,22 @@ export default function RewardsPage() {
         className="border-b border-[var(--color-border)] bg-[var(--color-surface)]"
       >
         <div className="mx-auto max-w-7xl px-[var(--container-pad-x)] py-[var(--section-y)]">
-          <p className="font-[var(--font-display)] text-[10px] uppercase tracking-[0.18em] text-[var(--color-resin)]">
-            How it works
-          </p>
-          <h2 id="earn-heading" className="section-title mt-2">
-            Validate. Level up. Redeem.
-          </h2>
-          <p className="mt-3 max-w-lg text-[var(--scale-sm)] text-[var(--color-ink-soft)]">
-            On-site loyalty is live now — shop and validate without leaving the storefront. Full campaigns and
-            merch redemptions also run in the DIME App.
-          </p>
+          <Reveal>
+            <p className="font-[var(--font-display)] text-[10px] uppercase tracking-[0.18em] text-[var(--color-resin)]">
+              How it works
+            </p>
+            <h2 id="earn-heading" className="section-title mt-2">
+              Validate. Level up. Redeem.
+            </h2>
+            <p className="mt-3 max-w-lg text-[var(--scale-sm)] text-[var(--color-ink-soft)]">
+              On-site loyalty is live now — shop and validate without leaving the storefront. Full campaigns and
+              merch redemptions also run in the DIME App.
+            </p>
+          </Reveal>
 
-          <ul className="mt-10 grid gap-px bg-[var(--color-border)] sm:grid-cols-2 lg:grid-cols-4" role="list">
+          <Stagger as="ul" className="mt-10 grid gap-px bg-[var(--color-border)] sm:grid-cols-2 lg:grid-cols-4" role="list">
             {HOW.map((way) => (
-              <li key={way.title} className="bg-[var(--color-bg)] p-6 sm:p-8">
+              <StaggerItem key={way.title} as="li" className="bg-[var(--color-bg)] p-6 sm:p-8">
                 <h3 className="font-[var(--font-display)] text-[var(--scale-lg)] uppercase tracking-[0.08em] text-[var(--color-ink)]">
                   {way.title}
                 </h3>
@@ -147,9 +150,9 @@ export default function RewardsPage() {
                 >
                   {way.label} →
                 </Link>
-              </li>
+              </StaggerItem>
             ))}
-          </ul>
+          </Stagger>
         </div>
       </section>
 
@@ -332,19 +335,6 @@ export default function RewardsPage() {
           </Link>
         </div>
       </section>
-
-      <style>{`
-        @keyframes rewards-rise {
-          from { opacity: 0; transform: translateY(14px); }
-          to { opacity: 1; transform: translateY(0); }
-        }
-        .rewards-rise {
-          animation: rewards-rise 0.7s var(--ease-out) both;
-        }
-        @media (prefers-reduced-motion: reduce) {
-          .rewards-rise { animation: none !important; }
-        }
-      `}</style>
     </>
   );
 }

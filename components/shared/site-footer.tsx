@@ -6,7 +6,8 @@ const COLUMNS = [
   {
     heading: "Shop",
     links: [
-      { href: "/shop/vapes", label: "Vapes" },
+      { href: "/shop/vapes", label: "Vapes & carts" },
+      { href: "/shop/vapes/rosin", label: "Rosin" },
       { href: "/shop/edibles", label: "Edibles" },
       { href: "/shop/prerolls", label: "Prerolls" },
       { href: "/shop/accessories", label: "Accessories" },
@@ -17,6 +18,7 @@ const COLUMNS = [
     heading: "Company",
     links: [
       { href: "/about", label: "About" },
+      { href: "/blog", label: "Blog" },
       { href: "/faq", label: "FAQ" },
       { href: "/careers", label: "Careers" },
       { href: "/contact", label: "Contact" },

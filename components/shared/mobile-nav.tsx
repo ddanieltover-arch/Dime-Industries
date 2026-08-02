@@ -22,31 +22,44 @@ export function MobileNav() {
       <Dialog.Trigger asChild>
         <button
           type="button"
-          className="flex h-10 w-10 items-center justify-center border border-[var(--color-border-interactive)] text-[var(--color-ink)] transition-[border-color,color] duration-[var(--motion-fast)] hover:border-[var(--color-resin)] hover:text-[var(--color-resin)] lg:hidden"
-          aria-label="Open menu"
+          className="flex h-11 w-11 items-center justify-center border border-[var(--color-border-interactive)] text-[var(--color-ink)] transition-[border-color,color] duration-[var(--motion-fast)] hover:border-[var(--color-resin)] hover:text-[var(--color-resin)] lg:hidden"
+          aria-label={open ? "Close menu" : "Open menu"}
+          aria-expanded={open}
         >
-          <span className="flex flex-col gap-1.5" aria-hidden="true">
-            <span className="block h-px w-5 bg-current" />
-            <span className="block h-px w-5 bg-current" />
-            <span className="block h-px w-3 bg-current" />
+          <span className="relative flex h-4 w-5 items-center justify-center" aria-hidden="true">
+            <span
+              className={`absolute block h-px w-5 origin-center bg-current transition-transform duration-[var(--motion-base)] ease-[var(--ease-out)] ${
+                open ? "translate-y-0 rotate-45" : "-translate-y-1.5"
+              }`}
+            />
+            <span
+              className={`absolute block h-px w-5 bg-current transition-opacity duration-[var(--motion-fast)] ${
+                open ? "opacity-0" : "opacity-100"
+              }`}
+            />
+            <span
+              className={`absolute block h-px origin-center bg-current transition-[transform,width] duration-[var(--motion-base)] ease-[var(--ease-out)] ${
+                open ? "w-5 translate-y-0 -rotate-45" : "w-3 translate-y-1.5"
+              }`}
+            />
           </span>
         </button>
       </Dialog.Trigger>
 
       <Dialog.Portal>
-        <Dialog.Overlay className="fixed inset-0 z-50 bg-black/75 data-[state=open]:animate-in" />
+        <Dialog.Overlay className="drawer-overlay fixed inset-0 z-50 bg-black/75 backdrop-blur-sm" />
         <Dialog.Content
-          className="fixed inset-y-0 right-0 z-50 flex w-[min(100vw,22rem)] flex-col border-l border-[var(--color-border)] bg-[var(--color-bg)] shadow-[var(--shadow-elevated)] outline-none"
+          className="drawer-panel fixed inset-y-0 right-0 z-50 flex w-[min(100vw,22rem)] flex-col border-l border-[var(--color-border)] bg-[var(--color-bg)] shadow-[var(--shadow-elevated)] outline-none"
           aria-describedby={undefined}
         >
-          <div className="flex h-16 items-center justify-between border-b border-[var(--color-border)] px-5">
+          <div className="glass-panel flex h-16 items-center justify-between border-b border-[var(--color-border)] px-5">
             <Dialog.Title className="font-[var(--font-display)] text-[10px] uppercase tracking-[0.18em] text-[var(--color-resin)]">
               Menu
             </Dialog.Title>
             <Dialog.Close asChild>
               <button
                 type="button"
-                className="font-[var(--font-display)] text-[10px] uppercase tracking-[0.14em] text-[var(--color-ink-soft)] transition-colors hover:text-[var(--color-resin)]"
+                className="min-h-11 min-w-11 font-[var(--font-display)] text-[10px] uppercase tracking-[0.14em] text-[var(--color-ink-soft)] transition-colors hover:text-[var(--color-resin)]"
                 aria-label="Close menu"
               >
                 Close

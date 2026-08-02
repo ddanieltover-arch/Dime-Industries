@@ -54,6 +54,7 @@ export const SEO_BLOG_SLUGS = [
   "dime-prerolls-are-coming-meet-dimepack-double-ds",
   "how-dime-state-exclusives-capture-a-place",
   "how-we-publish-coas",
+  "how-many-dimes-in-a-roll",
 ] as const;
 
 export const SEO_DISALLOW_PATHS = [

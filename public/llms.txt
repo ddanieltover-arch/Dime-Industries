@@ -1,0 +1,31 @@
+# DIME Industries
+> Award-winning cannabis vapes, edibles, and prerolls — lab-tested hardware and extracts since 2016.
+
+DIME Industries is a licensed cannabis brand helping adult consumers and retailers find authentic, lab-tested products online and at licensed stores.
+
+## Key Pages
+- /: Homepage — brand overview and featured products
+- /shop: Full catalog
+- /shop/vapes: DIME carts and vape devices
+- /shop/vapes/rosin: Rosin vape line
+- /shop/edibles/rosin: Rosin edibles
+- /locations: Find DIME retailers near you
+- /blog: Knowledge hub
+- /blog/how-many-dimes-in-a-roll: How many dimes in a U.S. coin roll (40 / $4)
+- /about: Company information
+- /faq: Product, authenticity, and shopping answers
+- /lab-results: Certificates of analysis
+- /validate: Product authenticity validation
+
+## Primary Topics
+- DIME Industries brand and licensing
+- DIME carts / vape cartridges and hardware
+- Live resin, live reserve, and rosin product lines
+- Edibles and prerolls
+- Store locator / find DIME near me
+- Product validation and lab testing (COAs)
+- Educational coin FAQ: how many dimes in a roll
+
+## Notes
+- Cannabis products for adults 21+ or qualifying patients in legal markets only.
+- Canonical site: https://dimeindustries.us

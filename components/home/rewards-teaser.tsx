@@ -1,5 +1,6 @@
 // components/home/rewards-teaser.tsx
 import Link from "next/link";
+import { Reveal } from "@/components/motion";
 import { POINTS_PER_DOLLAR, REDEEM_POINTS_PER_DOLLAR } from "@/lib/loyalty/constants";
 
 export function RewardsTeaser({
@@ -28,7 +29,7 @@ export function RewardsTeaser({
       aria-labelledby="rewards-teaser-heading"
       className="border-y border-[var(--color-border)] bg-[var(--color-surface)]"
     >
-      <div className="mx-auto grid max-w-7xl items-center gap-8 px-[var(--container-pad-x)] py-[var(--section-y)] lg:grid-cols-[1.2fr_1fr]">
+      <Reveal className="mx-auto grid max-w-7xl items-center gap-8 px-[var(--container-pad-x)] py-[var(--section-y)] lg:grid-cols-[1.2fr_1fr]">
         <div>
           <p className="font-[var(--font-display)] text-[10px] uppercase tracking-[0.18em] text-[var(--color-resin)]">
             DIME Rewards
@@ -53,7 +54,7 @@ export function RewardsTeaser({
             How it works
           </Link>
         </div>
-      </div>
+      </Reveal>
     </section>
   );
 }

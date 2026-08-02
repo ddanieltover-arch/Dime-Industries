@@ -7,11 +7,13 @@ import { HomepageSections } from "@/components/home/homepage-sections";
 import { getHomepageBanner, getHomepageLayout } from "@/lib/cms/store";
 import { isSectionEnabled } from "@/lib/cms/homepage-layout";
 import { getCurrentProfile } from "@/lib/auth/session";
+import { buildWebSiteJsonLd } from "@/lib/seo/json-ld";
+import { SITE_URL } from "@/lib/seo/site";
 
 export const metadata: Metadata = {
   title: "Buy THC Edibles & Vapes Online",
   description:
-    "Shop award-winning DIME vapes, edibles, and prerolls. Lab-tested. Licensed in California and Massachusetts.",
+    "Shop award-winning DIME Industries vapes, dime carts, edibles, and prerolls. Lab-tested. Licensed in California and Massachusetts.",
   alternates: { canonical: "/" },
 };
 
@@ -19,9 +21,13 @@ const organizationJsonLd = {
   "@context": "https://schema.org",
   "@type": "Organization",
   name: "DIME Industries",
-  url: "https://dimeindustries.us",
+  url: SITE_URL,
   description: "Award-winning cannabis products sold under license in California and Massachusetts.",
+  logo: `${SITE_URL}/brand/logo.png`,
 };
+
+const websiteJsonLd = buildWebSiteJsonLd();
+
 
 export default async function HomePage() {
   const ageGate = await getAgeGateState();
@@ -48,6 +54,11 @@ export default async function HomePage() {
         type="application/ld+json"
         // eslint-disable-next-line react/no-danger
         dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationJsonLd) }}
+      />
+      <script
+        type="application/ld+json"
+        // eslint-disable-next-line react/no-danger
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteJsonLd) }}
       />
 
       <AgeGateDialog initiallyOpen={!ageGate.ageVerified} />

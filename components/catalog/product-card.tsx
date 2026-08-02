@@ -16,7 +16,7 @@ export function ProductCard({ product }: { product: ProductCardModel }) {
   const labHref = `/lab-results?sku=${encodeURIComponent(product.primarySku)}`;
 
   return (
-    <article className="group flex h-full flex-col bg-[var(--color-surface)] transition-colors hover:bg-[var(--color-surface-raised)]">
+    <article className="group flex h-full flex-col bg-[var(--color-surface)] shadow-[0_0_0_transparent] transition-[background-color,transform,box-shadow] duration-[var(--motion-base)] ease-[var(--ease-out)] hover:-translate-y-1 hover:bg-[var(--color-surface-raised)] hover:shadow-[var(--shadow-card)]">
       <div className="relative aspect-[4/5] overflow-hidden bg-[var(--color-bg)]">
         <Link href={href} className="absolute inset-0">
           {product.imageUrl ? (

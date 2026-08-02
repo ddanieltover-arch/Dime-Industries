@@ -53,14 +53,14 @@ export default function AssistantPage() {
         />
 
         <div className="relative mx-auto flex min-h-[min(58vh,520px)] max-w-7xl flex-col justify-end px-[var(--container-pad-x)] pb-12 pt-28 sm:pb-16 sm:pt-32">
-          <p className="section-eyebrow assistant-rise">DIME</p>
-          <h1 className="assistant-rise mt-2 max-w-xl font-[var(--font-display)] text-[clamp(2.25rem,6vw,3.75rem)] uppercase leading-[0.95] tracking-[0.06em] text-white [animation-delay:80ms]">
+          <p className="section-eyebrow rise">DIME</p>
+          <h1 className="rise rise-delay-1 mt-2 max-w-xl font-[var(--font-display)] text-[clamp(2.25rem,6vw,3.75rem)] uppercase leading-[0.95] tracking-[0.06em] text-white">
             AI Assistant
           </h1>
-          <p className="assistant-rise mt-4 max-w-md text-[var(--scale-base)] leading-relaxed text-white/80 [animation-delay:140ms]">
+          <p className="rise rise-delay-2 mt-4 max-w-md text-[var(--scale-base)] leading-relaxed text-white/80">
             Your on-site budtender for product lines, authenticity, lab results, and finding DIME.
           </p>
-          <div className="assistant-rise mt-8 flex flex-wrap gap-3 [animation-delay:200ms]">
+          <div className="rise rise-delay-3 mt-8 flex flex-wrap gap-3">
             <a href="#assistant-chat" className="btn-primary">
               Ask a question
             </a>
@@ -146,19 +146,6 @@ export default function AssistantPage() {
           </Link>
         </div>
       </section>
-
-      <style>{`
-        @keyframes assistant-rise {
-          from { opacity: 0; transform: translateY(14px); }
-          to { opacity: 1; transform: translateY(0); }
-        }
-        .assistant-rise {
-          animation: assistant-rise 0.7s var(--ease-out) both;
-        }
-        @media (prefers-reduced-motion: reduce) {
-          .assistant-rise { animation: none !important; }
-        }
-      `}</style>
     </>
   );
 }

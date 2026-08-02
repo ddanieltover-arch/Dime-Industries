@@ -2,6 +2,7 @@
 import Link from "next/link";
 import type { ProductCardModel } from "@/lib/catalog/types";
 import { ProductCard } from "@/components/catalog/product-card";
+import { Stagger, StaggerItem } from "@/components/motion";
 
 export function ProductGrid({
   products,
@@ -44,12 +45,12 @@ export function ProductGrid({
   }
 
   return (
-    <ul className="grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-3" role="list">
+    <Stagger as="ul" className="grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-3" role="list">
       {products.map((product) => (
-        <li key={product.slug}>
+        <StaggerItem key={product.slug} as="li">
           <ProductCard product={product} />
-        </li>
+        </StaggerItem>
       ))}
-    </ul>
+    </Stagger>
   );
 }

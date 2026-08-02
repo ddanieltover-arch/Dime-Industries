@@ -72,14 +72,14 @@ export default async function LabResultsPage({ searchParams }: { searchParams: S
         />
 
         <div className="relative mx-auto flex min-h-[min(58vh,520px)] max-w-7xl flex-col justify-end px-[var(--container-pad-x)] pb-12 pt-28 sm:pb-16 sm:pt-32">
-          <p className="section-eyebrow lab-rise">DIME</p>
-          <h1 className="lab-rise mt-2 max-w-xl font-[var(--font-display)] text-[clamp(2.25rem,6vw,3.75rem)] uppercase leading-[0.95] tracking-[0.06em] text-white [animation-delay:80ms]">
+          <p className="section-eyebrow rise">DIME</p>
+          <h1 className="rise rise-delay-1 mt-2 max-w-xl font-[var(--font-display)] text-[clamp(2.25rem,6vw,3.75rem)] uppercase leading-[0.95] tracking-[0.06em] text-white">
             Lab Results
           </h1>
-          <p className="lab-rise mt-4 max-w-md text-[var(--scale-base)] leading-relaxed text-white/80 [animation-delay:140ms]">
+          <p className="rise rise-delay-2 mt-4 max-w-md text-[var(--scale-base)] leading-relaxed text-white/80">
             Look up certificates of analysis by SKU or product name — potency you can verify.
           </p>
-          <div className="lab-rise mt-8 flex flex-wrap gap-3 [animation-delay:200ms]">
+          <div className="rise rise-delay-3 mt-8 flex flex-wrap gap-3">
             <a href="#lab-search" className="btn-primary">
               Search COAs
             </a>
@@ -278,19 +278,6 @@ export default async function LabResultsPage({ searchParams }: { searchParams: S
           </Link>
         </div>
       </section>
-
-      <style>{`
-        @keyframes lab-rise {
-          from { opacity: 0; transform: translateY(14px); }
-          to { opacity: 1; transform: translateY(0); }
-        }
-        .lab-rise {
-          animation: lab-rise 0.7s var(--ease-out) both;
-        }
-        @media (prefers-reduced-motion: reduce) {
-          .lab-rise { animation: none !important; }
-        }
-      `}</style>
     </>
   );
 }

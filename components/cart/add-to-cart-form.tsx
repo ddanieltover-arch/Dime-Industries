@@ -89,7 +89,7 @@ export function AddToCartForm({ variants, defaultVariantId }: Props) {
         </p>
       ) : null}
       {state.ok ? (
-        <p role="status" className="text-[var(--scale-sm)] text-[var(--color-resin)]">
+        <p role="status" className="status-pulse text-[var(--scale-sm)] text-[var(--color-resin)]">
           Added to cart.
         </p>
       ) : null}

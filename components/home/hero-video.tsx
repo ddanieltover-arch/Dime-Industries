@@ -1,8 +1,9 @@
 // components/home/hero-video.tsx
 "use client";
 
-import { motion, useReducedMotion } from "framer-motion";
+import { useReducedMotion } from "framer-motion";
 import Link from "next/link";
+import { FadeInItem, FadeInStagger } from "@/components/motion";
 
 export function HeroVideo({
   eyebrow = "Elevate your experience",
@@ -19,8 +20,8 @@ export function HeroVideo({
 } = {}) {
   const prefersReducedMotion = useReducedMotion();
 
-  const copy = (
-    <>
+  const copy = prefersReducedMotion ? (
+    <div>
       <p className="section-eyebrow text-[clamp(1.75rem,4vw,2.75rem)]">{eyebrow}</p>
       <h1 className="mt-3 max-w-2xl font-[var(--font-display)] text-[clamp(2.25rem,6vw,4rem)] uppercase leading-[1.02] tracking-[0.04em] text-white">
         {headline}
@@ -34,7 +35,31 @@ export function HeroVideo({
           Shop vapes
         </Link>
       </div>
-    </>
+    </div>
+  ) : (
+    <FadeInStagger>
+      <FadeInItem>
+        <p className="section-eyebrow text-[clamp(1.75rem,4vw,2.75rem)]">{eyebrow}</p>
+      </FadeInItem>
+      <FadeInItem>
+        <h1 className="mt-3 max-w-2xl font-[var(--font-display)] text-[clamp(2.25rem,6vw,4rem)] uppercase leading-[1.02] tracking-[0.04em] text-white">
+          {headline}
+        </h1>
+      </FadeInItem>
+      <FadeInItem>
+        <p className="mt-4 max-w-md text-[var(--scale-base)] leading-relaxed text-white/80">{body}</p>
+      </FadeInItem>
+      <FadeInItem>
+        <div className="mt-9 flex flex-wrap gap-3">
+          <Link href={ctaHref} className="btn-primary">
+            {ctaLabel}
+          </Link>
+          <Link href="/shop/vapes" className="btn-outline-light">
+            Shop vapes
+          </Link>
+        </div>
+      </FadeInItem>
+    </FadeInStagger>
   );
 
   return (
@@ -66,17 +91,7 @@ export function HeroVideo({
       <div className="media-veil absolute inset-0" />
 
       <div className="relative z-10 mx-auto flex min-h-[88vh] max-w-7xl flex-col justify-end px-[var(--container-pad-x)] pb-16 pt-28 lg:pb-24">
-        {prefersReducedMotion ? (
-          <div>{copy}</div>
-        ) : (
-          <motion.div
-            initial={{ opacity: 0, y: 28 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
-          >
-            {copy}
-          </motion.div>
-        )}
+        {copy}
       </div>
     </section>
   );

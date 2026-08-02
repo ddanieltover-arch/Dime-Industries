@@ -107,6 +107,11 @@ describe("SEO helpers", () => {
     expect(SEO_STATIC_PATHS).toContain("/cookies");
     expect(SEO_STATIC_PATHS).toContain("/faq");
   });
+
+  it("includes Phase 1 GEO blog slug in sitemap seeds", async () => {
+    const { SEO_BLOG_SLUGS } = await import("../../lib/seo/site");
+    expect(SEO_BLOG_SLUGS).toContain("how-many-dimes-in-a-roll");
+  });
 });
 
 describe("lateral role gates", () => {

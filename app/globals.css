@@ -146,16 +146,30 @@ body {
   letter-spacing: 0.16em;
   text-transform: uppercase;
   color: #000;
-  transition: background-color var(--motion-fast) ease, color var(--motion-fast) ease,
-    border-color var(--motion-fast) ease;
+  box-shadow: 0 0 0 transparent;
+  transition:
+    background-color var(--motion-fast) ease,
+    color var(--motion-fast) ease,
+    border-color var(--motion-fast) ease,
+    transform var(--motion-fast) var(--ease-out),
+    box-shadow var(--motion-base) var(--ease-out);
 }
 
 .btn-primary:hover {
   background: var(--color-resin-hover);
+  transform: translateY(-1px);
+  box-shadow: 0 6px 20px rgba(201, 177, 56, 0.28);
+}
+
+.btn-primary:active {
+  transform: scale(0.98);
+  box-shadow: 0 2px 8px rgba(201, 177, 56, 0.18);
 }
 
 .btn-primary:disabled {
   opacity: 0.6;
+  transform: none;
+  box-shadow: none;
 }
 
 .btn-outline {
@@ -171,13 +185,23 @@ body {
   letter-spacing: 0.16em;
   text-transform: uppercase;
   color: var(--color-resin);
-  transition: background-color var(--motion-fast) ease, color var(--motion-fast) ease,
-    border-color var(--motion-fast) ease;
+  transition:
+    background-color var(--motion-fast) ease,
+    color var(--motion-fast) ease,
+    border-color var(--motion-fast) ease,
+    transform var(--motion-fast) var(--ease-out),
+    box-shadow var(--motion-base) var(--ease-out);
 }
 
 .btn-outline:hover {
   background: var(--color-resin);
   color: #000;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 18px rgba(201, 177, 56, 0.22);
+}
+
+.btn-outline:active {
+  transform: scale(0.98);
 }
 
 .btn-outline-light {
@@ -193,13 +217,153 @@ body {
   letter-spacing: 0.16em;
   text-transform: uppercase;
   color: #fff;
-  transition: background-color var(--motion-fast) ease, color var(--motion-fast) ease,
-    border-color var(--motion-fast) ease;
+  transition:
+    background-color var(--motion-fast) ease,
+    color var(--motion-fast) ease,
+    border-color var(--motion-fast) ease,
+    transform var(--motion-fast) var(--ease-out),
+    box-shadow var(--motion-base) var(--ease-out);
 }
 
 .btn-outline-light:hover {
   border-color: var(--color-resin);
   color: var(--color-resin);
+  transform: translateY(-1px);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.35);
+}
+
+.btn-outline-light:active {
+  transform: scale(0.98);
+}
+
+/* Level 3 surface utilities */
+.surface-elevated {
+  background: var(--color-surface);
+  box-shadow: var(--shadow-card);
+  transition:
+    transform var(--motion-base) var(--ease-out),
+    box-shadow var(--motion-base) var(--ease-out),
+    background-color var(--motion-fast) ease,
+    border-color var(--motion-fast) ease;
+}
+
+.surface-elevated:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-elevated);
+}
+
+.glass-panel {
+  background: color-mix(in srgb, var(--color-surface) 78%, transparent);
+  border: 1px solid color-mix(in srgb, var(--color-border) 80%, var(--color-resin) 20%);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+}
+
+[data-theme="light"] .glass-panel {
+  background: color-mix(in srgb, var(--color-surface) 86%, transparent);
+}
+
+/* Shared rise entrance — replaces per-page *-rise keyframes */
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.rise {
+  animation: rise 0.7s var(--ease-out) both;
+}
+
+.rise-delay-1 {
+  animation-delay: 80ms;
+}
+
+.rise-delay-2 {
+  animation-delay: 140ms;
+}
+
+.rise-delay-3 {
+  animation-delay: 200ms;
+}
+
+.rise-delay-4 {
+  animation-delay: 260ms;
+}
+
+@keyframes status-pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.55;
+  }
+}
+
+.status-pulse {
+  animation: status-pulse 1.2s var(--ease-out) 1;
+}
+
+/* Drawer overlay / panel enter-exit (Radix data-state) */
+@keyframes drawer-overlay-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes drawer-overlay-out {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes drawer-panel-in {
+  from {
+    opacity: 0;
+    transform: translateX(100%);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes drawer-panel-out {
+  from {
+    opacity: 1;
+    transform: translateX(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateX(100%);
+  }
+}
+
+.drawer-overlay {
+  animation: drawer-overlay-out var(--motion-base) var(--ease-out) forwards;
+}
+
+.drawer-overlay[data-state="open"] {
+  animation: drawer-overlay-in var(--motion-base) var(--ease-out) forwards;
+}
+
+.drawer-panel {
+  animation: drawer-panel-out var(--motion-base) var(--ease-out) forwards;
+}
+
+.drawer-panel[data-state="open"] {
+  animation: drawer-panel-in var(--motion-slow) var(--ease-out) forwards;
 }
 
 .section-pad {

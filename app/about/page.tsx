@@ -2,6 +2,7 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
+import { Reveal, Stagger, StaggerItem } from "@/components/motion";
 
 export const metadata: Metadata = {
   title: "About Us",
@@ -62,14 +63,14 @@ export default function AboutPage() {
         />
 
         <div className="relative mx-auto flex min-h-[min(72vh,640px)] max-w-7xl flex-col justify-end px-[var(--container-pad-x)] pb-14 pt-28 sm:pb-20 sm:pt-32">
-          <p className="section-eyebrow about-rise">DIME</p>
-          <h1 className="about-rise mt-2 max-w-xl font-[var(--font-display)] text-[clamp(2.25rem,6vw,4rem)] uppercase leading-[0.95] tracking-[0.06em] text-white [animation-delay:80ms]">
+          <p className="section-eyebrow rise">DIME</p>
+          <h1 className="rise rise-delay-1 mt-2 max-w-xl font-[var(--font-display)] text-[clamp(2.25rem,6vw,4rem)] uppercase leading-[0.95] tracking-[0.06em] text-white">
             About Us
           </h1>
-          <p className="about-rise mt-4 max-w-md text-[var(--scale-base)] leading-relaxed text-white/80 [animation-delay:140ms]">
+          <p className="rise rise-delay-2 mt-4 max-w-md text-[var(--scale-base)] leading-relaxed text-white/80">
             A licensed cannabis brand founded in 2016 — building award-winning products from the hardware up.
           </p>
-          <div className="about-rise mt-8 flex flex-wrap gap-3 [animation-delay:200ms]">
+          <div className="rise rise-delay-3 mt-8 flex flex-wrap gap-3">
             <Link href="/shop" className="btn-primary">
               Shop now
             </Link>
@@ -84,7 +85,7 @@ export default function AboutPage() {
         aria-labelledby="story-heading"
         className="border-b border-[var(--color-border)] bg-[var(--color-bg)]"
       >
-        <div className="mx-auto grid max-w-7xl gap-10 px-[var(--container-pad-x)] py-[var(--section-y)] lg:grid-cols-[1.1fr_0.9fr] lg:items-end lg:gap-16">
+        <Reveal className="mx-auto grid max-w-7xl gap-10 px-[var(--container-pad-x)] py-[var(--section-y)] lg:grid-cols-[1.1fr_0.9fr] lg:items-end lg:gap-16">
           <div>
             <p className="font-[var(--font-display)] text-[10px] uppercase tracking-[0.18em] text-[var(--color-resin)]">
               Our story
@@ -118,7 +119,7 @@ export default function AboutPage() {
               </div>
             ))}
           </dl>
-        </div>
+        </Reveal>
       </section>
 
       <section
@@ -126,26 +127,28 @@ export default function AboutPage() {
         className="border-b border-[var(--color-border)] bg-[var(--color-surface)]"
       >
         <div className="mx-auto max-w-7xl px-[var(--container-pad-x)] py-[var(--section-y)]">
-          <p className="font-[var(--font-display)] text-[10px] uppercase tracking-[0.18em] text-[var(--color-resin)]">
-            How we work
-          </p>
-          <h2 id="pillars-heading" className="section-title mt-2">
-            Built to a higher bar
-          </h2>
-          <p className="mt-3 max-w-lg text-[var(--scale-sm)] text-[var(--color-ink-soft)]">
-            Three commitments that shape every product we ship.
-          </p>
+          <Reveal>
+            <p className="font-[var(--font-display)] text-[10px] uppercase tracking-[0.18em] text-[var(--color-resin)]">
+              How we work
+            </p>
+            <h2 id="pillars-heading" className="section-title mt-2">
+              Built to a higher bar
+            </h2>
+            <p className="mt-3 max-w-lg text-[var(--scale-sm)] text-[var(--color-ink-soft)]">
+              Three commitments that shape every product we ship.
+            </p>
+          </Reveal>
 
-          <ul className="mt-10 grid gap-px bg-[var(--color-border)] sm:grid-cols-3" role="list">
+          <Stagger as="ul" className="mt-10 grid gap-px bg-[var(--color-border)] sm:grid-cols-3" role="list">
             {PILLARS.map((pillar) => (
-              <li key={pillar.title} className="bg-[var(--color-bg)] p-6 sm:p-8">
+              <StaggerItem key={pillar.title} as="li" className="bg-[var(--color-bg)] p-6 sm:p-8">
                 <h3 className="font-[var(--font-display)] text-[var(--scale-lg)] uppercase tracking-[0.08em] text-[var(--color-ink)]">
                   {pillar.title}
                 </h3>
                 <p className="mt-3 text-[var(--scale-sm)] leading-relaxed text-[var(--color-ink-soft)]">{pillar.body}</p>
-              </li>
+              </StaggerItem>
             ))}
-          </ul>
+          </Stagger>
         </div>
       </section>
 
@@ -162,7 +165,7 @@ export default function AboutPage() {
         </div>
 
         <div className="relative mx-auto grid max-w-7xl items-center gap-12 px-[var(--container-pad-x)] py-[var(--section-y)] lg:grid-cols-2 lg:gap-16">
-          <div>
+          <Reveal>
             <p className="section-eyebrow">Recognition</p>
             <h2 id="awards-heading" className="section-title mt-3 text-white">
               Award-winning products
@@ -179,24 +182,24 @@ export default function AboutPage() {
                 Lab results
               </Link>
             </div>
-          </div>
+          </Reveal>
 
-          <div className="grid grid-cols-2 gap-3">
+          <Stagger className="grid grid-cols-2 gap-3" staggerDelay={0.08}>
             {GALLERY.map((shot) => (
-              <div
+              <StaggerItem
                 key={shot.src}
-                className={`relative overflow-hidden transition-transform duration-[var(--motion-slow)] ease-[var(--ease-out)] hover:scale-[1.02] ${shot.className}`}
+                className={`group relative overflow-hidden ${shot.className}`}
               >
                 <Image
                   src={shot.src}
                   alt={shot.alt}
                   fill
-                  className="object-cover"
+                  className="object-cover transition-transform duration-500 ease-[var(--ease-out)] group-hover:scale-105"
                   sizes="(max-width: 1024px) 100vw, 50vw"
                 />
-              </div>
+              </StaggerItem>
             ))}
-          </div>
+          </Stagger>
         </div>
       </section>
 
@@ -205,18 +208,20 @@ export default function AboutPage() {
         className="border-t border-[var(--color-border)] bg-[var(--color-bg)]"
       >
         <div className="mx-auto max-w-7xl px-[var(--container-pad-x)] py-[var(--section-y)]">
-          <p className="font-[var(--font-display)] text-[10px] uppercase tracking-[0.18em] text-[var(--color-resin)]">
-            Where we sell
-          </p>
-          <h2 id="where-heading" className="section-title mt-2">
-            Find your market
-          </h2>
-          <p className="mt-3 max-w-lg text-[var(--scale-sm)] text-[var(--color-ink-soft)]">
-            Shop online for delivery in California and Massachusetts — or locate a neighborhood retailer nationwide.
-          </p>
+          <Reveal>
+            <p className="font-[var(--font-display)] text-[10px] uppercase tracking-[0.18em] text-[var(--color-resin)]">
+              Where we sell
+            </p>
+            <h2 id="where-heading" className="section-title mt-2">
+              Find your market
+            </h2>
+            <p className="mt-3 max-w-lg text-[var(--scale-sm)] text-[var(--color-ink-soft)]">
+              Shop online for delivery in California and Massachusetts — or locate a neighborhood retailer nationwide.
+            </p>
+          </Reveal>
 
-          <ul className="mt-10 grid gap-px bg-[var(--color-border)] sm:grid-cols-2" role="list">
-            <li className="bg-[var(--color-surface)] p-6 sm:p-8">
+          <Stagger as="ul" className="mt-10 grid gap-px bg-[var(--color-border)] sm:grid-cols-2" role="list">
+            <StaggerItem as="li" className="bg-[var(--color-surface)] p-6 sm:p-8">
               <h3 className="font-[var(--font-display)] text-[var(--scale-lg)] uppercase tracking-[0.08em] text-[var(--color-ink)]">
                 Shop online
               </h3>
@@ -230,8 +235,8 @@ export default function AboutPage() {
               >
                 Shop now →
               </Link>
-            </li>
-            <li className="bg-[var(--color-surface)] p-6 sm:p-8">
+            </StaggerItem>
+            <StaggerItem as="li" className="bg-[var(--color-surface)] p-6 sm:p-8">
               <h3 className="font-[var(--font-display)] text-[var(--scale-lg)] uppercase tracking-[0.08em] text-[var(--color-ink)]">
                 Find DIME
               </h3>
@@ -244,13 +249,13 @@ export default function AboutPage() {
               >
                 Find a store →
               </Link>
-            </li>
-          </ul>
+            </StaggerItem>
+          </Stagger>
         </div>
       </section>
 
       <section className="border-t border-[var(--color-border)] bg-[var(--color-surface)]">
-        <div className="mx-auto flex max-w-7xl flex-col items-start justify-between gap-6 px-[var(--container-pad-x)] py-12 sm:flex-row sm:items-center">
+        <Reveal className="mx-auto flex max-w-7xl flex-col items-start justify-between gap-6 px-[var(--container-pad-x)] py-12 sm:flex-row sm:items-center">
           <div>
             <p className="font-[var(--font-display)] text-[10px] uppercase tracking-[0.18em] text-[var(--color-resin)]">
               Authenticity
@@ -262,21 +267,8 @@ export default function AboutPage() {
           <Link href="/validate" className="btn-primary shrink-0">
             Validate
           </Link>
-        </div>
+        </Reveal>
       </section>
-
-      <style>{`
-        @keyframes about-rise {
-          from { opacity: 0; transform: translateY(14px); }
-          to { opacity: 1; transform: translateY(0); }
-        }
-        .about-rise {
-          animation: about-rise 0.7s var(--ease-out) both;
-        }
-        @media (prefers-reduced-motion: reduce) {
-          .about-rise { animation: none !important; }
-        }
-      `}</style>
     </>
   );
 }

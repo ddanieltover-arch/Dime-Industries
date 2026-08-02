@@ -51,4 +51,18 @@ export function buildFaqPageJsonLd(entries: FaqEntry[], pageUrl: string) {
   };
 }
 
+/**
+ * For blog posts: only parse Q&A pairs that appear after a
+ * "Frequently asked questions" / "FAQs" heading so body H2s are not FAQs.
+ */
+export function parseBlogFaqSection(body: string): FaqEntry[] {
+  const marker = /^###\s+(frequently asked questions|faqs?(?:\s+about\b.*)?)\s*$/im;
+  const match = marker.exec(body);
+  if (!match || match.index === undefined) return [];
+  const sectionBody = body.slice(match.index + match[0].length);
+  return parseFaqEntries(sectionBody).filter(
+    (e) => !/^frequently asked questions$/i.test(e.question.trim())
+  );
+}
+
 export const FAQ_CMS_SLUG = "faq";

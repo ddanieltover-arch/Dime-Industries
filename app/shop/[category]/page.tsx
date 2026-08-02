@@ -21,6 +21,16 @@ export async function generateMetadata({ params }: { params: Params }): Promise<
   const { category } = await params;
   const meta = CATALOG_CATEGORIES.find((c) => c.slug === category);
   if (!meta) return { title: "Shop" };
+
+  if (meta.slug === "vapes") {
+    return {
+      title: "DIME Carts & Vapes",
+      description:
+        "Shop DIME carts and vape cartridges — Signature, Live Reserve, Rosin, and more. Lab-tested dime carts for licensed markets.",
+      alternates: { canonical: `/shop/${meta.slug}` },
+    };
+  }
+
   return {
     title: meta.name,
     description: `Shop DIME ${meta.name.toLowerCase()} — filter by strain, potency, and format.`,
@@ -59,8 +69,12 @@ export default async function CategoryPage({
 
   return (
     <CatalogPageShell
-      title={meta.name}
-      description={`Lab-tested ${meta.name.toLowerCase()} available in your selected jurisdiction.`}
+      title={meta.slug === "vapes" ? "DIME Carts & Vapes" : meta.name}
+      description={
+        meta.slug === "vapes"
+          ? "Shop DIME carts and all-in-one vapes across Signature, Live Reserve, Rosin, and State Exclusive lines. Lab-tested cartridges engineered in-house — browse by strain, potency, and format for your jurisdiction."
+          : `Lab-tested ${meta.name.toLowerCase()} available in your selected jurisdiction.`
+      }
       basePath={`/shop/${meta.slug}`}
       ageVerified={ageGate.ageVerified}
       filters={filters}

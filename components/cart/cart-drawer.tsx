@@ -17,16 +17,16 @@ export function CartDrawer({ open, onOpenChange, cart }: Props) {
   return (
     <Dialog.Root open={open} onOpenChange={onOpenChange}>
       <Dialog.Portal>
-        <Dialog.Overlay className="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm" />
+        <Dialog.Overlay className="drawer-overlay fixed inset-0 z-50 bg-black/70 backdrop-blur-sm" />
         <Dialog.Content
           aria-describedby="cart-drawer-desc"
-          className="fixed right-0 top-0 z-50 flex h-full w-full max-w-md flex-col border-l border-[var(--color-border)] bg-[var(--color-bg)] shadow-[var(--shadow-elevated)]"
+          className="drawer-panel fixed right-0 top-0 z-50 flex h-full w-full max-w-md flex-col border-l border-[var(--color-border)] bg-[var(--color-bg)] shadow-[var(--shadow-elevated)] outline-none"
         >
-          <div className="flex items-center justify-between border-b border-[var(--color-border)] px-5 py-4">
+          <div className="glass-panel flex items-center justify-between border-b border-[var(--color-border)] px-5 py-4">
             <Dialog.Title className="font-[var(--font-display)] text-[10px] uppercase tracking-[0.16em] text-[var(--color-resin)]">
               Your cart
             </Dialog.Title>
-            <Dialog.Close className="nav-link">Close</Dialog.Close>
+            <Dialog.Close className="nav-link min-h-11 px-2">Close</Dialog.Close>
           </div>
 
           <p id="cart-drawer-desc" className="sr-only">
@@ -56,7 +56,7 @@ export function CartDrawer({ open, onOpenChange, cart }: Props) {
                         <Link
                           href={`/product/${line.productSlug}`}
                           onClick={() => onOpenChange(false)}
-                          className="font-[var(--font-display)] text-[var(--color-ink)] hover:text-[var(--color-resin)]"
+                          className="font-[var(--font-display)] text-[var(--color-ink)] transition-colors hover:text-[var(--color-resin)]"
                         >
                           {line.productName}
                         </Link>

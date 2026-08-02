@@ -52,7 +52,7 @@ export function QuickAddToCart({ variantId, productName }: Props) {
         </p>
       ) : null}
       {state.ok ? (
-        <p role="status" className="mt-2 text-[var(--scale-xs)] text-[var(--color-resin)]">
+        <p role="status" className="status-pulse mt-2 text-[var(--scale-xs)] text-[var(--color-resin)]">
           Added to cart.
         </p>
       ) : null}

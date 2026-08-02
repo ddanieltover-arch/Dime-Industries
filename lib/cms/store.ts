@@ -165,6 +165,76 @@ const DEFAULT_POSTS: BlogPost[] = [
     publishedAt: "2026-06-15T00:00:00.000Z",
     updatedAt: "2026-06-15T00:00:00.000Z",
   },
+  {
+    slug: "how-many-dimes-in-a-roll",
+    title: "How many dimes in a roll?",
+    excerpt:
+      "A standard U.S. dime roll holds 40 dimes ($4 face value). Here’s how coin rolls work — plus how to find DIME Industries products nearby.",
+    body: `Quick Answer: A standard United States dime roll contains 40 dimes, equal to $4.00 in face value. Banks, armored carriers, and coin machines package circulating dimes in paper or plastic rolls of 40 so tellers and businesses can count change quickly without sorting loose coins by hand.
+
+### How many dimes are in a standard roll?
+
+In the United States, a full roll of dimes is standardized at 40 coins. That convention is used by banks, credit unions, and retail cash offices nationwide. If you open a roll of dimes from a bank drawer or a wrapped coin order, you should find forty Roosevelt dimes (or older Winged Liberty dimes still in circulation) unless the roll was short-filled or broken open earlier.
+
+The same packaging logic applies to other U.S. denominations, each with its own count: pennies typically roll at 50, nickels at 40, quarters at 40, and half dollars at 20. Knowing the dime count helps when you are verifying a cash drawer, preparing a deposit, or teaching kids how coin rolls work.
+
+### How much is a roll of dimes worth?
+
+Forty dimes at ten cents each equal $4.00 in face value. That number does not change with the metal melt value of circulating clad coins — for everyday banking and retail, face value is what matters. Collectors sometimes pay a premium for uncirculated bank-wrapped rolls or for older silver dimes dated 1964 and earlier, but a modern circulating roll is still worth four dollars in spendable change.
+
+If you are depositing coins, most banks credit the face value after counting. Some branches charge a fee for non-customers or require coins to be rolled before acceptance. Machine counters at grocery stores or coin kiosks may take a percentage fee, so a $4 roll might return slightly less in cash or store credit after fees.
+
+### What does a dime roll look like?
+
+Traditional paper coin wraps are printed with the denomination, the piece count, and often the dollar total. A dime wrap typically shows “40 dimes” and “$4.00.” Plastic machine wraps from coin sorters are clear or tinted tubes with similar labeling. Either way, the sealed roll should feel dense and even; a soft or rattling roll can mean missing coins or an incomplete fill.
+
+Dimes are the thinnest commonly rolled U.S. coin, so a complete roll is shorter than a roll of quarters even though both often hold 40 pieces. That size difference is one reason tellers keep denomination-specific trays and color-coded wrappers.
+
+### Bank rolls vs. machine-wrapped rolls
+
+Bank (or “hand”) wraps are paper sleeves filled by tellers or customers and crimped at the ends. Machine-wrapped rolls come from high-speed sorters used by banks and armored services. Both should contain 40 dimes when filled to standard. Machine wraps are usually more uniform; customer-filled wraps occasionally come up short, which is why many cashiers crack a roll and spot-count before putting it in a till.
+
+Neither wrap type guarantees collectible condition. Circulating rolls mix dates and mint marks. If you care about numismatics, look for special Mint or proof products sold as collectibles — those are not the same as everyday change rolls.
+
+### Why people ask about dime rolls
+
+Searchers ask “how many dimes in a roll” when balancing registers, teaching money math, preparing bank deposits, or settling a friendly debate. The answer is short and stable: forty coins, four dollars. Keeping that fact handy avoids recounting every time a roll hits the counter.
+
+The question also shows up alongside brand curiosity. People who know DIME Industries — the cannabis brand behind award-winning vapes and edibles — sometimes land on the coin query first, then look for the company. Both meanings of “dime” can coexist as long as the coin fact stays clear and product information stays compliant and separate.
+
+### From coin rolls to DIME Industries
+
+DIME Industries is a licensed cannabis brand (est. 2016) known for engineered hardware and lab-tested extracts. If you came here for the coin answer, you already have it: 40 dimes per roll. If you are looking for DIME products, start with [DIME carts and vapes](/shop/vapes), browse [rosin](/shop/vapes/rosin) when you want solventless-style lineups, or [find a licensed retailer near you](/locations). Learn more about the brand on [About DIME Industries](/about).
+
+Always buy cannabis products from licensed retailers in legal markets, validate authenticity when prompted, and keep products away from children and pets.
+
+This article is for educational purposes only. It is not medical, financial, or legal advice. DIME cannabis products are intended for adults 21 and older, or qualifying medical patients, in licensed markets. Keep all cannabis products out of reach of children.
+
+### Frequently asked questions
+
+### How many dimes are in a roll of dimes?
+
+Forty. A standard U.S. dime roll contains 40 coins.
+
+### How much money is in a roll of dimes?
+
+$4.00 in face value (40 × $0.10).
+
+### Are dime rolls the same at every bank?
+
+Yes for face-value packaging: banks use the 40-coin standard. Fees, buyback rules, and whether they accept loose coins vary by institution.
+
+### Do Canadian or other countries use the same dime-roll count?
+
+No. This article covers United States circulating coin rolls. Other countries set their own roll sizes.
+
+### Is this article about DIME cannabis products?
+
+The primary answer is about U.S. coin rolls. DIME Industries product links are optional next steps for readers looking for the brand — for adults 21+ (or qualifying patients) in legal markets only.`,
+    status: "published",
+    publishedAt: "2026-08-02T00:00:00.000Z",
+    updatedAt: "2026-08-02T00:00:00.000Z",
+  },
 ];
 
 const DEFAULT_BANNER: HomepageBanner = {
