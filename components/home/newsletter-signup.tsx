@@ -6,13 +6,7 @@ import { subscribeToNewsletter, type NewsletterActionState } from "@/app/(market
 
 const initialState: NewsletterActionState = {};
 
-export function NewsletterSignup({
-  headline = "Members newsletter",
-  body = "Drops, promotions, and early access — straight to your inbox.",
-}: {
-  headline?: string;
-  body?: string;
-} = {}) {
+export function NewsletterSignup() {
   const [state, formAction, pending] = useActionState(subscribeToNewsletter, initialState);
 
   return (
@@ -22,9 +16,11 @@ export function NewsletterSignup({
     >
       <div className="mx-auto max-w-7xl px-[var(--container-pad-x)] py-[var(--section-y)] text-center">
         <h2 id="newsletter-heading" className="section-title">
-          {headline}
+          Members newsletter
         </h2>
-        <p className="mx-auto mt-3 max-w-md text-[var(--scale-sm)] text-[var(--color-ink-soft)]">{body}</p>
+        <p className="mx-auto mt-3 max-w-md text-[var(--scale-sm)] text-[var(--color-ink-soft)]">
+          Drops, promotions, and early access — straight to your inbox.
+        </p>
 
         {state.success ? (
           <p role="status" className="mt-8 text-[var(--scale-sm)] text-[var(--color-resin)]">

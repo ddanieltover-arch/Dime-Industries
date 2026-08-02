@@ -109,7 +109,9 @@ export async function signInWithEmail(
     console.warn("[auth] wishlist merge failed", err);
   }
 
-  redirect("/account");
+  const { getCurrentProfile } = await import("@/lib/auth/session");
+  const profile = await getCurrentProfile();
+  redirect(profile?.role === "admin" ? "/admin" : "/account");
 }
 
 export async function resendVerificationEmail(

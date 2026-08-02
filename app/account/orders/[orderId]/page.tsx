@@ -104,8 +104,12 @@ export default async function AccountOrderDetailPage({ params }: { params: Param
           </dl>
 
           <p className="mt-5 text-[var(--scale-sm)] text-[var(--color-ink-soft)]">
-            Ship to {order.address.fullName}, {order.address.line1}, {order.address.city},{" "}
-            {order.address.state} {order.address.postalCode}
+            Ship to {order.address.fullName}
+            {order.address.phone ? `, ${order.address.phone}` : ""}, {order.address.line1},{" "}
+            {order.address.city}, {order.address.state} {order.address.postalCode}
+            {order.address.country
+              ? `, ${order.address.country === "US" ? "United States" : order.address.country}`
+              : ""}
           </p>
         </section>
       </div>

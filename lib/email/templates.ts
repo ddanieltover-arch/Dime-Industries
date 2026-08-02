@@ -2,6 +2,7 @@
 // Beautiful transactional email payloads for customer + admin recipients.
 
 import "server-only";
+import { BRAND_EMAIL } from "@/lib/brand/email";
 import {
   BRAND,
   ctaButton,
@@ -331,7 +332,7 @@ export type ContactFormEmailInput = {
 export function customerContactConfirmation(input: ContactFormEmailInput): EmailPayload {
   const bodyHtml = [
     paragraph(
-      `Thanks, <strong>${escapeHtml(input.name)}</strong>. We received your message and will reply from support@dimeindustries.us as soon as we can.`
+      `Thanks, <strong>${escapeHtml(input.name)}</strong>. We received your message and will reply from ${BRAND_EMAIL} as soon as we can.`
     ),
     detailTable([
       { label: "Subject", value: escapeHtml(input.subject) },
@@ -436,66 +437,6 @@ export function adminPayoutRequestNotification(input: PayoutEmailInput): EmailPa
       footerNote: "Internal notification.",
     }),
     text: `Payout request ${input.id} from ${input.email}: ${amount}`,
-    replyTo: input.email,
-  };
-}
-
-export type ReturnEmailInput = {
-  id: string;
-  orderId: string;
-  email: string;
-  reason: string;
-};
-
-export function customerReturnRequestConfirmation(input: ReturnEmailInput): EmailPayload {
-  const bodyHtml = [
-    paragraph(
-      "We received your return request. Support will review it and update the status under Account → Returns."
-    ),
-    detailTable([
-      { label: "Request", value: escapeHtml(input.id) },
-      { label: "Order", value: escapeHtml(input.orderId) },
-      { label: "Reason", value: escapeHtml(input.reason) },
-    ]),
-    ctaButton("View returns", siteUrl("/account/returns")),
-  ].join("");
-
-  return {
-    to: input.email,
-    subject: `Return request received — ${input.orderId}`,
-    html: emailLayout({
-      preheader: `Return ${input.id} for order ${input.orderId}.`,
-      eyebrow: "Returns",
-      title: "Return request received",
-      bodyHtml,
-    }),
-    text: `Return request ${input.id} for order ${input.orderId} received.`,
-  };
-}
-
-export function adminReturnRequestNotification(input: ReturnEmailInput): EmailPayload {
-  const bodyHtml = [
-    paragraph("A customer submitted a return request."),
-    detailTable([
-      { label: "Request", value: escapeHtml(input.id) },
-      { label: "Order", value: escapeHtml(input.orderId) },
-      { label: "Customer", value: escapeHtml(input.email) },
-      { label: "Reason", value: escapeHtml(input.reason) },
-    ]),
-    ctaButton("Review returns", siteUrl("/admin/returns")),
-  ].join("");
-
-  return {
-    to: "",
-    subject: `[DIME] Return request — ${input.orderId}`,
-    html: emailLayout({
-      preheader: `Return ${input.id} from ${input.email}`,
-      eyebrow: "Admin alert",
-      title: "Return request",
-      bodyHtml,
-      footerNote: "Internal notification.",
-    }),
-    text: `Return ${input.id} for order ${input.orderId} from ${input.email}`,
     replyTo: input.email,
   };
 }

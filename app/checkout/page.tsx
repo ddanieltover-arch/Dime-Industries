@@ -10,9 +10,9 @@ import { LoyaltyRedeemForm } from "@/components/checkout/loyalty-redeem-form";
 import { getCartSnapshot } from "@/lib/cart";
 import { computePricing } from "@/lib/checkout";
 import { resolveAppliedCoupon } from "@/lib/coupons/store";
-import { isPaybisLiveConfigured } from "@/lib/payments";
 import { formatPrice } from "@/lib/format";
 import { getCurrentProfile } from "@/lib/auth/session";
+import { getManualPaymentHandles } from "@/lib/payments/methods";
 
 export const metadata: Metadata = {
   title: "Checkout",
@@ -164,11 +164,6 @@ export default async function CheckoutPage({ searchParams }: { searchParams: Sea
             <section className="bg-[var(--color-bg)]">
               <div className="mx-auto grid max-w-7xl gap-10 px-[var(--container-pad-x)] py-[var(--section-y)] lg:grid-cols-[1fr_22rem] lg:gap-12">
                 <div id="checkout-form" className="scroll-mt-24">
-                  {!isPaybisLiveConfigured() ? (
-                    <p className="mb-6 border border-[var(--color-border)] bg-[var(--color-surface)] px-4 py-3 text-[var(--scale-sm)] text-[var(--color-ink-soft)]">
-                      Paybis credentials are not configured — checkout will use the mock Bitcoin payment flow.
-                    </p>
-                  ) : null}
                   {paymentError ? (
                     <p
                       role="alert"
@@ -219,6 +214,8 @@ export default async function CheckoutPage({ searchParams }: { searchParams: Sea
                         jurisdiction={checkoutJurisdiction}
                         pricing={pricing!}
                         defaultEmail={profile?.email}
+                        defaultPhone={accountPrefs?.phone || undefined}
+                        manualHandles={getManualPaymentHandles()}
                         defaults={{
                           fullName: accountPrefs?.displayName || undefined,
                           line1: defaultAddress?.line1,

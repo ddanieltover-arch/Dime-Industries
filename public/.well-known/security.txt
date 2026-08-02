@@ -1,5 +1,4 @@
-Contact: mailto:security@dimeindustries.us
+Contact: mailto:sales@dimeindustries.us
+Expires: 2027-08-01T00:00:00.000Z
 Preferred-Languages: en
 Canonical: https://dimeindustries.us/.well-known/security.txt
-Policy: https://dimeindustries.us/legal/privacy
-Expires: 2027-07-21T00:00:00.000Z

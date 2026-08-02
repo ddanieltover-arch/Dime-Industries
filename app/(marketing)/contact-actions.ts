@@ -2,6 +2,7 @@
 "use server";
 
 import { z } from "zod";
+import { BRAND_EMAIL } from "@/lib/brand/email";
 
 export type ContactActionState = {
   error?: string;
@@ -46,11 +47,11 @@ export async function submitContactForm(
       orderId: parsed.data.orderId || undefined,
     });
     if (!result.admin.ok && !result.customer.ok) {
-      return { error: "Could not send your message. Please email support@dimeindustries.us." };
+      return { error: `Could not send your message. Please email ${BRAND_EMAIL}.` };
     }
   } catch (err) {
     console.warn("[contact] email failed", err);
-    return { error: "Could not send your message. Please email support@dimeindustries.us." };
+    return { error: `Could not send your message. Please email ${BRAND_EMAIL}.` };
   }
 
   return { success: true };

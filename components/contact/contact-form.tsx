@@ -3,6 +3,7 @@
 
 import { useActionState } from "react";
 import { submitContactForm, type ContactActionState } from "@/app/(marketing)/contact-actions";
+import { BRAND_EMAIL } from "@/lib/brand/email";
 
 const initial: ContactActionState = {};
 
@@ -12,8 +13,7 @@ export function ContactForm() {
   if (state.success) {
     return (
       <p role="status" className="text-[var(--scale-sm)] text-[var(--color-resin)]">
-        Message sent. Check your inbox for a confirmation — we&apos;ll reply from
-        support@dimeindustries.us.
+        Message sent. Check your inbox for a confirmation — we&apos;ll reply from {BRAND_EMAIL}.
       </p>
     );
   }
@@ -53,13 +53,7 @@ export function ContactForm() {
       </label>
       <label className="block text-[var(--scale-xs)] text-[var(--color-ink-soft)]">
         Message
-        <textarea
-          name="message"
-          required
-          minLength={10}
-          rows={6}
-          className="field-input mt-1.5 !rounded-[var(--radius-md)]"
-        />
+        <textarea name="message" required minLength={10} rows={6} className="field-input mt-1.5" />
         {state.fieldErrors?.message?.[0] ? (
           <span className="mt-1 block text-[var(--color-flag)]">{state.fieldErrors.message[0]}</span>
         ) : null}

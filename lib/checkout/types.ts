@@ -1,6 +1,7 @@
 // lib/checkout/types.ts
 import type { CartLine } from "@/lib/cart/types";
 import type { LaunchJurisdiction } from "@/lib/compliance/age-gate";
+import type { OrderPaymentMethod } from "@/lib/payments/methods";
 import type { CheckoutAddress, PricingBreakdown } from "./pricing";
 
 export type OrderStatus =
@@ -25,7 +26,7 @@ export type CheckoutOrder = {
   totalCents: number;
   taxLabel: string;
   shippingLabel: string;
-  paymentMethod: "paybis_btc" | "net_terms";
+  paymentMethod: OrderPaymentMethod;
   paymentRequestId: string | null;
   paymentMode: "live" | "mock" | null;
   createdAt: string;
@@ -51,7 +52,7 @@ export type CreateOrderInput = {
   pricing: PricingBreakdown;
   channel?: "retail" | "wholesale";
   paymentTerms?: "net30" | "net60" | "upfront" | null;
-  paymentMethod?: "paybis_btc" | "net_terms";
+  paymentMethod?: OrderPaymentMethod;
   wholesaleBusinessName?: string | null;
   /** When true, order starts as payment_confirmed (NET invoice accepted). */
   acceptOnTerms?: boolean;

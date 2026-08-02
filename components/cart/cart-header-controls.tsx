@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { CartDrawer } from "@/components/cart/cart-drawer";
 import { useCart } from "@/components/cart/cart-provider";
+import { CartIcon, HeartIcon, headerIconBtnClass } from "@/components/shared/header-icons";
 
 export function CartHeaderControls() {
   const { cart, itemCount, refreshCart } = useCart();
@@ -22,16 +23,21 @@ export function CartHeaderControls() {
         type="button"
         onClick={() => setOpen(true)}
         aria-label={`View cart, ${itemCount} items`}
-        className="border border-[var(--color-border-interactive)] px-3 py-2 font-[var(--font-display)] text-[var(--scale-xs)] uppercase tracking-[0.14em] text-[var(--color-ink-soft)] transition-[border-color,color] duration-[var(--motion-fast)] hover:border-[var(--color-resin)] hover:text-[var(--color-resin)]"
+        className={headerIconBtnClass}
       >
-        Cart
-        {itemCount > 0 ? <span className="ml-1.5 text-[var(--color-resin)]">({itemCount})</span> : null}
+        <CartIcon />
+        {itemCount > 0 ? (
+          <span className="absolute -right-1 -top-1 flex h-4 min-w-4 items-center justify-center bg-[var(--color-resin)] px-1 font-[var(--font-display)] text-[9px] leading-none text-black">
+            {itemCount > 99 ? "99+" : itemCount}
+          </span>
+        ) : null}
       </button>
       <Link
         href="/wishlist"
-        className="hidden px-2 py-2 font-[var(--font-display)] text-[var(--scale-xs)] uppercase tracking-[0.14em] text-[var(--color-ink-soft)] transition-colors duration-[var(--motion-fast)] hover:text-[var(--color-resin)] md:inline"
+        aria-label="Wishlist"
+        className={`${headerIconBtnClass} hidden sm:inline-flex`}
       >
-        Wishlist
+        <HeartIcon />
       </Link>
       <CartDrawer open={open} onOpenChange={setOpen} cart={cart} />
     </>

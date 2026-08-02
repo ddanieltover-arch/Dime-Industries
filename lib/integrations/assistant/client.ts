@@ -44,7 +44,7 @@ function mockAnswer(message: string, catalogSizeByLine: Record<string, number>):
   if (/edible|gumm|softgel/.test(q)) {
     return "Shop edibles at /shop/edibles — Balanced and Rosin gummies plus Softgels (morning, afternoon, evening).";
   }
-  return "I can help with products, validation, lab results, rewards, and finding DIME near you. Try asking about a line (Signature, Live Reserve), Validate, or Find DIME. For account issues, contact support@dimeindustries.us.";
+  return "I can help with products, validation, lab results, rewards, and finding DIME near you. Try asking about a line (Signature, Live Reserve), Validate, or Find DIME. For account issues, contact sales@dimeindustries.us.";
 }
 
 async function postChat(

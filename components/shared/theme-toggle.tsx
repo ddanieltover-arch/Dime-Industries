@@ -3,6 +3,7 @@
 
 import { useTheme } from "next-themes";
 import { useEffect, useState } from "react";
+import { headerIconBtnClass, MoonIcon, SunIcon } from "@/components/shared/header-icons";
 
 export function ThemeToggle() {
   const { resolvedTheme, setTheme } = useTheme();
@@ -12,7 +13,7 @@ export function ThemeToggle() {
   useEffect(() => setMounted(true), []);
 
   if (!mounted) {
-    return <div className="h-9 w-9" aria-hidden="true" />;
+    return <div className="h-8 w-8" aria-hidden="true" />;
   }
 
   const isDark = resolvedTheme === "dark";
@@ -23,9 +24,9 @@ export function ThemeToggle() {
       onClick={() => setTheme(isDark ? "light" : "dark")}
       aria-label={isDark ? "Switch to light mode" : "Switch to dark mode"}
       aria-pressed={isDark}
-      className="flex h-9 w-9 items-center justify-center border border-[var(--color-border-interactive)] font-[var(--font-display)] text-[10px] uppercase tracking-[0.12em] text-[var(--color-ink-soft)] transition-[border-color,color] duration-[var(--motion-fast)] hover:border-[var(--color-resin)] hover:text-[var(--color-resin)]"
+      className={headerIconBtnClass}
     >
-      <span aria-hidden="true">{isDark ? "LT" : "DK"}</span>
+      {isDark ? <SunIcon /> : <MoonIcon />}
     </button>
   );
 }

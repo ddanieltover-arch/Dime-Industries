@@ -4,6 +4,7 @@
 // Route Handlers.
 
 import "server-only";
+import { cache } from "react";
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { isRole, hasAtLeastRole, type Role } from "@/lib/auth/roles";
@@ -20,8 +21,9 @@ export type Profile = {
 /**
  * Returns the current authenticated user's profile, or null if not signed in.
  * Never throws on "not signed in" — callers decide whether that's an error.
+ * Request-memoized so cart read+write (and similar) don't double-hit Auth.
  */
-export async function getCurrentProfile(): Promise<Profile | null> {
+export const getCurrentProfile = cache(async (): Promise<Profile | null> => {
   const { isSupabaseConfigured, isDemoAuthAllowed } = await import("@/lib/auth/config");
 
   if (!isSupabaseConfigured()) {
@@ -60,7 +62,7 @@ export async function getCurrentProfile(): Promise<Profile | null> {
     ageVerifiedAt: row.age_verified_at,
     medicalPatient: row.medical_patient,
   };
-}
+});
 
 /** Requires a signed-in user; redirects to /login if not. */
 export async function requireUser(): Promise<Profile> {

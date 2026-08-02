@@ -116,7 +116,7 @@ export default async function FaqPage() {
             </div>
           ) : (
             <p className="mt-10 text-[var(--scale-sm)] text-[var(--color-ink-soft)]">
-              FAQ content is being updated. Contact support@dimeindustries.us for help in the meantime.
+              FAQ content is being updated. Contact sales@dimeindustries.us for help in the meantime.
             </p>
           )}
         </div>

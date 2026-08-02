@@ -52,11 +52,20 @@ const nextConfig = {
 // to be set in CI — see docs/ENVIRONMENT_VARIABLES.md. It's safe to leave
 // this wrapper in place even in environments without that token: the upload
 // step just no-ops with a warning rather than failing the build.
-module.exports = withSentryConfig(nextConfig, {
+//
+// Skip the wrapper in local `next dev`: Sentry SDK v8's webpack /
+// clientTraceMetadata hooks are incompatible with Next.js 15.2+ and surface
+// as `frame.join is not a function` in the error overlay.
+const sentryOptions = {
   org: process.env.SENTRY_ORG,
   project: process.env.SENTRY_PROJECT,
   silent: true,
   widenClientFileUpload: true,
   hideSourceMaps: true,
   disableLogger: true,
-});
+};
+
+module.exports =
+  process.env.NODE_ENV === "development"
+    ? nextConfig
+    : withSentryConfig(nextConfig, sentryOptions);

@@ -6,11 +6,13 @@ import type { AppliedCoupon } from "@/lib/coupons/types";
 export type CheckoutAddress = {
   fullName: string;
   email: string;
+  phone: string;
   line1: string;
   line2?: string;
   city: string;
-  state: LaunchJurisdiction;
+  state: string;
   postalCode: string;
+  country: "US";
 };
 
 export type PricingBreakdown = {

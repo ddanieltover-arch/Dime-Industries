@@ -14,7 +14,6 @@ const initial: WholesaleActionState = {};
 
 export function WholesaleCheckoutForm({
   email,
-  jurisdiction,
   defaultTerms,
   pricing,
 }: {
@@ -28,6 +27,10 @@ export function WholesaleCheckoutForm({
   return (
     <form action={action} className="space-y-4">
       <input type="hidden" name="email" value={email} />
+      <label className="block text-[var(--scale-xs)] text-[var(--color-ink-soft)]">
+        Phone
+        <input name="phone" type="tel" required autoComplete="tel" className="field-input mt-1.5" />
+      </label>
       <label className="block text-[var(--scale-xs)] text-[var(--color-ink-soft)]">
         Full name
         <input name="fullName" required className="field-input mt-1.5" />
@@ -47,16 +50,25 @@ export function WholesaleCheckoutForm({
         </label>
         <label className="block text-[var(--scale-xs)] text-[var(--color-ink-soft)]">
           State
-          <select name="state" defaultValue={jurisdiction} className="field-input mt-1.5">
-            <option value="CA">CA</option>
-            <option value="MA">MA</option>
-          </select>
+          <input
+            name="state"
+            required
+            autoComplete="address-level1"
+            placeholder="State"
+            className="field-input mt-1.5"
+          />
         </label>
         <label className="block text-[var(--scale-xs)] text-[var(--color-ink-soft)]">
           Postal code
           <input name="postalCode" required className="field-input mt-1.5" />
         </label>
       </div>
+      <label className="block text-[var(--scale-xs)] text-[var(--color-ink-soft)]">
+        Country
+        <select name="country" required defaultValue="US" autoComplete="country" className="field-input mt-1.5">
+          <option value="US">United States</option>
+        </select>
+      </label>
       <label className="block text-[var(--scale-xs)] text-[var(--color-ink-soft)]">
         Payment terms
         <select name="paymentTerms" defaultValue={defaultTerms} className="field-input mt-1.5">

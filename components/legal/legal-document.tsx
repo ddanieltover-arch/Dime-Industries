@@ -113,7 +113,7 @@ export function LegalDocument({
               Questions?
             </p>
             <p className="mt-2 max-w-xl font-[var(--font-display)] text-[var(--scale-lg)] uppercase tracking-[0.06em] text-[var(--color-ink)]">
-              Contact support@dimeindustries.us
+              Contact sales@dimeindustries.us
             </p>
           </div>
           <Link href="/contact" className="btn-primary shrink-0">

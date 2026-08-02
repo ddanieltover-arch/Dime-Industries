@@ -56,9 +56,6 @@ async function create(input: CreateOrderInput): Promise<CheckoutOrder> {
   if (!LAUNCH_JURISDICTIONS.includes(input.jurisdiction)) {
     throw new Error("Unsupported jurisdiction");
   }
-  if (input.address.state !== input.jurisdiction) {
-    throw new Error("Shipping state must match verified jurisdiction");
-  }
   if (input.lines.length === 0) {
     throw new Error("Cart is empty");
   }

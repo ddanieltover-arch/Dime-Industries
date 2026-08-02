@@ -10,7 +10,7 @@ export const metadata: Metadata = {
   alternates: { canonical: "/careers" },
 };
 
-const SUPPORT = "support@dimeindustries.us";
+const SUPPORT = "sales@dimeindustries.us";
 
 const VALUES = [
   {

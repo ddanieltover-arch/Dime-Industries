@@ -164,13 +164,6 @@ export function getLaunchStatus(env: Env = process.env): LaunchStatus {
         : "NEXT_PUBLIC_SENTRY_DSN unset — errors will not report remotely.",
     },
     {
-      id: "seo_surfaces",
-      ok: true,
-      severity: "info",
-      message:
-        "SEO present: metadata/canonicals, robots.txt, sitemap.xml, JSON-LD (Product/Org/FAQ). Not SEO automation — no admin rank/keyword tools.",
-    },
-    {
       id: "paybis_webhook_persist",
       ok: ordersDb,
       severity: ordersDb ? "info" : "warning",

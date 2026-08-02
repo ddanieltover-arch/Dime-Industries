@@ -18,6 +18,7 @@
     "load:checkout": "node scripts/load-checkout-reserve.mjs",
     "load:checkout:probe": "node scripts/load-checkout-reserve.mjs --probe",
     "db:seed": "tsx db/seed.ts",
+    "admin:bootstrap": "node scripts/bootstrap-admin.mjs",
     "catalog:import": "node scripts/import-brand-catalog.mjs",
     "catalog:prices": "node scripts/apply-reference-prices.mjs",
     "catalog:seed-db": "tsx db/seed-brand-catalog.ts",

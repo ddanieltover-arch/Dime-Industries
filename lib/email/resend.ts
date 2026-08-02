@@ -3,6 +3,7 @@
 // returns a dry-run result so checkout still completes in local/dev.
 
 import "server-only";
+import { BRAND_EMAIL, BRAND_FROM } from "@/lib/brand/email";
 import type { EmailPayload } from "./templates";
 
 export type SendEmailInput = {
@@ -24,12 +25,12 @@ export function getAdminEmail(): string {
   return (
     process.env.ADMIN_EMAIL?.trim() ||
     process.env.ORDER_NOTIFY_TO?.trim() ||
-    "support@dimeindustries.us"
+    BRAND_EMAIL
   );
 }
 
 export function getFromAddress(): string {
-  return process.env.RESEND_FROM?.trim() || "DIME Industries <support@dimeindustries.us>";
+  return process.env.RESEND_FROM?.trim() || BRAND_FROM;
 }
 
 export async function sendEmail(input: SendEmailInput): Promise<SendEmailResult> {

@@ -14,12 +14,9 @@ import {
   customerOrderConfirmation,
   customerPayoutRequestConfirmation,
   customerWholesaleApplicationReceived,
-  customerReturnRequestConfirmation,
-  adminReturnRequestNotification,
   type ContactFormEmailInput,
   type OrderEmailInput,
   type PayoutEmailInput,
-  type ReturnEmailInput,
   type WholesaleApplicationEmailInput,
 } from "./templates";
 
@@ -73,12 +70,5 @@ export async function notifyPayoutRequest(input: PayoutEmailInput): Promise<Dual
   return dualSend(
     customerPayoutRequestConfirmation(input),
     adminPayoutRequestNotification(input)
-  );
-}
-
-export async function notifyReturnRequest(input: ReturnEmailInput): Promise<DualNotifyResult> {
-  return dualSend(
-    customerReturnRequestConfirmation(input),
-    adminReturnRequestNotification(input)
   );
 }

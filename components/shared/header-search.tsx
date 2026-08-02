@@ -13,6 +13,7 @@ import {
   type KeyboardEvent,
 } from "react";
 import type { SearchSuggestion } from "@/lib/catalog/suggest";
+import { headerIconBtnClass, SearchIcon } from "@/components/shared/header-icons";
 
 type SuggestResponse = {
   query?: string;
@@ -169,9 +170,10 @@ export function HeaderSearch() {
           setOpen((v) => !v);
           window.setTimeout(() => inputRef.current?.focus(), 0);
         }}
-        className="border border-[var(--color-border-interactive)] px-3 py-2 font-[var(--font-display)] text-[var(--scale-xs)] uppercase tracking-[0.14em] text-[var(--color-ink-soft)] transition-[border-color,color,background-color] duration-[var(--motion-fast)] hover:border-[var(--color-resin)] hover:text-[var(--color-resin)]"
+        className={headerIconBtnClass}
+        aria-label="Search"
       >
-        Search
+        <SearchIcon />
       </button>
 
       {open ? (

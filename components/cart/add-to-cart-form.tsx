@@ -14,8 +14,21 @@ type Props = {
 };
 
 export function AddToCartForm({ variants, defaultVariantId }: Props) {
-  const [state, formAction, pending] = useActionState(addItemToCart, initial);
   const { setItemCount } = useCart();
+  const [state, formAction, pending] = useActionState(
+    async (prev: CommerceActionState, formData: FormData) => {
+      const qty = Math.min(20, Math.max(1, Number(formData.get("quantity") ?? 1) || 1));
+      setItemCount((c) => c + qty);
+      const result = await addItemToCart(prev, formData);
+      if (result.error) {
+        setItemCount((c) => c - qty);
+      } else if (typeof result.itemCount === "number") {
+        setItemCount(result.itemCount);
+      }
+      return result;
+    },
+    initial
+  );
   const inStock = variants.filter((v) => v.quantityOnHand > 0);
   const defaultId = defaultVariantId ?? inStock[0]?.id ?? variants[0]?.id;
 

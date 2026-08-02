@@ -2,6 +2,7 @@
 import Link from "next/link";
 import type { CheckoutOrder } from "@/lib/checkout/types";
 import { POINTS_PER_DOLLAR } from "@/lib/loyalty/constants";
+import { isManualPaymentMethod, paymentMethodLabel } from "@/lib/payments/methods";
 
 type Step = {
   id: string;
@@ -31,6 +32,8 @@ function buildSteps(order: CheckoutOrder): Step[] {
   const paid = order.status === "payment_confirmed";
   const shipped = Boolean(order.shippedAt || order.trackingNumber);
   const isNet = order.paymentMethod === "net_terms";
+  const isManual = isManualPaymentMethod(order.paymentMethod);
+  const methodLabel = paymentMethodLabel(order.paymentMethod);
 
   return [
     {
@@ -47,10 +50,12 @@ function buildSteps(order: CheckoutOrder): Step[] {
           ? `Confirmed ${new Date(order.paidAt).toLocaleString()}`
           : isNet
             ? `${order.paymentTerms?.toUpperCase() ?? "NET"} invoice`
-            : "Bitcoin confirmed"
+            : `${methodLabel} confirmed`
         : isNet
           ? "Awaiting terms confirmation"
-          : "Awaiting Bitcoin confirmation",
+          : isManual
+            ? `Awaiting ${methodLabel} confirmation`
+            : "Awaiting Bitcoin confirmation",
       state: paid ? "done" : "current",
     },
     {

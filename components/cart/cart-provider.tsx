@@ -15,7 +15,7 @@ import type { CartSnapshot } from "@/lib/cart/types";
 type CartContextValue = {
   cart: CartSnapshot;
   itemCount: number;
-  setItemCount: (count: number) => void;
+  setItemCount: (count: number | ((prev: number) => number)) => void;
   setCart: (cart: CartSnapshot) => void;
   refreshCart: () => Promise<CartSnapshot | null>;
 };
@@ -37,8 +37,11 @@ export function CartProvider({
     setCart(initialCart);
   }, [initialCart]);
 
-  const setItemCount = useCallback((count: number) => {
-    setCart((prev) => ({ ...prev, itemCount: Math.max(0, count) }));
+  const setItemCount = useCallback((count: number | ((prev: number) => number)) => {
+    setCart((prev) => ({
+      ...prev,
+      itemCount: Math.max(0, typeof count === "function" ? count(prev.itemCount) : count),
+    }));
   }, []);
 
   const refreshCart = useCallback(async () => {

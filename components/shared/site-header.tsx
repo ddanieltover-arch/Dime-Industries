@@ -7,6 +7,7 @@ import { MobileBottomNav } from "@/components/shared/mobile-bottom-nav";
 import { HeaderSearch } from "@/components/shared/header-search";
 import { HeaderNav } from "@/components/shared/header-nav";
 import { CartHeaderControls } from "@/components/cart/cart-header-controls";
+import { AccountIcon, headerIconBtnClass } from "@/components/shared/header-icons";
 
 export function SiteHeader() {
   return (
@@ -22,12 +23,12 @@ export function SiteHeader() {
           className="pointer-events-none absolute inset-x-0 bottom-0 h-px bg-gradient-to-r from-transparent via-[var(--color-resin)]/50 to-transparent"
           aria-hidden
         />
-        <div className="mx-auto flex h-[4.5rem] max-w-7xl items-center justify-between gap-4 px-[var(--container-pad-x)] lg:h-[4.75rem]">
-          <div className="flex min-w-0 items-center gap-3">
+        <div className="mx-auto flex h-16 max-w-7xl items-center justify-between gap-3 px-[var(--container-pad-x)] lg:gap-4 xl:h-[4.25rem]">
+          <div className="flex min-w-0 shrink-0 items-center gap-2 sm:gap-3">
             <MobileNav />
             <Link
               href="/"
-              className="relative h-9 w-[8.75rem] shrink-0 transition-opacity duration-[var(--motion-fast)] hover:opacity-90 sm:h-10 sm:w-44"
+              className="relative h-8 w-[7.5rem] shrink-0 transition-opacity duration-[var(--motion-fast)] hover:opacity-90 sm:h-9 sm:w-36 lg:w-[8.25rem]"
             >
               <Image
                 src="/brand/logo.png"
@@ -35,21 +36,22 @@ export function SiteHeader() {
                 fill
                 priority
                 className="object-contain object-left"
-                sizes="176px"
+                sizes="144px"
               />
             </Link>
           </div>
 
           <HeaderNav />
 
-          <div className="flex items-center gap-1.5 sm:gap-2">
+          <div className="flex shrink-0 items-center gap-1 sm:gap-1.5">
             <HeaderSearch />
             <ThemeToggle />
             <Link
               href="/account"
-              className="hidden px-2 py-2 font-[var(--font-display)] text-[var(--scale-xs)] uppercase tracking-[0.14em] text-[var(--color-ink-soft)] transition-colors duration-[var(--motion-fast)] hover:text-[var(--color-resin)] sm:inline"
+              aria-label="Account"
+              className={`${headerIconBtnClass} hidden sm:inline-flex`}
             >
-              Account
+              <AccountIcon />
             </Link>
             <CartHeaderControls />
           </div>

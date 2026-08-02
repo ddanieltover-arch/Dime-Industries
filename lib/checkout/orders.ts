@@ -13,11 +13,13 @@ const orderSchema = z.object({
   address: z.object({
     fullName: z.string(),
     email: z.string().email(),
+    phone: z.string().optional().default(""),
     line1: z.string(),
     line2: z.string().optional(),
     city: z.string(),
-    state: z.enum(["CA", "MA"]),
+    state: z.string().min(2).max(40),
     postalCode: z.string(),
+    country: z.literal("US").optional().default("US"),
   }),
   jurisdiction: z.enum(["CA", "MA"]),
   lines: z.array(z.any()),
@@ -38,7 +40,9 @@ const orderSchema = z.object({
   totalCents: z.number().int().nonnegative(),
   taxLabel: z.string(),
   shippingLabel: z.string(),
-  paymentMethod: z.enum(["paybis_btc", "net_terms"]).default("paybis_btc"),
+  paymentMethod: z
+    .enum(["paybis_btc", "net_terms", "cashapp", "apple_pay", "chime", "zelle"])
+    .default("paybis_btc"),
   paymentRequestId: z.string().nullable(),
   paymentMode: z.enum(["live", "mock"]).nullable(),
   createdAt: z.string(),
@@ -98,9 +102,6 @@ export async function getOrderById(orderId: string): Promise<CheckoutOrder | nul
 export async function createOrder(input: CreateOrderInput): Promise<CheckoutOrder> {
   if (!LAUNCH_JURISDICTIONS.includes(input.jurisdiction)) {
     throw new Error("Unsupported jurisdiction");
-  }
-  if (input.address.state !== input.jurisdiction) {
-    throw new Error("Shipping state must match verified jurisdiction");
   }
   if (input.lines.length === 0) {
     throw new Error("Cart is empty");

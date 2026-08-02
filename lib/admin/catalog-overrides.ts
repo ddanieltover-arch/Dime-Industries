@@ -2,6 +2,7 @@
 // Admin edits layered over the catalog (Postgres when seeded, else seed file).
 
 import "server-only";
+import { cache } from "react";
 import { cookies } from "next/headers";
 import { z } from "zod";
 import { loadCatalogFromDatabase } from "@/lib/catalog/catalog-db";
@@ -90,7 +91,7 @@ export async function getCatalogOverrides(): Promise<CatalogOverrides> {
   return readOverrides();
 }
 
-export async function getAdminCatalog(): Promise<CatalogProduct[]> {
+export const getAdminCatalog = cache(async (): Promise<CatalogProduct[]> => {
   const [overrides, fromDb, categoryOverrides] = await Promise.all([
     readOverrides(),
     loadCatalogFromDatabase(),
@@ -109,7 +110,7 @@ export async function getAdminCatalog(): Promise<CatalogProduct[]> {
     };
   });
   return applyCategoryNameOverrides(withProductOverrides, categoryOverrides);
-}
+});
 
 export async function getAdminProduct(productId: string): Promise<CatalogProduct | null> {
   const all = await getAdminCatalog();

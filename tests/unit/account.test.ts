@@ -96,7 +96,7 @@ describe("form notification templates", () => {
     const prevNotify = process.env.ORDER_NOTIFY_TO;
     delete process.env.ADMIN_EMAIL;
     delete process.env.ORDER_NOTIFY_TO;
-    expect(getAdminEmail()).toBe("support@dimeindustries.us");
+    expect(getAdminEmail()).toBe("sales@dimeindustries.us");
     if (prev !== undefined) process.env.ADMIN_EMAIL = prev;
     if (prevNotify !== undefined) process.env.ORDER_NOTIFY_TO = prevNotify;
   });

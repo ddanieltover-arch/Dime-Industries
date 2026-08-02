@@ -13,8 +13,20 @@ type Props = {
 };
 
 export function QuickAddToCart({ variantId, productName }: Props) {
-  const [state, formAction, pending] = useActionState(addItemToCart, initial);
   const { setItemCount } = useCart();
+  const [state, formAction, pending] = useActionState(
+    async (prev: CommerceActionState, formData: FormData) => {
+      setItemCount((c) => c + 1);
+      const result = await addItemToCart(prev, formData);
+      if (result.error) {
+        setItemCount((c) => c - 1);
+      } else if (typeof result.itemCount === "number") {
+        setItemCount(result.itemCount);
+      }
+      return result;
+    },
+    initial
+  );
 
   useEffect(() => {
     if (state.ok && typeof state.itemCount === "number") {

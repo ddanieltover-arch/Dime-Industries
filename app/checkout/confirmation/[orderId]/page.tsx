@@ -6,6 +6,12 @@ import { OrderTrackingPanel } from "@/components/checkout/order-tracking";
 import { getOrderById, markOrderPaid } from "@/lib/checkout";
 import { persistCartLines } from "@/lib/cart";
 import { formatPrice } from "@/lib/format";
+import {
+  getManualPaymentHandles,
+  isManualPaymentMethod,
+  manualPaymentHint,
+  paymentMethodLabel,
+} from "@/lib/payments/methods";
 
 export const metadata: Metadata = {
   title: "Order confirmation",
@@ -36,6 +42,16 @@ export default async function ConfirmationPage({
   }
 
   const paid = order.status === "payment_confirmed";
+  const methodLabel = paymentMethodLabel(order.paymentMethod);
+  const manualMethod = isManualPaymentMethod(order.paymentMethod)
+    ? order.paymentMethod
+    : null;
+  const isManual = Boolean(manualMethod);
+  const isBitcoin = order.paymentMethod === "paybis_btc";
+  const paymentReported = sp.reported === "1";
+  const manualHandle = manualMethod
+    ? getManualPaymentHandles()[manualMethod]
+    : undefined;
 
   return (
     <div className="mx-auto max-w-3xl px-[var(--container-pad-x)] py-16 lg:py-20">
@@ -49,8 +65,54 @@ export default async function ConfirmationPage({
           ? order.paymentMethod === "net_terms"
             ? ` is accepted on ${order.paymentTerms?.toUpperCase() ?? "NET"} terms.`
             : " is confirmed."
-          : " is still waiting for Bitcoin payment confirmation."}
+          : isManual
+            ? ` is reserved — complete ${methodLabel} payment to confirm.`
+            : paymentReported
+              ? " — thanks. We were notified and will verify your Bitcoin payment shortly."
+              : " is still waiting for Bitcoin payment confirmation."}
       </p>
+      {!paid && isBitcoin ? (
+        <div className="mt-6 border border-[var(--color-border)] bg-[var(--color-surface)] p-5 text-[var(--scale-sm)] text-[var(--color-ink-soft)]">
+          <p>
+            {paymentReported
+              ? "Our team will approve your order once the Bitcoin transfer is confirmed."
+              : "Send Bitcoin to our wallet, then click I have paid on the payment page."}
+          </p>
+          <Link
+            href={`/checkout/bitcoin/${order.id}`}
+            className="mt-4 inline-flex btn-primary"
+          >
+            {paymentReported ? "View payment instructions" : "Open Bitcoin payment page"}
+          </Link>
+        </div>
+      ) : null}
+      {!paid && isManual ? (
+        <div className="mt-6 border border-[var(--color-resin)] bg-[rgba(201,177,56,0.08)] p-5 text-[var(--scale-sm)] text-[var(--color-ink-soft)]">
+          <p className="font-[var(--font-display)] text-[10px] uppercase tracking-[0.16em] text-[var(--color-resin)]">
+            {methodLabel} instructions
+          </p>
+          <p className="mt-3">{manualMethod ? manualPaymentHint(manualMethod) : null}</p>
+          {manualHandle ? (
+            <p className="mt-2 text-[var(--color-ink)]">
+              Send{" "}
+              <span className="text-[var(--color-resin)]">{formatPrice(order.totalCents)}</span> to{" "}
+              <span className="font-[var(--font-display)] tracking-[0.04em] text-[var(--color-resin)]">
+                {manualHandle}
+              </span>
+            </p>
+          ) : (
+            <p className="mt-2">
+              Send{" "}
+              <span className="text-[var(--color-resin)]">{formatPrice(order.totalCents)}</span> via{" "}
+              {methodLabel}. Check your email or contact support if you need the destination handle.
+            </p>
+          )}
+          <p className="mt-2 text-[var(--scale-xs)] text-[var(--color-ink-muted)]">
+            Include order ID <span className="text-[var(--color-ink)]">{order.id}</span> in the
+            payment note.
+          </p>
+        </div>
+      ) : null}
       {order.channel === "wholesale" ? (
         <p className="mt-2 text-[var(--scale-sm)] text-[var(--color-ink-soft)]">
           Wholesale order
@@ -112,14 +174,21 @@ export default async function ConfirmationPage({
             </div>
           </dl>
           <p className="mt-4 text-[var(--scale-xs)] text-[var(--color-ink-muted)]">
-            Ship to {order.address.fullName}, {order.address.line1}, {order.address.city},{" "}
-            {order.address.state} {order.address.postalCode}.
+            Ship to {order.address.fullName}
+            {order.address.phone ? `, ${order.address.phone}` : ""}, {order.address.line1},{" "}
+            {order.address.city}, {order.address.state} {order.address.postalCode}
+            {order.address.country
+              ? `, ${order.address.country === "US" ? "United States" : order.address.country}`
+              : ""}
+            .
           </p>
           <p className="mt-2 text-[var(--scale-xs)] text-[var(--color-ink-muted)]">
             Payment:{" "}
             {order.paymentMethod === "net_terms"
               ? `${order.paymentTerms?.toUpperCase() ?? "NET"} terms`
-              : `Bitcoin (${order.paymentMode ?? "pending"})`}
+              : isManual
+                ? methodLabel
+                : `Bitcoin (${order.paymentMode ?? "pending"})`}
             . A confirmation email is sent when Resend is configured.
           </p>
         </section>

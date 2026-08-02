@@ -12,6 +12,7 @@ export default function GlobalError({
   reset: () => void;
 }) {
   useEffect(() => {
+    if (process.env.NODE_ENV === "development") return;
     Sentry.captureException(error);
   }, [error]);
 

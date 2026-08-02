@@ -6,9 +6,11 @@
 // stable/default on); if this is ever added to a Next <13.4 project, that
 // flag would need to be set explicitly in next.config.js.
 
-import * as Sentry from "@sentry/nextjs";
-
 export async function register() {
+  // Sentry SDK v8 + Next 15.2+ break the local error overlay (`frame.join`)
+  // and pull OpenTelemetry into the webpack graph. Skip entirely in development.
+  if (process.env.NODE_ENV === "development") return;
+
   if (process.env.NEXT_RUNTIME === "nodejs") {
     await import("./sentry.server.config");
   }
@@ -17,4 +19,12 @@ export async function register() {
   }
 }
 
-export const onRequestError = Sentry.captureRequestError;
+export async function onRequestError(
+  error: unknown,
+  request: { path: string; method: string; headers: Record<string, string | string[]> },
+  context: { routerKind: string; routePath: string; routeType: string }
+) {
+  if (process.env.NODE_ENV === "development") return;
+  const Sentry = await import("@sentry/nextjs");
+  return Sentry.captureRequestError(error, request, context);
+}

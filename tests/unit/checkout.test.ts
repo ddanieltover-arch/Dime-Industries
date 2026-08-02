@@ -50,12 +50,15 @@ describe("checkout form schema", () => {
   it("accepts a valid payload", () => {
     const result = checkoutFormSchema.safeParse({
       email: "buyer@example.com",
+      phone: "4155550100",
       fullName: "Ada Lovelace",
       line1: "1 Market St",
       line2: "",
       city: "San Francisco",
       state: "CA",
       postalCode: "94105",
+      country: "US",
+      paymentMethod: "paybis_btc",
       confirmAge: "on",
     });
     expect(result.success).toBe(true);
@@ -64,14 +67,49 @@ describe("checkout form schema", () => {
   it("rejects bad ZIP", () => {
     const result = checkoutFormSchema.safeParse({
       email: "buyer@example.com",
+      phone: "4155550100",
       fullName: "Ada Lovelace",
       line1: "1 Market St",
       city: "San Francisco",
       state: "CA",
       postalCode: "abc",
+      country: "US",
+      paymentMethod: "paybis_btc",
       confirmAge: "on",
     });
     expect(result.success).toBe(false);
+  });
+
+  it("rejects missing phone", () => {
+    const result = checkoutFormSchema.safeParse({
+      email: "buyer@example.com",
+      phone: "",
+      fullName: "Ada Lovelace",
+      line1: "1 Market St",
+      city: "San Francisco",
+      state: "CA",
+      postalCode: "94105",
+      country: "US",
+      paymentMethod: "paybis_btc",
+      confirmAge: "on",
+    });
+    expect(result.success).toBe(false);
+  });
+
+  it("accepts any US state", () => {
+    const result = checkoutFormSchema.safeParse({
+      email: "buyer@example.com",
+      phone: "4155550100",
+      fullName: "Ada Lovelace",
+      line1: "1 Market St",
+      city: "Austin",
+      state: "TX",
+      postalCode: "78701",
+      country: "US",
+      paymentMethod: "zelle",
+      confirmAge: "on",
+    });
+    expect(result.success).toBe(true);
   });
 });
 

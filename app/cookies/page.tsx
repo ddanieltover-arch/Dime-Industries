@@ -124,7 +124,7 @@ export default async function CookiePreferencesPage() {
             <Link href="/contact" className="text-[var(--color-resin)] underline-offset-4 hover:underline">
               Contact
             </Link>{" "}
-            for privacy@dimeindustries.us data requests.
+            for sales@dimeindustries.us data requests.
           </p>
         </div>
       </div>

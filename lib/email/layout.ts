@@ -2,6 +2,7 @@
 // Shared HTML shell for DIME transactional emails — dark brand header, light body.
 
 import "server-only";
+import { BRAND_EMAIL } from "@/lib/brand/email";
 
 const BRAND = {
   bg: "#0e0e0e",
@@ -90,7 +91,7 @@ export function emailLayout(input: EmailLayoutInput): string {
                 <tr>
                   <td style="padding-top:20px;border-top:1px solid ${BRAND.border};">
                     <p style="margin:0 0 8px;font-family:Arial,Helvetica,sans-serif;font-size:12px;line-height:1.6;color:${BRAND.muted};">
-                      ${input.footerNote ? escapeHtml(input.footerNote) : "Questions? Reply to this email or reach support@dimeindustries.us."}
+                      ${input.footerNote ? escapeHtml(input.footerNote) : `Questions? Reply to this email or reach ${BRAND_EMAIL}.`}
                     </p>
                     <p style="margin:0;font-family:Arial,Helvetica,sans-serif;font-size:12px;line-height:1.6;color:${BRAND.muted};">
                       <a href="${shop}" style="color:${BRAND.ink};text-decoration:underline;">Shop</a>

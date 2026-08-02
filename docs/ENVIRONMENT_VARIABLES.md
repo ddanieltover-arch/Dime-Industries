@@ -17,8 +17,8 @@ Companion to `.env.example`. That file says *what* to set; this says *who owns i
 | `SENTRY_ORG`, `SENTRY_PROJECT` | Vercel + CI | Low | N/A | |
 | `SENTRY_AUTH_TOKEN` | CI + Vercel build | High | If exposed | Source-map upload |
 | `RESEND_API_KEY` | Vercel (both) | High | On suspected exposure | Read by `lib/email/resend.ts` — dry-run when unset |
-| `RESEND_FROM` | Vercel (both) | Low | N/A | Default from-address — use `DIME Industries <support@dimeindustries.us>` |
-| `ADMIN_EMAIL` | Vercel (both) | Low | N/A | Admin inbox for alerts — same as support (`support@dimeindustries.us`) |
+| `RESEND_FROM` | Vercel (both) | Low | N/A | Default from-address for transactional mail |
+| `ADMIN_EMAIL` | Vercel (both) | Low | N/A | Admin inbox for order/contact/wholesale/newsletter alerts (default `sales@dimeindustries.us`) |
 | `PAYBIS_API_KEY` / `PAYBIS_API_SECRET` | Vercel (both) | **Critical** | On suspected exposure | Empty → mock checkout |
 | `PAYBIS_WEBHOOK_SECRET` | Vercel (both) | **Critical** | On suspected exposure | **Required in production** if webhook route is reachable |
 | `PAYBIS_API_BASE` / `PAYBIS_WIDGET_BASE` | Vercel | Low | N/A | Optional overrides |

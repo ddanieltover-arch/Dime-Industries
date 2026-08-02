@@ -16,5 +16,7 @@ test.describe("Checkout", () => {
     await expect(page).toHaveURL(/\/checkout/, { timeout: 20_000 });
     await expect(page.getByRole("heading", { name: "Checkout", level: 1 })).toBeVisible();
     await expect(page.getByRole("button", { name: /Pay with Bitcoin/i })).toBeVisible();
+    // Manual rails only appear at $300+; single-item carts stay Bitcoin-only.
+    await expect(page.getByText("Cash App")).toHaveCount(0);
   });
 });

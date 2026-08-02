@@ -66,20 +66,23 @@ async function currentOwnerEmail(): Promise<string | null> {
 }
 
 export async function readCartInputs(): Promise<CartLineInput[]> {
-  const email = await currentOwnerEmail();
-  if (email && isGrowthDatabaseMode()) {
-    return readDbCartInputs(cartOwnerKey(email));
+  // Cookie carts skip auth — getCurrentProfile() is a Supabase round-trip guests shouldn't pay for.
+  if (isGrowthDatabaseMode()) {
+    const email = await currentOwnerEmail();
+    if (email) return readDbCartInputs(cartOwnerKey(email));
   }
   return readCookieCartInputs();
 }
 
 export async function writeCartInputs(items: CartLineInput[]): Promise<void> {
-  const email = await currentOwnerEmail();
-  if (email && isGrowthDatabaseMode()) {
-    await writeDbCartInputs(cartOwnerKey(email), items);
-    // Keep cookie as a lightweight guest fallback mirror after logout.
-    await writeCookieCartInputs(items);
-    return;
+  if (isGrowthDatabaseMode()) {
+    const email = await currentOwnerEmail();
+    if (email) {
+      await writeDbCartInputs(cartOwnerKey(email), items);
+      // Keep cookie as a lightweight guest fallback mirror after logout.
+      await writeCookieCartInputs(items);
+      return;
+    }
   }
   await writeCookieCartInputs(items);
 }
