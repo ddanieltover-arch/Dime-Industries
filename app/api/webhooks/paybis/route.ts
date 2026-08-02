@@ -93,7 +93,8 @@ export async function POST(request: Request) {
       (await orders.getByPaymentRequestId(event.requestId)) ??
       (event.orderId ? await orders.getById(event.orderId) : null);
     if (hit && hit.status === "pending") {
-      await orders.update(hit.id, { status: "rejected" });
+      const { changeOrderStatus } = await import("@/lib/checkout/status-change");
+      await changeOrderStatus(hit.id, "rejected", { notify: true });
       try {
         const { releaseInventoryForOrder } = await import("@/lib/inventory");
         await releaseInventoryForOrder(hit.id);
@@ -108,7 +109,8 @@ export async function POST(request: Request) {
       (await orders.getByPaymentRequestId(event.requestId)) ??
       (event.orderId ? await orders.getById(event.orderId) : null);
     if (hit && hit.status === "pending") {
-      await orders.update(hit.id, { status: "cancelled" });
+      const { changeOrderStatus } = await import("@/lib/checkout/status-change");
+      await changeOrderStatus(hit.id, "cancelled", { notify: true });
       try {
         const { releaseInventoryForOrder } = await import("@/lib/inventory");
         await releaseInventoryForOrder(hit.id);

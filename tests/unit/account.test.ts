@@ -58,6 +58,25 @@ describe("order confirmation email", () => {
     expect(email.html).toContain("a@b.com");
     expect(email.replyTo).toBe("a@b.com");
   });
+
+  it("builds customer order status update", async () => {
+    const { customerOrderStatusUpdate } = await import("../../lib/email/templates");
+    const email = customerOrderStatusUpdate({
+      order: {
+        id: "ord_xyz",
+        email: "buyer@example.com",
+        totalCents: 2500,
+        lines: [{ productName: "Miami Ice", quantity: 1, unitPriceCents: 2500 }],
+      },
+      status: "cancelled",
+      previousStatus: "pending",
+    });
+    expect(email.to).toBe("buyer@example.com");
+    expect(email.subject).toMatch(/cancelled/i);
+    expect(email.html).toContain("ord_xyz");
+    expect(email.html).toContain("Pending");
+    expect(email.text).toContain("Cancelled");
+  });
 });
 
 describe("form notification templates", () => {

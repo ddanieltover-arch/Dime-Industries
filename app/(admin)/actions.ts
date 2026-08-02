@@ -149,6 +149,13 @@ export async function updateAdminOrderStatus(
   const status = String(formData.get("status") ?? "");
   if (!isAdminOrderStatus(status)) return { error: "Invalid order status." };
 
+  const { getOrderById } = await import("@/lib/checkout");
+  const before = await getOrderById(orderId);
+  if (!before) return { error: "Order not found in this browser session." };
+  if (before.status === status) {
+    return { success: true, message: "Status unchanged." };
+  }
+
   const updated = await setAdminOrderStatus(orderId, status);
   if (!updated) return { error: "Order not found in this browser session." };
 
@@ -157,12 +164,14 @@ export async function updateAdminOrderStatus(
     action: "order_status_update",
     entity: "orders",
     entityId: orderId,
-    detail: `status=${status}`,
+    detail: `${before.status}→${status}`,
   });
 
   revalidateAdmin();
   revalidatePath("/account/orders");
-  return { success: true, message: "Order status updated." };
+  revalidatePath(`/account/orders/${orderId}`);
+  revalidatePath(`/checkout/confirmation/${orderId}`);
+  return { success: true, message: "Order status updated. Customer notified." };
 }
 
 export async function moderateReview(

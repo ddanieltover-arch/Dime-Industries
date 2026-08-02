@@ -1,6 +1,7 @@
 // lib/admin/orders-admin.ts
 import "server-only";
 import { getOrderRepository, type OrderStatus } from "@/lib/checkout";
+import { changeOrderStatus } from "@/lib/checkout/status-change";
 import type { CheckoutOrder } from "@/lib/checkout/types";
 
 const ADMIN_STATUSES: OrderStatus[] = [
@@ -22,12 +23,7 @@ export async function setAdminOrderStatus(
   orderId: string,
   status: OrderStatus
 ): Promise<CheckoutOrder | null> {
-  const orders = getOrderRepository();
-  const order = await orders.getById(orderId);
-  if (!order) return null;
-  const paidAt =
-    status === "payment_confirmed" ? order.paidAt ?? new Date().toISOString() : order.paidAt;
-  return orders.update(orderId, { status, paidAt });
+  return changeOrderStatus(orderId, status, { notify: true });
 }
 
 export function adminOrderKpis(orders: CheckoutOrder[]) {

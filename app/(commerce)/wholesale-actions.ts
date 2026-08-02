@@ -5,7 +5,13 @@ import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
 import { cookies } from "next/headers";
-import { getAgeGateState, isLaunchJurisdiction } from "@/lib/compliance/age-gate";
+import { getAgeGateState } from "@/lib/compliance/age-gate";
+import type { LaunchJurisdiction } from "@/lib/compliance/jurisdictions";
+import {
+  activeJurisdictionsLabel,
+  isActiveLaunchJurisdiction,
+  isWholesaleEnabled,
+} from "@/lib/admin/site-settings-store";
 import {
   checkoutFormSchema,
   computePricing,
@@ -58,6 +64,10 @@ export async function submitWholesaleApplication(
   _prev: WholesaleActionState,
   formData: FormData
 ): Promise<WholesaleActionState> {
+  if (!(await isWholesaleEnabled())) {
+    return { error: "Wholesale applications are temporarily closed." };
+  }
+
   const parsed = applySchema.safeParse({
     email: String(formData.get("email") ?? ""),
     businessName: String(formData.get("businessName") ?? ""),
@@ -110,6 +120,9 @@ export async function addWholesaleCartItem(
   _prev: WholesaleActionState,
   formData: FormData
 ): Promise<WholesaleActionState> {
+  if (!(await isWholesaleEnabled())) {
+    return { error: "Wholesale ordering is temporarily closed." };
+  }
   try {
     await requireWholesaleBuyer();
   } catch {
@@ -208,6 +221,9 @@ export async function startWholesaleCheckout(
   _prev: WholesaleActionState,
   formData: FormData
 ): Promise<WholesaleActionState> {
+  if (!(await isWholesaleEnabled())) {
+    return { error: "Wholesale ordering is temporarily closed." };
+  }
   let buyer;
   try {
     buyer = await requireWholesaleBuyer();
@@ -244,10 +260,11 @@ export async function startWholesaleCheckout(
       fieldErrors: parsed.error.flatten().fieldErrors as Record<string, string[]>,
     };
   }
-  if (!isLaunchJurisdiction(parsed.data.state)) {
-    return { error: "Shipping is only available in California and Massachusetts." };
+  if (!(await isActiveLaunchJurisdiction(parsed.data.state))) {
+    const markets = await activeJurisdictionsLabel();
+    return { error: `Shipping is only available in ${markets}.` };
   }
-  const jurisdiction = parsed.data.state;
+  const jurisdiction = parsed.data.state as LaunchJurisdiction;
   if (gate.jurisdiction && gate.jurisdiction !== jurisdiction) {
     return {
       error: `Shipping state must match your verified jurisdiction (${gate.jurisdiction}).`,
@@ -318,7 +335,8 @@ export async function startWholesaleCheckout(
     cart.lines.map((l) => ({ variantId: l.variantId, quantity: l.quantity }))
   );
   if (!reserved.ok) {
-    await orders.update(order.id, { status: "cancelled" });
+    const { changeOrderStatus } = await import("@/lib/checkout/status-change");
+    await changeOrderStatus(order.id, "cancelled", { notify: false });
     await releaseInventoryForOrder(order.id);
     return { error: reserved.error };
   }

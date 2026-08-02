@@ -3,9 +3,8 @@
 
 import { useActionState } from "react";
 import type { AdminActionState } from "@/app/(admin)/actions";
-import { saveCategoryAction, saveSiteSettingsAction } from "@/app/(admin)/ops-actions";
+import { saveCategoryAction } from "@/app/(admin)/ops-actions";
 import type { AdminCategoryRow } from "@/lib/admin/categories-store";
-import type { SiteOpsSettings } from "@/lib/admin/site-settings-store";
 
 const initial: AdminActionState = {};
 
@@ -78,46 +77,6 @@ export function CategoryForm({ category }: { category: AdminCategoryRow }) {
         className="rounded-[var(--radius-sm)] bg-[var(--color-resin-strong)] px-3 py-1.5 text-[var(--scale-sm)] text-[var(--color-surface)] disabled:opacity-60"
       >
         {pending ? "Saving…" : "Save category"}
-      </button>
-      <Feedback state={state} />
-    </form>
-  );
-}
-
-export function SiteSettingsForm({ settings }: { settings: SiteOpsSettings }) {
-  const [state, action, pending] = useActionState(saveSiteSettingsAction, initial);
-  return (
-    <form action={action} className="space-y-4 border border-[var(--color-border)] bg-[var(--color-surface-raised)] p-4">
-      <p className="text-[var(--scale-sm)] text-[var(--color-ink-soft)]">
-        Age gate is fixed at 21+ in code (<span className="font-[var(--font-mono)] text-[var(--scale-xs)]">SITE_MIN_AGE</span>
-        ) — not editable here.
-      </p>
-      <label className="block text-[var(--scale-xs)] text-[var(--color-ink-soft)]">
-        Launch jurisdictions (comma-separated)
-        <input
-          name="jurisdictions"
-          defaultValue={settings.jurisdictions.join(", ")}
-          required
-          className="mt-1 w-full max-w-md rounded-[var(--radius-sm)] border border-[var(--color-border-interactive)] bg-[var(--color-surface)] px-2 py-1.5 text-[var(--scale-sm)] text-[var(--color-ink)]"
-        />
-      </label>
-      <fieldset className="space-y-2">
-        <legend className="text-[var(--scale-xs)] text-[var(--color-ink-soft)]">Feature flags</legend>
-        <label className="flex items-center gap-2 text-[var(--scale-sm)] text-[var(--color-ink)]">
-          <input type="checkbox" name="wholesaleEnabled" defaultChecked={settings.featureFlags.wholesaleEnabled} />
-          Wholesale enabled
-        </label>
-        <label className="flex items-center gap-2 text-[var(--scale-sm)] text-[var(--color-ink)]">
-          <input type="checkbox" name="vendorOnboarding" defaultChecked={settings.featureFlags.vendorOnboarding} />
-          Vendor onboarding
-        </label>
-      </fieldset>
-      <button
-        type="submit"
-        disabled={pending}
-        className="rounded-[var(--radius-sm)] bg-[var(--color-resin-strong)] px-3 py-1.5 text-[var(--scale-sm)] text-[var(--color-surface)] disabled:opacity-60"
-      >
-        {pending ? "Saving…" : "Save settings"}
       </button>
       <Feedback state={state} />
     </form>

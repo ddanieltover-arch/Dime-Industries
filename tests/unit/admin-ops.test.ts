@@ -125,4 +125,16 @@ describe("site settings defaults", () => {
     const { LAUNCH_JURISDICTIONS } = await import("@/lib/compliance/jurisdictions");
     expect([...LAUNCH_JURISDICTIONS]).toEqual(["CA", "MA"]);
   });
+
+  it("exports feature-flag helpers", async () => {
+    const store = await import("@/lib/admin/site-settings-store");
+    expect(typeof store.isWholesaleEnabled).toBe("function");
+    expect(typeof store.isVendorOnboardingEnabled).toBe("function");
+    expect(typeof store.getActiveLaunchJurisdictions).toBe("function");
+    expect(typeof store.isActiveLaunchJurisdiction).toBe("function");
+    expect(typeof store.activeJurisdictionsLabel).toBe("function");
+    expect(store.DEFAULT_SITE_SETTINGS.jurisdictions).toEqual(["CA", "MA"]);
+    expect(store.DEFAULT_SITE_SETTINGS.featureFlags.wholesaleEnabled).toBe(true);
+    expect(store.DEFAULT_SITE_SETTINGS.featureFlags.vendorOnboarding).toBe(false);
+  });
 });

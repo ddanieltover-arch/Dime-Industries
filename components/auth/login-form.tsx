@@ -4,7 +4,6 @@
 import { useActionState } from "react";
 import Link from "next/link";
 import { signInWithEmail, signInDemo, type AuthActionState } from "@/app/(auth)/actions";
-import { GoogleSignInButton } from "@/components/auth/google-sign-in-button";
 
 const initial: AuthActionState = {};
 
@@ -31,12 +30,6 @@ export function LoginForm({
           Access orders, wishlist sync, and account preferences.
         </p>
       </div>
-
-      {errorParam === "google_oauth_failed" ? (
-        <p role="alert" className="text-[var(--scale-sm)] text-[var(--color-flag)]">
-          Google sign-in failed. Try email or try again later.
-        </p>
-      ) : null}
 
       {errorParam === "auth_misconfigured" ? (
         <p role="alert" className="text-[var(--scale-sm)] text-[var(--color-flag)]">
@@ -71,8 +64,6 @@ export function LoginForm({
               {pending ? "Signing in…" : "Sign in"}
             </button>
           </form>
-
-          <GoogleSignInButton />
 
           <p className="text-center text-[var(--scale-sm)] text-[var(--color-ink-soft)]">
             No account?{" "}

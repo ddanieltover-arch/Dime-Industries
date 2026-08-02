@@ -4,7 +4,12 @@
 import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
 import { cookies } from "next/headers";
-import { getAgeGateState, isLaunchJurisdiction } from "@/lib/compliance/age-gate";
+import { getAgeGateState } from "@/lib/compliance/age-gate";
+import type { LaunchJurisdiction } from "@/lib/compliance/jurisdictions";
+import {
+  activeJurisdictionsLabel,
+  isActiveLaunchJurisdiction,
+} from "@/lib/admin/site-settings-store";
 import { getCartSnapshot, persistCartLines } from "@/lib/cart";
 import {
   computePricing,
@@ -60,12 +65,13 @@ export async function startCheckout(
   }
 
   const data = parsed.data;
-  if (!isLaunchJurisdiction(data.state)) {
-    return { error: "Shipping is only available in California and Massachusetts." };
+  if (!(await isActiveLaunchJurisdiction(data.state))) {
+    const markets = await activeJurisdictionsLabel();
+    return { error: `Shipping is only available in ${markets}.` };
   }
   // Shipping state is the jurisdiction of record when the age gate no longer
   // collects it up front. Keep any existing cookie in sync.
-  const jurisdiction = data.state;
+  const jurisdiction = data.state as LaunchJurisdiction;
   if (gate.jurisdiction && gate.jurisdiction !== jurisdiction) {
     return {
       error: `Shipping state must match your verified jurisdiction (${gate.jurisdiction}).`,
@@ -139,7 +145,8 @@ export async function startCheckout(
     cart.lines.map((l) => ({ variantId: l.variantId, quantity: l.quantity }))
   );
   if (!reserved.ok) {
-    await orders.update(order.id, { status: "cancelled" });
+    const { changeOrderStatus } = await import("@/lib/checkout/status-change");
+    await changeOrderStatus(order.id, "cancelled", { notify: false });
     await releaseInventoryForOrder(order.id);
     return { error: reserved.error };
   }

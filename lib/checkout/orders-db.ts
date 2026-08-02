@@ -3,7 +3,7 @@ import "server-only";
 import { desc, eq, sql } from "drizzle-orm";
 import { commerceOrders } from "@/db/schema";
 import { getDb } from "@/lib/db/client";
-import { LAUNCH_JURISDICTIONS } from "@/lib/compliance/age-gate";
+import { isActiveLaunchJurisdiction } from "@/lib/admin/site-settings-store";
 import { newOrderId } from "./orders";
 import type { CheckoutOrder, CreateOrderInput, OrderRepository, OrderStatus } from "./types";
 
@@ -53,7 +53,7 @@ async function list(options?: { email?: string; limit?: number }): Promise<Check
 }
 
 async function create(input: CreateOrderInput): Promise<CheckoutOrder> {
-  if (!LAUNCH_JURISDICTIONS.includes(input.jurisdiction)) {
+  if (!(await isActiveLaunchJurisdiction(input.jurisdiction))) {
     throw new Error("Unsupported jurisdiction");
   }
   if (input.lines.length === 0) {

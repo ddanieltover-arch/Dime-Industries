@@ -4,7 +4,6 @@
 import { useActionState } from "react";
 import Link from "next/link";
 import { signUpWithEmail, type AuthActionState } from "@/app/(auth)/actions";
-import { GoogleSignInButton } from "@/components/auth/google-sign-in-button";
 
 const initial: AuthActionState = {};
 
@@ -63,8 +62,6 @@ export function SignupForm() {
           </button>
         </form>
       )}
-
-      {!state.success ? <GoogleSignInButton /> : null}
 
       <p className="text-center text-[var(--scale-sm)] text-[var(--color-ink-soft)]">
         Already have an account?{" "}

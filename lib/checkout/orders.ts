@@ -2,7 +2,7 @@
 import "server-only";
 import { cookies } from "next/headers";
 import { z } from "zod";
-import { LAUNCH_JURISDICTIONS } from "@/lib/compliance/age-gate";
+import { isActiveLaunchJurisdiction } from "@/lib/admin/site-settings-store";
 import type { CheckoutOrder, CreateOrderInput, OrderStatus } from "./types";
 import { ORDERS_COOKIE, ORDERS_COOKIE_MAX } from "./types";
 
@@ -100,7 +100,7 @@ export async function getOrderById(orderId: string): Promise<CheckoutOrder | nul
 }
 
 export async function createOrder(input: CreateOrderInput): Promise<CheckoutOrder> {
-  if (!LAUNCH_JURISDICTIONS.includes(input.jurisdiction)) {
+  if (!(await isActiveLaunchJurisdiction(input.jurisdiction))) {
     throw new Error("Unsupported jurisdiction");
   }
   if (input.lines.length === 0) {

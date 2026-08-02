@@ -139,29 +139,6 @@ export async function resendVerificationEmail(
 }
 
 // ---------------------------------------------------------------------------
-// Google OAuth
-// ---------------------------------------------------------------------------
-
-export async function signInWithGoogle() {
-  const origin = (await headers()).get("origin");
-  const supabase = await createClient();
-
-  const { data, error } = await supabase.auth.signInWithOAuth({
-    provider: "google",
-    options: {
-      redirectTo: `${origin}/auth/callback?next=/account`,
-      queryParams: { access_type: "offline", prompt: "consent" },
-    },
-  });
-
-  if (error || !data.url) {
-    redirect("/login?error=google_oauth_failed");
-  }
-
-  redirect(data.url);
-}
-
-// ---------------------------------------------------------------------------
 // Sign out
 // ---------------------------------------------------------------------------
 

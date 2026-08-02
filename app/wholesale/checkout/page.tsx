@@ -12,6 +12,7 @@ import {
   termsLabel,
   WHOLESALE_MIN_ORDER_CENTS,
 } from "@/lib/wholesale";
+import { isWholesaleEnabled } from "@/lib/admin/site-settings-store";
 
 export const metadata: Metadata = {
   title: "Wholesale checkout",
@@ -25,6 +26,10 @@ export default async function WholesaleCheckoutPage({
 }: {
   searchParams: SearchParams;
 }) {
+  if (!(await isWholesaleEnabled())) {
+    redirect("/wholesale");
+  }
+
   let buyer;
   try {
     buyer = await requireWholesaleBuyer();
@@ -41,12 +46,12 @@ export default async function WholesaleCheckoutPage({
   if (paymentError && failedOrderId) {
     try {
       const { getOrderRepository } = await import("@/lib/checkout");
+      const { changeOrderStatus } = await import("@/lib/checkout/status-change");
       const { releaseInventoryForOrder } = await import("@/lib/inventory");
-      const orders = getOrderRepository();
-      const order = await orders.getById(failedOrderId);
-      if (order?.status === "pending") {
-        await orders.update(order.id, { status: "cancelled" });
-        await releaseInventoryForOrder(order.id);
+      const existing = await getOrderRepository().getById(failedOrderId);
+      if (existing?.status === "pending") {
+        await changeOrderStatus(existing.id, "cancelled", { notify: true });
+        await releaseInventoryForOrder(existing.id);
       }
     } catch (err) {
       console.warn("[wholesale/checkout] payment_failed inventory release failed", err);

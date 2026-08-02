@@ -54,13 +54,18 @@ export async function saveSiteSettingsAction(
 ): Promise<AdminActionState> {
   const admin = await requireAdmin();
 
-  const jurisdictionsRaw = String(formData.get("jurisdictions") ?? "")
+  const jurisdictionsRaw = formData
+    .getAll("jurisdiction")
+    .map((v) => String(v).trim().toUpperCase())
+    .filter(Boolean);
+  // Backward-compatible with older comma-separated field if present.
+  const fromText = String(formData.get("jurisdictions") ?? "")
     .split(",")
     .map((s) => s.trim().toUpperCase())
     .filter(Boolean);
-  const jurisdictions = jurisdictionsRaw.filter(isLaunchJurisdiction);
+  const jurisdictions = [...new Set([...jurisdictionsRaw, ...fromText])].filter(isLaunchJurisdiction);
   if (!jurisdictions.length) {
-    return { error: `Jurisdictions must include at least one of: ${LAUNCH_JURISDICTIONS.join(", ")}.` };
+    return { error: `Select at least one launch market: ${LAUNCH_JURISDICTIONS.join(", ")}.` };
   }
 
   const settings: SiteOpsSettings = {

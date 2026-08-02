@@ -12,12 +12,14 @@ import {
   customerContactConfirmation,
   customerNewsletterWelcome,
   customerOrderConfirmation,
+  customerOrderStatusUpdate,
   adminReturnRequestNotification,
   customerPayoutRequestConfirmation,
   customerReturnRequestConfirmation,
   customerWholesaleApplicationReceived,
   type ContactFormEmailInput,
   type OrderEmailInput,
+  type OrderStatusEmail,
   type PayoutEmailInput,
   type ReturnRequestEmailInput,
   type WholesaleApplicationEmailInput,
@@ -48,6 +50,19 @@ async function dualSend(
 
 export async function notifyOrderConfirmed(order: OrderEmailInput): Promise<DualNotifyResult> {
   return dualSend(customerOrderConfirmation(order), adminOrderNotification(order));
+}
+
+/** Customer-only notice when an order’s status changes. */
+export async function notifyOrderStatusChanged(
+  order: OrderEmailInput,
+  status: OrderStatusEmail,
+  previousStatus?: OrderStatusEmail
+): Promise<SendEmailResult> {
+  const result = await sendEmailPayload(
+    customerOrderStatusUpdate({ order, status, previousStatus })
+  );
+  if (!result.ok) console.warn("[email] order status notify failed", result.error);
+  return result;
 }
 
 export async function notifyWholesaleApplication(

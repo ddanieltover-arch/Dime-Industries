@@ -31,12 +31,12 @@ export default async function CheckoutPage({ searchParams }: { searchParams: Sea
   if (paymentError && failedOrderId) {
     try {
       const { getOrderRepository } = await import("@/lib/checkout");
+      const { changeOrderStatus } = await import("@/lib/checkout/status-change");
       const { releaseInventoryForOrder } = await import("@/lib/inventory");
-      const orders = getOrderRepository();
-      const order = await orders.getById(failedOrderId);
-      if (order?.status === "pending") {
-        await orders.update(order.id, { status: "cancelled" });
-        await releaseInventoryForOrder(order.id);
+      const existing = await getOrderRepository().getById(failedOrderId);
+      if (existing?.status === "pending") {
+        await changeOrderStatus(existing.id, "cancelled", { notify: true });
+        await releaseInventoryForOrder(existing.id);
       }
     } catch (err) {
       console.warn("[checkout] payment_failed inventory release failed", err);

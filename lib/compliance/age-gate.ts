@@ -13,6 +13,7 @@ import {
   isLaunchJurisdiction,
   type LaunchJurisdiction,
 } from "@/lib/compliance/jurisdictions";
+import { isActiveLaunchJurisdiction } from "@/lib/admin/site-settings-store";
 
 export {
   LAUNCH_JURISDICTIONS,
@@ -30,6 +31,10 @@ export async function getAgeGateState(): Promise<AgeGateState> {
   const store = await cookies();
   const ageVerified = store.get("dime_age_verified")?.value === "1";
   const jurisdictionRaw = store.get("dime_jurisdiction")?.value ?? "";
-  const jurisdiction = isLaunchJurisdiction(jurisdictionRaw) ? jurisdictionRaw : null;
-  return { ageVerified, jurisdiction };
+  if (!isLaunchJurisdiction(jurisdictionRaw)) {
+    return { ageVerified, jurisdiction: null };
+  }
+  // Drop jurisdictions that admins have deactivated in Settings.
+  const active = await isActiveLaunchJurisdiction(jurisdictionRaw);
+  return { ageVerified, jurisdiction: active ? jurisdictionRaw : null };
 }

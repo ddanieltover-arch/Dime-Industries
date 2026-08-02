@@ -1,12 +1,20 @@
 // lib/admin/site-settings-store.ts
 import "server-only";
+import { cache } from "react";
 import { cookies } from "next/headers";
 import { z } from "zod";
-import { eq } from "drizzle-orm";
-import { LAUNCH_JURISDICTIONS } from "@/lib/compliance/jurisdictions";
+import { inArray } from "drizzle-orm";
+import {
+  LAUNCH_JURISDICTIONS,
+  isLaunchJurisdiction,
+  type LaunchJurisdiction,
+} from "@/lib/compliance/jurisdictions";
 import { isGrowthDatabaseMode } from "@/lib/db/growth-mode";
 
 export const SITE_SETTINGS_COOKIE = "dime_site_settings";
+
+const OPS_KEYS = ["launch_jurisdictions", "feature_flags"] as const;
+const MEMORY_TTL_MS = 30_000;
 
 const flagsSchema = z.object({
   wholesaleEnabled: z.boolean(),
@@ -28,6 +36,17 @@ export const DEFAULT_SITE_SETTINGS: SiteOpsSettings = {
     vendorOnboarding: false,
   },
 };
+
+let memoryCache: { value: SiteOpsSettings; expiresAt: number } | null = null;
+
+function remember(settings: SiteOpsSettings): SiteOpsSettings {
+  memoryCache = { value: settings, expiresAt: Date.now() + MEMORY_TTL_MS };
+  return settings;
+}
+
+function clearMemory(): void {
+  memoryCache = null;
+}
 
 async function readCookie(): Promise<SiteOpsSettings> {
   const store = await cookies();
@@ -56,7 +75,10 @@ async function readDb(): Promise<SiteOpsSettings> {
   const { getDb } = await import("@/lib/db/client");
   const { siteSettings } = await import("@/db/schema");
   const db = getDb();
-  const rows = await db.select().from(siteSettings);
+  const rows = await db
+    .select()
+    .from(siteSettings)
+    .where(inArray(siteSettings.key, [...OPS_KEYS]));
   const byKey = new Map(rows.map((r) => [r.key, r.value]));
 
   const jurisdictionsRaw = byKey.get("launch_jurisdictions");
@@ -122,30 +144,67 @@ async function writeDb(settings: SiteOpsSettings): Promise<void> {
   }
 }
 
-export async function getSiteSettings(): Promise<SiteOpsSettings> {
+async function loadSiteSettings(): Promise<SiteOpsSettings> {
   if (process.env.NEXT_PHASE === "phase-production-build") {
     return DEFAULT_SITE_SETTINGS;
   }
+  if (memoryCache && memoryCache.expiresAt > Date.now()) {
+    return memoryCache.value;
+  }
   if (isGrowthDatabaseMode()) {
     try {
-      return await readDb();
+      return remember(await readDb());
     } catch (err) {
       console.error("[site-settings] db read failed", err);
-      return DEFAULT_SITE_SETTINGS;
+      return memoryCache?.value ?? DEFAULT_SITE_SETTINGS;
     }
   }
-  return readCookie();
+  return remember(await readCookie());
 }
+
+/** Per-request dedupe + short process TTL so age-gate / checkout don't hammer Postgres. */
+export const getSiteSettings = cache(loadSiteSettings);
 
 export async function saveSiteSettings(settings: SiteOpsSettings): Promise<void> {
   const parsed = settingsSchema.parse(settings);
+  clearMemory();
   if (isGrowthDatabaseMode()) {
     await writeDb(parsed);
+    remember(parsed);
     return;
   }
   await writeCookie(parsed);
+  remember(parsed);
 }
 
 export async function isWholesaleEnabled(): Promise<boolean> {
   return (await getSiteSettings()).featureFlags.wholesaleEnabled;
+}
+
+export async function isVendorOnboardingEnabled(): Promise<boolean> {
+  return (await getSiteSettings()).featureFlags.vendorOnboarding;
+}
+
+/** Admin-selected subset of `LAUNCH_JURISDICTIONS` currently accepting orders. */
+export async function getActiveLaunchJurisdictions(): Promise<LaunchJurisdiction[]> {
+  const settings = await getSiteSettings();
+  const active = settings.jurisdictions.filter(isLaunchJurisdiction);
+  return active.length > 0 ? active : [...LAUNCH_JURISDICTIONS];
+}
+
+export async function isActiveLaunchJurisdiction(v: string): Promise<boolean> {
+  const active = await getActiveLaunchJurisdictions();
+  return active.includes(v as LaunchJurisdiction);
+}
+
+export async function activeJurisdictionsLabel(): Promise<string> {
+  const active = await getActiveLaunchJurisdictions();
+  if (active.length === 1) {
+    return active[0] === "CA" ? "California" : active[0] === "MA" ? "Massachusetts" : active[0];
+  }
+  const names = active.map((j) =>
+    j === "CA" ? "California" : j === "MA" ? "Massachusetts" : j
+  );
+  if (names.length === 2) return `${names[0]} and ${names[1]}`;
+  return names.join(", ");
 }

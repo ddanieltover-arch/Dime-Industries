@@ -505,3 +505,91 @@ export function adminReturnRequestNotification(input: ReturnRequestEmailInput): 
 export function orderConfirmationEmail(order: OrderEmailInput): EmailPayload {
   return customerOrderConfirmation(order);
 }
+
+export type OrderStatusEmail = "pending" | "payment_confirmed" | "cancelled" | "rejected";
+
+export const ORDER_STATUS_LABELS: Record<OrderStatusEmail, string> = {
+  pending: "Pending",
+  payment_confirmed: "Payment confirmed",
+  cancelled: "Cancelled",
+  rejected: "Rejected",
+};
+
+function statusCopy(status: OrderStatusEmail): { title: string; body: string; eyebrow: string } {
+  switch (status) {
+    case "payment_confirmed":
+      return {
+        eyebrow: "Order update",
+        title: "Payment confirmed",
+        body: "We’ve confirmed payment for your order and are preparing it carefully.",
+      };
+    case "cancelled":
+      return {
+        eyebrow: "Order update",
+        title: "Order cancelled",
+        body: "Your order has been cancelled. If you didn’t request this or have questions, reply to this email and we’ll help.",
+      };
+    case "rejected":
+      return {
+        eyebrow: "Order update",
+        title: "Order couldn’t be completed",
+        body: "We weren’t able to complete this order. No further payment will be collected. Contact us if you need help placing a new order.",
+      };
+    case "pending":
+    default:
+      return {
+        eyebrow: "Order update",
+        title: "Order status: pending",
+        body: "Your order is marked pending. We’ll email you again when payment is confirmed or if anything changes.",
+      };
+  }
+}
+
+/** Customer: order status changed (admin, payment webhook, or system). */
+export function customerOrderStatusUpdate(input: {
+  order: OrderEmailInput;
+  status: OrderStatusEmail;
+  previousStatus?: OrderStatusEmail;
+}): EmailPayload {
+  const { order, status, previousStatus } = input;
+  const copy = statusCopy(status);
+  const total = formatUsd(order.totalCents);
+  const statusLabel = ORDER_STATUS_LABELS[status];
+  const previousLabel = previousStatus ? ORDER_STATUS_LABELS[previousStatus] : null;
+
+  const bodyHtml = [
+    paragraph(copy.body),
+    detailTable([
+      { label: "Order", value: escapeHtml(order.id) },
+      { label: "Status", value: `<strong>${escapeHtml(statusLabel)}</strong>` },
+      ...(previousLabel && previousLabel !== statusLabel
+        ? [{ label: "Previous", value: escapeHtml(previousLabel) }]
+        : []),
+      { label: "Total", value: total },
+      { label: "Ship to", value: addressBlock(order) },
+    ]),
+    orderLinesTable(order.lines),
+    ctaButton("View order", siteUrl(`/checkout/confirmation/${order.id}`)),
+    mutedNote("You’re receiving this because the status of your DIME order changed."),
+  ].join("");
+
+  return {
+    to: order.email,
+    subject: `Order ${statusLabel.toLowerCase()} — ${order.id}`,
+    html: emailLayout({
+      preheader: `Order ${order.id} is now ${statusLabel.toLowerCase()}.`,
+      eyebrow: copy.eyebrow,
+      title: copy.title,
+      bodyHtml,
+    }),
+    text: [
+      `Order ${order.id} status: ${statusLabel}.`,
+      previousLabel ? `Previous: ${previousLabel}` : null,
+      `Total: ${total}`,
+      `View: ${siteUrl(`/checkout/confirmation/${order.id}`)}`,
+    ]
+      .filter(Boolean)
+      .join("\n"),
+  };
+}
+

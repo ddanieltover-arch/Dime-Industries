@@ -13,6 +13,7 @@ import {
   resolveWholesaleVariantPrice,
   WHOLESALE_DEFAULT_MOQ,
 } from "@/lib/wholesale";
+import { isWholesaleEnabled } from "@/lib/admin/site-settings-store";
 
 export const metadata: Metadata = {
   title: "Wholesale shop",
@@ -20,6 +21,10 @@ export const metadata: Metadata = {
 };
 
 export default async function WholesaleShopPage() {
+  if (!(await isWholesaleEnabled())) {
+    redirect("/wholesale");
+  }
+
   try {
     await requireWholesaleBuyer();
   } catch (err) {

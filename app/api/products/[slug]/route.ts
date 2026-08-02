@@ -2,7 +2,7 @@
 import { NextResponse } from "next/server";
 import { getProductBySlug, primaryVariant, toProductCard, withCatalogSource } from "@/lib/catalog";
 import { loadEffectiveCatalog } from "@/lib/catalog/effective";
-import { isLaunchJurisdiction } from "@/lib/compliance/age-gate";
+import { isActiveLaunchJurisdiction } from "@/lib/admin/site-settings-store";
 
 export const dynamic = "force-dynamic";
 
@@ -12,7 +12,9 @@ export async function GET(request: Request, { params }: { params: Params }) {
   const { slug } = await params;
   const url = new URL(request.url);
   const jurisdictionRaw = url.searchParams.get("jurisdiction") ?? "";
-  const jurisdiction = isLaunchJurisdiction(jurisdictionRaw) ? jurisdictionRaw : null;
+  const jurisdiction = (await isActiveLaunchJurisdiction(jurisdictionRaw))
+    ? (jurisdictionRaw as "CA" | "MA")
+    : null;
 
   const product = await withCatalogSource(await loadEffectiveCatalog(), () =>
     getProductBySlug(slug, jurisdiction)
