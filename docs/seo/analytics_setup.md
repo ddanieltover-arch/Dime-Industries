@@ -25,17 +25,19 @@ Owner checklist after `dimeindustries.us` DNS points at the Vercel production de
 
 ## Google Analytics 4
 
-The storefront currently has **consent-gated analytics cookies** (`lib/consent`) but no hard-coded GA4 measurement ID in app code. To wire GA4:
+GA4 is wired with measurement ID `G-N04NC98ZM8` (override via `NEXT_PUBLIC_GA_MEASUREMENT_ID`). gtag loads from the root layout **only when** the visitor has opted into analytics cookies (`lib/consent`).
 
-1. Create a GA4 property + Web data stream for `https://dimeindustries.us`
-2. Add measurement ID via env (recommended pattern: `NEXT_PUBLIC_GA_MEASUREMENT_ID`) and load gtag / GTM only when the visitor opts into analytics cookies
+Owner checklist:
+
+1. Confirm the GA4 Web data stream for `https://dimeindustries.us` uses `G-N04NC98ZM8`
+2. Optional: set `NEXT_PUBLIC_GA_MEASUREMENT_ID` on Vercel (defaults to `G-N04NC98ZM8` in code if unset)
 3. Recommended events (commerce):
    - `purchase`, `begin_checkout`, `add_to_cart`, `view_item`
    - `generate_lead` (contact / wholesale)
 4. Link GA4 ↔ Google Search Console
-5. Respect cookie banner: do not fire marketing/analytics tags before opt-in
+5. Verify cookie banner: tags must not fire before analytics opt-in
 
-Until GA4 is installed, use Vercel Analytics / server logs + GSC for organic baselines.
+Also use Vercel Analytics / server logs + GSC for organic baselines.
 
 ## Bing Webmaster Tools (optional)
 

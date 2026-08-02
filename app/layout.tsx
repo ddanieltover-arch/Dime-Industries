@@ -5,6 +5,7 @@ import { StorefrontChrome } from "@/components/shared/storefront-chrome";
 import { CartShell } from "@/components/cart/cart-shell";
 import { PwaClient } from "@/components/pwa/pwa-client";
 import { CookieBannerHost } from "@/components/consent/cookie-banner-host";
+import { GoogleAnalyticsHost } from "@/components/analytics/google-analytics-host";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -69,6 +70,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             </StorefrontChrome>
             <PwaClient />
             <CookieBannerHost />
+            <GoogleAnalyticsHost />
           </CartShell>
         </ThemeProvider>
       </body>

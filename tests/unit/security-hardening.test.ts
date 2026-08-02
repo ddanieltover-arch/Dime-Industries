@@ -51,6 +51,13 @@ describe("security headers", () => {
     expect(keys).toContain("X-Content-Type-Options");
     expect(keys).toContain("Content-Security-Policy");
   });
+
+  it("allows Google Analytics gtag hosts", () => {
+    const csp = SECURITY_HEADERS.find((h) => h.key === "Content-Security-Policy")?.value ?? "";
+    expect(csp).toContain("https://www.googletagmanager.com");
+    expect(csp).toContain("https://www.google-analytics.com");
+    expect(csp).toContain("https://*.google-analytics.com");
+  });
 });
 
 describe("isDemoAuthAllowed", () => {
