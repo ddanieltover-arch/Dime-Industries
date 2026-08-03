@@ -62,6 +62,10 @@ const sentryOptions = {
   widenClientFileUpload: true,
   hideSourceMaps: true,
   disableLogger: true,
+  // Middleware must stay Edge-compatible. Sentry's automatic wrap pulls
+  // sentry.edge.config into the middleware graph and Vercel rejects deploy with
+  // "referencing unsupported modules: ./sentry.edge.config".
+  autoInstrumentMiddleware: false,
 };
 
 if (process.env.NODE_ENV === "development") {
