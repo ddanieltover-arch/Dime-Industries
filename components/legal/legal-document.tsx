@@ -87,20 +87,63 @@ export function LegalDocument({
         <div className="mx-auto max-w-3xl px-[var(--container-pad-x)] py-[var(--section-y)]">
           {children ?? (
             <div className="space-y-4">
-              {blocks.map((block, i) =>
-                block.type === "h3" ? (
-                  <h2
+              {blocks.map((block, i) => {
+                if (block.type === "h3") {
+                  return (
+                    <h2
+                      key={i}
+                      className="pt-6 font-[var(--font-display)] text-[var(--scale-lg)] uppercase tracking-[0.08em] text-[var(--color-resin)] first:pt-0"
+                    >
+                      {block.text}
+                    </h2>
+                  );
+                }
+
+                if (block.type === "table") {
+                  return (
+                    <div key={i} className="overflow-x-auto">
+                      <table className="w-full min-w-[20rem] border-collapse text-left text-[var(--scale-sm)]">
+                        <thead>
+                          <tr className="border-b border-[var(--color-border)]">
+                            {block.headers.map((h) => (
+                              <th
+                                key={h}
+                                scope="col"
+                                className="px-3 py-3 font-[var(--font-display)] text-[10px] uppercase tracking-[0.14em] text-[var(--color-resin)]"
+                              >
+                                {h}
+                              </th>
+                            ))}
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {block.rows.map((row, ri) => (
+                            <tr key={ri} className="border-b border-[var(--color-border)]">
+                              {row.map((cell, ci) => (
+                                <td
+                                  key={`${ri}-${ci}`}
+                                  className="px-3 py-3 text-[var(--color-ink-soft)]"
+                                >
+                                  {cell}
+                                </td>
+                              ))}
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
+                  );
+                }
+
+                return (
+                  <p
                     key={i}
-                    className="pt-6 font-[var(--font-display)] text-[var(--scale-lg)] uppercase tracking-[0.08em] text-[var(--color-resin)] first:pt-0"
+                    className="text-[var(--scale-base)] leading-relaxed text-[var(--color-ink-soft)]"
                   >
                     {block.text}
-                  </h2>
-                ) : (
-                  <p key={i} className="text-[var(--scale-base)] leading-relaxed text-[var(--color-ink-soft)]">
-                    {block.text}
                   </p>
-                )
-              )}
+                );
+              })}
             </div>
           )}
         </div>

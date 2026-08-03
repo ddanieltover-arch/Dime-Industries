@@ -27,6 +27,7 @@ export function parseFaqEntries(body: string): FaqEntry[] {
       continue;
     }
     if (!current) continue;
+    if (block.type !== "p") continue;
     current.answer = current.answer
       ? `${current.answer} ${block.text.trim()}`
       : block.text.trim();
