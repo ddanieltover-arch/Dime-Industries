@@ -3,7 +3,14 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { Reveal, Stagger, StaggerItem } from "@/components/motion";
+import { AnswerCapsule } from "@/components/seo/answer-capsule";
 import { PublicValidateForm } from "@/components/validate/public-validate-form";
+import { JsonLdScript } from "@/components/seo/json-ld-script";
+import {
+  buildBreadcrumbJsonLd,
+  buildHowToJsonLd,
+  VALIDATE_HOWTO_STEPS,
+} from "@/lib/seo/json-ld";
 
 export const metadata: Metadata = {
   title: "Validate Your Products",
@@ -53,8 +60,23 @@ const PERKS = [
 ] as const;
 
 export default function ValidatePage() {
+  const howTo = buildHowToJsonLd({
+    name: "How to validate a DIME product",
+    description:
+      "Scratch the package code, verify authenticity on Validate, activate limited warranty, and earn Rewards.",
+    url: "/validate",
+    steps: VALIDATE_HOWTO_STEPS,
+  });
+  const breadcrumbs = buildBreadcrumbJsonLd([
+    { name: "Home", path: "/" },
+    { name: "Validate", path: "/validate" },
+  ]);
+
   return (
     <>
+      <JsonLdScript data={howTo} />
+      <JsonLdScript data={breadcrumbs} />
+
       <section className="relative isolate min-h-[min(72vh,640px)] overflow-hidden">
         <Image
           src="/brand/validate.png"
@@ -75,6 +97,13 @@ export default function ValidatePage() {
           <h1 className="rise rise-delay-1 mt-2 max-w-xl font-[var(--font-display)] text-[clamp(2.25rem,6vw,4rem)] uppercase leading-[0.95] tracking-[0.06em] text-white">
             Validate your product
           </h1>
+          <div className="rise rise-delay-2 mt-4 max-w-xl">
+            <AnswerCapsule className="bg-black/35 [&_p]:text-[var(--color-resin)] [&_div]:font-normal [&_div]:text-white/90">
+              Scratch the code on your DIME package, enter it on Validate (or scan in the DIME App),
+              confirm authenticity, then unlock limited warranty and Rewards when eligible. Buy only
+              from licensed retailers.
+            </AnswerCapsule>
+          </div>
           <p className="rise rise-delay-2 mt-4 max-w-md text-[var(--scale-base)] leading-relaxed text-white/80">
             Confirm your DIME product is genuine and safe to use — then unlock limited warranty and Rewards.
           </p>

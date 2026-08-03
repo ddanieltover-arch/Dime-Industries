@@ -159,9 +159,13 @@ export async function dbSeedCmsIfEmpty(
     if (!existingSlugs.has(page.slug)) await dbUpsertCmsPage(page);
   }
   const existingPosts = await dbListBlogPosts();
-  const existingPostSlugs = new Set(existingPosts.map((p) => p.slug));
+  const existingBySlug = new Map(existingPosts.map((p) => [p.slug, p]));
   for (const post of posts) {
-    if (!existingPostSlugs.has(post.slug)) await dbUpsertBlogPost(post);
+    const current = existingBySlug.get(post.slug);
+    // Insert missing defaults, or refresh when seed content is newer than the row.
+    if (!current || post.updatedAt > current.updatedAt) {
+      await dbUpsertBlogPost(post);
+    }
   }
   const existingBanner = await dbGetBanner();
   if (!existingBanner) await dbSaveBanner(banner);

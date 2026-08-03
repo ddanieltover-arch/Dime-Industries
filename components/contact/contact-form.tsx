@@ -1,20 +1,26 @@
 // components/contact/contact-form.tsx
 "use client";
 
-import { useActionState } from "react";
+import { useActionState, useCallback } from "react";
 import { submitContactForm, type ContactActionState } from "@/app/(marketing)/contact-actions";
+import { GaSuccessEffect } from "@/components/analytics/ga-success-effect";
+import { trackGenerateLead } from "@/lib/analytics/track";
 import { BRAND_EMAIL } from "@/lib/brand/email";
 
 const initial: ContactActionState = {};
 
 export function ContactForm() {
   const [state, action, pending] = useActionState(submitContactForm, initial);
+  const onLead = useCallback(() => trackGenerateLead("contact"), []);
 
   if (state.success) {
     return (
-      <p role="status" className="text-[var(--scale-sm)] text-[var(--color-resin)]">
-        Message sent. Check your inbox for a confirmation — we&apos;ll reply from {BRAND_EMAIL}.
-      </p>
+      <>
+        <GaSuccessEffect ready onSuccess={onLead} />
+        <p role="status" className="text-[var(--scale-sm)] text-[var(--color-resin)]">
+          Message sent. Check your inbox for a confirmation — we&apos;ll reply from {BRAND_EMAIL}.
+        </p>
+      </>
     );
   }
 

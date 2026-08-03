@@ -11,7 +11,7 @@
 
 ## Answer capsule (write first)
 
-> **Quick Answer:** A standard United States dime roll contains **40 dimes**, equal to **$4.00** in face value. Banks and the U.S. Mint package circulating dimes in paper or plastic rolls of 40 for counting and transport.
+> **Quick Answer:** A standard United States dime roll contains **50 dimes**, equal to **$5.00** in face value. Banks and the U.S. Mint package circulating dimes in paper or plastic rolls of 50 for counting and transport.
 
 ## Suggested H2s (CMS `###` → rendered as H2)
 
@@ -26,7 +26,7 @@
 ## Key points
 
 - Lead with the factual coin answer; no product pitch in the first screen of content.
-- Cite U.S. circulating coin conventions (40 dimes / $4).
+- Cite U.S. circulating coin conventions (50 dimes / $5).
 - Soft CTA only after education: explore [DIME carts](/shop/vapes), [Find DIME](/locations), [About](/about).
 - Compliance footer: educational only; 21+; not medical advice; cannabis products where legal.
 

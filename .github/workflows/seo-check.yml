@@ -1,0 +1,36 @@
+name: SEO Validation
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+
+concurrency:
+  group: seo-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  seo-static:
+    name: SEO static gates
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "pnpm"
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 9
+      - run: pnpm install --frozen-lockfile
+      - name: SEO audit (offline)
+        run: pnpm seo:audit
+      - name: Validate structured data builders
+        run: pnpm seo:schema
+      - name: Internal link hygiene (seed)
+        run: pnpm seo:links
+      - name: Content freshness (warn)
+        run: pnpm seo:freshness
+      - name: SEO unit tests
+        run: pnpm exec vitest run tests/unit/seo-section*.test.ts

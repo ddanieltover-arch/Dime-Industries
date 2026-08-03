@@ -28,7 +28,7 @@ export function ProductGallery({ images, productName, fallbackLabel }: Props) {
 
   return (
     <div className="space-y-3">
-      <div className="group relative aspect-square overflow-hidden bg-[var(--color-surface)]">
+      <figure className="group relative m-0 aspect-square overflow-hidden bg-[var(--color-surface)]">
         <AnimatePresence mode="wait" initial={false}>
           <motion.div
             key={current}
@@ -48,7 +48,11 @@ export function ProductGallery({ images, productName, fallbackLabel }: Props) {
             />
           </motion.div>
         </AnimatePresence>
-      </div>
+        <figcaption className="sr-only">
+          {productName}
+          {images.length > 1 ? ` — image ${active + 1} of ${images.length}` : ""}
+        </figcaption>
+      </figure>
 
       {images.length > 1 ? (
         <ul className="grid grid-cols-4 gap-2" role="list">

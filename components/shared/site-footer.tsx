@@ -18,6 +18,9 @@ const COLUMNS = [
     heading: "Company",
     links: [
       { href: "/about", label: "About" },
+      { href: "/trust", label: "Trust & quality" },
+      { href: "/glossary", label: "Glossary" },
+      { href: "/facts", label: "Brand facts" },
       { href: "/blog", label: "Blog" },
       { href: "/faq", label: "FAQ" },
       { href: "/careers", label: "Careers" },

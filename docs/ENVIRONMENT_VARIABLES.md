@@ -12,8 +12,9 @@ Companion to `.env.example`. That file says *what* to set; this says *who owns i
 | `PRODUCTION_DATABASE_URL` | GitHub Actions `production` Environment | **Critical** | Quarterly / offboarding | Migrations only |
 | `VERCEL_STAGING_TOKEN` | GitHub Actions `staging` | High | Offboarding | Scope to `dime-staging` if possible |
 | `VERCEL_PRODUCTION_TOKEN` | GitHub Actions `production` | **Critical** | Offboarding | Scope to `dime-production` |
-| `NEXT_PUBLIC_APP_URL` | Vercel + local | Public | N/A | Production: `https://dimeindustries.us` — used for Paybis return URLs |
-| `NEXT_PUBLIC_GA_MEASUREMENT_ID` | Vercel + local | Public | N/A | GA4 measurement ID (`G-…`). gtag loads only after analytics cookie opt-in |
+| `NEXT_PUBLIC_APP_URL` | Vercel + local | Public | N/A | Production: `https://www.dimeindustries.us` — used for Paybis return URLs (apex redirects to www) |
+| `NEXT_PUBLIC_GA_MEASUREMENT_ID` | Vercel + local | Public | N/A | GA4 measurement ID (`G-…`). Defaults to `G-N04NC98ZM8`. gtag loads only after analytics cookie opt-in |
+| `NEXT_PUBLIC_GTM_CONTAINER_ID` | Vercel + local | Public | Optional | Optional GTM container (`GTM-…`). Prefer single tagging path — see `docs/seo/section_8_analytics.md` |
 | `NEXT_PUBLIC_SENTRY_DSN` | Vercel (both) | Public | N/A | |
 | `SENTRY_ORG`, `SENTRY_PROJECT` | Vercel + CI | Low | N/A | |
 | `SENTRY_AUTH_TOKEN` | CI + Vercel build | High | If exposed | Source-map upload |

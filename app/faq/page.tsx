@@ -4,8 +4,10 @@ import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Reveal } from "@/components/motion";
+import { JsonLdScript } from "@/components/seo/json-ld-script";
 import { buildFaqPageJsonLd, FAQ_CMS_SLUG, parseFaqEntries } from "@/lib/cms/faq";
 import { getCmsPage } from "@/lib/cms/store";
+import { buildBreadcrumbJsonLd } from "@/lib/seo/json-ld";
 import { SITE_URL } from "@/lib/seo/site";
 
 export const revalidate = 300;
@@ -17,11 +19,24 @@ export const metadata: Metadata = {
 };
 
 const QUICK_LINKS = [
+  { href: "/glossary", label: "Glossary" },
+  { href: "/facts", label: "Brand facts" },
+  { href: "/trust", label: "Trust" },
   { href: "/validate", label: "Validate" },
   { href: "/locations", label: "Find DIME" },
+  { href: "/blog/how-to-use-a-dime-cart", label: "How to use a cart" },
   { href: "/rewards", label: "Rewards" },
-  { href: "/promotions", label: "Promotions" },
   { href: "/contact", label: "Contact" },
+] as const;
+
+const GEO_GUIDES = [
+  { href: "/blog/what-is-a-dime-cart", label: "What is a Dime cart?" },
+  { href: "/blog/dime-live-reserve-explained", label: "What is Live Reserve?" },
+  { href: "/blog/signature-vs-live-reserve", label: "Signature vs Live Reserve" },
+  { href: "/blog/dime-cart-vs-disposable", label: "Cart vs disposable" },
+  { href: "/blog/how-to-spot-fake-dime-carts", label: "Spot fake carts" },
+  { href: "/blog/how-to-use-a-dime-cart", label: "How to use a Dime cart" },
+  { href: "/blog/how-many-dimes-in-a-roll", label: "How many dimes in a roll?" },
 ] as const;
 
 export default async function FaqPage() {
@@ -30,16 +45,15 @@ export default async function FaqPage() {
 
   const entries = parseFaqEntries(page.body);
   const faqJsonLd = entries.length ? buildFaqPageJsonLd(entries, `${SITE_URL}/faq`) : null;
+  const breadcrumbs = buildBreadcrumbJsonLd([
+    { name: "Home", path: "/" },
+    { name: "FAQ", path: "/faq" },
+  ]);
 
   return (
     <>
-      {faqJsonLd ? (
-        <script
-          type="application/ld+json"
-          // eslint-disable-next-line react/no-danger
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
-        />
-      ) : null}
+      {faqJsonLd ? <JsonLdScript data={faqJsonLd} /> : null}
+      <JsonLdScript data={breadcrumbs} />
 
       <section className="relative isolate min-h-[min(58vh,520px)] overflow-hidden">
         <Image
@@ -136,6 +150,25 @@ export default async function FaqPage() {
           </h2>
           <ul className="mt-5 flex flex-wrap gap-x-6 gap-y-3" role="list">
             {QUICK_LINKS.map((link) => (
+              <li key={link.href}>
+                <Link
+                  href={link.href}
+                  className="font-[var(--font-display)] text-[var(--scale-sm)] uppercase tracking-[0.12em] text-[var(--color-ink)] transition-colors duration-[var(--motion-fast)] hover:text-[var(--color-resin)]"
+                >
+                  {link.label}
+                </Link>
+              </li>
+            ))}
+          </ul>
+
+          <h2
+            id="geo-guides-heading"
+            className="mt-12 font-[var(--font-display)] text-[10px] uppercase tracking-[0.18em] text-[var(--color-resin)]"
+          >
+            People also ask — guides
+          </h2>
+          <ul className="mt-5 flex flex-wrap gap-x-6 gap-y-3" role="list">
+            {GEO_GUIDES.map((link) => (
               <li key={link.href}>
                 <Link
                   href={link.href}

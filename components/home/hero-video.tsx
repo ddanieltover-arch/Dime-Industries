@@ -71,6 +71,8 @@ export function HeroVideo({
           <img
             src="/brand/hero-poster.jpg"
             alt=""
+            fetchPriority="high"
+            decoding="async"
             className="absolute inset-0 h-full w-full object-cover"
           />
         </picture>

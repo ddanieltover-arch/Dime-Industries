@@ -1,0 +1,14 @@
+# Disavow file for Google Search Console — DIME Industries
+# Domain property: dimeindustries.us (covers www + apex)
+# Instructions: https://support.google.com/webmasters/answer/2648487
+#
+# ONLY add domains after Ahrefs/Majestic review confirms toxicity.
+# Prefer domain:example.com over path-level entries.
+# Do NOT disavow legitimate news, retailers, or industry trades.
+#
+# Example (commented — do not submit placeholders):
+# domain:spammy-pbn-example.invalid
+# domain:casino-links-farm.invalid
+#
+# Status: EMPTY — no toxic domains confirmed in this environment (no Ahrefs API).
+# Owner: replace this file after backlink export, then upload in GSC.

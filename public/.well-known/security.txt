@@ -1,4 +1,4 @@
 Contact: mailto:sales@dimeindustries.us
 Expires: 2027-08-01T00:00:00.000Z
 Preferred-Languages: en
-Canonical: https://dimeindustries.us/.well-known/security.txt
+Canonical: https://www.dimeindustries.us/.well-known/security.txt

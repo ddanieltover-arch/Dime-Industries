@@ -2,6 +2,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { AgeGateDialog } from "@/components/shared/age-gate-dialog";
+import { AgeGateSeoTeaser } from "@/components/seo/age-gate-seo-teaser";
 import { ActiveFilterChips, hasActiveCatalogFilters } from "@/components/catalog/active-filter-chips";
 import { CatalogFilters } from "@/components/catalog/catalog-filters";
 import { CatalogPagination } from "@/components/catalog/catalog-pagination";
@@ -10,6 +11,10 @@ import { ProductGrid } from "@/components/catalog/product-grid";
 import { CATALOG_CATEGORIES } from "@/lib/catalog";
 import { applyLiveCoaToCards } from "@/lib/integrations/coa/client";
 import type { CatalogFacetCounts, CatalogFilters as Filters, ProductCardModel } from "@/lib/catalog/types";
+import type { CatalogSeoLink } from "@/lib/seo/related-posts";
+import { AnswerCapsule } from "@/components/seo/answer-capsule";
+import { OutboundCitations } from "@/components/seo/outbound-citations";
+import { outboundCitationsFor } from "@/lib/seo/outbound-citations";
 
 const CATEGORY_HERO: Record<string, string> = {
   vapes: "/brand/category-vapes.webp",
@@ -32,6 +37,12 @@ type Props = {
   facets: CatalogFacetCounts;
   /** Optional full-bleed hero image; defaults by category or shop poster */
   heroImage?: string;
+  /** Pillar → cluster educational / commercial links under the hero */
+  seoLinks?: CatalogSeoLink[];
+  /** GEO answer capsule shown under the H1 */
+  answer?: string;
+  /** When set, renders 2–3 educational outbound citations under the grid */
+  outboundKey?: string;
 };
 
 function resolveHero(basePath: string, heroImage?: string) {
@@ -53,17 +64,29 @@ export async function CatalogPageShell({
   pageSize = 24,
   facets,
   heroImage,
+  seoLinks = [],
+  answer,
+  outboundKey,
 }: Props) {
   const hasFilters = hasActiveCatalogFilters(filters, basePath);
   const items = ageVerified ? await applyLiveCoaToCards(rawItems) : rawItems;
   const hero = resolveHero(basePath, heroImage);
   const activeCategory = basePath.startsWith("/shop/") ? basePath.split("/")[2] : undefined;
+  const outbound = outboundKey ? outboundCitationsFor(outboundKey) : [];
 
   return (
     <>
       <AgeGateDialog initiallyOpen={!ageVerified} />
 
-      {!ageVerified ? null : (
+      {!ageVerified ? (
+        <AgeGateSeoTeaser
+          title={title}
+          description={
+            description ??
+            "Confirm you are 21+ (or a qualifying patient) to browse lab-tested DIME products available in your jurisdiction."
+          }
+        />
+      ) : (
         <>
           <section className="relative isolate overflow-hidden border-b border-[var(--color-border)]">
             <Image
@@ -89,6 +112,29 @@ export async function CatalogPageShell({
                 <p className="mt-3 max-w-lg text-[var(--scale-base)] leading-relaxed text-white/80">
                   {description}
                 </p>
+              ) : null}
+
+              {answer ? (
+                <AnswerCapsule className="mt-5 max-w-xl bg-black/40 [&_p]:text-[var(--color-resin)] [&_div]:font-normal [&_div]:text-white/90">
+                  {answer}
+                </AnswerCapsule>
+              ) : null}
+
+              {seoLinks.length > 0 ? (
+                <nav aria-label="Related guides" className="mt-5">
+                  <ul className="flex flex-wrap gap-x-4 gap-y-2" role="list">
+                    {seoLinks.map((link) => (
+                      <li key={link.href}>
+                        <Link
+                          href={link.href}
+                          className="font-[var(--font-display)] text-[10px] uppercase tracking-[0.14em] text-white/75 underline-offset-4 transition-colors hover:text-[var(--color-resin)] hover:underline"
+                        >
+                          {link.label}
+                        </Link>
+                      </li>
+                    ))}
+                  </ul>
+                </nav>
               ) : null}
 
               <nav aria-label="Shop categories" className="mt-8">
@@ -163,6 +209,10 @@ export async function CatalogPageShell({
                   page={page}
                   pageSize={pageSize}
                 />
+
+                {outbound.length > 0 ? (
+                  <OutboundCitations citations={outbound} heading="Related references" />
+                ) : null}
               </div>
             </div>
           </div>

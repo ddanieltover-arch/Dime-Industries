@@ -85,7 +85,12 @@ export function ProductCard({ product }: { product: ProductCardModel }) {
             Select options
           </Link>
         ) : (
-          <QuickAddToCart variantId={product.primaryVariantId} productName={product.name} />
+          <QuickAddToCart
+            variantId={product.primaryVariantId}
+            productName={product.name}
+            productId={product.primarySku}
+            priceCents={product.retailPriceCents}
+          />
         )}
       </div>
     </article>

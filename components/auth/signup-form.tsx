@@ -1,14 +1,17 @@
 // components/auth/signup-form.tsx
 "use client";
 
-import { useActionState } from "react";
+import { useActionState, useCallback } from "react";
 import Link from "next/link";
 import { signUpWithEmail, type AuthActionState } from "@/app/(auth)/actions";
+import { GaSuccessEffect } from "@/components/analytics/ga-success-effect";
+import { trackSignUp } from "@/lib/analytics/track";
 
 const initial: AuthActionState = {};
 
 export function SignupForm() {
   const [state, formAction, pending] = useActionState(signUpWithEmail, initial);
+  const onSignUp = useCallback(() => trackSignUp("email"), []);
 
   return (
     <div className="mx-auto w-full max-w-md space-y-8 px-[var(--container-pad-x)] py-16">
@@ -23,13 +26,16 @@ export function SignupForm() {
       </div>
 
       {state.success ? (
-        <p role="status" className="text-[var(--scale-sm)] text-[var(--color-resin)]">
-          Check your email to verify your account, then{" "}
-          <Link href="/login" className="underline-offset-4 hover:underline">
-            sign in
-          </Link>
-          .
-        </p>
+        <>
+          <GaSuccessEffect ready onSuccess={onSignUp} />
+          <p role="status" className="text-[var(--scale-sm)] text-[var(--color-resin)]">
+            Check your email to verify your account, then{" "}
+            <Link href="/login" className="underline-offset-4 hover:underline">
+              sign in
+            </Link>
+            .
+          </p>
+        </>
       ) : (
         <form action={formAction} className="space-y-4">
           <label className="block text-[var(--scale-xs)] text-[var(--color-ink-soft)]">

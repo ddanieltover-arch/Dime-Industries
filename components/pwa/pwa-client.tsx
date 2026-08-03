@@ -20,6 +20,21 @@ export function PwaClient() {
     if (typeof window === "undefined") return;
     if (!("serviceWorker" in navigator)) return;
 
+    // Dev: never register — cache-first `/_next/static` from a prior SW serves
+    // stale webpack chunks and surfaces as `Cannot read properties of undefined
+    // (reading 'call')` in RootLayout / StorefrontChrome.
+    if (process.env.NODE_ENV === "development") {
+      void navigator.serviceWorker.getRegistrations().then((regs) => {
+        for (const reg of regs) void reg.unregister();
+      });
+      void caches.keys().then((keys) => {
+        for (const key of keys) {
+          if (key.startsWith("dime-pwa-")) void caches.delete(key);
+        }
+      });
+      return;
+    }
+
     let cancelled = false;
 
     navigator.serviceWorker

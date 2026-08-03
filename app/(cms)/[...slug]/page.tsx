@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { CmsArticle } from "@/components/cms/cms-article";
 import { getCmsPage } from "@/lib/cms/store";
+import { buildCmsPageMetadata } from "@/lib/seo/cms-meta";
 
 type Params = Promise<{ slug: string[] }>;
 
@@ -29,10 +30,11 @@ export async function generateMetadata({ params }: { params: Params }): Promise<
   const { slug } = await params;
   const page = await getCmsPage(slug.join("/"));
   if (!page) return { title: "Page" };
-  return {
+  return buildCmsPageMetadata({
     title: page.title,
-    alternates: { canonical: `/${page.slug}` },
-  };
+    body: page.body,
+    path: `/${page.slug}`,
+  });
 }
 
 export default async function CmsCatchAllPage({ params }: { params: Params }) {

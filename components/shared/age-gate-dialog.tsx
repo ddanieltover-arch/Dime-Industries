@@ -71,14 +71,14 @@ export function AgeGateDialog({ initiallyOpen }: { initiallyOpen: boolean }) {
         </FadeInItem>
 
         <FadeInItem>
-          <h1
+          <h2
             id="age-gate-title"
             ref={headingRef}
             tabIndex={-1}
             className="mt-3 font-[var(--font-display)] text-[var(--scale-2xl)] uppercase tracking-[0.08em] text-white outline-none sm:text-[var(--scale-3xl)]"
           >
             Are you over 21?
-          </h1>
+          </h2>
         </FadeInItem>
 
         <FadeInItem>

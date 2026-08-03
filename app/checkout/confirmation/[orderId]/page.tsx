@@ -2,6 +2,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { PurchaseEvent } from "@/components/analytics/purchase-event";
 import { OrderTrackingPanel } from "@/components/checkout/order-tracking";
 import { getOrderById, markOrderPaid } from "@/lib/checkout";
 import { persistCartLines } from "@/lib/cart";
@@ -55,6 +56,11 @@ export default async function ConfirmationPage({
 
   return (
     <div className="mx-auto max-w-3xl px-[var(--container-pad-x)] py-16 lg:py-20">
+      <PurchaseEvent
+        transactionId={order.id}
+        valueUsd={order.totalCents / 100}
+        paid={paid}
+      />
       <p className="font-[var(--font-display)] text-[10px] uppercase tracking-[0.18em] text-[var(--color-resin)]">
         {paid ? "Payment confirmed" : "Order pending payment"}
       </p>

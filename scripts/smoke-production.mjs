@@ -17,6 +17,7 @@ const paths = [
   { path: "/", expectStatus: [200] },
   { path: "/robots.txt", expectStatus: [200], bodyIncludes: "sitemap" },
   { path: "/sitemap.xml", expectStatus: [200], bodyIncludes: "dimeindustries.us" },
+  { path: "/llms.txt", expectStatus: [200], bodyIncludes: "DIME" },
   { path: "/shop", expectStatus: [200] },
   { path: "/about", expectStatus: [200] },
   { path: "/blog", expectStatus: [200] },

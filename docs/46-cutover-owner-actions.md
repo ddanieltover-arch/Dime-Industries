@@ -2,7 +2,7 @@
 
 **Status:** Engineering package ready — **your Vercel + registrar logins required**  
 **Live today:** https://dime-industries.vercel.app  
-**Target:** https://dimeindustries.us  
+**Target:** https://www.dimeindustries.us  
 
 Full checklist: [`44-owner-cutover.md`](./44-owner-cutover.md)
 
@@ -23,7 +23,7 @@ Full checklist: [`44-owner-cutover.md`](./44-owner-cutover.md)
 
 | Variable | Value |
 |---|---|
-| `NEXT_PUBLIC_APP_URL` | `https://dimeindustries.us` |
+| `NEXT_PUBLIC_APP_URL` | `https://www.dimeindustries.us` |
 | `ALLOW_DEMO_AUTH` | *(delete / leave unset)* |
 | `ORDERS_PERSISTENCE` | `auto` |
 | `DATABASE_URL` | *(production Postgres if not already set)* |
@@ -45,7 +45,7 @@ Save. Wait until Vercel shows TLS **Valid** for both hostnames.
 
 ```bash
 npm run cutover:verify:once
-npm run smoke -- https://dimeindustries.us
+npm run smoke -- https://www.dimeindustries.us
 ```
 
 Or paste here: “DNS published” and we will re-poll.
@@ -56,5 +56,5 @@ Or paste here: “DNS published” and we will re-poll.
 
 - [x] Cutover docs refreshed (pricing, COA/Assistant defaults, Rewards local-first)
 - [x] `scripts/verify-domain-cutover.mjs` + `npm run cutover:verify`
-- [x] Canonical site URL already `https://dimeindustries.us` in code
+- [x] Canonical site URL is `https://www.dimeindustries.us` in code (apex 308 → www in Vercel)
 - [x] Soft-launch Paybis mock allowed; demo auth must stay off in production

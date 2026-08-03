@@ -4,15 +4,23 @@
 import { useActionState, useEffect } from "react";
 import { addItemToCart, type CommerceActionState } from "@/app/(commerce)/cart-actions";
 import { useCart } from "@/components/cart/cart-provider";
+import { trackAddToCart } from "@/lib/analytics/track";
 
 const initial: CommerceActionState = {};
 
 type Props = {
   variantId: string;
   productName: string;
+  productId?: string;
+  priceCents?: number;
 };
 
-export function QuickAddToCart({ variantId, productName }: Props) {
+export function QuickAddToCart({
+  variantId,
+  productName,
+  productId,
+  priceCents,
+}: Props) {
   const { setItemCount } = useCart();
   const [state, formAction, pending] = useActionState(
     async (prev: CommerceActionState, formData: FormData) => {
@@ -22,6 +30,16 @@ export function QuickAddToCart({ variantId, productName }: Props) {
         setItemCount((c) => c - 1);
       } else if (typeof result.itemCount === "number") {
         setItemCount(result.itemCount);
+        const price = (priceCents ?? 0) / 100;
+        trackAddToCart(
+          {
+            item_id: productId ?? variantId,
+            item_name: productName,
+            price,
+            quantity: 1,
+          },
+          price || undefined
+        );
       }
       return result;
     },

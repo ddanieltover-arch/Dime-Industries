@@ -1,12 +1,14 @@
 // lib/seo/site.ts
 /**
  * SEO is present in the storefront (metadata, canonicals, robots, sitemap, JSON-LD).
- * There is no SEO automation product — no admin keyword tools, auto-generated
- * content engines, or rank-tracking integrations. Paths below are curated lists.
+ * Sitemap merges SEO_BLOG_SLUGS with live CMS posts via listBlogPosts() at runtime.
+ * Faceted shop query URLs use noindex via catalogRobotsForFilters().
  */
 
-/** Canonical production origin — used by robots, sitemap, and JSON-LD. */
-export const SITE_URL = "https://dimeindustries.us";
+/** Canonical production origin — used by robots, sitemap, and JSON-LD.
+ * Must match Vercel Production host (www). Apex redirects 308 → www.
+ */
+export const SITE_URL = "https://www.dimeindustries.us";
 
 export function absoluteUrl(path: string): string {
   if (!path || path === "/") return SITE_URL;
@@ -17,8 +19,12 @@ export function absoluteUrl(path: string): string {
 export const SEO_STATIC_PATHS = [
   "",
   "/shop",
+  "/shop/vapes/disposables",
   "/wholesale",
   "/locations",
+  "/glossary",
+  "/trust",
+  "/facts",
   "/about",
   "/contact",
   "/blog",
@@ -54,7 +60,14 @@ export const SEO_BLOG_SLUGS = [
   "dime-prerolls-are-coming-meet-dimepack-double-ds",
   "how-dime-state-exclusives-capture-a-place",
   "how-we-publish-coas",
+  "shopping-by-potency",
   "how-many-dimes-in-a-roll",
+  "what-is-a-dime-cart",
+  "dime-cart-vs-disposable",
+  "dime-live-reserve-explained",
+  "signature-vs-live-reserve",
+  "how-to-spot-fake-dime-carts",
+  "how-to-use-a-dime-cart",
 ] as const;
 
 export const SEO_DISALLOW_PATHS = [

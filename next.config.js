@@ -1,5 +1,4 @@
 // next.config.js
-const { withSentryConfig } = require("@sentry/nextjs");
 const { SECURITY_HEADERS } = require("./lib/security/headers.cjs");
 
 /** @type {import('next').NextConfig} */
@@ -65,7 +64,10 @@ const sentryOptions = {
   disableLogger: true,
 };
 
-module.exports =
-  process.env.NODE_ENV === "development"
-    ? nextConfig
-    : withSentryConfig(nextConfig, sentryOptions);
+if (process.env.NODE_ENV === "development") {
+  module.exports = nextConfig;
+} else {
+  // Lazy-require so `next dev` never loads the Sentry webpack plugin.
+  const { withSentryConfig } = require("@sentry/nextjs");
+  module.exports = withSentryConfig(nextConfig, sentryOptions);
+}

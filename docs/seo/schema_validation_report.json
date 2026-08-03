@@ -1,0 +1,93 @@
+{
+  "generatedAt": "2026-08-03T10:22:00.000Z",
+  "method": "code_builder_validation",
+  "script": "pnpm seo:schema (scripts/validate-schema.ts)",
+  "richResultsTest": {
+    "status": "owner_action_required",
+    "tool": "https://search.google.com/test/rich-results",
+    "notes": "No Google Rich Results API credentials in this environment. Builder unit validation passed. Owner must run Rich Results Test on primary URLs after deploy."
+  },
+  "builderValidation": {
+    "passed": true,
+    "typesChecked": [
+      "Organization",
+      "WebSite",
+      "SearchAction",
+      "Product",
+      "Offer",
+      "BlogPosting",
+      "HowTo",
+      "FAQPage",
+      "BreadcrumbList",
+      "SoftwareApplication"
+    ]
+  },
+  "primaryUrlsToTest": [
+    {
+      "url": "https://www.dimeindustries.us/",
+      "expectedTypes": ["Organization", "WebSite"],
+      "richResultsStatus": "pending_owner"
+    },
+    {
+      "url": "https://www.dimeindustries.us/product/{slug}",
+      "expectedTypes": ["Product", "Offer", "AggregateRating?", "Review?", "BreadcrumbList"],
+      "richResultsStatus": "pending_owner"
+    },
+    {
+      "url": "https://www.dimeindustries.us/faq",
+      "expectedTypes": ["FAQPage"],
+      "richResultsStatus": "pending_owner"
+    },
+    {
+      "url": "https://www.dimeindustries.us/blog/how-many-dimes-in-a-roll",
+      "expectedTypes": ["BlogPosting", "BreadcrumbList"],
+      "richResultsStatus": "pending_owner"
+    },
+    {
+      "url": "https://www.dimeindustries.us/blog/how-to-use-a-dime-cart",
+      "expectedTypes": ["BlogPosting", "HowTo"],
+      "richResultsStatus": "pending_owner"
+    },
+    {
+      "url": "https://www.dimeindustries.us/blog/how-to-spot-fake-dime-carts",
+      "expectedTypes": ["BlogPosting", "HowTo"],
+      "richResultsStatus": "pending_owner"
+    },
+    {
+      "url": "https://www.dimeindustries.us/validate",
+      "expectedTypes": ["HowTo"],
+      "richResultsStatus": "pending_owner"
+    },
+    {
+      "url": "https://www.dimeindustries.us/app",
+      "expectedTypes": ["SoftwareApplication"],
+      "richResultsStatus": "pending_owner"
+    },
+    {
+      "url": "https://www.dimeindustries.us/glossary",
+      "expectedTypes": ["FAQPage", "DefinedTerm?"],
+      "richResultsStatus": "pending_owner"
+    },
+    {
+      "url": "https://www.dimeindustries.us/locations",
+      "expectedTypes": ["ItemList", "Organization contact"],
+      "richResultsStatus": "pending_owner"
+    },
+    {
+      "url": "https://www.dimeindustries.us/locations/california",
+      "expectedTypes": ["Place", "OnlineStore?", "GeoCoordinates"],
+      "richResultsStatus": "pending_owner"
+    }
+  ],
+  "deferredSchemas": [
+    {
+      "type": "LocalBusiness",
+      "reason": "No public street NAP — Place/OnlineStore used until GBP published"
+    },
+    {
+      "type": "Person",
+      "reason": "No founder pages"
+    }
+  ],
+  "ciGate": "pnpm seo:schema fails CI on builder regressions"
+}

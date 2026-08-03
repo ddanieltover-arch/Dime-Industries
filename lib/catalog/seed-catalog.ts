@@ -5,6 +5,7 @@
 import type { CatalogProduct } from "./types";
 import { BRAND_CATALOG, PLACEHOLDER_PRICING, REFERENCE_PRICING } from "./brand-catalog.generated";
 import { materializeBundles } from "./bundles";
+import { withSeoProductDescriptions } from "./seo-copy";
 
 export { PLACEHOLDER_PRICING, REFERENCE_PRICING };
 
@@ -61,6 +62,6 @@ const PREROLL_PLACEHOLDER: CatalogProduct = {
 };
 
 export const SEED_CATALOG: CatalogProduct[] = (() => {
-  const base = [...BRAND_CATALOG, PREROLL_PLACEHOLDER];
+  const base = withSeoProductDescriptions([...BRAND_CATALOG, PREROLL_PLACEHOLDER]);
   return [...base, ...materializeBundles(base)];
 })();

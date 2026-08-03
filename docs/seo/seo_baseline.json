@@ -1,0 +1,76 @@
+{
+  "generatedAt": "2026-08-03T10:37:00.000Z",
+  "site": {
+    "primaryHostObserved": "https://www.dimeindustries.us",
+    "canonicalHostInCode": "https://www.dimeindustries.us",
+    "legacyReferenceHost": "https://dimeindustries.com"
+  },
+  "googleSearchConsole": {
+    "connected": null,
+    "status": "unknown_owner_action",
+    "notes": "No GSC API access in this environment. Owner must verify domain property for dimeindustries.us (covers www) and submit sitemap after cutover confirmation.",
+    "sitemapToSubmit": "https://www.dimeindustries.us/sitemap.xml"
+  },
+  "ga4": {
+    "connected": true,
+    "status": "wired_consent_gated",
+    "measurementIdDefault": "G-N04NC98ZM8",
+    "notes": "gtag loads after analytics cookie opt-in. Events: view_item, add_to_cart, begin_checkout, purchase, generate_lead, sign_up, click, page_view. Owner must confirm stream URL, mark conversions, link GSC, enable Enhanced measurement. See section_8_analytics.md."
+  },
+  "sitemap": {
+    "reachableOnWww": true,
+    "urlCount": 137,
+    "robotsDeclaresSitemap": true,
+    "submittedToGsc": null
+  },
+  "robotsTxt": {
+    "validReachable": true,
+    "allowsAiCrawlers": true,
+    "privateDisallowsPresent": true
+  },
+  "semrush": {
+    "asOf": "2026-08-02",
+    "legacyCom": {
+      "domain": "dimeindustries.com",
+      "positionsExportRows": 100,
+      "estimatedOrganicTrafficFromExport": 11887,
+      "top10Keywords": 99,
+      "keywordsWithAiOverviewInSerp": 35,
+      "source": "docs/seo/semrush_organic_positions_com_us_2026-08-02.csv"
+    },
+    "canonicalUs": {
+      "domain": "dimeindustries.us",
+      "authorityScore": 2,
+      "organicTraffic": null,
+      "organicKeywords": null,
+      "referringDomains": 16,
+      "backlinks": 21,
+      "aiVisibility": 0,
+      "aiMentions": 0,
+      "aiCitedPages": 0,
+      "source": "Semrush Domain Overview screenshot 2026-08-02"
+    },
+    "notes": "Organic equity still on .com. .us is the code canonical with near-zero Semrush footprint — cutover redirects + indexing required before equity transfers."
+  },
+  "indexing": {
+    "indexedPagesEstimate": null,
+    "organicKeywordCount": {
+      "com_export": 100,
+      "us_semrush": null
+    },
+    "domainAuthorityEstimate": {
+      "us_authorityScore": 2,
+      "tool": "Semrush"
+    },
+    "notes": "Use .com Positions export as pre-cutover equity baseline; .us Authority Score 2 / AI Visibility 0 as new-host Day-0."
+  },
+  "technicalBaseline": {
+    "productJsonLd": true,
+    "organizationJsonLd": true,
+    "websiteJsonLd": true,
+    "faqJsonLd": true,
+    "blogPostingJsonLd": true,
+    "llmsTxt": true,
+    "phase1BlogLive": true
+  }
+}

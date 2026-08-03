@@ -1,0 +1,39 @@
+From Page,To Page,Anchor Text,Priority
+/,/shop/vapes,Shop DIME carts,High
+/,/shop/vapes/rosin,Rosin (category spotlight),High
+/,/locations,Find DIME (locator teaser),High
+/,/about,About (footer),Medium
+/shop,/shop/vapes,DIME carts & vapes,High
+/shop,/shop/vapes/rosin,Rosin,High
+/shop,/locations,Find DIME near me,Medium
+/shop,/blog,Blog guides,Medium
+/shop/vapes,/blog/what-is-a-dime-cart,What is a Dime cart?,High
+/shop/vapes,/blog/dime-cart-vs-disposable,Cart vs disposable,High
+/shop/vapes,/shop/vapes/rosin,Rosin vapes,High
+/shop/vapes,/shop/vapes/live-reserve,Live Reserve,High
+/shop/vapes/rosin,/blog/what-is-a-dime-cart,What is a Dime cart?,High
+/shop/vapes/rosin,/shop/edibles/rosin,Rosin edibles,Medium
+/shop/vapes/live-reserve,/blog/dime-live-reserve-explained,What is Live Reserve?,High
+/shop/vapes/live-reserve,/blog/signature-vs-live-reserve,Signature vs Live Reserve,High
+/shop/vapes/signature,/blog/signature-vs-live-reserve,Signature vs Live Reserve,High
+/locations,/shop,Shop online,Medium
+/about,/shop/vapes,Shop DIME carts,High
+/about,/locations,Find DIME near me,High
+/about,/lab-results,Lab results,Medium
+/blog/what-is-a-dime-cart,/shop/vapes,Shop DIME carts,High
+/blog/what-is-a-dime-cart,/blog/dime-cart-vs-disposable,Cart vs disposable,High
+/blog/what-is-a-dime-cart,/blog/how-to-spot-fake-dime-carts,How to spot fakes,High
+/blog/dime-live-reserve-explained,/shop/vapes/live-reserve,Shop Live Reserve,High
+/blog/signature-vs-live-reserve,/shop/vapes/signature,Shop Signature,High
+/blog/how-to-spot-fake-dime-carts,/validate,Validate your product,High
+/blog/how-to-spot-fake-dime-carts,/locations,Find licensed retailers,High
+/blog/how-many-dimes-in-a-roll,/shop/vapes,DIME carts and vapes,High
+/blog/how-many-dimes-in-a-roll,/locations,find a licensed retailer near you,High
+/blog/how-many-dimes-in-a-roll,/about,About DIME Industries,Medium
+/locations,/locations/california,Find DIME in California,High
+/locations,/locations/massachusetts,Find DIME in Massachusetts,High
+/locations/california,/shop,Shop online in CA,High
+/locations/california,/validate,Validate,Medium
+/locations/california,/blog/what-is-a-dime-cart,What is a Dime cart?,Medium
+/locations/massachusetts,/shop,Shop online in MA,High
+/locations/arizona,/shop/vapes,DIME carts & vapes,Medium

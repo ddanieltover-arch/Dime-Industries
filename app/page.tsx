@@ -3,12 +3,13 @@ import type { Metadata } from "next";
 import { getAgeGateState } from "@/lib/compliance/age-gate";
 import { getFeaturedBundles, getFeaturedProductLines } from "@/lib/data/products";
 import { AgeGateDialog } from "@/components/shared/age-gate-dialog";
+import { AgeGateSeoTeaser } from "@/components/seo/age-gate-seo-teaser";
 import { HomepageSections } from "@/components/home/homepage-sections";
+import { JsonLdScript } from "@/components/seo/json-ld-script";
 import { getHomepageBanner, getHomepageLayout } from "@/lib/cms/store";
 import { isSectionEnabled } from "@/lib/cms/homepage-layout";
 import { getCurrentProfile } from "@/lib/auth/session";
-import { buildWebSiteJsonLd } from "@/lib/seo/json-ld";
-import { SITE_URL } from "@/lib/seo/site";
+import { buildVideoObjectJsonLd } from "@/lib/seo/json-ld";
 
 export const metadata: Metadata = {
   title: "Buy THC Edibles & Vapes Online",
@@ -17,17 +18,7 @@ export const metadata: Metadata = {
   alternates: { canonical: "/" },
 };
 
-const organizationJsonLd = {
-  "@context": "https://schema.org",
-  "@type": "Organization",
-  name: "DIME Industries",
-  url: SITE_URL,
-  description: "Award-winning cannabis products sold under license in California and Massachusetts.",
-  logo: `${SITE_URL}/brand/logo.png`,
-};
-
-const websiteJsonLd = buildWebSiteJsonLd();
-
+const videoJsonLd = buildVideoObjectJsonLd();
 
 export default async function HomePage() {
   const ageGate = await getAgeGateState();
@@ -50,20 +41,13 @@ export default async function HomePage() {
 
   return (
     <>
-      <script
-        type="application/ld+json"
-        // eslint-disable-next-line react/no-danger
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationJsonLd) }}
-      />
-      <script
-        type="application/ld+json"
-        // eslint-disable-next-line react/no-danger
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteJsonLd) }}
-      />
+      <JsonLdScript data={videoJsonLd} />
 
       <AgeGateDialog initiallyOpen={!ageGate.ageVerified} />
 
-      {!ageGate.ageVerified || !layout ? null : (
+      {!ageGate.ageVerified || !layout ? (
+        !ageGate.ageVerified ? <AgeGateSeoTeaser /> : null
+      ) : (
         <HomepageSections
           layout={layout}
           banner={banner}

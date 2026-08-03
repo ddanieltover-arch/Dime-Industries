@@ -19,7 +19,7 @@ describe("getLaunchStatus", () => {
       NODE_ENV: "production",
       NEXT_PUBLIC_SUPABASE_URL: "https://x.supabase.co",
       NEXT_PUBLIC_SUPABASE_ANON_KEY: "anon",
-      NEXT_PUBLIC_APP_URL: "https://dimeindustries.us",
+      NEXT_PUBLIC_APP_URL: "https://www.dimeindustries.us",
       RESEND_API_KEY: "re_x",
       NEXT_PUBLIC_SENTRY_DSN: "https://sentry.example/1",
       DATABASE_URL: "postgres://localhost/dime",
@@ -38,7 +38,7 @@ describe("getLaunchStatus", () => {
       NODE_ENV: "production",
       NEXT_PUBLIC_SUPABASE_URL: "https://x.supabase.co",
       NEXT_PUBLIC_SUPABASE_ANON_KEY: "anon",
-      NEXT_PUBLIC_APP_URL: "https://dimeindustries.us",
+      NEXT_PUBLIC_APP_URL: "https://www.dimeindustries.us",
       PAYBIS_API_KEY: "k",
       PAYBIS_API_SECRET: "s",
     });

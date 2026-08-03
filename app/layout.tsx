@@ -6,10 +6,12 @@ import { CartShell } from "@/components/cart/cart-shell";
 import { PwaClient } from "@/components/pwa/pwa-client";
 import { CookieBannerHost } from "@/components/consent/cookie-banner-host";
 import { GoogleAnalyticsHost } from "@/components/analytics/google-analytics-host";
+import { JsonLdScript } from "@/components/seo/json-ld-script";
+import { buildOrganizationJsonLd, buildWebSiteJsonLd } from "@/lib/seo/json-ld";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://dimeindustries.us"),
+  metadataBase: new URL("https://www.dimeindustries.us"),
   title: { default: "DIME Industries", template: "%s | DIME" },
   description:
     "Award-winning cannabis vapes, edibles, and prerolls. Lab-tested. Licensed in California and Massachusetts.",
@@ -59,9 +61,17 @@ export const viewport: Viewport = {
   colorScheme: "dark",
 };
 
+const organizationJsonLd = buildOrganizationJsonLd();
+const websiteJsonLd = buildWebSiteJsonLd();
+
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" suppressHydrationWarning>
+      <head>
+        <link rel="preload" as="image" href="/brand/hero-poster.webp" fetchPriority="high" />
+        <JsonLdScript data={organizationJsonLd} />
+        <JsonLdScript data={websiteJsonLd} />
+      </head>
       <body>
         <ThemeProvider>
           <CartShell>

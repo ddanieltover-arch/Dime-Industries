@@ -3,9 +3,12 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { Reveal, Stagger, StaggerItem } from "@/components/motion";
+import { AnswerCapsule } from "@/components/seo/answer-capsule";
+import { JsonLdScript } from "@/components/seo/json-ld-script";
+import { buildBreadcrumbJsonLd } from "@/lib/seo/json-ld";
 
 export const metadata: Metadata = {
-  title: "About Us",
+  title: "About DIME Industries",
   description:
     "DIME Industries is a licensed cannabis brand founded in 2016. Award-winning vapes, edibles, and prerolls — engineered hardware, lab-tested quality.",
   alternates: { canonical: "/about" },
@@ -45,8 +48,15 @@ const GALLERY = [
 ] as const;
 
 export default function AboutPage() {
+  const breadcrumbs = buildBreadcrumbJsonLd([
+    { name: "Home", path: "/" },
+    { name: "About DIME Industries", path: "/about" },
+  ]);
+
   return (
     <>
+      <JsonLdScript data={breadcrumbs} />
+
       <section className="relative isolate min-h-[min(72vh,640px)] overflow-hidden">
         <Image
           src="/brand/awards-hardware.webp"
@@ -63,19 +73,27 @@ export default function AboutPage() {
         />
 
         <div className="relative mx-auto flex min-h-[min(72vh,640px)] max-w-7xl flex-col justify-end px-[var(--container-pad-x)] pb-14 pt-28 sm:pb-20 sm:pt-32">
-          <p className="section-eyebrow rise">DIME</p>
+          <p className="section-eyebrow rise">Est. 2016</p>
           <h1 className="rise rise-delay-1 mt-2 max-w-xl font-[var(--font-display)] text-[clamp(2.25rem,6vw,4rem)] uppercase leading-[0.95] tracking-[0.06em] text-white">
-            About Us
+            About DIME Industries
           </h1>
+          <div className="rise rise-delay-2 mt-4 max-w-xl">
+            <AnswerCapsule className="bg-black/35 text-white [&_p]:text-[var(--color-resin)] [&_div]:font-normal [&_div]:text-white/90">
+              DIME Industries is a licensed cannabis brand founded in 2016. It engineers its own
+              vape hardware and sells lab-tested carts, edibles, and prerolls through licensed
+              retailers — with 100+ industry awards cited on this site.
+            </AnswerCapsule>
+          </div>
           <p className="rise rise-delay-2 mt-4 max-w-md text-[var(--scale-base)] leading-relaxed text-white/80">
-            A licensed cannabis brand founded in 2016 — building award-winning products from the hardware up.
+            Building award-winning DIME carts, vapes, edibles, and prerolls from the hardware up.
+            Synonyms shoppers use: DIME, Dime Industries, dime carts.
           </p>
           <div className="rise rise-delay-3 mt-8 flex flex-wrap gap-3">
-            <Link href="/shop" className="btn-primary">
-              Shop now
+            <Link href="/shop/vapes" className="btn-primary">
+              Shop DIME carts
             </Link>
             <Link href="/locations" className="btn-outline-light">
-              Find DIME
+              Find DIME near me
             </Link>
           </div>
         </div>
@@ -190,13 +208,16 @@ export default function AboutPage() {
                 key={shot.src}
                 className={`group relative overflow-hidden ${shot.className}`}
               >
-                <Image
-                  src={shot.src}
-                  alt={shot.alt}
-                  fill
-                  className="object-cover transition-transform duration-500 ease-[var(--ease-out)] group-hover:scale-105"
-                  sizes="(max-width: 1024px) 100vw, 50vw"
-                />
+                <figure className="absolute inset-0 m-0">
+                  <Image
+                    src={shot.src}
+                    alt={shot.alt}
+                    fill
+                    className="object-cover transition-transform duration-500 ease-[var(--ease-out)] group-hover:scale-105"
+                    sizes="(max-width: 1024px) 100vw, 50vw"
+                  />
+                  <figcaption className="sr-only">{shot.alt}</figcaption>
+                </figure>
               </StaggerItem>
             ))}
           </Stagger>

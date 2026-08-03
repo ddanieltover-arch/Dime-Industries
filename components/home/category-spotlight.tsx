@@ -45,10 +45,10 @@ const TILES = [
     alt: "Peach Ice T gummies",
   },
   {
-    href: "/shop/bundles",
-    label: "Bundles",
+    href: "/shop/vapes/rosin",
+    label: "Rosin",
     image: "/brand/category-live-reserve.webp",
-    alt: "DIME product bundles",
+    alt: "DIME Industries rosin vape cartridge",
   },
 ];
 
@@ -71,16 +71,19 @@ function CategoryTile({
         <span className="sr-only">Shop {tile.label}</span>
       </Link>
 
-      <Image
-        src={tile.image}
-        alt={tile.alt}
-        fill
-        className={`object-cover transition-transform duration-500 ${
-          prefersReducedMotion ? "" : "group-hover:scale-105"
-        }`}
-        sizes="(max-width: 640px) 85vw, (max-width: 1024px) 45vw, 32vw"
-        draggable={false}
-      />
+      <figure className="absolute inset-0 m-0">
+        <Image
+          src={tile.image}
+          alt={tile.alt}
+          fill
+          className={`object-cover transition-transform duration-500 ${
+            prefersReducedMotion ? "" : "group-hover:scale-105"
+          }`}
+          sizes="(max-width: 640px) 85vw, (max-width: 1024px) 45vw, 32vw"
+          draggable={false}
+        />
+        <figcaption className="sr-only">{tile.alt}</figcaption>
+      </figure>
 
       <div className="absolute inset-0 bg-gradient-to-t from-black via-black/35 to-transparent" />
       <div className="pointer-events-none absolute inset-x-0 bottom-0 z-20 flex items-end justify-between gap-3 p-6">

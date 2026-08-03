@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { AgeGateDialog } from "@/components/shared/age-gate-dialog";
+import { BeginCheckoutEvent } from "@/components/analytics/begin-checkout-event";
 import { CheckoutForm } from "@/components/checkout/checkout-form";
 import { getAgeGateState } from "@/lib/compliance/age-gate";
 import { CouponForm } from "@/components/cart/coupon-form";
@@ -210,6 +211,7 @@ export default async function CheckoutPage({ searchParams }: { searchParams: Sea
                       Shipping & payment
                     </h2>
                     <div className="mt-6">
+                      <BeginCheckoutEvent valueUsd={(pricing?.totalCents ?? 0) / 100} />
                       <CheckoutForm
                         jurisdiction={checkoutJurisdiction}
                         pricing={pricing!}

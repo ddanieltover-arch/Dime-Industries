@@ -1,7 +1,6 @@
 // app/global-error.tsx
 "use client";
 
-import * as Sentry from "@sentry/nextjs";
 import { useEffect } from "react";
 
 export default function GlobalError({
@@ -12,8 +11,11 @@ export default function GlobalError({
   reset: () => void;
 }) {
   useEffect(() => {
-    if (process.env.NODE_ENV === "development") return;
-    Sentry.captureException(error);
+    // Production reporting is handled by instrumentation.onRequestError /
+    // Sentry server config. Do not import @sentry/nextjs here — it pulls
+    // OpenTelemetry into the client webpack graph and breaks module factories
+    // (`frame.join` / `reading 'call'`).
+    console.error(error);
   }, [error]);
 
   return (

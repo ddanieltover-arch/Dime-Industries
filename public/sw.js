@@ -75,6 +75,8 @@ self.addEventListener("fetch", (event) => {
   }
 
   if (url.origin !== self.location.origin) return;
+  // Local dev: never intercept — stale `/_next/static` caches break webpack.
+  if (url.hostname === "localhost" || url.hostname === "127.0.0.1") return;
   if (isBypassed(url)) return;
 
   // Navigations: network first, offline HTML fallback

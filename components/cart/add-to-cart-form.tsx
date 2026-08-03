@@ -1,9 +1,10 @@
 // components/cart/add-to-cart-form.tsx
 "use client";
 
-import { useActionState, useEffect } from "react";
+import { useActionState, useEffect, useRef } from "react";
 import { addItemToCart, type CommerceActionState } from "@/app/(commerce)/cart-actions";
 import { useCart } from "@/components/cart/cart-provider";
+import { trackAddToCart } from "@/lib/analytics/track";
 import type { CatalogVariant } from "@/lib/catalog/types";
 
 const initial: CommerceActionState = {};
@@ -11,19 +12,42 @@ const initial: CommerceActionState = {};
 type Props = {
   variants: CatalogVariant[];
   defaultVariantId?: string;
+  productId?: string;
+  productName?: string;
 };
 
-export function AddToCartForm({ variants, defaultVariantId }: Props) {
+export function AddToCartForm({
+  variants,
+  defaultVariantId,
+  productId,
+  productName,
+}: Props) {
   const { setItemCount } = useCart();
+  const lastTracked = useRef(0);
   const [state, formAction, pending] = useActionState(
     async (prev: CommerceActionState, formData: FormData) => {
       const qty = Math.min(20, Math.max(1, Number(formData.get("quantity") ?? 1) || 1));
+      const variantId = String(formData.get("variantId") ?? "");
+      const variant = variants.find((v) => v.id === variantId);
       setItemCount((c) => c + qty);
       const result = await addItemToCart(prev, formData);
       if (result.error) {
         setItemCount((c) => c - qty);
       } else if (typeof result.itemCount === "number") {
         setItemCount(result.itemCount);
+        if (variant) {
+          const price = variant.retailPriceCents / 100;
+          trackAddToCart(
+            {
+              item_id: productId ?? variant.sku,
+              item_name: productName ?? variant.weightOrFormat,
+              item_variant: variant.weightOrFormat,
+              price,
+              quantity: qty,
+            },
+            price * qty
+          );
+        }
       }
       return result;
     },
@@ -35,6 +59,10 @@ export function AddToCartForm({ variants, defaultVariantId }: Props) {
   useEffect(() => {
     if (state.ok && typeof state.itemCount === "number") {
       setItemCount(state.itemCount);
+      // Deduplicate Strict Mode double-effects for server-reconciled ok state
+      if (state.itemCount !== lastTracked.current) {
+        lastTracked.current = state.itemCount;
+      }
     }
   }, [state.ok, state.itemCount, setItemCount]);
 

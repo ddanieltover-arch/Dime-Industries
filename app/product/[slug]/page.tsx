@@ -3,8 +3,10 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { AgeGateDialog } from "@/components/shared/age-gate-dialog";
+import { AgeGateSeoTeaser } from "@/components/seo/age-gate-seo-teaser";
 import { ProductGallery } from "@/components/catalog/product-gallery";
 import { ProductGrid } from "@/components/catalog/product-grid";
+import { ViewItemEvent } from "@/components/analytics/view-item-event";
 import { AddToCartForm } from "@/components/cart/add-to-cart-form";
 import { WishlistToggle } from "@/components/cart/wishlist-toggle";
 import { LoyaltyEarnCallout } from "@/components/product/loyalty-earn-callout";
@@ -27,6 +29,11 @@ import { loadEffectiveCatalog } from "@/lib/catalog/effective";
 import { getRecentlyViewedCards } from "@/lib/recently-viewed/cookie";
 import { readWishlistIds } from "@/lib/wishlist";
 import { formatPct, formatPrice } from "@/lib/format";
+import { JsonLdScript } from "@/components/seo/json-ld-script";
+import { OutboundCitations } from "@/components/seo/outbound-citations";
+import { buildBreadcrumbJsonLd, buildProductJsonLd } from "@/lib/seo/json-ld";
+import { outboundCitationsFor } from "@/lib/seo/outbound-citations";
+import { productSeoInternalLinks } from "@/lib/seo/product-internal-links";
 
 type Params = Promise<{ slug: string }>;
 
@@ -63,7 +70,15 @@ export default async function ProductDetailPage({ params }: { params: Params }) 
   const ageGate = await getAgeGateState();
 
   if (!ageGate.ageVerified) {
-    return <AgeGateDialog initiallyOpen />;
+    return (
+      <>
+        <AgeGateDialog initiallyOpen />
+        <AgeGateSeoTeaser
+          title="DIME product details"
+          description="Confirm you are 21+ (or a qualifying patient) to view this product’s details, lab data, and pricing. Meanwhile, explore About, Blog, Find DIME, and Validate."
+        />
+      </>
+    );
   }
 
   const catalog = await loadEffectiveCatalog();
@@ -93,46 +108,46 @@ export default async function ProductDetailPage({ params }: { params: Params }) 
   const gallery =
     product.galleryUrls.length > 0 ? product.galleryUrls : product.imageUrl ? [product.imageUrl] : [];
 
-  const jsonLd = {
-    "@context": "https://schema.org",
-    "@type": "Product",
+  const jsonLd = buildProductJsonLd({
     name: product.name,
     description: product.description,
+    slug: product.slug,
     sku: v.sku,
-    image: product.imageUrl ?? undefined,
-    brand: { "@type": "Brand", name: "DIME" },
-    offers: {
-      "@type": "Offer",
-      priceCurrency: "USD",
-      price: (v.retailPriceCents / 100).toFixed(2),
-      availability:
-        v.quantityOnHand > 0
-          ? "https://schema.org/InStock"
-          : "https://schema.org/OutOfStock",
-      url: `https://dimeindustries.us/product/${product.slug}`,
-    },
-    ...(approvedReviews.length && reviewAvg != null
-      ? {
-          aggregateRating: {
-            "@type": "AggregateRating",
-            ratingValue: reviewAvg,
-            reviewCount: approvedReviews.length,
-            bestRating: 5,
-            worstRating: 1,
-          },
-        }
-      : {}),
-  };
+    imageUrl: product.imageUrl,
+    priceCents: v.retailPriceCents,
+    inStock: v.quantityOnHand > 0,
+    aggregateRating:
+      approvedReviews.length && reviewAvg != null
+        ? { ratingValue: reviewAvg, reviewCount: approvedReviews.length }
+        : null,
+    reviews: approvedReviews.map((r) => ({
+      authorName: "Verified buyer",
+      rating: r.rating,
+      body: r.body,
+      datePublished: r.createdAt,
+    })),
+  });
+
+  const breadcrumbs = buildBreadcrumbJsonLd([
+    { name: "Home", path: "/" },
+    { name: "Shop", path: "/shop" },
+    { name: product.categoryName, path: `/shop/${product.categorySlug}` },
+    { name: product.name, path: `/product/${product.slug}` },
+  ]);
+
+  const seoInternal = productSeoInternalLinks({
+    slug: product.slug,
+    lineSlug: product.lineSlug,
+    categorySlug: product.categorySlug,
+  });
+  const outbound = outboundCitationsFor(`product:${product.slug}`);
 
   return (
     <>
       <AgeGateDialog initiallyOpen={false} />
       <RecordProductView slug={product.slug} />
-      <script
-        type="application/ld+json"
-        // eslint-disable-next-line react/no-danger
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-      />
+      <JsonLdScript data={jsonLd} />
+      <JsonLdScript data={breadcrumbs} />
 
       <article className="mx-auto max-w-7xl px-[var(--container-pad-x)] py-10 lg:py-14">
         <nav
@@ -243,6 +258,23 @@ export default async function ProductDetailPage({ params }: { params: Params }) 
               {product.description}
             </p>
 
+            {seoInternal.length > 0 ? (
+              <nav aria-label="Related DIME guides" className="mt-5">
+                <ul className="flex flex-wrap gap-x-4 gap-y-2" role="list">
+                  {seoInternal.map((link) => (
+                    <li key={link.href}>
+                      <Link
+                        href={link.href}
+                        className="font-[var(--font-display)] text-[10px] uppercase tracking-[0.14em] text-[var(--color-resin)] underline-offset-4 hover:underline"
+                      >
+                        {link.label}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </nav>
+            ) : null}
+
             <BundleContents bundle={product} catalog={catalog} />
 
             {product.effects.length > 0 ? (
@@ -293,7 +325,18 @@ export default async function ProductDetailPage({ params }: { params: Params }) 
             </section>
 
             <div className="mt-8 space-y-4 border border-[var(--color-border)] bg-[var(--color-surface)] p-5">
-              <AddToCartForm variants={product.variants} defaultVariantId={v.id} />
+              <ViewItemEvent
+                itemId={product.id}
+                itemName={product.name}
+                itemVariant={v.weightOrFormat}
+                priceUsd={v.retailPriceCents / 100}
+              />
+              <AddToCartForm
+                variants={product.variants}
+                defaultVariantId={v.id}
+                productId={product.id}
+                productName={product.name}
+              />
               <WishlistToggle variantId={v.id} initiallySaved={primarySaved} />
             </div>
 
@@ -316,6 +359,8 @@ export default async function ProductDetailPage({ params }: { params: Params }) 
                 Validate product
               </Link>
             </div>
+
+            <OutboundCitations citations={outbound} />
           </div>
         </div>
 

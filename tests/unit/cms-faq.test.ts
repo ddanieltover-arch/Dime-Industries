@@ -19,7 +19,7 @@ describe("CMS FAQ page (single document)", () => {
   it("builds FAQPage JSON-LD", () => {
     const json = buildFaqPageJsonLd(
       [{ question: "Q?", answer: "A." }],
-      "https://dimeindustries.us/faq"
+      "https://www.dimeindustries.us/faq"
     );
     expect(json["@type"]).toBe("FAQPage");
     expect(json.mainEntity).toHaveLength(1);

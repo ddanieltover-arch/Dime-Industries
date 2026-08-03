@@ -1,0 +1,242 @@
+{
+  "generatedAt": "2026-08-03T11:01:07.382Z",
+  "purpose": "keyword_gap_for_www_storefront",
+  "sourceFile": "dimeindustries.com-organic.Positions-us-20260802-2026-08-03T10_21_28Z.csv",
+  "domainEquityReference": "dimeindustries.com",
+  "targetSite": "https://www.dimeindustries.us",
+  "counts": {
+    "total": 100,
+    "gapY": 17,
+    "gapPartial": 52,
+    "gapN": 31,
+    "priorityRows": 26
+  },
+  "productSlugsDetected": 66,
+  "topPriorityGaps": [
+    {
+      "keyword": "dime cart",
+      "volume": 1900,
+      "kd": 17,
+      "gap": "Partial",
+      "assignedUrl": "/shop/vapes",
+      "cluster": "Carts",
+      "action": "Commercial hub exists — improve H1/meta/internal links; beginners pillar for dime cart"
+    },
+    {
+      "keyword": "dime pen",
+      "volume": 1300,
+      "kd": 20,
+      "gap": "Partial",
+      "assignedUrl": "/shop/vapes",
+      "cluster": "Carts",
+      "action": "Commercial hub exists — improve H1/meta/internal links; beginners pillar for dime cart"
+    },
+    {
+      "keyword": "dime disposable",
+      "volume": 1300,
+      "kd": 18,
+      "gap": "Y",
+      "assignedUrl": "/blog/dime-cart-vs-disposable",
+      "cluster": "Disposables",
+      "action": "High-volume gap — need dedicated disposable landing (calendar) + cart-vs-disposable already helps"
+    },
+    {
+      "keyword": "dimes disposable",
+      "volume": 1000,
+      "kd": 15,
+      "gap": "Y",
+      "assignedUrl": "/blog/dime-cart-vs-disposable",
+      "cluster": "Disposables",
+      "action": "High-volume gap — need dedicated disposable landing (calendar) + cart-vs-disposable already helps"
+    },
+    {
+      "keyword": "dime carts",
+      "volume": 1000,
+      "kd": 22,
+      "gap": "Partial",
+      "assignedUrl": "/shop/vapes",
+      "cluster": "Carts",
+      "action": "Commercial hub exists — improve H1/meta/internal links; beginners pillar for dime cart"
+    },
+    {
+      "keyword": "dime weed",
+      "volume": 720,
+      "kd": 29,
+      "gap": "Partial",
+      "assignedUrl": "/shop/vapes",
+      "cluster": "Carts",
+      "action": "Commercial hub exists — improve H1/meta/internal links; beginners pillar for dime cart"
+    },
+    {
+      "keyword": "dime of weed",
+      "volume": 590,
+      "kd": 14,
+      "gap": "Partial",
+      "assignedUrl": "/shop/vapes",
+      "cluster": "Carts",
+      "action": "Commercial hub exists — improve H1/meta/internal links; beginners pillar for dime cart"
+    },
+    {
+      "keyword": "dime dispo",
+      "volume": 480,
+      "kd": 17,
+      "gap": "Y",
+      "assignedUrl": "/blog/dime-cart-vs-disposable",
+      "cluster": "Disposables",
+      "action": "High-volume gap — need dedicated disposable landing (calendar) + cart-vs-disposable already helps"
+    },
+    {
+      "keyword": "dime thc las vegas",
+      "volume": 480,
+      "kd": 3,
+      "gap": "Partial",
+      "assignedUrl": "/locations/nevada",
+      "cluster": "Local",
+      "action": "Strengthen local capsules + Maps CTAs; sync NAP when GBP live"
+    },
+    {
+      "keyword": "dime thc las vegas",
+      "volume": 480,
+      "kd": 3,
+      "gap": "Partial",
+      "assignedUrl": "/locations/nevada",
+      "cluster": "Local",
+      "action": "Strengthen local capsules + Maps CTAs; sync NAP when GBP live"
+    },
+    {
+      "keyword": "dime industries disposable",
+      "volume": 320,
+      "kd": 18,
+      "gap": "Y",
+      "assignedUrl": "/blog/dime-cart-vs-disposable",
+      "cluster": "Disposables",
+      "action": "High-volume gap — need dedicated disposable landing (calendar) + cart-vs-disposable already helps"
+    },
+    {
+      "keyword": "dime industries rosin",
+      "volume": 320,
+      "kd": 10,
+      "gap": "Partial",
+      "assignedUrl": "/shop/vapes/rosin",
+      "cluster": "Rosin",
+      "action": "Rosin hub live — deepen intro + ship what-is-dime-rosin blog"
+    },
+    {
+      "keyword": "dime 2g disposable",
+      "volume": 260,
+      "kd": 9,
+      "gap": "Y",
+      "assignedUrl": "/blog/dime-cart-vs-disposable",
+      "cluster": "Disposables",
+      "action": "High-volume gap — need dedicated disposable landing (calendar) + cart-vs-disposable already helps"
+    },
+    {
+      "keyword": "dime flavors",
+      "volume": 210,
+      "kd": 8,
+      "gap": "Y",
+      "assignedUrl": "/blog/best-dime-industries-flavors",
+      "cluster": "Flavors GEO",
+      "action": "Ship flavors guide (calendar 2026-08-05); link Signature hub"
+    },
+    {
+      "keyword": "dime industries flower",
+      "volume": 210,
+      "kd": 11,
+      "gap": "Y",
+      "assignedUrl": "/shop",
+      "cluster": "Flower",
+      "action": "Category thin or SKUs pending — calendar buying guides; don't invent flower catalog"
+    },
+    {
+      "keyword": "dime dispensary",
+      "volume": 210,
+      "kd": 28,
+      "gap": "Partial",
+      "assignedUrl": "/locations",
+      "cluster": "Local",
+      "action": "Strengthen local capsules + Maps CTAs; sync NAP when GBP live"
+    },
+    {
+      "keyword": "dime industries pre-roll",
+      "volume": 210,
+      "kd": 7,
+      "gap": "Y",
+      "assignedUrl": "/shop/prerolls",
+      "cluster": "Prerolls",
+      "action": "Category thin or SKUs pending — calendar buying guides; don't invent flower catalog"
+    },
+    {
+      "keyword": "dime disposables",
+      "volume": 140,
+      "kd": 15,
+      "gap": "Y",
+      "assignedUrl": "/blog/dime-cart-vs-disposable",
+      "cluster": "Disposables",
+      "action": "High-volume gap — need dedicated disposable landing (calendar) + cart-vs-disposable already helps"
+    },
+    {
+      "keyword": "dime dispos",
+      "volume": 140,
+      "kd": 16,
+      "gap": "Y",
+      "assignedUrl": "/blog/dime-cart-vs-disposable",
+      "cluster": "Disposables",
+      "action": "High-volume gap — need dedicated disposable landing (calendar) + cart-vs-disposable already helps"
+    },
+    {
+      "keyword": "dime disposable pens",
+      "volume": 110,
+      "kd": 14,
+      "gap": "Y",
+      "assignedUrl": "/blog/dime-cart-vs-disposable",
+      "cluster": "Disposables",
+      "action": "High-volume gap — need dedicated disposable landing (calendar) + cart-vs-disposable already helps"
+    },
+    {
+      "keyword": "dimes dispo",
+      "volume": 110,
+      "kd": 17,
+      "gap": "Y",
+      "assignedUrl": "/blog/dime-cart-vs-disposable",
+      "cluster": "Disposables",
+      "action": "High-volume gap — need dedicated disposable landing (calendar) + cart-vs-disposable already helps"
+    },
+    {
+      "keyword": "dime cart flavors",
+      "volume": 110,
+      "kd": 7,
+      "gap": "Y",
+      "assignedUrl": "/blog/best-dime-industries-flavors",
+      "cluster": "Flavors GEO",
+      "action": "Ship flavors guide (calendar 2026-08-05); link Signature hub"
+    },
+    {
+      "keyword": "dime disposable flavors",
+      "volume": 90,
+      "kd": 5,
+      "gap": "Y",
+      "assignedUrl": "/blog/dime-cart-vs-disposable",
+      "cluster": "Disposables",
+      "action": "High-volume gap — need dedicated disposable landing (calendar) + cart-vs-disposable already helps"
+    },
+    {
+      "keyword": "dime 2 gram disposable",
+      "volume": 90,
+      "kd": 5,
+      "gap": "Y",
+      "assignedUrl": "/blog/dime-cart-vs-disposable",
+      "cluster": "Disposables",
+      "action": "High-volume gap — need dedicated disposable landing (calendar) + cart-vs-disposable already helps"
+    },
+    {
+      "keyword": "dime carts disposable",
+      "volume": 70,
+      "kd": 12,
+      "gap": "Y",
+      "assignedUrl": "/blog/dime-cart-vs-disposable",
+      "cluster": "Disposables",
+      "action": "High-volume gap — need dedicated disposable landing (calendar) + cart-vs-disposable already helps"
+    }
+  ]
+}

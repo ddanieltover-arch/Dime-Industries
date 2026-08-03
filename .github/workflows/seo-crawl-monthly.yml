@@ -1,0 +1,36 @@
+name: SEO Crawl (monthly)
+
+# Live sample of primary SEO URLs + optional deep broken-link crawl.
+# Full recursive blc can be slow; sample is the default gate.
+
+on:
+  schedule:
+    - cron: "0 15 1 * *" # 1st of month 15:00 UTC
+  workflow_dispatch:
+    inputs:
+      deep:
+        description: "Run recursive broken-link-checker (slow)"
+        required: false
+        type: boolean
+        default: false
+
+jobs:
+  crawl:
+    name: Production SEO crawl sample
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+      - name: Live internal link sample
+        run: node scripts/check-internal-links.mjs --live
+        env:
+          SEO_LINK_BASE_URL: https://www.dimeindustries.us
+      - name: Live SEO audit probe
+        run: node scripts/seo-audit.mjs
+        env:
+          SEO_AUDIT_BASE_URL: https://www.dimeindustries.us
+      - name: Deep broken-link-checker
+        if: ${{ inputs.deep == true }}
+        run: npx --yes broken-link-checker https://www.dimeindustries.us --recursive --exclude-external --filter-level 3

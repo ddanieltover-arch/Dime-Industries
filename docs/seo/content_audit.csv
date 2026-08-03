@@ -1,0 +1,41 @@
+URL,Page Type,Primary Keyword,Est. Words,Disposition,Flags,Notes,Owner Action
+/,Homepage,dime industries,Thin SSR + rich verified,Improve,Thin when age-gated,Age-gate teaser OK for crawlers; deepen brand answer capsule,Keep improving LCP + teaser
+/about,About,what is dime industries,Medium,Keep as-is,,Answer capsule + trust links shipped,Refresh awards stats annually yearly
+/shop,Category hub,shop dime products,Thin intro,Improve,Thin,Add short answer capsule,Copy pass
+/shop/vapes,Category,dime cart,Medium,Keep as-is,,Answer capsule + SEO links shipped,Monitor cannibalization vs blogs
+/shop/vapes/live-reserve,Line,dime live reserve,Medium,Improve,Partial explainer,Schema + links OK; deepen FAQ,Blog already supports
+/shop/vapes/signature,Line,dime signature,Medium,Improve,Partial,Enrich like Live Reserve,Copy pass
+/shop/vapes/rosin,Line,dime industries rosin,Medium,Keep as-is,,Strong Phase-1 meta,Add glossary link
+/shop/vapes/balanced,Line,dime balanced,Thin,Improve,Thin,Needs line intro,Calendar commercial item
+/shop/edibles,Category,dime industries edibles,Thin,Improve,Thin,Needs edible-specific capsule,Calendar
+/shop/prerolls,Category,dime industries prerolls,Thin,Improve,Thin,Supported by preroll blog,Calendar
+/shop/accessories,Category,dime battery,Thin,Improve,Thin,Needs battery how-to internal links,Calendar
+/locations,Location hub,find dime near me,Medium,Keep as-is,,Section 6 maps + NAP block,GBP owner ops
+/locations/california,Location,dime industries california,Medium,Improve,Partial city copy,Maps shipped; add delivery FAQ depth,Calendar local
+/locations/massachusetts,Location,dime industries massachusetts,Medium,Improve,,Same pattern,Calendar local
+/locations/arizona,Location,dime industries arizona,Medium,Keep as-is,,Retail-only,Refresh when retailers named
+/locations/*,Location,state modifiers,Medium,Keep as-is,,Template enriched Section 3/6,Named retailers later
+/validate,Tool,how to validate dime,Medium,Keep as-is,,HowTo schema + capsule,—
+/lab-results,Tool,dime industries coa,Thin-Medium,Improve,Thin UI copy,Link glossary COA; expand help text,Calendar
+/faq,FAQ hub,support PAA,Medium,Improve,Partial entries,PAA guide links shipped; expand clogged/store/voltage,Calendar
+/glossary,GEO,definitions,Medium,Keep as-is,,Section 5,Add terms as lines launch
+/trust,GEO,is dime legit,Medium,Keep as-is,,Section 5,—
+/facts,GEO,brand facts,Medium,Keep as-is,,Section 5,Update award count when verified
+/blog,Blog index,—,N/A,Keep as-is,,—, —
+/blog/how-many-dimes-in-a-roll,Blog,how many dimes in a roll,1500+,Keep as-is,,Corrected 50/$5,Promote after GSC
+/blog/what-is-a-dime-cart,Blog,what is a dime cart,1200+,Keep as-is,,—, —
+/blog/dime-cart-vs-disposable,Blog,dime cart vs disposable,1200+,Keep as-is,,Comparison table shipped,—
+/blog/dime-live-reserve-explained,Blog,what is dime live reserve,1200+,Keep as-is,,—, —
+/blog/signature-vs-live-reserve,Blog,signature vs live reserve,1200+,Keep as-is,,Table shipped; covers live resin vs live reserve,—
+/blog/how-to-spot-fake-dime-carts,Blog,how to spot fake dime carts,1200+,Keep as-is,,HowTo schema,—
+/blog/how-to-use-a-dime-cart,Blog,how to use a dime cart,1200+,Keep as-is,,Shipped Section 5,—
+/blog/built-to-beat-leaks-the-dime-hardware-story,Blog,anti leak vape cart,1500+,Improve,Older tone,Add Quick Answer already; add table of tips,Light refresh
+/blog/dime-prerolls-are-coming-meet-dimepack-double-ds,Blog,dimepack,1200+,Improve,Coming soon framing,Update when SKUs live,Hold publish promo
+/blog/how-dime-state-exclusives-capture-a-place,Blog,dime state exclusive,1200+,Keep as-is,,—, —
+/blog/how-we-publish-coas,Blog,dime industries coa,1000+,Improve,,Cross-link facts/glossary,—
+/blog/shopping-by-potency,Blog,dime industries thc percentage,1000+,Improve,,Cross-link lab results,—
+/app,/rewards,/promotions,Marketing,brand nav,Thin,Keep as-is,Thin marketing,No organic priority,—
+/wholesale,B2B,dime industries wholesale,Thin,Keep as-is,,—, —
+/contact,/careers,Nav,Thin,Keep as-is,,—, —
+/legal/*,Legal,—,N/A,Keep as-is,,noindex not required,—
+/cart,/checkout,/account/*,App,—,N/A,Keep as-is,noindex,Do not expand for SEO,—

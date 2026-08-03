@@ -1,0 +1,28 @@
+name: SEO Lighthouse (weekly)
+
+# Lab audits against production. Performance asserts are warn-level in
+# .lighthouserc.json until LCP budget ≤ 2.5s is met; SEO category is required.
+
+on:
+  schedule:
+    - cron: "0 14 * * 1" # Mondays 14:00 UTC
+  workflow_dispatch:
+
+jobs:
+  lighthouse:
+    name: Lighthouse CI — production
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Lighthouse CI
+        uses: treosh/lighthouse-ci-action@v12
+        with:
+          urls: |
+            https://www.dimeindustries.us/
+            https://www.dimeindustries.us/shop/vapes
+            https://www.dimeindustries.us/blog/how-many-dimes-in-a-roll
+            https://www.dimeindustries.us/glossary
+            https://www.dimeindustries.us/locations
+          configPath: ./.lighthouserc.json
+          uploadArtifacts: true
+          temporaryPublicStorage: true

@@ -21,7 +21,7 @@
 | `NEXT_PUBLIC_SUPABASE_URL` | **Yes** (recommended) | Without it, demo auth is blocked in production unless `ALLOW_DEMO_AUTH=true` (do **not** enable on public site) |
 | `NEXT_PUBLIC_SUPABASE_ANON_KEY` | **Yes** with URL | |
 | `SUPABASE_SERVICE_ROLE_KEY` | Yes if any server admin paths need service role | Never expose to browser |
-| `NEXT_PUBLIC_APP_URL` | **Yes** | `https://dimeindustries.us` |
+| `NEXT_PUBLIC_APP_URL` | **Yes** | `https://www.dimeindustries.us` |
 | `RESEND_API_KEY` / `RESEND_FROM` | Strongly recommended | Order emails dry-run without it |
 | `PAYBIS_API_KEY` / `PAYBIS_API_SECRET` / `PAYBIS_WEBHOOK_SECRET` | Optional at soft launch | Empty → mock checkout; **webhook secret required** if live Paybis in production |
 | `PAYBIS_API_BASE` / `PAYBIS_WIDGET_BASE` | If live Paybis | |
@@ -46,7 +46,7 @@ Follow **`docs/44-owner-cutover.md` §3** (current status + typical records).
 
 ```bash
 node scripts/verify-domain-cutover.mjs --once
-node scripts/smoke-production.mjs https://dimeindustries.us
+node scripts/smoke-production.mjs https://www.dimeindustries.us
 ```
 
 ## Cutover steps
@@ -58,7 +58,7 @@ node scripts/smoke-production.mjs https://dimeindustries.us
 5. Run local smoke against production:
 
 ```bash
-node scripts/smoke-production.mjs https://dimeindustries.us
+node scripts/smoke-production.mjs https://www.dimeindustries.us
 ```
 
 6. Manual browser pass (age gate → shop → cart → checkout mock or live).

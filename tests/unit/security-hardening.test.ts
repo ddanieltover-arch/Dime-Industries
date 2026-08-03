@@ -45,11 +45,12 @@ describe("clientIpFromRequest", () => {
 });
 
 describe("security headers", () => {
-  it("includes frame denial and nosniff", () => {
+  it("includes frame denial, nosniff, and HSTS", () => {
     const keys = SECURITY_HEADERS.map((h) => h.key);
     expect(keys).toContain("X-Frame-Options");
     expect(keys).toContain("X-Content-Type-Options");
     expect(keys).toContain("Content-Security-Policy");
+    expect(keys).toContain("Strict-Transport-Security");
   });
 
   it("allows Google Analytics gtag hosts", () => {
@@ -118,6 +119,11 @@ describe("SEO helpers", () => {
   it("includes Phase 1 GEO blog slug in sitemap seeds", async () => {
     const { SEO_BLOG_SLUGS } = await import("../../lib/seo/site");
     expect(SEO_BLOG_SLUGS).toContain("how-many-dimes-in-a-roll");
+    expect(SEO_BLOG_SLUGS).toContain("what-is-a-dime-cart");
+    expect(SEO_BLOG_SLUGS).toContain("dime-cart-vs-disposable");
+    expect(SEO_BLOG_SLUGS).toContain("dime-live-reserve-explained");
+    expect(SEO_BLOG_SLUGS).toContain("signature-vs-live-reserve");
+    expect(SEO_BLOG_SLUGS).toContain("how-to-spot-fake-dime-carts");
   });
 });
 

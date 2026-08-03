@@ -10,6 +10,7 @@ export const HEADER_NAV_LINKS = [
   { href: "/validate", label: "Validate" },
   { href: "/rewards", label: "Rewards" },
   { href: "/locations", label: "Find DIME" },
+  { href: "/blog", label: "Blog" },
 ] as const;
 
 function linkActive(pathname: string, href: string) {

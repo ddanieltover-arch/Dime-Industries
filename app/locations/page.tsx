@@ -3,7 +3,12 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { Reveal, Stagger, StaggerItem } from "@/components/motion";
+import { JsonLdScript } from "@/components/seo/json-ld-script";
+import { OutboundCitations } from "@/components/seo/outbound-citations";
+import { BRAND_LOCAL_CONTACT } from "@/lib/locations/geo";
 import { LOCATION_STATES } from "@/lib/locations/states";
+import { buildBreadcrumbJsonLd, buildLocationsHubJsonLd } from "@/lib/seo/json-ld";
+import { outboundCitationsFor } from "@/lib/seo/outbound-citations";
 
 export const metadata: Metadata = {
   title: "Find DIME Near Me",
@@ -16,8 +21,20 @@ const ONLINE_STATES = LOCATION_STATES.filter((s) => s.purchasableOnline);
 const RETAIL_STATES = LOCATION_STATES.filter((s) => !s.purchasableOnline);
 
 export default function LocationsPage() {
+  const breadcrumbs = buildBreadcrumbJsonLd([
+    { name: "Home", path: "/" },
+    { name: "Find DIME", path: "/locations" },
+  ]);
+  const hubList = buildLocationsHubJsonLd(
+    LOCATION_STATES.map((s) => ({ name: s.name, slug: s.slug }))
+  );
+  const outbound = outboundCitationsFor("/locations");
+
   return (
     <>
+      <JsonLdScript data={breadcrumbs} />
+      <JsonLdScript data={hubList} />
+
       <section className="relative isolate min-h-[min(72vh,640px)] overflow-hidden">
         <Image
           src="/brand/concrete.jpg"
@@ -34,13 +51,13 @@ export default function LocationsPage() {
         />
 
         <div className="relative mx-auto flex min-h-[min(72vh,640px)] max-w-7xl flex-col justify-end px-[var(--container-pad-x)] pb-14 pt-28 sm:pb-20 sm:pt-32">
-          <p className="section-eyebrow rise">DIME</p>
+          <p className="section-eyebrow rise">Walk.Run.Drive.</p>
           <h1 className="rise rise-delay-1 mt-2 max-w-2xl font-[var(--font-display)] text-[clamp(2.25rem,6vw,4rem)] uppercase leading-[0.95] tracking-[0.08em] text-white">
-            Walk.Run.Drive.
+            Find DIME Near Me
           </h1>
           <p className="rise rise-delay-2 mt-4 max-w-md text-[var(--scale-base)] leading-relaxed text-white/80">
-            Find a neighborhood retailer that stocks DIME — or shop online for delivery in California and
-            Massachusetts.
+            Locate licensed retailers that stock DIME carts, vapes, and edibles — or shop online for delivery in
+            California and Massachusetts.
           </p>
           <div className="rise rise-delay-3 mt-8 flex flex-wrap gap-3">
             <a href="#states" className="btn-primary">
@@ -93,7 +110,7 @@ export default function LocationsPage() {
                     href={`/locations/${state.slug}`}
                     className="font-[var(--font-display)] text-[10px] uppercase tracking-[0.14em] text-[var(--color-ink-soft)] transition-colors duration-[var(--motion-fast)] hover:text-[var(--color-resin)]"
                   >
-                    Retailers →
+                    Find DIME in {state.name} →
                   </Link>
                 </div>
               </StaggerItem>
@@ -137,9 +154,15 @@ export default function LocationsPage() {
                   </div>
                   <p className="mt-3 text-[var(--scale-sm)] text-[var(--color-ink-soft)]">
                     {state.purchasableOnline ? "Shop online + retailers" : "Retailers"}
+                    {state.cities.length > 0
+                      ? ` · ${state.cities
+                          .slice(0, 2)
+                          .map((c) => c.name)
+                          .join(", ")}`
+                      : ""}
                   </p>
                   <span className="mt-auto pt-5 font-[var(--font-display)] text-[10px] uppercase tracking-[0.14em] text-[var(--color-resin)]">
-                    View locations →
+                    Find DIME in {state.name} →
                   </span>
                 </Link>
               </StaggerItem>
@@ -151,6 +174,70 @@ export default function LocationsPage() {
               {RETAIL_STATES.length} markets are retail-only today — online checkout expands as licenses allow.
             </p>
           ) : null}
+        </div>
+      </section>
+
+      <section
+        aria-labelledby="nap-heading"
+        className="border-t border-[var(--color-border)] bg-[var(--color-bg)]"
+      >
+        <div className="mx-auto max-w-7xl px-[var(--container-pad-x)] py-[var(--section-y)]">
+          <p className="font-[var(--font-display)] text-[10px] uppercase tracking-[0.18em] text-[var(--color-resin)]">
+            Brand contact
+          </p>
+          <h2 id="nap-heading" className="section-title mt-2">
+            How to cite DIME Industries
+          </h2>
+          <p className="mt-3 max-w-2xl text-[var(--scale-sm)] text-[var(--color-ink-soft)]">
+            DIME is a multi-state brand sold through licensed retailers — not a single walk-in storefront on
+            this site. Use the contact block below for citations until a public Google Business Profile NAP is
+            published by the brand owner.
+          </p>
+          <dl className="mt-8 grid gap-6 border border-[var(--color-border)] bg-[var(--color-surface)] p-6 sm:grid-cols-2 sm:p-8">
+            <div>
+              <dt className="font-[var(--font-display)] text-[10px] uppercase tracking-[0.14em] text-[var(--color-resin)]">
+                Name
+              </dt>
+              <dd className="mt-2 text-[var(--scale-base)] text-[var(--color-ink)]">
+                {BRAND_LOCAL_CONTACT.name}
+              </dd>
+            </div>
+            <div>
+              <dt className="font-[var(--font-display)] text-[10px] uppercase tracking-[0.14em] text-[var(--color-resin)]">
+                Email
+              </dt>
+              <dd className="mt-2 text-[var(--scale-base)] text-[var(--color-ink)]">
+                <a
+                  href={`mailto:${BRAND_LOCAL_CONTACT.email}`}
+                  className="text-[var(--color-resin)] hover:underline"
+                >
+                  {BRAND_LOCAL_CONTACT.email}
+                </a>
+              </dd>
+            </div>
+            <div>
+              <dt className="font-[var(--font-display)] text-[10px] uppercase tracking-[0.14em] text-[var(--color-resin)]">
+                Website
+              </dt>
+              <dd className="mt-2 text-[var(--scale-base)] text-[var(--color-ink)]">
+                www.dimeindustries.us
+              </dd>
+            </div>
+            <div>
+              <dt className="font-[var(--font-display)] text-[10px] uppercase tracking-[0.14em] text-[var(--color-resin)]">
+                HQ region (press)
+              </dt>
+              <dd className="mt-2 text-[var(--scale-base)] text-[var(--color-ink)]">
+                {BRAND_LOCAL_CONTACT.headquartersRegion}
+              </dd>
+            </div>
+          </dl>
+        </div>
+      </section>
+
+      <section className="border-t border-[var(--color-border)] bg-[var(--color-bg)]">
+        <div className="mx-auto max-w-7xl px-[var(--container-pad-x)] py-10">
+          <OutboundCitations citations={outbound} />
         </div>
       </section>
 

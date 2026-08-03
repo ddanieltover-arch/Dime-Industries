@@ -34,7 +34,7 @@ export function formatUsd(cents: number): string {
 export function siteUrl(path = "/"): string {
   const base =
     process.env.NEXT_PUBLIC_APP_URL?.replace(/\/$/, "") ||
-    (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : "https://dimeindustries.us");
+    (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : "https://www.dimeindustries.us");
   if (!path || path === "/") return base;
   return `${base}${path.startsWith("/") ? path : `/${path}`}`;
 }

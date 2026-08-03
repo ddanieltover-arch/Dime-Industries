@@ -4,15 +4,28 @@ import { getAgeGateState } from "@/lib/compliance/age-gate";
 import { listProducts, parseCatalogSearchParams } from "@/lib/catalog";
 import { withEffectiveCatalog } from "@/lib/catalog/effective";
 import { CatalogPageShell } from "@/components/catalog/catalog-page";
-
-export const metadata: Metadata = {
-  title: "Shop",
-  description:
-    "Browse lab-tested vapes, edibles, prerolls, and accessories. Filter by strain, potency, and format.",
-  alternates: { canonical: "/shop" },
-};
+import { JsonLdScript } from "@/components/seo/json-ld-script";
+import { catalogRobotsForFilters } from "@/lib/seo/catalog-indexability";
+import { buildBreadcrumbJsonLd } from "@/lib/seo/json-ld";
+import { catalogSeoLinks } from "@/lib/seo/related-posts";
 
 type SearchParams = Promise<Record<string, string | string[] | undefined>>;
+
+export async function generateMetadata({
+  searchParams,
+}: {
+  searchParams: SearchParams;
+}): Promise<Metadata> {
+  const params = await searchParams;
+  const filters = parseCatalogSearchParams(params);
+  return {
+    title: "Shop DIME Products",
+    description:
+      "Shop DIME Industries carts, vapes, edibles, prerolls, and accessories. Filter by strain, potency, and format.",
+    alternates: { canonical: "/shop" },
+    robots: catalogRobotsForFilters(filters, "/shop"),
+  };
+}
 
 export default async function ShopPage({ searchParams }: { searchParams: SearchParams }) {
   const ageGate = await getAgeGateState();
@@ -26,18 +39,28 @@ export default async function ShopPage({ searchParams }: { searchParams: SearchP
     ? await withEffectiveCatalog(() => listProducts(filters))
     : { items: [], total: 0, page: 1, pageSize: 24, facets: { categories: [], lines: [], strains: [], potencyBands: [], formats: [] } };
 
+  const breadcrumbs = buildBreadcrumbJsonLd([
+    { name: "Home", path: "/" },
+    { name: "Shop", path: "/shop" },
+  ]);
+
   return (
-    <CatalogPageShell
-      title="Shop"
-      description="Lab-tested vapes, edibles, prerolls, and accessories — filter by strain, potency, and format. Available in California and Massachusetts."
-      basePath="/shop"
-      ageVerified={ageGate.ageVerified}
-      filters={filters}
-      items={result.items}
-      total={result.total}
-      page={result.page}
-      pageSize={result.pageSize}
-      facets={result.facets}
-    />
+    <>
+      <JsonLdScript data={breadcrumbs} />
+      <CatalogPageShell
+        title="Shop DIME Products"
+        description="Browse lab-tested DIME carts, vapes, edibles, prerolls, and accessories — filter by strain, potency, and format for California and Massachusetts."
+        basePath="/shop"
+        ageVerified={ageGate.ageVerified}
+        filters={filters}
+        items={result.items}
+        total={result.total}
+        page={result.page}
+        pageSize={result.pageSize}
+        facets={result.facets}
+        seoLinks={catalogSeoLinks("/shop")}
+        outboundKey="/shop"
+      />
+    </>
   );
 }

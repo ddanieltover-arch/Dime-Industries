@@ -62,13 +62,16 @@ export function ElevateAwards() {
               key={shot.src}
               className={`group relative overflow-hidden ${shot.className}`}
             >
-              <Image
-                src={shot.src}
-                alt={shot.alt}
-                fill
-                className="object-cover transition-transform duration-500 ease-[var(--ease-out)] group-hover:scale-105"
-                sizes="(max-width: 1024px) 100vw, 50vw"
-              />
+              <figure className="absolute inset-0 m-0">
+                <Image
+                  src={shot.src}
+                  alt={shot.alt}
+                  fill
+                  className="object-cover transition-transform duration-500 ease-[var(--ease-out)] group-hover:scale-105"
+                  sizes="(max-width: 1024px) 100vw, 50vw"
+                />
+                <figcaption className="sr-only">{shot.alt}</figcaption>
+              </figure>
             </StaggerItem>
           ))}
         </Stagger>

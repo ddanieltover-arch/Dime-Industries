@@ -134,7 +134,7 @@ export function getLaunchStatus(env: Env = process.env): LaunchStatus {
       severity: isProd ? "blocker" : "info",
       message: appUrl
         ? "NEXT_PUBLIC_APP_URL is set (Paybis return URLs)."
-        : "NEXT_PUBLIC_APP_URL missing — set to https://dimeindustries.us in production.",
+        : "NEXT_PUBLIC_APP_URL missing — set to https://www.dimeindustries.us in production.",
     },
     {
       id: "paybis_webhook",

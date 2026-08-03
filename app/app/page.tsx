@@ -1,6 +1,11 @@
 // app/app/page.tsx
 import type { Metadata } from "next";
 import Link from "next/link";
+import { JsonLdScript } from "@/components/seo/json-ld-script";
+import {
+  buildBreadcrumbJsonLd,
+  buildSoftwareApplicationJsonLd,
+} from "@/lib/seo/json-ld";
 
 export const metadata: Metadata = {
   title: "DIME App",
@@ -25,8 +30,17 @@ const FEATURES = [
 ] as const;
 
 export default function AppMarketingPage() {
+  const appJsonLd = buildSoftwareApplicationJsonLd();
+  const breadcrumbs = buildBreadcrumbJsonLd([
+    { name: "Home", path: "/" },
+    { name: "DIME App", path: "/app" },
+  ]);
+
   return (
     <>
+      <JsonLdScript data={appJsonLd} />
+      <JsonLdScript data={breadcrumbs} />
+
       <section className="border-b border-[var(--color-border)] bg-[var(--color-bg)]">
         <div className="mx-auto max-w-3xl px-[var(--container-pad-x)] py-16 text-center sm:py-24">
           <p className="section-eyebrow">Available on the DIME App</p>

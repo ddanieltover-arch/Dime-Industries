@@ -1,0 +1,164 @@
+{
+  "generatedAt": "2026-08-02T22:55:21.639Z",
+  "source": "Lighthouse CLI 13 (mobile, headless Chrome)",
+  "thresholds": {
+    "LCP_ms": 2500,
+    "INP_ms": 200,
+    "CLS": 0.1
+  },
+  "note": "INP often null in lab; TBT is lab interactivity proxy. PageSpeed API quota was exhausted. Age gate can dominate LCP on gated routes.",
+  "summary": {
+    "pagesMeasured": 7,
+    "lcpFailures": 7,
+    "clsFailures": 1
+  },
+  "pages": [
+    {
+      "url": "https://www.dimeindustries.us/",
+      "performanceScore": 0.72,
+      "LCP_ms": 3611.256,
+      "LCP": "3.6 s",
+      "CLS": 0.155079857946663,
+      "CLS_display": "0.155",
+      "FCP_ms": 1459.2559999999999,
+      "FCP": "1.5 s",
+      "TBT_ms": 340,
+      "TBT": "340 ms",
+      "TTFB_ms": 69,
+      "TTFB": "Root document took 70 ms",
+      "INP_ms": null,
+      "INP": null,
+      "flags": {
+        "LCP_fail": true,
+        "CLS_fail": true,
+        "INP_fail": null
+      }
+    },
+    {
+      "url": "https://www.dimeindustries.us/shop/vapes",
+      "performanceScore": 0.81,
+      "LCP_ms": 3488.286,
+      "LCP": "3.5 s",
+      "CLS": 0.02196153018745662,
+      "CLS_display": "0.022",
+      "FCP_ms": 1480.286,
+      "FCP": "1.5 s",
+      "TBT_ms": 300.5,
+      "TBT": "300 ms",
+      "TTFB_ms": 69,
+      "TTFB": "Root document took 70 ms",
+      "INP_ms": null,
+      "INP": null,
+      "flags": {
+        "LCP_fail": true,
+        "CLS_fail": false,
+        "INP_fail": null
+      }
+    },
+    {
+      "url": "https://www.dimeindustries.us/shop/vapes/rosin",
+      "performanceScore": 0.86,
+      "LCP_ms": 3395.014,
+      "LCP": "3.4 s",
+      "CLS": 0.02196153018745662,
+      "CLS_display": "0.022",
+      "FCP_ms": 1475.0140000000001,
+      "FCP": "1.5 s",
+      "TBT_ms": 236,
+      "TBT": "240 ms",
+      "TTFB_ms": 69,
+      "TTFB": "Root document took 70 ms",
+      "INP_ms": null,
+      "INP": null,
+      "flags": {
+        "LCP_fail": true,
+        "CLS_fail": false,
+        "INP_fail": null
+      }
+    },
+    {
+      "url": "https://www.dimeindustries.us/locations",
+      "performanceScore": 0.9,
+      "LCP_ms": 2846.006,
+      "LCP": "2.8 s",
+      "CLS": 0.02196153018745662,
+      "CLS_display": "0.022",
+      "FCP_ms": 1471.0059999999999,
+      "FCP": "1.5 s",
+      "TBT_ms": 243,
+      "TBT": "240 ms",
+      "TTFB_ms": 69,
+      "TTFB": "Root document took 70 ms",
+      "INP_ms": null,
+      "INP": null,
+      "flags": {
+        "LCP_fail": true,
+        "CLS_fail": false,
+        "INP_fail": null
+      }
+    },
+    {
+      "url": "https://www.dimeindustries.us/about",
+      "performanceScore": 0.85,
+      "LCP_ms": 3392.234,
+      "LCP": "3.4 s",
+      "CLS": 0.02196153018745662,
+      "CLS_display": "0.022",
+      "FCP_ms": 1572.234,
+      "FCP": "1.6 s",
+      "TBT_ms": 252.5,
+      "TBT": "250 ms",
+      "TTFB_ms": 68,
+      "TTFB": "Root document took 70 ms",
+      "INP_ms": null,
+      "INP": null,
+      "flags": {
+        "LCP_fail": true,
+        "CLS_fail": false,
+        "INP_fail": null
+      }
+    },
+    {
+      "url": "https://www.dimeindustries.us/blog",
+      "performanceScore": 0.91,
+      "LCP_ms": 2712.9,
+      "LCP": "2.7 s",
+      "CLS": 0.02196153018745662,
+      "CLS_display": "0.022",
+      "FCP_ms": 1421.9,
+      "FCP": "1.4 s",
+      "TBT_ms": 240.5,
+      "TBT": "240 ms",
+      "TTFB_ms": 68,
+      "TTFB": "Root document took 70 ms",
+      "INP_ms": null,
+      "INP": null,
+      "flags": {
+        "LCP_fail": true,
+        "CLS_fail": false,
+        "INP_fail": null
+      }
+    },
+    {
+      "url": "https://www.dimeindustries.us/faq",
+      "performanceScore": 0.83,
+      "LCP_ms": 2954.285,
+      "LCP": "3.0 s",
+      "CLS": 0.02196153018745662,
+      "CLS_display": "0.022",
+      "FCP_ms": 1470.2849999999999,
+      "FCP": "1.5 s",
+      "TBT_ms": 398.5,
+      "TBT": "400 ms",
+      "TTFB_ms": 70,
+      "TTFB": "Root document took 70 ms",
+      "INP_ms": null,
+      "INP": null,
+      "flags": {
+        "LCP_fail": true,
+        "CLS_fail": false,
+        "INP_fail": null
+      }
+    }
+  ]
+}
