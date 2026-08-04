@@ -69,11 +69,60 @@ const requiredPages = [
 for (const p of requiredPages) mustExist(p);
 
 const layout = read("app/layout.tsx");
-if (!layout.includes("metadataBase") || !layout.includes("dimeindustries.us")) {
-  failures.push("Root layout metadataBase must use dimeindustries.us");
+if (!layout.includes("metadataBase") || !layout.includes("www.dimeindustries.us")) {
+  failures.push("Root layout metadataBase must use https://www.dimeindustries.us");
 }
 if (!layout.includes("buildOrganizationJsonLd") || !layout.includes("buildWebSiteJsonLd")) {
   failures.push("Root layout must emit Organization + WebSite JSON-LD");
+}
+if (!layout.includes('href="/fonts/gotham-black.ttf"')) {
+  failures.push("Root layout must preload Gotham Black for LCP typography");
+}
+if (!layout.includes("hero-poster.webp")) {
+  failures.push("Root layout must preload hero-poster.webp");
+}
+
+const dimeRollIdx = store.indexOf('slug: "how-many-dimes-in-a-roll"');
+if (dimeRollIdx < 0) {
+  failures.push('DEFAULT_POSTS missing how-many-dimes-in-a-roll');
+} else {
+  const dimeRollSlice = store.slice(dimeRollIdx, dimeRollIdx + 4500);
+  if (!/50 dimes/.test(dimeRollSlice) || !/\$5/.test(dimeRollSlice)) {
+    failures.push("how-many-dimes-in-a-roll must state 50 dimes / $5");
+  }
+  if (/40 dimes/.test(dimeRollSlice) || /\$4 face/.test(dimeRollSlice)) {
+    failures.push("how-many-dimes-in-a-roll must not claim 40 dimes / $4");
+  }
+}
+
+const nextConfig = read("next.config.js");
+const vercelJson = read("vercel.json");
+const hasApexRedirect =
+  (nextConfig.includes('value: "dimeindustries.us"') &&
+    nextConfig.includes("www.dimeindustries.us")) ||
+  (vercelJson.includes('"dimeindustries.us"') && vercelJson.includes("www.dimeindustries.us"));
+if (!hasApexRedirect) {
+  failures.push("Apex → www host redirect required in next.config.js or vercel.json");
+}
+
+const hero = read("components/home/hero-video.tsx");
+if (!hero.includes("pointerdown") || !hero.includes("setLoadVideo")) {
+  failures.push("Hero must load video only after first user input (LCP-safe)");
+}
+if (!hero.includes("fetchPriority=\"high\"") && !hero.includes("fetchPriority='high'")) {
+  failures.push("Hero poster must use fetchPriority=high");
+}
+
+try {
+  const heroBytes = readFileSync(join(root, "public/brand/hero.mp4"));
+  const maxBytes = 2 * 1024 * 1024;
+  if (heroBytes.length > maxBytes) {
+    failures.push(
+      `public/brand/hero.mp4 must be ≤2MB (got ${(heroBytes.length / (1024 * 1024)).toFixed(2)}MB)`
+    );
+  }
+} catch {
+  failures.push("Missing public/brand/hero.mp4");
 }
 
 // Optional live probe

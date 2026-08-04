@@ -1,15 +1,17 @@
 // app/page.tsx
 import type { Metadata } from "next";
+import { Suspense } from "react";
 import { getAgeGateState } from "@/lib/compliance/age-gate";
 import { getFeaturedBundles, getFeaturedProductLines } from "@/lib/data/products";
 import { AgeGateDialog } from "@/components/shared/age-gate-dialog";
 import { AgeGateSeoTeaser } from "@/components/seo/age-gate-seo-teaser";
-import { HomepageSections } from "@/components/home/homepage-sections";
+import { HomepageBelowFold, HomepageHero } from "@/components/home/homepage-sections";
 import { JsonLdScript } from "@/components/seo/json-ld-script";
 import { getHomepageBanner, getHomepageLayout } from "@/lib/cms/store";
 import { isSectionEnabled } from "@/lib/cms/homepage-layout";
 import { getCurrentProfile } from "@/lib/auth/session";
 import { buildVideoObjectJsonLd } from "@/lib/seo/json-ld";
+import type { HomepageLayout } from "@/lib/cms/types";
 
 export const metadata: Metadata = {
   title: "Buy THC Edibles & Vapes Online",
@@ -18,7 +20,40 @@ export const metadata: Metadata = {
   alternates: { canonical: "/" },
 };
 
+/** Cacheable shell — hero can stream before catalog rails resolve. */
+export const revalidate = 60;
+
 const videoJsonLd = buildVideoObjectJsonLd();
+
+async function HomeBelowFoldLoader({ layout }: { layout: HomepageLayout }) {
+  const needLines = isSectionEnabled(layout, "product-lines");
+  const needBundles = isSectionEnabled(layout, "bundles");
+  const needBanner = isSectionEnabled(layout, "banner");
+  const needRewards = isSectionEnabled(layout, "rewards");
+
+  const [productLines, bundles, banner, profile] = await Promise.all([
+    needLines ? getFeaturedProductLines() : Promise.resolve([]),
+    needBundles ? getFeaturedBundles() : Promise.resolve(null),
+    needBanner ? getHomepageBanner() : Promise.resolve(null),
+    needRewards ? getCurrentProfile() : Promise.resolve(null),
+  ]);
+
+  const loyalty =
+    profile != null
+      ? await (await import("@/lib/loyalty/store")).getLoyaltyAccount(profile.email)
+      : null;
+
+  return (
+    <HomepageBelowFold
+      layout={layout}
+      banner={banner}
+      productLines={productLines}
+      bundles={bundles}
+      signedIn={Boolean(profile)}
+      pointsBalance={loyalty?.pointsBalance}
+    />
+  );
+}
 
 export default async function HomePage() {
   const ageGate = await getAgeGateState();
@@ -26,18 +61,6 @@ export default async function HomePage() {
   // Compliance-critical: do not fetch or ship real product/pricing data to
   // an unverified visitor. Gate clears via cookie + server refresh.
   const layout = ageGate.ageVerified ? await getHomepageLayout() : null;
-  const needLines = layout ? isSectionEnabled(layout, "product-lines") : false;
-  const needBundles = layout ? isSectionEnabled(layout, "bundles") : false;
-  const needBanner = layout ? isSectionEnabled(layout, "banner") : false;
-  const needRewards = layout ? isSectionEnabled(layout, "rewards") : false;
-
-  const productLines = needLines ? await getFeaturedProductLines() : [];
-  const bundles = needBundles ? await getFeaturedBundles() : null;
-  const banner = needBanner ? await getHomepageBanner() : null;
-  const profile = needRewards ? await getCurrentProfile() : null;
-  const loyalty = profile
-    ? await (await import("@/lib/loyalty/store")).getLoyaltyAccount(profile.email)
-    : null;
 
   return (
     <>
@@ -48,14 +71,13 @@ export default async function HomePage() {
       {!ageGate.ageVerified || !layout ? (
         !ageGate.ageVerified ? <AgeGateSeoTeaser /> : null
       ) : (
-        <HomepageSections
-          layout={layout}
-          banner={banner}
-          productLines={productLines}
-          bundles={bundles}
-          signedIn={Boolean(profile)}
-          pointsBalance={loyalty?.pointsBalance}
-        />
+        <>
+          {/* Hero first — LCP poster without waiting on catalog/DB rails */}
+          <HomepageHero layout={layout} />
+          <Suspense fallback={null}>
+            <HomeBelowFoldLoader layout={layout} />
+          </Suspense>
+        </>
       )}
     </>
   );

@@ -22,7 +22,21 @@ function copyProps(section: HomepageSection) {
   };
 }
 
-export function HomepageSections({
+export function HomepageHero({ layout }: { layout: HomepageLayout }) {
+  const section = layout.sections.find((s) => s.id === "hero" && s.enabled);
+  if (!section) return null;
+  return (
+    <HeroVideo
+      headline={section.headline}
+      body={section.body}
+      ctaLabel={section.ctaLabel}
+      ctaHref={section.ctaHref}
+    />
+  );
+}
+
+/** Below-fold / data-heavy sections — stream after hero via Suspense. */
+export function HomepageBelowFold({
   layout,
   banner,
   productLines,
@@ -40,19 +54,9 @@ export function HomepageSections({
   return (
     <>
       {layout.sections.map((section) => {
-        if (!section.enabled) return null;
+        if (!section.enabled || section.id === "hero") return null;
 
         switch (section.id) {
-          case "hero":
-            return (
-              <HeroVideo
-                key={section.id}
-                headline={section.headline}
-                body={section.body}
-                ctaLabel={section.ctaLabel}
-                ctaHref={section.ctaHref}
-              />
-            );
           case "banner":
             return banner ? <PromoBanner key={section.id} banner={banner} /> : null;
           case "trust":
@@ -96,6 +100,37 @@ export function HomepageSections({
             return null;
         }
       })}
+    </>
+  );
+}
+
+/** Full homepage (hero + below-fold) — kept for tests / admin previews. */
+export function HomepageSections({
+  layout,
+  banner,
+  productLines,
+  bundles,
+  signedIn,
+  pointsBalance,
+}: {
+  layout: HomepageLayout;
+  banner: HomepageBanner | null;
+  productLines: ProductLineSection[];
+  bundles: ProductLineSection | null;
+  signedIn: boolean;
+  pointsBalance?: number;
+}) {
+  return (
+    <>
+      <HomepageHero layout={layout} />
+      <HomepageBelowFold
+        layout={layout}
+        banner={banner}
+        productLines={productLines}
+        bundles={bundles}
+        signedIn={signedIn}
+        pointsBalance={pointsBalance}
+      />
     </>
   );
 }

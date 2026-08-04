@@ -35,13 +35,13 @@ describe("CMS FAQ page (single document)", () => {
 
 ### How many dimes are in a standard roll?
 
-Forty coins.
+Fifty coins.
 
 ### Frequently asked questions
 
 ### How much money is in a roll of dimes?
 
-$4.00 in face value.
+$5.00 in face value.
 
 ### Are dime rolls the same at every bank?
 
@@ -50,7 +50,7 @@ Yes for face-value packaging.`;
     expect(parseBlogFaqSection(body)).toEqual([
       {
         question: "How much money is in a roll of dimes?",
-        answer: "$4.00 in face value.",
+        answer: "$5.00 in face value.",
       },
       {
         question: "Are dime rolls the same at every bank?",

@@ -68,6 +68,13 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
+        <link
+          rel="preload"
+          href="/fonts/gotham-black.ttf"
+          as="font"
+          type="font/ttf"
+          crossOrigin="anonymous"
+        />
         <link rel="preload" as="image" href="/brand/hero-poster.webp" fetchPriority="high" />
         <JsonLdScript data={organizationJsonLd} />
         <JsonLdScript data={websiteJsonLd} />

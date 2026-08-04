@@ -44,6 +44,17 @@ const nextConfig = {
       },
     ];
   },
+  // Canonical host is www — apex must 308 so sitemap/canonicals never fork.
+  async redirects() {
+    return [
+      {
+        source: "/:path*",
+        has: [{ type: "host", value: "dimeindustries.us" }],
+        destination: "https://www.dimeindustries.us/:path*",
+        permanent: true,
+      },
+    ];
+  },
 };
 
 // withSentryConfig uploads source maps at build time (so stack traces in

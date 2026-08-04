@@ -16,10 +16,10 @@
 
 ## Critical / high findings
 
-1. **CRITICAL — Dime roll fact check:** SERPs say **50 dimes / $5**; site blog says **40 / $4**. Fix before ranking push.
+1. **RESOLVED — Dime roll fact check:** Seed + live content state **50 dimes / $5** (guarded by `seo-audit` + unit tests). Re-verify after CMS DB overrides.
 2. **HIGH — Age gate HTML:** 8 probed catalog/product routes show H1 “Are you over 21?” without cookie (thin ~200-word HTML).
-3. **HIGH — www vs apex:** Canonical/sitemap apex vs live www — consolidate redirects + GSC property.
-4. **HIGH — LCP:** Home LCP ~3.6s (fail); other landers ~2.7–3.5s (fail threshold 2.5s). Homepage CLS ~0.15 (fail).
+3. **RESOLVED — www vs apex:** Canonical host is **www**; apex → www permanent redirects in `next.config.js` + `vercel.json`. Confirm GSC Domain property.
+4. **IN PROGRESS — LCP/CLS:** Home hero defers ~49MB MP4 until idle; poster + Gotham preload; age-gate entrance opacity removed. Re-run Lighthouse after deploy (target LCP ≤2.5s, CLS ≤0.1).
 5. **HIGH — Legacy .com cannibalization:** `dimeindustries.com` still owns brand SERPs.
 
 ## CWV snapshot (mobile lab)
