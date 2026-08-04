@@ -14,7 +14,7 @@ Also read `docs/GO_LIVE.md` and **`docs/44-owner-cutover.md`** for the dimeindus
   - [ ] It ran successfully against staging via `deploy-staging.yml`.
   - [ ] Someone has read the migration file itself — CI validates it *applies*, not that it's the *right* change.
 - [ ] If this release touches RLS policies: re-read them against the Security section in `docs/07-qa-audit-report.md` — every INSERT/UPDATE `WITH CHECK` must validate foreign keys it sets, not only ownership.
-- [ ] Production Vercel env vars match `docs/GO_LIVE.md` secrets matrix (`ALLOW_DEMO_AUTH` unset; `NEXT_PUBLIC_APP_URL=https://www.dimeindustries.us`).
+- [ ] Production Vercel env vars match `docs/GO_LIVE.md` secrets matrix (`ALLOW_DEMO_AUTH` unset; `NEXT_PUBLIC_APP_URL=https://dimeindustries.us`).
 - [ ] If enabling live Paybis: `PAYBIS_WEBHOOK_SECRET` is set (required in production) and webhook URL points at `https://dimeindustries.us/api/webhooks/paybis`.
 - [ ] Rollback plan for this release has been read (`ROLLBACK_PLAN.md`).
 

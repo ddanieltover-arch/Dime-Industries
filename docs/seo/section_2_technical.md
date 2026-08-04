@@ -16,11 +16,6 @@ Preferred host is **www**, matching Vercel Production:
 **Owner env:** set `NEXT_PUBLIC_APP_URL=https://www.dimeindustries.us` on Vercel production, then redeploy.  
 **GSC:** use a Domain property for `dimeindustries.us` (covers www + apex) and submit `https://www.dimeindustries.us/sitemap.xml`.
 
-## Host redirects (code)
-
-- `next.config.js` `redirects()` — apex host → `https://www.dimeindustries.us/:path*` (308/permanent)
-- `vercel.json` matching host redirect (defense in depth with Vercel Domains)
-
 ## Shipped in code
 
 | Item | Change |

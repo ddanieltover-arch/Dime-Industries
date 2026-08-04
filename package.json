@@ -19,7 +19,6 @@
     "seo:links": "node scripts/check-internal-links.mjs",
     "seo:ping-sitemap": "node scripts/ping-sitemap.mjs",
     "seo:ci": "node scripts/seo-audit.mjs && tsx scripts/validate-schema.ts && node scripts/check-internal-links.mjs && node scripts/content-freshness.mjs",
-    "cwv:home": "node scripts/lh-home-age-verified.mjs",
     "cutover:verify": "node scripts/verify-domain-cutover.mjs",
     "cutover:verify:once": "node scripts/verify-domain-cutover.mjs --once",
     "load:checkout": "node scripts/load-checkout-reserve.mjs",

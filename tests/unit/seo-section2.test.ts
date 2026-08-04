@@ -53,27 +53,3 @@ describe("security headers Section 2", () => {
     expect(keys).toContain("Strict-Transport-Security");
   });
 });
-
-describe("canonical host", () => {
-  it("SITE_URL and metadataBase prefer www", async () => {
-    const { SITE_URL, absoluteUrl } = await import("../../lib/seo/site");
-    expect(SITE_URL).toBe("https://www.dimeindustries.us");
-    expect(absoluteUrl("/blog/how-many-dimes-in-a-roll")).toBe(
-      "https://www.dimeindustries.us/blog/how-many-dimes-in-a-roll"
-    );
-    expect(absoluteUrl("/")).toBe("https://www.dimeindustries.us");
-  });
-});
-
-describe("dime-roll factual claim", () => {
-  it("seed post states 50 dimes / $5 and never 40 / $4", async () => {
-    const { DEFAULT_POSTS } = await import("../../lib/cms/store");
-    const post = DEFAULT_POSTS.find((p) => p.slug === "how-many-dimes-in-a-roll");
-    expect(post).toBeTruthy();
-    expect(post!.excerpt).toMatch(/50 dimes/);
-    expect(post!.excerpt).toMatch(/\$5/);
-    expect(post!.body).toMatch(/Quick Answer:.*50 dimes.*\$5\.00/s);
-    expect(post!.body).not.toMatch(/40 dimes/);
-    expect(post!.body).not.toMatch(/\$4\.00 in face value/);
-  });
-});

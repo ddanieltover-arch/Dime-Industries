@@ -1,27 +1,50 @@
 // components/home/elevate-awards.tsx
+"use client";
+
+import { useCallback, useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { Reveal, Stagger, StaggerItem } from "@/components/motion";
+import { useReducedMotion } from "framer-motion";
+import { Reveal } from "@/components/motion";
 
+/** Products first, then medals, then hardware — infinite fade loop. */
 const GALLERY = [
   {
-    src: "/brand/awards-hardware.webp",
-    alt: "Industry award trophies on dark concrete",
-    className: "col-span-2 aspect-[16/10]",
+    src: "/brand/awards.webp",
+    alt: "DIME award-winning product lineup",
   },
   {
     src: "/brand/awards-medals.webp",
     alt: "Gold award medals and engraved plaque",
-    className: "aspect-[4/5]",
   },
   {
-    src: "/brand/awards.webp",
-    alt: "DIME award-winning product lineup",
-    className: "aspect-[4/5]",
+    src: "/brand/awards-hardware.webp",
+    alt: "Industry award trophies on dark concrete",
   },
 ] as const;
 
+const FADE_MS = 900;
+const HOLD_MS = 4200;
+
 export function ElevateAwards() {
+  const prefersReducedMotion = useReducedMotion();
+  const [active, setActive] = useState(0);
+  const [paused, setPaused] = useState(false);
+
+  const goTo = useCallback((index: number) => {
+    setActive(((index % GALLERY.length) + GALLERY.length) % GALLERY.length);
+  }, []);
+
+  useEffect(() => {
+    if (prefersReducedMotion || paused || GALLERY.length < 2) return;
+
+    const id = window.setInterval(() => {
+      setActive((current) => (current + 1) % GALLERY.length);
+    }, HOLD_MS);
+
+    return () => window.clearInterval(id);
+  }, [paused, prefersReducedMotion]);
+
   return (
     <section aria-labelledby="elevate-heading" className="relative overflow-hidden bg-black">
       <div className="absolute inset-0">
@@ -56,25 +79,77 @@ export function ElevateAwards() {
           </div>
         </Reveal>
 
-        <Stagger className="grid grid-cols-2 gap-3" staggerDelay={0.08}>
-          {GALLERY.map((shot) => (
-            <StaggerItem
-              key={shot.src}
-              className={`group relative overflow-hidden ${shot.className}`}
-            >
-              <figure className="absolute inset-0 m-0">
-                <Image
-                  src={shot.src}
-                  alt={shot.alt}
-                  fill
-                  className="object-cover transition-transform duration-500 ease-[var(--ease-out)] group-hover:scale-105"
-                  sizes="(max-width: 1024px) 100vw, 50vw"
+        <div
+          className="relative"
+          onMouseEnter={() => setPaused(true)}
+          onMouseLeave={() => setPaused(false)}
+          onFocusCapture={() => setPaused(true)}
+          onBlurCapture={(event) => {
+            if (!event.currentTarget.contains(event.relatedTarget as Node | null)) {
+              setPaused(false);
+            }
+          }}
+        >
+          <div
+            className="relative aspect-[4/5] overflow-hidden sm:aspect-[5/6]"
+            role="region"
+            aria-roledescription="carousel"
+            aria-label="Award-winning products gallery"
+            aria-live={prefersReducedMotion || paused ? "polite" : "off"}
+          >
+            {GALLERY.map((shot, index) => {
+              const isActive = index === active;
+              return (
+                <figure
+                  key={shot.src}
+                  className="absolute inset-0 m-0"
+                  aria-hidden={!isActive}
+                  style={{
+                    opacity: isActive ? 1 : 0,
+                    transition: prefersReducedMotion
+                      ? "none"
+                      : `opacity ${FADE_MS}ms var(--ease-out)`,
+                    zIndex: isActive ? 1 : 0,
+                  }}
+                >
+                  <Image
+                    src={shot.src}
+                    alt={shot.alt}
+                    fill
+                    priority={index === 0}
+                    className="object-cover"
+                    sizes="(max-width: 1024px) 100vw, 50vw"
+                  />
+                  <figcaption className="sr-only">{shot.alt}</figcaption>
+                </figure>
+              );
+            })}
+          </div>
+
+          <div
+            className="mt-4 flex items-center justify-center gap-2"
+            role="group"
+            aria-label="Gallery slides"
+          >
+            {GALLERY.map((shot, index) => {
+              const selected = index === active;
+              return (
+                <button
+                  key={shot.src}
+                  type="button"
+                  onClick={() => goTo(index)}
+                  aria-label={`Show image ${index + 1} of ${GALLERY.length}: ${shot.alt}`}
+                  aria-current={selected ? "true" : undefined}
+                  className={`h-1.5 rounded-full transition-[width,background-color] duration-[var(--motion-base)] ease-[var(--ease-out)] ${
+                    selected
+                      ? "w-6 bg-[var(--color-resin)]"
+                      : "w-1.5 bg-white/35 hover:bg-white/55"
+                  }`}
                 />
-                <figcaption className="sr-only">{shot.alt}</figcaption>
-              </figure>
-            </StaggerItem>
-          ))}
-        </Stagger>
+              );
+            })}
+          </div>
+        </div>
       </div>
     </section>
   );

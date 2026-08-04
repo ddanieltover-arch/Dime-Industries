@@ -49,7 +49,7 @@ From `GO_LIVE.md` matrix, plus:
 
 | Variable | Required? | Notes |
 |---|---|---|
-| `NEXT_PUBLIC_APP_URL` | **Yes** | `https://www.dimeindustries.us` |
+| `NEXT_PUBLIC_APP_URL` | **Yes** | Must be `https://dimeindustries.us` after domain attach |
 | `ALLOW_DEMO_AUTH` | **Must be unset** | Production fail-closed |
 | `DATABASE_URL` | Strongly recommended | Durable orders/cart/loyalty when set |
 | `NEXT_PUBLIC_SUPABASE_URL` / `ANON_KEY` | Recommended | Real auth; no demo on public site |

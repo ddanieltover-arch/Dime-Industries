@@ -1,6 +1,5 @@
 node_modules/
 .next/
-.tmp/
 .env
 .env.*
 !.env.example
@@ -11,5 +10,3 @@ coverage/
 playwright-report/
 test-results/
 *.tsbuildinfo
-docs/seo/_lh_*.json
-docs/seo/_lh_extra_headers.json

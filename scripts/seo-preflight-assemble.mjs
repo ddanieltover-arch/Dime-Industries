@@ -312,7 +312,7 @@ async function main() {
         id: "dime-roll-fact-check",
         severity: "critical",
         finding:
-          "SERP consensus for 'how many dimes in a roll' is 50 coins / $5. Seed post must match (guarded in seo-audit); flag if live HTML still says 40 / $4.",
+          "SERP consensus for 'how many dimes in a roll' is 50 coins / $5. Site post currently states 40 / $4 — fix before SEO promotion.",
       },
       {
         id: "age-gate-html",
@@ -325,7 +325,7 @@ async function main() {
         id: "www-vs-apex",
         severity: "high",
         finding:
-          "Sitemap/canonicals must use www; apex → www permanent redirect required in next.config/vercel.json.",
+          "Sitemap/canonicals use apex https://dimeindustries.us while production responds on www. Confirm redirect preference + GSC domain property.",
       },
       {
         id: "lcp-budget",
@@ -513,9 +513,9 @@ async function main() {
 
 ## Critical / high findings
 
-1. **Dime roll fact check:** SERPs say **50 dimes / $5** — seed/content must match (CI-guarded). Re-probe live HTML if CMS overrides exist.
+1. **CRITICAL — Dime roll fact check:** SERPs say **50 dimes / $5**; site blog says **40 / $4**. Fix before ranking push.
 2. **HIGH — Age gate HTML:** Catalog/product probes show H1 “Are you over 21?” without cookie.
-3. **www vs apex:** Preferred host is www; ensure apex redirects + GSC Domain property.
+3. **HIGH — www vs apex:** Canonical/sitemap apex vs live www — consolidate redirects + GSC property.
 4. **HIGH — LCP:** Home LCP ~3.6s (fail); other landers ~2.7–3.5s (fail threshold 2.5s). Homepage CLS ~0.15 (fail).
 5. **HIGH — Legacy .com cannibalization:** \`dimeindustries.com\` still owns brand SERPs.
 
