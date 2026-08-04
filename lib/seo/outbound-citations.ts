@@ -82,5 +82,6 @@ export function outboundCitationsFor(key: string): readonly OutboundCitation[] {
   if (OUTBOUND_BY_KEY[key]) return OUTBOUND_BY_KEY[key]!;
   if (key.startsWith("product:")) return OUTBOUND_BY_KEY.product ?? [];
   if (key.startsWith("/shop")) return OUTBOUND_BY_KEY["/shop"] ?? [];
-  return [];
+  // Blog posts without a bespoke map still get educational outbound links
+  return [CA_CANNABIS, MA_CANNABIS, LEAFLY_STRAIN_HUB];
 }

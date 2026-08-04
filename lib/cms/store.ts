@@ -4,6 +4,8 @@ import { cache } from "react";
 import { cookies } from "next/headers";
 import { z } from "zod";
 import { DEFAULT_HOMEPAGE_LAYOUT, normalizeHomepageLayout } from "./homepage-layout";
+import { CALENDAR_POSTS_2026 } from "./calendar-posts-2026";
+import { BEGINNERS_GUIDE_PILLAR } from "./posts/beginners-guide-to-dime-carts";
 import type { BlogPost, CmsPage, HomepageBanner, HomepageLayout } from "./types";
 
 /** Fail soft instead of hanging the storefront when Postgres stalls. */
@@ -74,9 +76,9 @@ const DEFAULT_PAGES: CmsPage[] = [
   {
     slug: "faq",
     title: "Frequently Asked Questions",
-    body: "### What is DIME Industries?\nDIME Industries is a licensed cannabis brand founded in 2016. DIME makes vapes, gummies, softgels, and prerolls, and engineers its own hardware. The brand has won more than 100 industry awards.\n\n### Where can I find the closest store?\nUse Find DIME on this site to browse locations by state, or shop online for CA and MA delivery.\n\n### How do I know my DIME product is authentic?\nScratch the validation code on the package, then register it at Validate. Validation confirms authenticity and unlocks limited warranty, loyalty points, and early access.\n\n### What products does DIME make?\nAll-in-one vapes, tanks, 510-thread batteries, gummies, softgels, and prerolls across Signature, Live Reserve, Balanced, Rosin, State Exclusive, and Collaborations lines.\n\n### Does DIME run sales or a rewards program?\nYes. See Promotions for current offers. Rewards members earn points, discounts, and early access when they validate products and shop.\n\n### Will another brand's battery work with a DIME tank?\nMost 510 batteries work, but air-draw batteries without a button and weaker batteries under 3.7v often fail. Use a DIME 5th Gen battery for best results.\n\n### What is the shelf life of edibles?\nSeveral months when stored cool and dry.",
+    body: "### What is DIME Industries?\nDIME Industries is a licensed cannabis brand founded in 2016. DIME makes vapes, gummies, softgels, and prerolls, and engineers its own hardware. The brand has won more than 100 industry awards.\n\n### Where can I find the closest store?\nUse Find DIME on this site to browse locations by state, or shop online for CA and MA delivery.\n\n### How do I know my DIME product is authentic?\nScratch the validation code on the package, then register it at Validate. Validation confirms authenticity and unlocks limited warranty, loyalty points, and early access.\n\n### What products does DIME make?\nAll-in-one vapes, tanks, 510-thread batteries, gummies, softgels, and prerolls across Signature, Live Reserve, Balanced, Rosin, State Exclusive, and Collaborations lines.\n\n### Does DIME run sales or a rewards program?\nYes. See Promotions for current offers. Rewards members earn points, discounts, and early access when they validate products and shop.\n\n### Will another brand's battery work with a DIME tank?\nMost 510 batteries work, but air-draw batteries without a button and weaker batteries under 3.7v often fail. Use a DIME 5th Gen battery for best results.\n\n### What voltage / heat setting should I use on a Dime cart?\nStart on a mid heat preset. Raise only if vapor is thin; lower if flavor tastes harsh. Avoid chain-hitting on max heat. Full walkthrough: [How to use a Dime cart](/blog/how-to-use-a-dime-cart).\n\n### Why is there leftover oil in my cart?\nThick oil can cling near the end of a fill, especially if the device runs cool or sits on its side. Warm gently, reseat on a charged battery, and take slow pulls. Do not puncture hardware. See [Why is my Dime cart clogged?](/blog/why-is-my-dime-cart-clogged).\n\n### What is the shelf life of edibles?\nSeveral months when stored cool and dry.",
     status: "published",
-    updatedAt: "2026-07-01T00:00:00.000Z",
+    updatedAt: "2026-08-04T12:00:00.000Z",
   },
   {
     slug: "contact",
@@ -592,10 +594,14 @@ No. This article covers United States circulating coin rolls. Other countries se
 
 ### Is this article about DIME cannabis products?
 
-The primary answer is about U.S. coin rolls. DIME Industries product links are optional next steps for readers looking for the brand - for adults 21+ (or qualifying patients) in legal markets only.`,
+The primary answer is about U.S. coin rolls. DIME Industries product links are optional next steps for readers looking for the brand - for adults 21+ (or qualifying patients) in legal markets only.
+
+### Last reviewed
+
+Reviewed 2026-08-04 — coin fact unchanged (50 dimes / $5). Brand next step: [Beginner’s guide to Dime carts](/blog/beginners-guide-to-dime-carts).`,
     status: "published",
     publishedAt: "2026-08-02T00:00:00.000Z",
-    updatedAt: "2026-08-03T10:00:00.000Z",
+    updatedAt: "2026-08-04T18:00:00.000Z",
   },
   {
     slug: "what-is-a-dime-cart",
@@ -652,10 +658,14 @@ Many DIME tanks use a universal 510 thread, but DIME recommends its own batterie
 
 ### How do I verify a Dime cart is real?
 
-Purchase from a licensed retailer, then use [Validate](/validate) and review [Lab Results](/lab-results) when available.`,
+Purchase from a licensed retailer, then use [Validate](/validate) and review [Lab Results](/lab-results) when available.
+
+### Last reviewed
+
+Reviewed 2026-08-04 against current [DIME carts & vape pens](/shop/vapes) hubs and the long-form [Beginner’s guide to Dime carts](/blog/beginners-guide-to-dime-carts).`,
     status: "published",
     publishedAt: "2026-08-03T00:00:00.000Z",
-    updatedAt: "2026-08-03T00:00:00.000Z",
+    updatedAt: "2026-08-04T18:00:00.000Z",
   },
   {
     slug: "dime-cart-vs-disposable",
@@ -708,10 +718,14 @@ Potency depends on the extract and batch, not only the format. Compare labels an
 
 ### Where should I buy either format?
 
-Only from licensed retailers or authorized online channels. Use [Find DIME](/locations) and [Validate](/validate).`,
+Only from licensed retailers or authorized online channels. Use [Find DIME](/locations) and [Validate](/validate).
+
+### Last reviewed
+
+Reviewed 2026-08-04 — disposables landing at [/shop/vapes/disposables](/shop/vapes/disposables); full beginner path in [Beginner’s guide](/blog/beginners-guide-to-dime-carts).`,
     status: "published",
     publishedAt: "2026-08-03T00:10:00.000Z",
-    updatedAt: "2026-08-03T00:10:00.000Z",
+    updatedAt: "2026-08-04T18:00:00.000Z",
   },
   {
     slug: "dime-live-reserve-explained",
@@ -760,10 +774,14 @@ Yes where listed — tanks/carts and all-in-ones can both appear in Live Reserve
 
 ### Where can I buy Live Reserve near me?
 
-Use [Find DIME](/locations) or shop online where DIME sells in your state.`,
+Use [Find DIME](/locations) or shop online where DIME sells in your state.
+
+### Last reviewed
+
+Reviewed 2026-08-04 with [melted diamonds explainer](/blog/melted-diamonds-vape-explained) and [Beginner’s guide](/blog/beginners-guide-to-dime-carts) cross-links.`,
     status: "published",
     publishedAt: "2026-08-03T00:20:00.000Z",
-    updatedAt: "2026-08-03T00:20:00.000Z",
+    updatedAt: "2026-08-04T18:00:00.000Z",
   },
   {
     slug: "signature-vs-live-reserve",
@@ -869,10 +887,14 @@ Treat it as potentially fraudulent. Contact the licensed retailer and official s
 
 ### Where should I buy to avoid fakes?
 
-Licensed dispensaries and authorized DIME online shopping where available — start at [Find DIME](/locations).`,
+Licensed dispensaries and authorized DIME online shopping where available — start at [Find DIME](/locations).
+
+### Last reviewed
+
+Reviewed 2026-08-04 — keep pairing this checklist with [Validate](/validate) and the [Beginner’s guide](/blog/beginners-guide-to-dime-carts) trust section.`,
     status: "published",
     publishedAt: "2026-08-03T00:40:00.000Z",
-    updatedAt: "2026-08-03T00:40:00.000Z",
+    updatedAt: "2026-08-04T18:00:00.000Z",
   },
   {
     slug: "how-to-use-a-dime-cart",
@@ -927,6 +949,8 @@ This article is for educational purposes only. It is not medical advice. DIME pr
     publishedAt: "2026-08-03T12:00:00.000Z",
     updatedAt: "2026-08-03T12:00:00.000Z",
   },
+  ...CALENDAR_POSTS_2026.filter((p) => p.slug !== BEGINNERS_GUIDE_PILLAR.slug),
+  BEGINNERS_GUIDE_PILLAR,
 ];
 
 const DEFAULT_BANNER: HomepageBanner = {

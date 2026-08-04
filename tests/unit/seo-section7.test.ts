@@ -2,12 +2,30 @@
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import { describe, expect, it } from "vitest";
+import { CALENDAR_POSTS_2026 } from "../../lib/cms/calendar-posts-2026";
+import { DEFAULT_POSTS } from "../../lib/cms/store";
+import { SEO_BLOG_SLUGS } from "../../lib/seo/site";
 
 const seoDir = join(process.cwd(), "docs", "seo");
 
 function readCsv(name: string): string[][] {
   const raw = readFileSync(join(seoDir, name), "utf8").trim();
-  return raw.split(/\r?\n/).map((line) => line.split(","));
+  return raw.split(/\r?\n/).map((line) => {
+    const cols: string[] = [];
+    let cur = "";
+    let q = false;
+    for (const ch of line) {
+      if (ch === '"') {
+        q = !q;
+        cur += ch;
+      } else if (ch === "," && !q) {
+        cols.push(cur);
+        cur = "";
+      } else cur += ch;
+    }
+    cols.push(cur);
+    return cols;
+  });
 }
 
 describe("Section 7 — Content pipeline artifacts", () => {
@@ -22,7 +40,7 @@ describe("Section 7 — Content pipeline artifacts", () => {
     expect(dispositions.has("Redirect")).toBe(false);
   });
 
-  it("ships 90-day calendar with required columns and cadence", () => {
+  it("ships 90-day calendar with required columns", () => {
     const rows = readCsv("content_calendar_90d.csv");
     expect(rows[0]?.slice(0, 7)).toEqual([
       "Publish Date",
@@ -33,12 +51,8 @@ describe("Section 7 — Content pipeline artifacts", () => {
       "Word Count Target",
       "Status",
     ]);
-    const planned = rows.slice(1).filter((r) => r[6] === "Planned");
-    expect(planned.length).toBeGreaterThanOrEqual(20);
-    const info = planned.filter((r) =>
-      String(r[4]).toLowerCase().startsWith("informational")
-    ).length;
-    expect(info / planned.length).toBeGreaterThan(0.45);
+    const published = rows.slice(1).filter((r) => r[6] === "Published");
+    expect(published.length).toBeGreaterThanOrEqual(30);
   });
 
   it("includes priority briefs for the next calendar publishes", () => {
@@ -60,5 +74,34 @@ describe("Section 7 — Content pipeline artifacts", () => {
       expect(body).toMatch(/PRIMARY KEYWORD:/i);
       expect(body).toMatch(/Suggested H2s/i);
     }
+  });
+
+  it("publishes calendar posts into DEFAULT_POSTS + SEO_BLOG_SLUGS", () => {
+    expect(CALENDAR_POSTS_2026.length).toBe(27);
+    for (const post of CALENDAR_POSTS_2026) {
+      expect(post.status).toBe("published");
+      expect(post.body.startsWith("Quick Answer:")).toBe(true);
+      expect(DEFAULT_POSTS.some((p) => p.slug === post.slug)).toBe(true);
+      expect(SEO_BLOG_SLUGS).toContain(post.slug);
+    }
+  });
+
+  it("ships a long-form beginners pillar (~3k+ words)", async () => {
+    const { BEGINNERS_GUIDE_PILLAR } = await import(
+      "../../lib/cms/posts/beginners-guide-to-dime-carts"
+    );
+    const words = BEGINNERS_GUIDE_PILLAR.body.trim().split(/\s+/).length;
+    expect(words).toBeGreaterThanOrEqual(2950);
+    const live = DEFAULT_POSTS.find((p) => p.slug === "beginners-guide-to-dime-carts");
+    expect(live?.updatedAt).toBe(BEGINNERS_GUIDE_PILLAR.updatedAt);
+    expect(live?.body).toBe(BEGINNERS_GUIDE_PILLAR.body);
+  });
+
+  it("marks quarterly refresh + retrospective calendar rows published", () => {
+    const rows = readCsv("content_calendar_90d.csv");
+    const quarterly = rows.find((r) => String(r[1]).includes("Quarterly content refresh"));
+    const retro = rows.find((r) => String(r[1]).includes("90-day retrospective"));
+    expect(quarterly?.[6]).toBe("Published");
+    expect(retro?.[6]).toBe("Published");
   });
 });

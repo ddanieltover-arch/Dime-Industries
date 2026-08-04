@@ -20,12 +20,14 @@ import { JsonLdScript } from "@/components/seo/json-ld-script";
 type Params = Promise<{ state: string }>;
 
 const EXPLORE_LINKS = [
-  { href: "/shop/vapes", label: "DIME carts & vapes" },
+  { href: "/shop/vapes", label: "DIME carts & vape pens" },
   { href: "/shop/vapes/live-reserve", label: "Live Reserve" },
   { href: "/shop/vapes/rosin", label: "Rosin" },
   { href: "/validate", label: "Validate authenticity" },
   { href: "/lab-results", label: "Lab results" },
   { href: "/blog/what-is-a-dime-cart", label: "What is a Dime cart?" },
+  { href: "/blog/how-to-spot-fake-dime-carts", label: "Spot fake Dime carts" },
+  { href: "/blog/beginners-guide-to-dime-carts", label: "Beginner’s guide" },
 ] as const;
 
 export function generateStaticParams() {
@@ -41,7 +43,7 @@ export async function generateMetadata({ params }: { params: Params }): Promise<
     .map((c) => c.name)
     .join(", ");
   return {
-    title: `Find DIME in ${state.name}`,
+    title: state.slug === "nevada" ? "Find DIME THC in Las Vegas & Nevada" : `Find DIME in ${state.name}`,
     description: `${state.blurb}${cityHint ? ` Cities include ${cityHint}.` : ""}`,
     alternates: { canonical: `/locations/${state.slug}` },
   };
@@ -170,6 +172,43 @@ export default async function LocationStatePage({ params }: { params: Params }) 
           ) : null}
         </div>
       </section>
+
+      {state.purchasableOnline ? (
+        <section
+          id="delivery"
+          aria-labelledby="delivery-heading"
+          className="scroll-mt-24 border-b border-[var(--color-border)] bg-[var(--color-surface)]"
+        >
+          <div className="mx-auto max-w-7xl px-[var(--container-pad-x)] py-[var(--section-y)]">
+            <p className="font-[var(--font-display)] text-[10px] uppercase tracking-[0.18em] text-[var(--color-resin)]">
+              Delivery
+            </p>
+            <h2 id="delivery-heading" className="section-title mt-2">
+              DIME delivery in {state.name}
+            </h2>
+            <p className="mt-4 max-w-2xl text-[var(--scale-base)] leading-relaxed text-[var(--color-ink-soft)]">
+              Licensed online shopping for DIME is available in {state.code} after age verification. Browse{" "}
+              <Link href="/shop/vapes" className="text-[var(--color-resin)] hover:underline">
+                carts &amp; vapes
+              </Link>
+              , confirm your jurisdiction at checkout, and validate authenticity after delivery. Prefer in-person
+              pickup? Use the retailer map below or read{" "}
+              <Link href="/blog/buy-dime-carts-online" className="text-[var(--color-resin)] hover:underline">
+                Can I buy Dime carts online?
+              </Link>
+              .
+            </p>
+            <div className="mt-8 flex flex-wrap gap-3">
+              <Link href="/shop" className="btn-primary">
+                Shop online in {state.code}
+              </Link>
+              <Link href="/blog/where-to-buy-dime-carts" className="btn-outline">
+                Where to buy (licensed only)
+              </Link>
+            </div>
+          </div>
+        </section>
+      ) : null}
 
       <section
         aria-labelledby="cities-heading"

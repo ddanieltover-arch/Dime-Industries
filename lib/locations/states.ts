@@ -171,21 +171,83 @@ export const LOCATION_STATES: LocationState[] = [
     code: "NV",
     purchasableOnline: false,
     blurb:
-      "Find DIME Industries in Nevada at authorized licensed retailers — Las Vegas and statewide. Online checkout is not available in NV yet.",
-    h1: "Find DIME in Nevada",
+      "Find DIME THC products in Las Vegas and Nevada at licensed retailers — carts, Live Reserve, edibles. Online checkout not available in NV yet.",
+    h1: "Find DIME in Las Vegas & Nevada",
     answer:
-      "Buy DIME in Nevada at authorized licensed retailers. Online checkout is not available for NV on this site yet. Ask for DIME carts, Live Reserve, and edibles where stocked, then validate your pack after purchase.",
+      "Looking for DIME THC in Las Vegas? Buy only from authorized licensed Nevada dispensaries — online checkout for NV is not on this site yet. Ask for DIME carts, Live Reserve, Rosin, and edibles by brand name, then validate your pack after purchase.",
     body: [
-      "Las Vegas and other NV markets rotate SKUs frequently. Ask for DIME Industries explicitly so budtenders can check live inventory.",
+      "Las Vegas and Henderson menus rotate quickly. Say “DIME Industries” at the counter so budtenders can check live inventory for Signature, Live Reserve, and edibles.",
+      "DIME does not operate dispensaries in Nevada. Use the city map links below to search licensed cannabis retailers near the Las Vegas Strip, Summerlin, Paradise, North Las Vegas, and Reno — then confirm DIME is on the shelf before you go.",
+      "After a licensed purchase, scratch and validate the pack on Validate, and look up batch data on Lab Results. Skip unverified “DIME THC Las Vegas” social sellers — counterfeits are common around tourist markets.",
     ],
     cities: [
-      { name: "Las Vegas", note: "Ask licensed LV retailers for DIME carts and edibles." },
-      { name: "Henderson", note: "Confirm Signature and Live Reserve availability." },
-      { name: "Reno", note: "Menus vary — ask for DIME by brand name." },
+      {
+        name: "Las Vegas",
+        note: "Primary hub for DIME THC searches — ask licensed LV dispensaries for carts, Live Reserve, and edibles.",
+      },
+      {
+        name: "Paradise",
+        note: "Strip-adjacent licensed retailers; confirm DIME stock before visiting.",
+      },
+      {
+        name: "Summerlin",
+        note: "West LV suburbs — ask for Signature and Live Reserve by name.",
+      },
+      {
+        name: "North Las Vegas",
+        note: "Check licensed shops for current DIME cart and edible menus.",
+      },
+      {
+        name: "Henderson",
+        note: "Confirm Signature, Live Reserve, and accessory availability.",
+      },
+      {
+        name: "Reno",
+        note: "Northern NV menus vary — ask for DIME Industries by brand.",
+      },
     ],
-    askFor: ["Signature carts", "Live Reserve", "Edibles", "Batteries & accessories"],
-    faqs: baseFaqs({ name: "Nevada", code: "NV", purchasableOnline: false }),
-    retailers: [{ name: "Authorized NV retailers", city: "Statewide" }],
+    askFor: [
+      "Signature carts",
+      "Live Reserve",
+      "Rosin (if stocked)",
+      "Edibles",
+      "Batteries & accessories",
+    ],
+    faqs: [
+      {
+        question: "Where can I buy DIME THC in Las Vegas?",
+        answer:
+          "Only at licensed Nevada cannabis dispensaries that stock DIME. Use Find DIME’s Las Vegas map search, ask for DIME Industries by name, then validate authenticity after purchase. This site does not offer NV online checkout yet.",
+      },
+      {
+        question: "Does DIME deliver in Las Vegas?",
+        answer:
+          "Not through this storefront. Nevada shoppers should buy in person at authorized licensed retailers. California and Massachusetts have authorized online paths elsewhere on Find DIME.",
+      },
+      {
+        question: "What DIME products are common in Nevada?",
+        answer:
+          "Ask for Signature and Live Reserve carts, edibles, and DIME batteries where stocked. Menus change — confirm the day’s inventory with the dispensary and check Lab Results for the batch.",
+      },
+      {
+        question: "How do I avoid fake DIME carts in Las Vegas?",
+        answer:
+          "Buy licensed only, skip tourist gray-market offers, then Validate the pack. Read How to spot fake Dime carts on the blog for packaging red flags.",
+      },
+      ...baseFaqs({ name: "Nevada", code: "NV", purchasableOnline: false }),
+    ],
+    retailers: [
+      {
+        name: "Authorized Las Vegas–area retailers",
+        city: "Las Vegas metro",
+        note: "Use the city map links to find licensed dispensaries; ask for DIME by brand.",
+      },
+      {
+        name: "Authorized NV retailers",
+        city: "Statewide",
+        note: "Availability is shop-specific across Nevada.",
+      },
+    ],
   },
   {
     slug: "new-jersey",

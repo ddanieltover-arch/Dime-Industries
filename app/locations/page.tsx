@@ -11,9 +11,9 @@ import { buildBreadcrumbJsonLd, buildLocationsHubJsonLd } from "@/lib/seo/json-l
 import { outboundCitationsFor } from "@/lib/seo/outbound-citations";
 
 export const metadata: Metadata = {
-  title: "Find DIME Near Me",
+  title: "Find DIME Near Me — Licensed Dispensaries",
   description:
-    "Find DIME Industries carts, vapes, and edibles near you — locate licensed retailers by state or shop online where available.",
+    "Find a DIME dispensary or licensed retailer near you — carts, vape pens, edibles, and prerolls by state. Shop online in CA & MA where available.",
   alternates: { canonical: "/locations" },
 };
 
@@ -56,8 +56,8 @@ export default function LocationsPage() {
             Find DIME Near Me
           </h1>
           <p className="rise rise-delay-2 mt-4 max-w-md text-[var(--scale-base)] leading-relaxed text-white/80">
-            Locate licensed retailers that stock DIME carts, vapes, and edibles — or shop online for delivery in
-            California and Massachusetts.
+            Locate a licensed DIME dispensary or retailer for carts, vape pens, edibles, and prerolls — or shop
+            online for delivery in California and Massachusetts.
           </p>
           <div className="rise rise-delay-3 mt-8 flex flex-wrap gap-3">
             <a href="#states" className="btn-primary">

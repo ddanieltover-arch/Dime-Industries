@@ -114,7 +114,33 @@ export default async function BlogPostPage({ params }: { params: Params }) {
               },
             ],
           })
-        : null;
+        : post.slug === "how-to-charge-a-dime-battery"
+          ? buildHowToJsonLd({
+              name: post.title,
+              description: post.excerpt,
+              url: `/blog/${post.slug}`,
+              steps: [
+                { name: "Power off if needed", text: "Power the device off if your model has a switch or timeout." },
+                { name: "Connect USB-C", text: "Connect USB-C to the battery or all-in-one charge port." },
+                { name: "Use a known-good adapter", text: "Use a known-good wall adapter and avoid damaged cables." },
+                { name: "Charge fully", text: "Charge until indicators show ready; do not leave on unsafe chargers overnight." },
+                { name: "Reseat the cart", text: "Disconnect, then reseat the cart before your next session." },
+              ],
+            })
+          : post.slug === "why-is-my-dime-cart-clogged"
+            ? buildHowToJsonLd({
+                name: post.title,
+                description: post.excerpt,
+                url: `/blog/${post.slug}`,
+                steps: [
+                  { name: "Warm gently", text: "Warm the cart gently in a pocket — never use open flame." },
+                  { name: "Clear the mouthpiece", text: "Clear the mouthpiece carefully without sharp tools that damage seals." },
+                  { name: "Reseat on charged battery", text: "Reseat on a fully charged battery and start on mid heat." },
+                  { name: "Take slow pulls", text: "Take slow pulls and avoid rapid chain hits." },
+                  { name: "Validate if still blocked", text: "If airflow stays blocked, stop and validate authenticity." },
+                ],
+              })
+            : null;
 
   const published = new Date(post.publishedAt).toLocaleDateString("en-US", {
     month: "long",

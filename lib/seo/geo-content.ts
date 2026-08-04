@@ -87,7 +87,23 @@ export const GLOSSARY_TERMS: GlossaryTerm[] = [
     synonyms: ["state exclusives"],
     definition:
       "State Exclusive is a DIME vape collection with region-inspired flavors on core DIME hardware, sold through licensed retailers in participating markets.",
-    href: "/blog/how-dime-state-exclusives-capture-a-place",
+    href: "/blog/dime-state-exclusive-guide",
+  },
+  {
+    id: "balanced",
+    term: "Balanced",
+    synonyms: ["DIME Balanced", "balanced line"],
+    definition:
+      "Balanced is a DIME product line for ratio-minded cannabis formats in licensed markets. Availability varies by jurisdiction — confirm the line on the package and the batch on Lab Results.",
+    href: "/blog/dime-balanced-explained",
+  },
+  {
+    id: "collabs",
+    term: "Collabs",
+    synonyms: ["DIME Collabs", "collaborations", "DIME collaborations"],
+    definition:
+      "Collabs are collaborative DIME flavor or product drops built on DIME hardware and sold through licensed channels when listed — menus and partners vary by market.",
+    href: "/shop/vapes",
   },
   {
     id: "dime-roll",

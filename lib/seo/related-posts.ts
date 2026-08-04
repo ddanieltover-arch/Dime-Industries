@@ -72,6 +72,150 @@ export const BLOG_CLUSTER_MAP: Record<string, readonly string[]> = {
     "how-to-spot-fake-dime-carts",
     "dime-live-reserve-explained",
   ],
+  "best-dime-industries-flavors": [
+    "signature-vs-live-reserve",
+    "dime-signature-explained",
+    "dime-live-reserve-explained",
+    "what-is-dime-rosin",
+  ],
+  "live-resin-vs-live-rosin": [
+    "dime-live-reserve-explained",
+    "what-is-dime-rosin",
+    "signature-vs-live-reserve",
+    "solventless-cart-guide",
+  ],
+  "how-to-charge-a-dime-battery": [
+    "how-to-use-a-dime-cart",
+    "what-battery-for-dime-cart",
+    "dime-hardware-accessories-guide",
+    "built-to-beat-leaks-the-dime-hardware-story",
+  ],
+  "what-is-in-a-dime-cartridge": [
+    "what-is-a-dime-cart",
+    "dime-live-reserve-explained",
+    "melted-diamonds-vape-explained",
+    "how-to-read-a-dime-coa",
+  ],
+  "are-dime-carts-worth-it": [
+    "what-is-a-dime-cart",
+    "how-to-spot-fake-dime-carts",
+    "dime-warranty-and-validate",
+    "beginners-guide-to-dime-carts",
+  ],
+  "why-is-my-dime-cart-clogged": [
+    "how-to-use-a-dime-cart",
+    "how-to-store-a-dime-cart",
+    "how-to-charge-a-dime-battery",
+    "how-to-spot-fake-dime-carts",
+  ],
+  "how-to-store-a-dime-cart": [
+    "how-to-use-a-dime-cart",
+    "why-is-my-dime-cart-clogged",
+    "how-to-charge-a-dime-battery",
+  ],
+  "what-is-dime-rosin": [
+    "solventless-cart-guide",
+    "live-resin-vs-live-rosin",
+    "dime-live-reserve-explained",
+  ],
+  "solventless-cart-guide": [
+    "what-is-dime-rosin",
+    "live-resin-vs-live-rosin",
+    "beginners-guide-to-dime-carts",
+  ],
+  "dime-signature-explained": [
+    "signature-vs-live-reserve",
+    "best-dime-industries-flavors",
+    "what-is-a-dime-cart",
+  ],
+  "melted-diamonds-vape-explained": [
+    "dime-live-reserve-explained",
+    "signature-vs-live-reserve",
+    "what-is-in-a-dime-cartridge",
+  ],
+  "dime-edibles-buying-guide": [
+    "shopping-by-potency",
+    "how-we-publish-coas",
+    "best-dime-industries-flavors",
+  ],
+  "dime-prerolls-buying-guide": [
+    "dime-prerolls-are-coming-meet-dimepack-double-ds",
+    "shopping-by-potency",
+    "how-we-publish-coas",
+  ],
+  "how-to-read-a-dime-coa": [
+    "how-we-publish-coas",
+    "lab-tested-dime-carts",
+    "shopping-by-potency",
+  ],
+  "dime-warranty-and-validate": [
+    "how-to-spot-fake-dime-carts",
+    "how-we-publish-coas",
+    "dime-rewards-explained",
+  ],
+  "beginners-guide-to-dime-carts": [
+    "what-is-a-dime-cart",
+    "dime-cart-vs-disposable",
+    "how-to-use-a-dime-cart",
+    "how-to-spot-fake-dime-carts",
+    "signature-vs-live-reserve",
+    "are-dime-carts-worth-it",
+  ],
+  "what-battery-for-dime-cart": [
+    "how-to-charge-a-dime-battery",
+    "dime-hardware-accessories-guide",
+    "how-to-use-a-dime-cart",
+  ],
+  "dime-balanced-explained": [
+    "dime-signature-explained",
+    "shopping-by-potency",
+    "beginners-guide-to-dime-carts",
+  ],
+  "dime-state-exclusive-guide": [
+    "how-dime-state-exclusives-capture-a-place",
+    "find-dime-phoenix-arizona",
+    "best-dime-industries-flavors",
+  ],
+  "buy-dime-carts-online": [
+    "where-to-buy-dime-carts",
+    "how-to-spot-fake-dime-carts",
+    "beginners-guide-to-dime-carts",
+  ],
+  "dime-rewards-explained": [
+    "dime-warranty-and-validate",
+    "dime-promotions-safe-shopping",
+    "how-to-spot-fake-dime-carts",
+  ],
+  "dime-hardware-accessories-guide": [
+    "what-battery-for-dime-cart",
+    "how-to-charge-a-dime-battery",
+    "built-to-beat-leaks-the-dime-hardware-story",
+  ],
+  "lab-tested-dime-carts": [
+    "how-to-read-a-dime-coa",
+    "how-we-publish-coas",
+    "how-to-spot-fake-dime-carts",
+  ],
+  "where-to-buy-dime-carts": [
+    "buy-dime-carts-online",
+    "how-to-spot-fake-dime-carts",
+    "find-dime-los-angeles-orange-county",
+  ],
+  "find-dime-los-angeles-orange-county": [
+    "where-to-buy-dime-carts",
+    "buy-dime-carts-online",
+    "dime-state-exclusive-guide",
+  ],
+  "find-dime-phoenix-arizona": [
+    "dime-state-exclusive-guide",
+    "how-dime-state-exclusives-capture-a-place",
+    "where-to-buy-dime-carts",
+  ],
+  "dime-promotions-safe-shopping": [
+    "how-to-spot-fake-dime-carts",
+    "dime-rewards-explained",
+    "where-to-buy-dime-carts",
+  ],
 };
 
 const DEFAULT_SIDEBAR: readonly BlogSidebarLink[] = [
@@ -252,25 +396,29 @@ export type CatalogSeoLink = { href: string; label: string };
 export function catalogSeoLinks(basePath: string): CatalogSeoLink[] {
   if (basePath === "/shop/vapes") {
     return [
+      { href: "/blog/beginners-guide-to-dime-carts", label: "Beginner’s guide to Dime carts" },
       { href: "/blog/what-is-a-dime-cart", label: "What is a Dime cart?" },
+      { href: "/blog/best-dime-industries-flavors", label: "Best DIME flavors" },
       { href: "/blog/dime-cart-vs-disposable", label: "Dime cart vs disposable" },
-      { href: "/shop/vapes/disposables", label: "DIME disposables guide" },
-      { href: "/shop/vapes/rosin", label: "DIME Industries rosin" },
-      { href: "/shop/vapes/live-reserve", label: "Live Reserve" },
+      { href: "/shop/vapes/disposables", label: "DIME disposables / pens guide" },
       { href: "/shop/vapes/signature", label: "Signature carts" },
+      { href: "/shop/vapes/live-reserve", label: "Live Reserve" },
+      { href: "/shop/vapes/rosin", label: "DIME Industries rosin" },
     ];
   }
   if (basePath === "/shop/vapes/disposables") {
     return [
       { href: "/blog/dime-cart-vs-disposable", label: "Cart vs disposable" },
-      { href: "/shop/vapes", label: "Shop all DIME carts" },
+      { href: "/shop/vapes", label: "Shop all DIME carts & pens" },
       { href: "/blog/what-is-a-dime-cart", label: "What is a Dime cart?" },
       { href: "/shop/vapes/signature", label: "Signature line" },
     ];
   }
   if (basePath === "/shop/vapes/rosin") {
     return [
-      { href: "/blog/what-is-a-dime-cart", label: "What is a Dime cart?" },
+      { href: "/blog/what-is-dime-rosin", label: "What is DIME Rosin?" },
+      { href: "/blog/solventless-cart-guide", label: "Solventless cart guide" },
+      { href: "/blog/live-resin-vs-live-rosin", label: "Live resin vs live rosin" },
       { href: "/shop/edibles/rosin", label: "Rosin edibles" },
       { href: "/shop/vapes", label: "All DIME carts" },
       { href: "/glossary#rosin", label: "Glossary: Rosin" },
@@ -294,19 +442,31 @@ export function catalogSeoLinks(basePath: string): CatalogSeoLink[] {
   if (basePath === "/shop/vapes/signature") {
     return [
       { href: "/blog/signature-vs-live-reserve", label: "Signature vs Live Reserve" },
+      { href: "/blog/best-dime-industries-flavors", label: "Best DIME flavors" },
       { href: "/blog/what-is-a-dime-cart", label: "What is a Dime cart?" },
       { href: "/shop/vapes", label: "All DIME carts" },
       { href: "/product/key-lime-pie", label: "Key Lime Pie" },
       { href: "/product/blackberry-og", label: "Blackberry OG" },
     ];
   }
+  if (basePath === "/shop/prerolls") {
+    return [
+      { href: "/blog/dime-prerolls-buying-guide", label: "Prerolls buying guide" },
+      { href: "/blog/dime-prerolls-are-coming-meet-dimepack-double-ds", label: "Meet DIMEPACK" },
+      { href: "/shop", label: "Shop all DIME" },
+      { href: "/locations", label: "Find DIME retailers" },
+      { href: "/lab-results", label: "Lab results" },
+    ];
+  }
   if (basePath === "/shop") {
     return [
-      { href: "/shop/vapes", label: "DIME carts & vapes" },
+      { href: "/shop/vapes", label: "DIME carts & vape pens" },
+      { href: "/shop/prerolls", label: "Prerolls / flower formats" },
       { href: "/shop/vapes/disposables", label: "Disposables guide" },
       { href: "/shop/vapes/rosin", label: "Rosin" },
-      { href: "/locations", label: "Find DIME near me" },
-      { href: "/blog", label: "Blog guides" },
+      { href: "/blog/best-dime-industries-flavors", label: "Best DIME flavors" },
+      { href: "/locations", label: "Find DIME dispensaries" },
+      { href: "/blog/beginners-guide-to-dime-carts", label: "Beginner’s cart guide" },
     ];
   }
   return [];

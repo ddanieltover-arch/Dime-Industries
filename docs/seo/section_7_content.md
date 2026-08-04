@@ -50,10 +50,11 @@ Earlier gap briefs (what-is-a-dime-cart, cart-vs-disposable, Live Reserve, Signa
 
 ## Still owner / later
 
-- Long-form pillar publish (~3k–4k) on calendar date — not drafted in code yet
-- Quarterly refresh pass (Nov) for top posts’ Last Updated + stats
 - Competitor comparisons only after legal review
 - Ahrefs/Semrush volumes to replace qualitative Volume/Difficulty estimates
+- Re-run quarterly refresh from **GSC top URLs** after cutover (see `quarterly_refresh_2026-q3.md`)
+
+**Executed 2026-08-04:** 27 calendar blog posts; long-form beginners pillar (~3–4k); quarterly top-5 refresh; Q1 backlog doc; disposables/LV/cart-pen gap closes.
 
 ## Tests
 

@@ -1,0 +1,1103 @@
+/**
+ * One-shot generator: writes lib/cms/calendar-posts-2026.ts
+ * Run: node scripts/generate-calendar-posts.mjs
+ */
+import { writeFileSync } from "node:fs";
+import { join, dirname } from "node:path";
+import { fileURLToPath } from "node:url";
+
+const __dirname = dirname(fileURLToPath(import.meta.url));
+const out = join(__dirname, "../lib/cms/calendar-posts-2026.ts");
+
+const disclaimer =
+  "This article is for educational purposes only. It is not medical advice. DIME products are for adults 21+ or qualifying patients in licensed markets. Keep products away from children.";
+
+function post({ slug, title, excerpt, publishedAt, body }) {
+  return { slug, title, excerpt, body: body.trim() + "\n\n" + disclaimer, status: "published", publishedAt, updatedAt: publishedAt };
+}
+
+const posts = [
+  post({
+    slug: "best-dime-industries-flavors",
+    title: "Best DIME Industries flavors (2026 guide)",
+    excerpt:
+      "How to pick DIME flavors by line — Signature, Live Reserve, Rosin, and edibles — then confirm stock at licensed retailers or the shop in CA/MA.",
+    publishedAt: "2026-08-05T12:00:00.000Z",
+    body: `Quick Answer: “Best” DIME flavors depend on whether you want Signature everyday profiles, strain-forward Live Reserve, solventless-style Rosin, or edibles. Start from your preferred extract style, then confirm what’s stocked at a licensed retailer or on the shop in CA/MA — menus change by market.
+
+### How to choose a DIME flavor (by line, not hype)
+
+Skip viral “best of” lists that ignore extract style. Match the line to how you shop: everyday distillate-forward flavor ([Signature](/shop/vapes/signature)), strain-expressive fills ([Live Reserve](/shop/vapes/live-reserve)), or solventless-style options ([Rosin](/shop/vapes/rosin)). Then browse [DIME carts & vapes](/shop/vapes) after age verification.
+
+| Line | Flavor character | Shop path |
+| --- | --- | --- |
+| Signature | Everyday, terpene-enhanced distillate-forward profiles | [Signature](/shop/vapes/signature) |
+| Live Reserve | Strain-forward high-terpene extract with melted diamonds | [Live Reserve](/shop/vapes/live-reserve) |
+| Rosin | Solventless-style extract flavor | [Rosin](/shop/vapes/rosin) |
+| Edibles | Gummy / softgel flavor lanes | [Edibles](/shop/edibles) |
+
+### Signature flavors — what shoppers usually mean
+
+Signature is DIME’s everyday flagship. Popular searchable profiles include [Key Lime Pie](/product/key-lime-pie), [Birthday Cake](/product/birthday-cake), [Blackberry OG](/product/blackberry-og), and [Sour Grape](/product/sour-grape) where your market lists them. Confirm the batch on [Lab Results](/lab-results) — card names summarize style; the COA is the batch record.
+
+### Live Reserve — strain-forward picks
+
+Live Reserve leans strain-expressive. Shoppers often search names like [King Louis XIII](/product/king-louis-xiii) alongside the Live Reserve line page. Read [What is DIME Live Reserve?](/blog/dime-live-reserve-explained) and [Signature vs Live Reserve](/blog/signature-vs-live-reserve) before you treat every “live resin” menu label as the same thing.
+
+### Rosin and edible flavor lanes
+
+Prefer solventless-style extracts? Start at [Rosin vapes](/shop/vapes/rosin) and the companion edible line under [Edibles](/shop/edibles). Flavor availability still varies by jurisdiction — use [Find DIME](/locations) when shopping in person.
+
+### How to verify the batch (COA + Validate)
+
+1. Buy from a licensed channel only.
+2. Match the SKU or name on [Lab Results](/lab-results).
+3. Scratch and [Validate](/validate) the pack for authenticity and warranty paths.
+
+### Frequently asked questions
+
+### What are the best DIME cart flavors?
+
+There is no universal ranking. Pick Signature for everyday profiles, Live Reserve for strain-forward fills, or Rosin for solventless-style options — then confirm local stock.
+
+### Do flavors differ by state?
+
+Yes. Menus and State Exclusive drops vary. Use [Find DIME](/locations) and filter the [shop](/shop/vapes) for your jurisdiction.
+
+### Are edible flavors the same as cart flavors?
+
+Not always. Edibles have their own recipes and potency formats — browse [Edibles](/shop/edibles) separately from vape lines.`,
+  }),
+
+  post({
+    slug: "live-resin-vs-live-rosin",
+    title: "Live resin vs live rosin (and where DIME fits)",
+    excerpt:
+      "Live resin and live rosin are different extract styles. DIME Live Reserve is a brand line; DIME Rosin targets solventless-style shoppers — always read the package and COA.",
+    publishedAt: "2026-08-07T12:00:00.000Z",
+    body: `Quick Answer: Live resin and live rosin are different extract styles — solvent-based vs solventless pathways in common industry language. DIME Live Reserve is a brand line (high-terpene extract with melted diamonds), not a generic “live resin” menu label. DIME Rosin targets solventless-style shoppers. Always read the product line and COA for the SKU you buy.
+
+### What do people mean by live resin?
+
+In retail slang, “live resin” often means a cannabis extract that preserves a fresh-plant terpene character. Menus use the phrase loosely. For a general overview of the term, see [Wikipedia — Live resin](https://en.wikipedia.org/wiki/Live_resin). At DIME, trust the line name on the package over a generic sticker.
+
+### What do people mean by live rosin?
+
+“Live rosin” usually points to a solventless-style pathway. Shoppers who want that lane at DIME should start with [Rosin](/shop/vapes/rosin) and the glossary entry for [Rosin](/glossary#rosin).
+
+### Side-by-side comparison
+
+| Topic | Live resin (menu slang) | Live rosin (common meaning) | DIME path |
+| --- | --- | --- | --- |
+| Process language | Often solvent-based extracts | Often solventless-style | Follow package line name |
+| Flavor pitch | Fresh / terpene-forward | True-to-flower solventless vibe | Live Reserve vs Rosin |
+| Risk | Label mismatch | Label mismatch | Confirm COA + line |
+
+### Where DIME Live Reserve fits
+
+[Live Reserve](/shop/vapes/live-reserve) uses high-terpene extract with melted diamonds for strain-forward sessions. Full explainer: [What is DIME Live Reserve?](/blog/dime-live-reserve-explained). Compare everyday distillate: [Signature vs Live Reserve](/blog/signature-vs-live-reserve).
+
+### Where DIME Rosin fits
+
+[DIME Rosin](/shop/vapes/rosin) is the solventless-style shopping lane — not a substitute label for Live Reserve. Deepen with [What is DIME Rosin?](/blog/what-is-dime-rosin) when you want line-specific detail.
+
+### How to shop without getting lost in labels
+
+1. Read the DIME line on the box.
+2. Open [Lab Results](/lab-results) for the batch.
+3. [Validate](/validate) after purchase.
+4. Prefer [licensed retailers](/locations).
+
+### Frequently asked questions
+
+### Is Live Reserve the same as live resin?
+
+Not necessarily. Menus use “live resin” broadly. Match Live Reserve by name and COA.
+
+### Is DIME Rosin live rosin?
+
+Shop the Rosin line and package language for the SKU you buy — don’t assume every “rosin” sticker matches every menu term.
+
+### Which should I buy first?
+
+If you want strain-forward Live Reserve character, start there. If you prioritize solventless-style extracts, start with Rosin. New to carts? Read [What is a Dime cart?](/blog/what-is-a-dime-cart).`,
+  }),
+
+  post({
+    slug: "how-to-charge-a-dime-battery",
+    title: "How to charge a DIME battery",
+    excerpt:
+      "Charge a DIME battery over USB-C, reseat the cart if it won’t power on, and validate licensed hardware before buying replacements from unverified sellers.",
+    publishedAt: "2026-08-12T12:00:00.000Z",
+    body: `Quick Answer: Charge a DIME battery with the USB-C cable and charger path designed for that device, start from a reasonable charge before sessions, and reseat the cart if the device won’t power on. If hardware still fails after a licensed purchase, validate the product and use official support channels — don’t buy batteries from unverified sellers.
+
+### What you need before charging
+
+An authentic DIME battery or all-in-one from a licensed seller, the supported USB-C cable, and a standard wall adapter. Browse [Accessories](/shop/accessories) for listed batteries. Hardware context: [Built to Beat Leaks](/blog/built-to-beat-leaks-the-dime-hardware-story).
+
+### Step-by-step: how to charge
+
+| Step | Action |
+| --- | --- |
+| 1 | Power the device off if your model has a switch or timeout. |
+| 2 | Connect USB-C to the battery or all-in-one charge port. |
+| 3 | Use a known-good wall adapter — avoid damaged cables. |
+| 4 | Charge until indicators show ready; don’t leave on unsafe chargers overnight. |
+| 5 | Disconnect, then reseat the cart before your next session. |
+
+### Cart attached vs battery-only charging
+
+Many shoppers charge with the cart attached. If the device won’t wake, remove the cart, charge the battery alone, then reseat. Full cart workflow: [How to use a Dime cart](/blog/how-to-use-a-dime-cart).
+
+### Troubleshooting: battery not charging
+
+Check cable, port debris, and whether the pack is authentic via [Validate](/validate). Counterfeit batteries fail unpredictably — buy licensed only via [Find DIME](/locations).
+
+### When to replace vs validate
+
+If a licensed, validated device still won’t charge after cable swaps, contact support with retailer details rather than buying gray-market replacements. See [FAQ](/faq) for warranty pointers.
+
+### Frequently asked questions
+
+### What charger does a DIME battery use?
+
+USB-C is the modern DIME battery path. Use the cable that ships with the device when available.
+
+### Can I charge while using a cart?
+
+Follow your battery or all-in-one instructions. When unsure, finish charging before a session.
+
+### Where do I buy a replacement battery?
+
+[Accessories](/shop/accessories) where listed, or ask a licensed retailer through [Find DIME](/locations).`,
+  }),
+
+  post({
+    slug: "what-is-in-a-dime-cartridge",
+    title: "What is in a Dime cartridge?",
+    excerpt:
+      "A Dime cartridge is engineered hardware plus a line-specific cannabis extract. What’s inside is defined by Signature, Live Reserve, or Rosin — and the batch COA.",
+    publishedAt: "2026-08-14T12:00:00.000Z",
+    body: `Quick Answer: A Dime cartridge is hardware plus a cannabis extract fill that varies by line — Signature everyday profiles, Live Reserve high-terpene extract with melted diamonds, or Rosin solventless-style options. What’s “in” your cart is defined by the product line and the batch Certificate of Analysis (COA), not a single universal formula.
+
+### Hardware vs extract — two parts of “what’s inside”
+
+Hardware: DIME-engineered tanks with ceramic heating goals and 510 compatibility on many SKUs. Extract: the fill named on the line. Definition primer: [What is a Dime cart?](/blog/what-is-a-dime-cart). Hardware deep dive: [Built to Beat Leaks](/blog/built-to-beat-leaks-the-dime-hardware-story).
+
+### Signature, Live Reserve, and Rosin fills
+
+| Line | Fill overview | Shop |
+| --- | --- | --- |
+| Signature | Distillate-forward with terpene enhancement | [Signature](/shop/vapes/signature) |
+| Live Reserve | High-terpene extract with melted diamonds | [Live Reserve](/shop/vapes/live-reserve) |
+| Rosin | Solventless-style extract lane | [Rosin](/shop/vapes/rosin) |
+
+Live Reserve detail: [What is DIME Live Reserve?](/blog/dime-live-reserve-explained). Melted diamonds plain English: [Melted diamonds in vapes](/blog/melted-diamonds-vape-explained).
+
+### How to confirm your batch
+
+Use [Lab Results](/lab-results) with the SKU on the box, then [Validate](/validate). Glossary: [COA](/glossary#coa).
+
+### What DIME does not put on the label
+
+This site does not invent secret formulas or medical effect lists. Trust the package and COA for potency markers. Compliance: adults 21+ or qualifying patients; licensed markets only.
+
+### Frequently asked questions
+
+### Are all Dime carts the same oil?
+
+No. Lines differ. Compare [Signature vs Live Reserve](/blog/signature-vs-live-reserve).
+
+### Where do I see THC for my cart?
+
+On the product card and the batch [Lab Results](/lab-results) record.
+
+### Is ceramic hardware part of “what’s inside”?
+
+Hardware and fill are both part of the product experience — browse [DIME carts & vapes](/shop/vapes).`,
+  }),
+
+  post({
+    slug: "are-dime-carts-worth-it",
+    title: "Are Dime carts worth it?",
+    excerpt:
+      "Judge Dime carts by licensed pricing, line choice, COA transparency, and Validate support — not gray-market deals or social hype.",
+    publishedAt: "2026-08-21T12:00:00.000Z",
+    body: `Quick Answer: Whether a Dime cart is “worth it” depends on licensed pricing in your market, which line you pick (Signature, Live Reserve, or Rosin), and whether you buy authentic product. Evaluate hardware reputation, COA transparency, and Validate/warranty support — not social hype or unverified gray-market deals.
+
+### What “worth it” should mean
+
+Value = authentic hardware + transparent batch data + fair licensed price — not the cheapest unverified listing. Brand context: [Trust](/trust), [Facts](/facts), [About](/about).
+
+### How to compare lines for value
+
+| Priority | Start here |
+| --- | --- |
+| Everyday flavor | [Signature](/shop/vapes/signature) |
+| Strain-forward | [Live Reserve](/shop/vapes/live-reserve) |
+| Solventless-style | [Rosin](/shop/vapes/rosin) |
+
+Read [Signature vs Live Reserve](/blog/signature-vs-live-reserve) and [What is a Dime cart?](/blog/what-is-a-dime-cart).
+
+### Trust signals: COA, Validate, facts
+
+Check [Lab Results](/lab-results), [Validate](/validate), and how we [publish COAs](/blog/how-we-publish-coas). Spot fakes: [How to spot fake Dime carts](/blog/how-to-spot-fake-dime-carts).
+
+### Red flags that make any cart “not worth it”
+
+Missing COA paths, failed validation, prices far below market, and sellers outside [Find DIME](/locations).
+
+### Frequently asked questions
+
+### Is DIME Industries legit?
+
+DIME is a licensed cannabis brand with engineered hardware and published lab paths — verify any pack you buy.
+
+### Are cheaper fake carts a better deal?
+
+No. Counterfeits skip testing and warranty. Validate every pack.
+
+### Where should I buy if I want real value?
+
+Licensed retailers or authorized online checkout — [Find DIME](/locations) or [Shop](/shop/vapes).`,
+  }),
+
+  post({
+    slug: "why-is-my-dime-cart-clogged",
+    title: "Why is my Dime cart clogged?",
+    excerpt:
+      "Clogs usually come from cold oil, overheating, or a blocked airway. Warm gently, clear carefully, reseat on a charged battery — then validate if it still fails.",
+    publishedAt: "2026-08-26T12:00:00.000Z",
+    body: `Quick Answer: Clogs usually come from cold oil, overheating, or a blocked airway — not “mystery hardware failure.” Warm the cart gently, clear the mouthpiece carefully, take slower pulls, and reseat on a charged battery. If it still fails after a licensed purchase, validate authenticity and contact support rather than buying unverified replacements.
+
+### Common causes of a clogged Dime cart
+
+Cold thick oil, chain-hitting, debris in the mouthpiece, or a weak battery that over-pulls. Usage basics: [How to use a Dime cart](/blog/how-to-use-a-dime-cart). Storage: [How to store a Dime cart](/blog/how-to-store-a-dime-cart).
+
+### Safe steps to clear a clog
+
+| Step | Action |
+| --- | --- |
+| 1 | Warm the cart gently in a pocket — never open flame. |
+| 2 | Clear the mouthpiece carefully without sharp tools that damage seals. |
+| 3 | Reseat on a fully charged battery; start mid heat. |
+| 4 | Take slow pulls; avoid rapid chain hits. |
+| 5 | If airflow stays blocked, stop and [Validate](/validate). |
+
+Do not flush with solvents or household chemicals.
+
+### Prevention tips
+
+Store upright, avoid extreme cold/heat, and don’t run empty tanks on high heat. Charge correctly: [How to charge a DIME battery](/blog/how-to-charge-a-dime-battery).
+
+### When it’s not a clog
+
+Empty tanks, burnt coils from overheating, or counterfeits can mimic clogs. See [How to spot fake Dime carts](/blog/how-to-spot-fake-dime-carts) and [FAQ](/faq).
+
+### Frequently asked questions
+
+### Why does my cart taste burnt after a clog?
+
+Often overheating. Drop heat, check fill level, and reseat.
+
+### Can leftover oil cause clogs?
+
+Thick oil near empty can feel clogged — don’t force high heat.
+
+### Should I buy a “fix kit” online?
+
+Prefer licensed support after [Validate](/validate). Unverified kits risk damage.`,
+  }),
+
+  post({
+    slug: "how-to-store-a-dime-cart",
+    title: "How to store a Dime cart",
+    excerpt:
+      "Store Dime carts upright, away from heat and freezing cold, with the battery off between sessions to protect flavor and reduce leaks.",
+    publishedAt: "2026-08-28T12:00:00.000Z",
+    body: `Quick Answer: Store a Dime cart upright in a cool, dry place away from direct sun and freezing temperatures, with the battery powered off between sessions. Good storage reduces leaks, clogs, and harsh flavor — and pairs with licensed purchase plus Validate.
+
+### Best everyday storage habits
+
+Keep tanks upright, capped if your format allows, and out of hot cars. Pair with [How to use a Dime cart](/blog/how-to-use-a-dime-cart).
+
+### Temperature and travel
+
+Avoid gloveboxes in summer and freezing overnight bags. For travel, use the original packaging when possible and follow local cannabis transport laws.
+
+### Battery and all-in-one notes
+
+Power off between sessions. Charge on a schedule: [How to charge a DIME battery](/blog/how-to-charge-a-dime-battery). All-in-ones: [Cart vs disposable](/blog/dime-cart-vs-disposable).
+
+### Storage mistakes that cause problems
+
+| Mistake | Better habit |
+| --- | --- |
+| Leaving cart in a hot car | Cool indoor storage |
+| Storing on its side for weeks | Upright rest |
+| Running near-empty on max heat | Replace / refill path per format |
+
+Clog help: [Why is my Dime cart clogged?](/blog/why-is-my-dime-cart-clogged).
+
+### Frequently asked questions
+
+### Should I refrigerate a Dime cart?
+
+Not required. Cool room storage is enough; avoid freeze-thaw cycles.
+
+### Can I leave a cart on the battery?
+
+Short term is fine; power off when stored for longer stretches.
+
+### Does storage affect COA potency numbers?
+
+COAs describe the tested batch. Storage still affects your session quality — keep conditions stable.`,
+  }),
+];
+
+// Continue more posts in part 2 embedded below
+const more = [
+  post({
+    slug: "what-is-dime-rosin",
+    title: "What is DIME Rosin?",
+    excerpt:
+      "DIME Rosin is the brand’s solventless-style extract lane for vapes and edibles — shop the Rosin hubs and confirm each batch on Lab Results.",
+    publishedAt: "2026-09-02T12:00:00.000Z",
+    body: `Quick Answer: DIME Rosin is the brand’s solventless-style extract shopping lane for carts, all-in-ones, and related edibles where licensed. It is separate from Signature distillate-forward fills and from Live Reserve’s high-terpene extract with melted diamonds. Confirm the line on the package and the batch on Lab Results.
+
+### What shoppers mean by DIME Rosin
+
+Rosin points to solventless-style extract character. Start at [Rosin vapes](/shop/vapes/rosin) and [Rosin edibles](/shop/edibles/rosin) when listed. Glossary: [DIME Rosin](/glossary#rosin).
+
+### Rosin vs Live Reserve vs Signature
+
+| Line | Character | Link |
+| --- | --- | --- |
+| Rosin | Solventless-style | [Shop Rosin](/shop/vapes/rosin) |
+| Live Reserve | High-terpene extract + melted diamonds | [Live Reserve](/shop/vapes/live-reserve) |
+| Signature | Distillate-forward everyday | [Signature](/shop/vapes/signature) |
+
+Compare resin slang carefully: [Live resin vs live rosin](/blog/live-resin-vs-live-rosin).
+
+### How to shop Rosin
+
+Age-verify, filter [Rosin](/shop/vapes/rosin), check [Lab Results](/lab-results), buy licensed via [Find DIME](/locations), then [Validate](/validate).
+
+### Frequently asked questions
+
+### Is DIME Rosin the same as live rosin on menus?
+
+Match the DIME Rosin line name and COA — menus vary.
+
+### Does Rosin come as a disposable?
+
+Where listed — see [Disposables guide](/shop/vapes/disposables) and Rosin filters.
+
+### Where can I learn solventless shopping tips?
+
+Read [Solventless cart shopping guide](/blog/solventless-cart-guide).`,
+  }),
+
+  post({
+    slug: "solventless-cart-guide",
+    title: "Solventless cart shopping guide",
+    excerpt:
+      "How to shop solventless-style carts at DIME — start with the Rosin line, read labels and COAs, and buy only from licensed retailers.",
+    publishedAt: "2026-09-04T12:00:00.000Z",
+    body: `Quick Answer: Shopping a solventless-style cart at DIME means starting with the Rosin line, reading the package and COA, and buying from licensed retailers — not assuming every “rosin” or “live resin” menu word matches the same product.
+
+### Define your target
+
+If solventless-style is the goal, open [Rosin](/shop/vapes/rosin) and [What is DIME Rosin?](/blog/what-is-dime-rosin). For strain-forward Live Reserve instead, use that line intentionally.
+
+### Label checklist
+
+1. Line name says Rosin (or your intended line).
+2. Format (cart vs all-in-one) fits how you use hardware — [Cart vs disposable](/blog/dime-cart-vs-disposable).
+3. [Lab Results](/lab-results) match the SKU.
+4. Seller appears on [Find DIME](/locations) or authorized checkout.
+
+### Common mix-ups
+
+| You searched | Better DIME path |
+| --- | --- |
+| live rosin cart | [Rosin](/shop/vapes/rosin) |
+| live resin cart | Check if you want [Live Reserve](/shop/vapes/live-reserve) |
+| solventless cart | Rosin lane + COA |
+
+### Frequently asked questions
+
+### Are solventless carts always more expensive?
+
+Pricing varies by market and retailer. Compare licensed menus, not gray-market ads.
+
+### Can beginners buy Rosin first?
+
+Yes if that extract style is the priority — or start with the [Beginner’s guide](/blog/beginners-guide-to-dime-carts).
+
+### How do I avoid fakes when paying more for Rosin?
+
+[Validate](/validate) and [spot fakes checklist](/blog/how-to-spot-fake-dime-carts).`,
+  }),
+
+  post({
+    slug: "dime-signature-explained",
+    title: "DIME Signature line explained",
+    excerpt:
+      "Signature is DIME’s everyday flagship: distillate-forward carts and all-in-ones with terpene enhancement on engineered hardware.",
+    publishedAt: "2026-09-09T12:00:00.000Z",
+    body: `Quick Answer: DIME Signature is the everyday flagship vape line — potent distillate-forward formulas with terpene enhancement on engineered DIME hardware, offered as carts and all-in-ones where licensed.
+
+### What Signature is for
+
+Reliable everyday flavor and potency positioning. Shop [Signature](/shop/vapes/signature). Flavor browsing: [Best DIME flavors](/blog/best-dime-industries-flavors).
+
+### Signature vs other lines
+
+Compare with [Live Reserve](/blog/signature-vs-live-reserve) and [Rosin](/shop/vapes/rosin). Hardware story: [Built to Beat Leaks](/blog/built-to-beat-leaks-the-dime-hardware-story).
+
+### How to buy Signature
+
+Filter [Signature vapes](/shop/vapes/signature), confirm jurisdiction, check [Lab Results](/lab-results), [Validate](/validate) after purchase.
+
+### Frequently asked questions
+
+### Is Signature only distillate?
+
+Signature is positioned as distillate-forward with terpene enhancement — read each SKU package.
+
+### Does Signature include disposables?
+
+Where listed — see [Disposables](/shop/vapes/disposables).
+
+### What’s a good first Signature flavor?
+
+Browse popular PDPs like [Key Lime Pie](/product/key-lime-pie) when stocked, or ask your budtender via [Find DIME](/locations).`,
+  }),
+
+  post({
+    slug: "melted-diamonds-vape-explained",
+    title: "Melted diamonds in vapes — plain English",
+    excerpt:
+      "“Melted diamonds” in DIME Live Reserve language refers to diamond-style concentrate mixed into a high-terpene extract fill — always confirm the SKU line and COA.",
+    publishedAt: "2026-09-11T12:00:00.000Z",
+    body: `Quick Answer: In DIME Live Reserve product language, melted diamonds sit alongside high-terpene extract for a strain-forward fill. It is brand-specific wording — not a guarantee that every menu “diamond” product matches Live Reserve. Read the line name and COA for the SKU you buy.
+
+### Plain-English definition
+
+Live Reserve describes a mixture of high-terpene extract and melted diamonds. Explainer: [What is DIME Live Reserve?](/blog/dime-live-reserve-explained). Shop: [Live Reserve](/shop/vapes/live-reserve).
+
+### What it is not
+
+It is not medical advice, not a potency guarantee beyond the COA, and not identical to every “live resin” sticker. Compare slang carefully: [Live resin vs live rosin](/blog/live-resin-vs-live-rosin).
+
+### How to shop Live Reserve with diamonds language
+
+Match packaging → [Lab Results](/lab-results) → licensed seller → [Validate](/validate).
+
+### Frequently asked questions
+
+### Do melted diamonds mean higher THC automatically?
+
+Potency is on the batch COA — don’t assume from marketing words alone.
+
+### Is this the same as Signature?
+
+No. See [Signature vs Live Reserve](/blog/signature-vs-live-reserve).
+
+### Where can I learn cart basics first?
+
+[What is a Dime cart?](/blog/what-is-a-dime-cart).`,
+  }),
+
+  post({
+    slug: "dime-edibles-buying-guide",
+    title: "DIME edibles buying guide",
+    excerpt:
+      "How to shop DIME gummies and softgels: check potency labels, COAs, jurisdiction, and licensed retailers before you buy.",
+    publishedAt: "2026-09-16T12:00:00.000Z",
+    body: `Quick Answer: Shop DIME edibles by format and potency label, confirm your jurisdiction, read the batch COA, and buy only from licensed retailers or authorized online checkout in CA/MA where available.
+
+### Start with the edibles hub
+
+Browse [Edibles](/shop/edibles) and Rosin edible paths when listed. Potency shopping habits: [Shopping by potency](/blog/shopping-by-potency).
+
+### Label and COA checklist
+
+Serving size, total package potency, and [Lab Results](/lab-results) for the batch. How we publish: [How we publish COAs](/blog/how-we-publish-coas).
+
+### Online vs in-store
+
+CA/MA delivery where offered — [California](/locations/california), [Massachusetts](/locations/massachusetts). Elsewhere: [Find DIME](/locations).
+
+### Frequently asked questions
+
+### Are DIME edibles the same strength as carts?
+
+No — formats differ. Read each label.
+
+### Can I validate edibles?
+
+Use [Validate](/validate) when the package includes a code.
+
+### Where do flavors fit?
+
+See [Best DIME flavors](/blog/best-dime-industries-flavors) for line context, then filter edibles separately.`,
+  }),
+
+  post({
+    slug: "dime-prerolls-buying-guide",
+    title: "Shopping DIME prerolls (DIMEPACK & beyond)",
+    excerpt:
+      "How to shop DIME prerolls including DIMEPACK — check availability by market, confirm COAs, and buy licensed only.",
+    publishedAt: "2026-09-18T12:00:00.000Z",
+    body: `Quick Answer: DIME prerolls (including DIMEPACK styles) are shopped like other cannabis flower formats — confirm local availability, read potency labels and COAs, and buy only from licensed retailers. Stock can be limited while the category expands.
+
+### What’s coming / what’s listed
+
+Read [DIME prerolls are coming](/blog/dime-prerolls-are-coming-meet-dimepack-double-ds) and browse [Prerolls](/shop/prerolls) for your jurisdiction.
+
+### Buying checklist
+
+| Check | Why |
+| --- | --- |
+| Licensed seller | Authenticity + compliance |
+| Label potency | Batch expectations |
+| [Lab Results](/lab-results) | Confirm when SKU listed |
+| [Validate](/validate) | Authenticity / warranty paths |
+
+### Frequently asked questions
+
+### Are prerolls available everywhere DIME sells?
+
+No — availability varies. Use [Find DIME](/locations).
+
+### Is DIMEPACK a travel pack?
+
+See the preroll announcement post for style differences.
+
+### Can I shop prerolls online?
+
+Where your state page and shop allow — start with [Shop prerolls](/shop/prerolls).`,
+  }),
+
+  post({
+    slug: "how-to-read-a-dime-coa",
+    title: "How to read a DIME COA",
+    excerpt:
+      "A COA is a batch lab report. Learn what to match on Lab Results — SKU, potency markers, and why Validate is a separate authenticity step.",
+    publishedAt: "2026-09-23T12:00:00.000Z",
+    body: `Quick Answer: A DIME COA (certificate of analysis) is a third-party lab report for a cannabis batch. On Lab Results, match your SKU or product name, review potency markers, and treat Validate as a separate authenticity step — not a substitute for the COA.
+
+### What a COA is (and isn’t)
+
+Educational overview: [How we publish COAs](/blog/how-we-publish-coas). Glossary: [COA](/glossary#coa). Open [Lab Results](/lab-results).
+
+### Step-by-step lookup
+
+| Step | Action |
+| --- | --- |
+| 1 | Find the SKU or name on the package. |
+| 2 | Search [Lab Results](/lab-results). |
+| 3 | Compare THC/CBD (and other listed markers) to the card. |
+| 4 | [Validate](/validate) authenticity separately. |
+
+### Potency shopping tip
+
+[Shopping by potency](/blog/shopping-by-potency) helps you shortlist — the COA confirms the batch.
+
+### Frequently asked questions
+
+### Why don’t card numbers always match the COA?
+
+Cards can summarize typical ranges; the COA is the batch record.
+
+### Do fakes have COAs?
+
+Some show fake paperwork — still [Validate](/validate) and buy licensed.
+
+### Where do I learn more about lab-tested carts?
+
+[Lab-tested carts at DIME](/blog/lab-tested-dime-carts).`,
+  }),
+
+  post({
+    slug: "dime-warranty-and-validate",
+    title: "DIME warranty & Validate explained",
+    excerpt:
+      "Validate confirms authenticity and unlocks limited warranty and rewards paths for licensed purchases — here’s how the flow works.",
+    publishedAt: "2026-09-25T12:00:00.000Z",
+    body: `Quick Answer: Scratch the code on a licensed DIME pack, submit it on Validate to confirm authenticity, and unlock limited warranty plus loyalty benefits where offered. Validate is not a COA lookup — use Lab Results for batch potency data.
+
+### What Validate does
+
+Open [Validate](/validate). Glossary: [Validate](/glossary#validate). Spot fakes primer: [How to spot fake Dime carts](/blog/how-to-spot-fake-dime-carts).
+
+### Warranty expectations
+
+Limited warranty paths apply to validated, licensed purchases — see [Returns / warranty](/legal/returns) language and [FAQ](/faq). Keep retailer proof.
+
+### Validate vs Lab Results
+
+| Tool | Job |
+| --- | --- |
+| Validate | Authenticity + warranty/rewards unlock |
+| Lab Results | Batch potency / COA path |
+
+### Frequently asked questions
+
+### Do I need an account?
+
+Follow on-screen Validate prompts; rewards benefits may require membership — see [Rewards](/rewards).
+
+### What if validation fails?
+
+Treat the pack as suspect; contact the licensed retailer and avoid unverified resellers.
+
+### Does Validate work on edibles and prerolls?
+
+When the package includes a validation code.`,
+  }),
+];
+
+const pillar = post({
+  slug: "beginners-guide-to-dime-carts",
+  title: "Beginner’s guide to Dime carts",
+  excerpt:
+    "Everything new shoppers need: what a Dime cart is, cart vs disposable, Signature vs Live Reserve vs Rosin, licensed buying, use, Validate, COAs, and troubleshooting.",
+  publishedAt: "2026-09-30T12:00:00.000Z",
+  body: `Quick Answer: A Dime cart is a DIME Industries cannabis vape cartridge or related all-in-one sold through licensed channels. Beginners should learn the cart vs disposable choice, pick a line (Signature, Live Reserve, or Rosin), buy licensed, validate authenticity, and start on mid heat — then confirm the batch on Lab Results.
+
+### What is a Dime cart?
+
+A Dime cart is a filled DIME Industries cartridge/tank — usually paired with a 510 battery — or shorthand for DIME vape formats overall. Full definition: [What is a Dime cart?](/blog/what-is-a-dime-cart). Brand home: [About](/about). Shop hub: [DIME carts & vapes](/shop/vapes).
+
+### Cart vs all-in-one — which should beginners buy?
+
+| Format | Best when | Guide |
+| --- | --- | --- |
+| Cart + battery | You want reusable hardware | [Cart vs disposable](/blog/dime-cart-vs-disposable) |
+| All-in-one | You want grab-and-go | [Disposables landing](/shop/vapes/disposables) |
+
+### Signature vs Live Reserve vs Rosin
+
+| Line | Who it’s for | Links |
+| --- | --- | --- |
+| Signature | Everyday distillate-forward | [Signature](/shop/vapes/signature) · [Explained](/blog/dime-signature-explained) |
+| Live Reserve | Strain-forward HT extract + melted diamonds | [Live Reserve](/shop/vapes/live-reserve) · [Explained](/blog/dime-live-reserve-explained) |
+| Rosin | Solventless-style | [Rosin](/shop/vapes/rosin) · [What is DIME Rosin?](/blog/what-is-dime-rosin) |
+
+Compare: [Signature vs Live Reserve](/blog/signature-vs-live-reserve) · [Live resin vs live rosin](/blog/live-resin-vs-live-rosin) · [Melted diamonds](/blog/melted-diamonds-vape-explained). Flavors: [Best DIME flavors](/blog/best-dime-industries-flavors). What’s inside: [What is in a Dime cartridge?](/blog/what-is-in-a-dime-cartridge).
+
+### How to buy licensed
+
+Use [Find DIME](/locations). Online CA/MA: [Buy Dime carts online](/blog/buy-dime-carts-online), [California](/locations/california), [Massachusetts](/locations/massachusetts). Where to buy overview: [Where to buy Dime carts](/blog/where-to-buy-dime-carts). Value mindset: [Are Dime carts worth it?](/blog/are-dime-carts-worth-it).
+
+### How to use and charge
+
+Follow [How to use a Dime cart](/blog/how-to-use-a-dime-cart). Charge: [How to charge a DIME battery](/blog/how-to-charge-a-dime-battery). Battery choice: [What battery for a Dime cart?](/blog/what-battery-for-dime-cart). Hardware: [Built to Beat Leaks](/blog/built-to-beat-leaks-the-dime-hardware-story) · [Accessories guide](/blog/dime-hardware-accessories-guide).
+
+### How to spot fakes and validate
+
+Checklist: [How to spot fake Dime carts](/blog/how-to-spot-fake-dime-carts). Tool: [Validate](/validate). Warranty: [Warranty & Validate](/blog/dime-warranty-and-validate). Trust: [Trust](/trust) · [Facts](/facts).
+
+### How to read potency / COAs
+
+[How to read a DIME COA](/blog/how-to-read-a-dime-coa) · [How we publish COAs](/blog/how-we-publish-coas) · [Lab Results](/lab-results) · [Shopping by potency](/blog/shopping-by-potency) · [Lab-tested carts](/blog/lab-tested-dime-carts).
+
+### Troubleshooting basics
+
+Clogs: [Why is my Dime cart clogged?](/blog/why-is-my-dime-cart-clogged). Storage: [How to store a Dime cart](/blog/how-to-store-a-dime-cart). FAQ: [/faq](/faq).
+
+### Glossary of DIME terms
+
+Use the on-site [Glossary](/glossary) for Dime cart, Signature, Live Reserve, Rosin, COA, and Validate definitions.
+
+### Other formats beginners ask about
+
+Edibles: [Edibles buying guide](/blog/dime-edibles-buying-guide). Prerolls: [Prerolls buying guide](/blog/dime-prerolls-buying-guide). Rewards: [Rewards explained](/blog/dime-rewards-explained). Promotions safety: [Promotions & safe shopping](/blog/dime-promotions-safe-shopping). State Exclusives: [State Exclusive guide](/blog/dime-state-exclusive-guide). Balanced: [Balanced explained](/blog/dime-balanced-explained).
+
+### Frequently asked questions
+
+### What is the best Dime cart for beginners?
+
+Start with a licensed Signature or all-in-one your retailer stocks, mid heat, and Validate the pack.
+
+### Can I buy Dime carts online?
+
+In CA and MA where authorized — see [Buy online](/blog/buy-dime-carts-online).
+
+### How do I know it’s real?
+
+Licensed seller + [Validate](/validate) + COA path.
+
+### What’s the difference between Live Reserve and live resin?
+
+[Live Reserve explained](/blog/dime-live-reserve-explained) — menus use “live resin” loosely.
+
+### Where do I find DIME near Los Angeles or Phoenix?
+
+[LA / Orange County](/blog/find-dime-los-angeles-orange-county) · [Phoenix / Arizona](/blog/find-dime-phoenix-arizona).`,
+});
+
+const late = [
+  post({
+    slug: "what-battery-for-dime-cart",
+    title: "What battery for a Dime cart?",
+    excerpt:
+      "Most Dime carts use a universal 510 thread; DIME recommends its own batteries for full performance with ceramic heating and presets.",
+    publishedAt: "2026-10-02T12:00:00.000Z",
+    body: `Quick Answer: Most Dime carts use a universal 510 thread that fits many batteries, but DIME recommends its own batteries for full performance with ceramic heating and heat presets. Shop Accessories for listed batteries and charge over USB-C.
+
+### 510 compatibility
+
+DIME tanks commonly use 510 threading. Prefer official batteries from [Accessories](/shop/accessories). Charge guide: [How to charge a DIME battery](/blog/how-to-charge-a-dime-battery).
+
+### Why brand batteries help
+
+Presets and contact design match DIME hardware goals — [Hardware story](/blog/built-to-beat-leaks-the-dime-hardware-story).
+
+### All-in-one alternative
+
+No separate battery: [Cart vs disposable](/blog/dime-cart-vs-disposable).
+
+### Frequently asked questions
+
+### Will any 510 battery work?
+
+Many fit; performance varies. Prefer DIME batteries when listed.
+
+### Where do I buy one?
+
+[Accessories](/shop/accessories) or [Find DIME](/locations).
+
+### My battery won’t charge — now what?
+
+Follow the charge troubleshooting guide and [Validate](/validate).`,
+  }),
+
+  post({
+    slug: "dime-balanced-explained",
+    title: "DIME Balanced line explained",
+    excerpt:
+      "Balanced is a DIME line for ratio-minded formats in licensed markets — shop Availability by jurisdiction and confirm each COA.",
+    publishedAt: "2026-10-07T12:00:00.000Z",
+    body: `Quick Answer: DIME Balanced is a line for ratio-minded cannabis formats in licensed markets. Availability varies — filter the shop by line where listed, read labels carefully, and confirm batch data on Lab Results.
+
+### Where Balanced fits
+
+Alongside Signature, Live Reserve, Rosin, State Exclusive, and Collabs. Glossary: [Balanced](/glossary#balanced). Browse [Shop](/shop) filters after age verification.
+
+### How to shop Balanced
+
+Confirm jurisdiction, check [Lab Results](/lab-results), buy licensed, [Validate](/validate).
+
+### Frequently asked questions
+
+### Is Balanced available everywhere?
+
+No — menus differ by state.
+
+### Is Balanced the same as Signature?
+
+No — different line positioning. Compare labels on each SKU.
+
+### Where should beginners start?
+
+[Beginner’s guide to Dime carts](/blog/beginners-guide-to-dime-carts).`,
+  }),
+
+  post({
+    slug: "dime-state-exclusive-guide",
+    title: "State Exclusive flavors guide",
+    excerpt:
+      "DIME State Exclusives are region-inspired flavors on core DIME hardware — learn how they work and where to find them.",
+    publishedAt: "2026-10-09T12:00:00.000Z",
+    body: `Quick Answer: DIME State Exclusives are region-inspired flavor drops built on core DIME hardware with COA paths on official packs. Availability is local — use Find DIME and state pages rather than assuming national stock.
+
+### What State Exclusives are
+
+Story: [How DIME State Exclusives capture a place](/blog/how-dime-state-exclusives-capture-a-place). Shop starting point: [Vapes](/shop/vapes).
+
+### How to find them
+
+[Find DIME](/locations) · examples: [Arizona](/locations/arizona), [California](/locations/california). Local reads: [Phoenix guide](/blog/find-dime-phoenix-arizona), [LA / OC guide](/blog/find-dime-los-angeles-orange-county).
+
+### Frequently asked questions
+
+### Are State Exclusives lower quality?
+
+No — they use core DIME technology with place-inspired flavor.
+
+### Can I order every State Exclusive online?
+
+Usually not — many are local retail drops.
+
+### Do they validate like other packs?
+
+Yes when codes are present — [Validate](/validate).`,
+  }),
+
+  post({
+    slug: "buy-dime-carts-online",
+    title: "Can I buy Dime carts online? (CA & MA)",
+    excerpt:
+      "Authorized online shopping for DIME is available in California and Massachusetts where permitted — always age-verify and buy licensed channels only.",
+    publishedAt: "2026-10-14T12:00:00.000Z",
+    body: `Quick Answer: Yes — where authorized, you can shop DIME online for delivery in California and Massachusetts after age verification. Other states rely on licensed retailers via Find DIME. Never buy from unverified social sellers.
+
+### Where online checkout works
+
+[California](/locations/california) · [Massachusetts](/locations/massachusetts) · [Shop](/shop/vapes). Delivery notes live on those state pages.
+
+### Compliance basics
+
+Adults 21+ or qualifying patients, legal jurisdiction only, authentic packs via [Validate](/validate).
+
+### Frequently asked questions
+
+### Can I buy online in every state?
+
+No. Start at [Find DIME](/locations).
+
+### Is gray-market “mail order” safe?
+
+No — skip it. See [Spot fakes](/blog/how-to-spot-fake-dime-carts).
+
+### What about edibles online?
+
+Same jurisdiction rules — [Edibles](/shop/edibles) where offered.`,
+  }),
+
+  post({
+    slug: "dime-rewards-explained",
+    title: "DIME Rewards explained",
+    excerpt:
+      "DIME Rewards members earn points and early access by validating products and shopping — here’s how the program fits with Validate.",
+    publishedAt: "2026-10-23T12:00:00.000Z",
+    body: `Quick Answer: DIME Rewards is the loyalty program for points, discounts, and early access where offered. Members typically earn by shopping while logged in and validating licensed products. Open Rewards for current rules.
+
+### Getting started
+
+Visit [Rewards](/rewards), create or sign into your account, and [Validate](/validate) eligible packs. App: [/app](/app).
+
+### How Validate ties in
+
+Authenticity first, then loyalty unlocks — [Warranty & Validate](/blog/dime-warranty-and-validate).
+
+### Frequently asked questions
+
+### Is Rewards free to join?
+
+Follow the Rewards page for current enrollment terms.
+
+### Do points work in every state?
+
+Program availability can vary — check Rewards and your retailer.
+
+### Where are promotions listed?
+
+[Promotions](/promotions) and [safe shopping tips](/blog/dime-promotions-safe-shopping).`,
+  }),
+
+  post({
+    slug: "dime-hardware-accessories-guide",
+    title: "Accessories & hardware shopper guide",
+    excerpt:
+      "Shop DIME batteries and accessories that match engineered carts — USB-C charging, 510 compatibility, and licensed-only buying.",
+    publishedAt: "2026-11-04T12:00:00.000Z",
+    body: `Quick Answer: DIME accessories focus on batteries and hardware designed for DIME carts — USB-C charging, 510 compatibility, and engineered heating goals. Shop Accessories, charge correctly, and buy licensed only.
+
+### What to shop
+
+[Accessories](/shop/accessories) · [Hardware story](/blog/built-to-beat-leaks-the-dime-hardware-story) · [What battery?](/blog/what-battery-for-dime-cart) · [How to charge](/blog/how-to-charge-a-dime-battery).
+
+### Cart pairing tips
+
+Reseat cleanly, start mid heat, store upright — [How to use](/blog/how-to-use-a-dime-cart).
+
+### Frequently asked questions
+
+### Do I need DIME accessories for all-in-ones?
+
+All-in-ones include the battery — [Disposables](/shop/vapes/disposables).
+
+### Can third-party chargers damage batteries?
+
+Use quality USB-C cables and avoid damaged adapters.
+
+### Where to buy hardware?
+
+Licensed channels via [Find DIME](/locations).`,
+  }),
+
+  post({
+    slug: "lab-tested-dime-carts",
+    title: "Lab-tested carts: what “lab tested” means at DIME",
+    excerpt:
+      "Lab-tested at DIME means batch COA data you can look up — not a vague badge. Here’s how to verify on Lab Results.",
+    publishedAt: "2026-11-06T12:00:00.000Z",
+    body: `Quick Answer: When DIME says carts are lab-tested, it means batch testing with COA data published through Lab Results — not a decorative badge. Match your SKU, read potency markers, and still Validate authenticity separately.
+
+### What to verify
+
+[Lab Results](/lab-results) · [How to read a COA](/blog/how-to-read-a-dime-coa) · [How we publish COAs](/blog/how-we-publish-coas) · [Trust](/trust).
+
+### Why fakes abuse the phrase
+
+Anyone can print “lab tested.” Licensed purchase + Validate matters — [Spot fakes](/blog/how-to-spot-fake-dime-carts).
+
+### Frequently asked questions
+
+### Does lab-tested mean medical approval?
+
+No — educational product testing context only.
+
+### Are all lines lab-tested?
+
+Official packs carry COA paths — confirm each batch.
+
+### Where do I shop tested carts?
+
+[DIME carts & vapes](/shop/vapes).`,
+  }),
+
+  post({
+    slug: "where-to-buy-dime-carts",
+    title: "Where to buy Dime carts (licensed only)",
+    excerpt:
+      "Buy Dime carts only from licensed retailers or authorized online checkout — start with Find DIME and skip unverified sellers.",
+    publishedAt: "2026-11-11T12:00:00.000Z",
+    body: `Quick Answer: Buy Dime carts from licensed dispensaries and authorized online channels only. Use Find DIME to locate retailers, shop CA/MA online where offered, and Validate every pack.
+
+### Start here
+
+[Find DIME](/locations) · [Shop](/shop/vapes) · [Buy online CA/MA](/blog/buy-dime-carts-online).
+
+### Red flags
+
+Social DMs, “too cheap” sites, failed [Validate](/validate) — [Spot fakes](/blog/how-to-spot-fake-dime-carts).
+
+### Frequently asked questions
+
+### Can I buy at any smoke shop?
+
+Only if they are licensed cannabis retailers stocking DIME.
+
+### Do airports sell DIME?
+
+Follow local law; don’t assume travel retail is authorized.
+
+### What about wholesale?
+
+[Wholesale](/wholesale) for approved accounts.`,
+  }),
+
+  post({
+    slug: "find-dime-los-angeles-orange-county",
+    title: "Orange County & LA — finding DIME",
+    excerpt:
+      "How to find licensed DIME retailers around Los Angeles and Orange County — use Find DIME California and validate every purchase.",
+    publishedAt: "2026-11-13T12:00:00.000Z",
+    body: `Quick Answer: To find DIME in Los Angeles and Orange County, open the California Find DIME page, search licensed retailers, and confirm authenticity with Validate after purchase. Online delivery may also be available in CA where authorized.
+
+### California hub
+
+[California locations](/locations/california) · [Find DIME](/locations) · [Shop](/shop) for eligible delivery.
+
+### What to ask the budtender
+
+Line name (Signature / Live Reserve / Rosin), COA path, and whether the pack validates.
+
+### Frequently asked questions
+
+### Is every LA dispensary authorized?
+
+No — use Find DIME rather than assuming.
+
+### Can I get delivery in LA County?
+
+Where licensed services operate — see the California page.
+
+### State Exclusive flavors in CA?
+
+Ask retailers; see [State Exclusive guide](/blog/dime-state-exclusive-guide).`,
+  }),
+
+  post({
+    slug: "find-dime-phoenix-arizona",
+    title: "Phoenix & Arizona State Exclusives",
+    excerpt:
+      "Find licensed DIME retailers in Phoenix and Arizona, including State Exclusive drops — always buy licensed and validate.",
+    publishedAt: "2026-11-18T12:00:00.000Z",
+    body: `Quick Answer: Phoenix-area shoppers should use Find DIME Arizona to locate licensed retailers that stock DIME, including State Exclusive flavors when available. Validate packs and skip unverified sellers.
+
+### Arizona hub
+
+[Arizona locations](/locations/arizona) · [State Exclusive guide](/blog/dime-state-exclusive-guide) · [State Exclusives story](/blog/how-dime-state-exclusives-capture-a-place).
+
+### Shopping tips
+
+Confirm line + COA, then [Validate](/validate). Cart basics: [Beginner’s guide](/blog/beginners-guide-to-dime-carts).
+
+### Frequently asked questions
+
+### Does Arizona have online DIME delivery like CA/MA?
+
+Follow the Arizona page — retail finder is the default path.
+
+### Are State Exclusives only in AZ?
+
+Each exclusive is regional — availability varies.
+
+### Where else is DIME?
+
+Nationwide retail map: [Find DIME](/locations).`,
+  }),
+
+  post({
+    slug: "dime-promotions-safe-shopping",
+    title: "Promotions & how to shop deals safely",
+    excerpt:
+      "Shop DIME promotions through official channels only — fake “deals” are a common counterfeit tactic.",
+    publishedAt: "2026-11-20T12:00:00.000Z",
+    body: `Quick Answer: Real DIME promotions appear on the official Promotions page, Rewards offers, and licensed retailers. Deep-discount links from strangers are a common counterfeit tactic — Verify sellers, then Validate packs.
+
+### Official deal surfaces
+
+[Promotions](/promotions) · [Rewards](/rewards) · licensed stores via [Find DIME](/locations).
+
+### Safe shopping rules
+
+| Do | Don’t |
+| --- | --- |
+| Use official site + licensed retail | Trust DM coupon codes from strangers |
+| [Validate](/validate) after purchase | Buy “too cheap” carts online |
+| Read [Spot fakes](/blog/how-to-spot-fake-dime-carts) | Assume every Instagram seller is authorized |
+
+### Frequently asked questions
+
+### Are bundle deals on the shop real?
+
+If they appear on the official [Shop](/shop) after age verification, yes for your jurisdiction.
+
+### Can Rewards stack with promotions?
+
+Follow current Rewards and Promotions terms.
+
+### What if a deal URL looks off?
+
+Stick to dimeindustries.us and Find DIME retailers only.`,
+  }),
+];
+
+const all = [...posts, ...more, pillar, ...late];
+
+const file = `// lib/cms/calendar-posts-2026.ts — 90-day calendar publishes (Section 7 execution)
+import type { BlogPost } from "./types";
+
+export const CALENDAR_POSTS_2026: BlogPost[] = ${JSON.stringify(all, null, 2)};
+`;
+
+writeFileSync(out, file);
+console.log(`Wrote ${all.length} posts → ${out}`);

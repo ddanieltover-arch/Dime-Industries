@@ -21,7 +21,7 @@ export async function generateMetadata({
   return {
     title: "Shop DIME Products",
     description:
-      "Shop DIME Industries carts, vapes, edibles, prerolls, and accessories. Filter by strain, potency, and format.",
+      "Shop DIME Industries carts, vape pens, edibles, prerolls, and accessories. Flower formats ship as listed prerolls — no unverified loose-flower SKUs. Licensed markets only.",
     alternates: { canonical: "/shop" },
     robots: catalogRobotsForFilters(filters, "/shop"),
   };
@@ -49,7 +49,8 @@ export default async function ShopPage({ searchParams }: { searchParams: SearchP
       <JsonLdScript data={breadcrumbs} />
       <CatalogPageShell
         title="Shop DIME Products"
-        description="Browse lab-tested DIME carts, vapes, edibles, prerolls, and accessories — filter by strain, potency, and format for California and Massachusetts."
+        description="Browse lab-tested DIME carts, vape pens, edibles, prerolls, and accessories for California and Massachusetts. Looking for DIME flower? Start with prerolls where stocked — we don’t invent loose-flower SKUs."
+        answer="Shop DIME Industries for carts and pens, edibles, and preroll flower formats. Filter by strain and potency after age verification, or Find DIME for licensed retailers in other states."
         basePath="/shop"
         ageVerified={ageGate.ageVerified}
         filters={filters}

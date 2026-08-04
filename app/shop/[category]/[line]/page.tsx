@@ -39,10 +39,12 @@ function linePageCopy(categorySlug: string, lineSlug: string, catName: string, l
       return {
         title: "DIME Industries Rosin Vapes",
         metaDescription:
-          "Shop DIME Industries rosin vapes — solventless-style extracts in engineered DIME carts. Lab-tested rosin cartridges for licensed markets.",
+          "Shop DIME Industries rosin — solventless-style dime carts and pens on engineered hardware. Lab-tested DIME Rosin cartridges for licensed markets.",
         h1: "DIME Industries Rosin Vapes",
         description:
-          "Explore the DIME Industries rosin vape line: flavor-forward, lab-tested carts built on DIME hardware. Filter by strain and potency for your jurisdiction.",
+          "DIME Industries rosin is the solventless-style cart and pen lane: flavor-forward fills on engineered DIME hardware. Filter by strain and potency, read What is DIME Rosin?, and confirm every batch on Lab Results.",
+        answer:
+          "DIME Rosin targets solventless-style shoppers — separate from Signature distillate and Live Reserve high-terpene extract with melted diamonds. Shop listed Rosin SKUs for your jurisdiction after age verification.",
       };
     }
     if (categorySlug === "edibles") {

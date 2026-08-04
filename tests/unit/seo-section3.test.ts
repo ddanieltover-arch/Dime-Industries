@@ -55,7 +55,13 @@ describe("Section 3 — internal linking helpers", () => {
   it("exposes catalog SEO links for vapes hub", () => {
     const links = catalogSeoLinks("/shop/vapes");
     expect(links.some((l) => l.href === "/blog/what-is-a-dime-cart")).toBe(true);
-    expect(links.some((l) => l.href === "/shop/vapes/rosin")).toBe(true);
+    expect(links.some((l) => l.href === "/blog/beginners-guide-to-dime-carts")).toBe(true);
+    expect(links.some((l) => l.href === "/blog/best-dime-industries-flavors")).toBe(true);
     expect(links.some((l) => l.href === "/shop/vapes/disposables")).toBe(true);
+  });
+
+  it("exposes prerolls soft-hub SEO links", () => {
+    const links = catalogSeoLinks("/shop/prerolls");
+    expect(links.some((l) => l.href === "/blog/dime-prerolls-buying-guide")).toBe(true);
   });
 });

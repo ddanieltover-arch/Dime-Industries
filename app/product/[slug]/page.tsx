@@ -41,17 +41,32 @@ export async function generateStaticParams() {
   return listAllActiveSlugs().map((slug) => ({ slug }));
 }
 
+const STRAIN_SEO_SLUGS = new Set([
+  "key-lime-pie",
+  "birthday-cake",
+  "king-louis-xiii",
+  "sour-grape",
+  "blackberry-og",
+]);
+
 export async function generateMetadata({ params }: { params: Params }): Promise<Metadata> {
   const { slug } = await params;
   const product = await withCatalogSource(await loadEffectiveCatalog(), () => getProductBySlug(slug));
   if (!product) return { title: "Product" };
   const v = primaryVariant(product);
+  const strainSeo = STRAIN_SEO_SLUGS.has(product.slug) && product.strainType !== "na";
+  const title = strainSeo
+    ? `${product.name} Strain — DIME ${product.lineName ?? "Cart"}`
+    : product.name;
+  const description = strainSeo
+    ? `Shop ${product.name} strain ${product.variants[0]?.weightOrFormat ?? "cart"} from DIME ${product.lineName ?? "Industries"}. Lab-tested ${formatPct(v.thcPct)} THC — licensed markets only.`
+    : product.description;
   return {
-    title: product.name,
-    description: product.description,
+    title,
+    description,
     alternates: { canonical: `/product/${product.slug}` },
     openGraph: {
-      title: product.name,
+      title,
       description: `${formatPct(v.thcPct)} THC · ${product.lineName ?? product.categoryName}`,
       images: product.imageUrl ? [product.imageUrl] : ["/brand/og.png"],
     },

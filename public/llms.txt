@@ -17,12 +17,16 @@ DIME Industries is a licensed cannabis brand helping adult consumers and retaile
 - /facts: Citable brand facts with on-site sources
 - /blog: Knowledge hub
 - /blog/what-is-a-dime-cart: What is a Dime cart?
+- /blog/beginners-guide-to-dime-carts: Beginner’s guide to Dime carts (pillar)
+- /blog/best-dime-industries-flavors: Best DIME flavors guide
 - /blog/how-to-use-a-dime-cart: How to use a Dime cart
 - /blog/dime-cart-vs-disposable: Cart vs all-in-one disposable
 - /blog/dime-live-reserve-explained: What is DIME Live Reserve?
 - /blog/signature-vs-live-reserve: Signature vs Live Reserve
 - /blog/how-to-spot-fake-dime-carts: Authenticity checklist
 - /blog/how-many-dimes-in-a-roll: How many dimes in a U.S. coin roll (50 / $5)
+- /shop/vapes/disposables: DIME disposables / all-in-ones educational landing
+- /locations/nevada: Find DIME THC in Las Vegas & Nevada
 - /about: Company information
 - /faq: Product, authenticity, and shopping answers
 - /lab-results: Certificates of analysis
@@ -31,15 +35,16 @@ DIME Industries is a licensed cannabis brand helping adult consumers and retaile
 
 ## Primary Topics
 - DIME Industries brand and licensing
-- DIME carts / vape cartridges and hardware
+- DIME carts / vape pens / cartridges and hardware
+- Beginner’s pillar guide to Dime carts
 - Live Reserve, Signature, and rosin product lines
 - Cart vs disposable buying guide
 - How to use a Dime cart
 - Product validation and spotting counterfeits
 - Glossary definitions for AI citation
 - Brand facts and trust signals
-- Edibles and prerolls
-- Store locator / find DIME near me
+- Edibles and prerolls (no invented loose-flower SKUs)
+- Store locator / find DIME near me (including Las Vegas)
 - Product validation and lab testing (COAs)
 - Educational coin FAQ: how many dimes in a roll
 
