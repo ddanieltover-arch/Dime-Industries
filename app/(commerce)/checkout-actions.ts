@@ -131,6 +131,13 @@ export async function startCheckout(
     return { error: reserved.error };
   }
 
+  try {
+    const { notifyOrderPending } = await import("@/lib/email/notifications");
+    await notifyOrderPending(order);
+  } catch (err) {
+    console.warn("[checkout] pending order email failed", err);
+  }
+
   revalidatePath("/cart");
   revalidatePath("/checkout");
 

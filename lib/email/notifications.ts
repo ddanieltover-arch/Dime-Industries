@@ -7,11 +7,13 @@ import {
   adminContactNotification,
   adminNewsletterSignupNotification,
   adminOrderNotification,
+  adminOrderPendingNotification,
   adminPayoutRequestNotification,
   adminWholesaleApplicationNotification,
   customerContactConfirmation,
   customerNewsletterWelcome,
   customerOrderConfirmation,
+  customerOrderPending,
   customerOrderStatusUpdate,
   adminReturnRequestNotification,
   customerPayoutRequestConfirmation,
@@ -46,6 +48,10 @@ async function dualSend(
   if (!adminResult.ok) console.warn("[email] admin send failed", adminResult.error);
 
   return { customer, admin: adminResult };
+}
+
+export async function notifyOrderPending(order: OrderEmailInput): Promise<DualNotifyResult> {
+  return dualSend(customerOrderPending(order), adminOrderPendingNotification(order));
 }
 
 export async function notifyOrderConfirmed(order: OrderEmailInput): Promise<DualNotifyResult> {

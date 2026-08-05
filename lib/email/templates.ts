@@ -85,21 +85,109 @@ function channelLabel(order: OrderEmailInput): string {
   return order.channel === "wholesale" ? "Wholesale" : "Retail";
 }
 
+function paymentLabel(order: OrderEmailInput): string {
+  if (order.paymentTerms === "net30") return "NET-30";
+  if (order.paymentTerms === "net60") return "NET-60";
+  if (order.paymentMethod === "paybis_btc") return "Bitcoin";
+  return order.paymentMethod ?? "Pending payment";
+}
+
+/** Customer: order placed, awaiting payment */
+export function customerOrderPending(order: OrderEmailInput): EmailPayload {
+  const total = formatUsd(order.totalCents);
+  const isWholesale = order.channel === "wholesale";
+  const payment = paymentLabel(order);
+
+  const details = detailTable([
+    { label: "Order", value: escapeHtml(order.id) },
+    { label: "Status", value: "<strong>Pending payment</strong>" },
+    { label: "Channel", value: channelLabel(order) },
+    { label: "Payment", value: escapeHtml(payment) },
+    { label: "Ship to", value: addressBlock(order) },
+  ]);
+
+  const bodyHtml = [
+    paragraph(
+      isWholesale
+        ? `We received your wholesale order${order.wholesaleBusinessName ? ` for <strong>${escapeHtml(order.wholesaleBusinessName)}</strong>` : ""}. It’s pending until payment is completed.`
+        : "Thanks for shopping DIME. Your order is placed and pending until we receive payment."
+    ),
+    details,
+    orderLinesTable(order.lines),
+    `<p style="margin:0 0 8px;font-family:Arial,Helvetica,sans-serif;font-size:20px;font-weight:700;color:${BRAND.ink};">Total ${total}</p>`,
+    ctaButton("Complete payment / view order", siteUrl(`/checkout/confirmation/${order.id}`)),
+    mutedNote("You’ll get another email when payment is confirmed. Keep this message for your records."),
+  ].join("");
+
+  return {
+    to: order.email,
+    subject: `Order pending — ${order.id}`,
+    html: emailLayout({
+      preheader: `Your DIME order ${order.id} is pending payment. Total ${total}.`,
+      eyebrow: "Order received",
+      title: "Order pending payment",
+      bodyHtml,
+    }),
+    text: [
+      `Order ${order.id} pending payment.`,
+      `Total: ${total}`,
+      ...order.lines.map((l) => `- ${l.productName} × ${l.quantity}`),
+      `View: ${siteUrl(`/checkout/confirmation/${order.id}`)}`,
+    ].join("\n"),
+  };
+}
+
+/** Admin: new pending order awaiting payment */
+export function adminOrderPendingNotification(order: OrderEmailInput): EmailPayload {
+  const total = formatUsd(order.totalCents);
+  const bodyHtml = [
+    paragraph(
+      `A new <strong>${channelLabel(order).toLowerCase()}</strong> order is <strong>pending payment</strong>.`
+    ),
+    detailTable([
+      { label: "Order", value: escapeHtml(order.id) },
+      { label: "Status", value: "<strong>Pending</strong>" },
+      { label: "Customer", value: escapeHtml(order.email) },
+      ...(order.wholesaleBusinessName
+        ? [{ label: "Business", value: escapeHtml(order.wholesaleBusinessName) }]
+        : []),
+      { label: "Payment", value: escapeHtml(order.paymentTerms || order.paymentMethod || "—") },
+      { label: "Ship to", value: addressBlock(order) },
+      { label: "Total", value: `<strong>${total}</strong>` },
+    ]),
+    orderLinesTable(order.lines),
+    ctaButton("Open admin", siteUrl("/admin")),
+  ].join("");
+
+  return {
+    to: "",
+    subject: `[DIME] Pending ${channelLabel(order).toLowerCase()} order ${order.id} — ${total}`,
+    html: emailLayout({
+      preheader: `Pending order ${order.id} from ${order.email} · ${total}`,
+      eyebrow: "Admin alert",
+      title: "Pending order received",
+      bodyHtml,
+      footerNote: "Internal notification — do not forward to customers.",
+    }),
+    text: [
+      `Pending order ${order.id}`,
+      `Customer: ${order.email}`,
+      `Total: ${total}`,
+      ...order.lines.map((l) => `- ${l.productName} × ${l.quantity}`),
+    ].join("\n"),
+    replyTo: order.email,
+  };
+}
+
 /** Customer: order confirmed */
 export function customerOrderConfirmation(order: OrderEmailInput): EmailPayload {
   const total = formatUsd(order.totalCents);
   const isWholesale = order.channel === "wholesale";
-  const terms =
-    order.paymentTerms === "net30"
-      ? "NET-30"
-      : order.paymentTerms === "net60"
-        ? "NET-60"
-        : order.paymentMethod === "paybis_btc"
-          ? "Bitcoin"
-          : order.paymentMethod ?? "Paid";
+  const terms = paymentLabel(order);
 
   const details = detailTable([
     { label: "Order", value: escapeHtml(order.id) },
+    { label: "Status", value: "<strong>Confirmed</strong>" },
     { label: "Channel", value: channelLabel(order) },
     { label: "Payment", value: escapeHtml(terms) },
     { label: "Ship to", value: addressBlock(order) },

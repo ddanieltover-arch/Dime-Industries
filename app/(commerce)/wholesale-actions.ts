@@ -335,6 +335,13 @@ export async function startWholesaleCheckout(
     redirect(`/checkout/confirmation/${order.id}?terms=${paymentTerms}`);
   }
 
+  try {
+    const { notifyOrderPending } = await import("@/lib/email/notifications");
+    await notifyOrderPending(order);
+  } catch (err) {
+    console.warn("[wholesale] pending order email failed", err);
+  }
+
   const provider = getPaymentProvider();
   const base = appBaseUrl();
   const session = await provider.createSession({

@@ -59,6 +59,26 @@ describe("order confirmation email", () => {
     expect(email.replyTo).toBe("a@b.com");
   });
 
+  it("builds pending order emails", async () => {
+    const { customerOrderPending, adminOrderPendingNotification } = await import(
+      "../../lib/email/templates"
+    );
+    const order = {
+      id: "ord_pending",
+      email: "buyer@example.com",
+      totalCents: 4599,
+      lines: [{ productName: "Gelato", quantity: 1, unitPriceCents: 4500 }],
+      channel: "retail" as const,
+      paymentMethod: "paybis_btc",
+    };
+    const customer = customerOrderPending(order);
+    const admin = adminOrderPendingNotification(order);
+    expect(customer.subject).toMatch(/pending/i);
+    expect(customer.html).toContain("Pending payment");
+    expect(admin.subject).toMatch(/Pending/i);
+    expect(admin.replyTo).toBe("buyer@example.com");
+  });
+
   it("builds customer order status update", async () => {
     const { customerOrderStatusUpdate } = await import("../../lib/email/templates");
     const email = customerOrderStatusUpdate({
