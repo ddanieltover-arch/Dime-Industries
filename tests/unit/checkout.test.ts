@@ -4,6 +4,7 @@ import {
   computeShippingCents,
   FREE_SHIPPING_THRESHOLD_CENTS,
   FLAT_SHIPPING_CENTS,
+  FLAT_SHIPPING_INTL_CENTS,
 } from "../../lib/checkout/pricing";
 import type { CartLine } from "../../lib/cart/types";
 import { PaybisPaymentProvider } from "../../lib/payments/paybis";
@@ -24,12 +25,14 @@ const line = (price: number, qty = 1): CartLine => ({
 });
 
 describe("checkout pricing", () => {
-  it("applies CA tax and flat shipping under threshold", () => {
+  it("applies CA tax and $12 US flat shipping under threshold", () => {
     const pricing = computePricing([line(4000)], "CA");
     expect(pricing.subtotalCents).toBe(4000);
     expect(pricing.discountCents).toBe(0);
     expect(pricing.shippingCents).toBe(FLAT_SHIPPING_CENTS);
+    expect(FLAT_SHIPPING_CENTS).toBe(1200);
     expect(pricing.taxCents).toBe(Math.round((4000 * 950) / 10000));
+    expect(pricing.taxLabel).toContain("CA");
     expect(pricing.totalCents).toBe(pricing.taxableCents + pricing.taxCents + pricing.shippingCents);
   });
 
@@ -39,10 +42,39 @@ describe("checkout pricing", () => {
     expect(shippingLabel.toLowerCase()).toContain("free");
   });
 
-  it("uses higher MA tax rate", () => {
+  it("uses higher MA tax rate than CA", () => {
     const ca = computePricing([line(10000)], "CA");
     const ma = computePricing([line(10000)], "MA");
     expect(ma.taxCents).toBeGreaterThan(ca.taxCents);
+  });
+
+  it("varies estimated tax by selected US state", () => {
+    const ca = computePricing([line(10000)], { state: "CA", country: "US" });
+    const tx = computePricing([line(10000)], { state: "TX", country: "US" });
+    const or = computePricing([line(10000)], { state: "OR", country: "US" });
+    expect(ca.taxLabel).toBe("CA estimated tax (9.50%)");
+    expect(tx.taxLabel).toBe("TX estimated tax (8.25%)");
+    expect(or.taxCents).toBe(0);
+    expect(tx.taxCents).not.toBe(ca.taxCents);
+  });
+
+  it("applies $25 international flat shipping and country tax", () => {
+    const pricing = computePricing([line(5000)], { state: "ENG", country: "GB" });
+    expect(FLAT_SHIPPING_INTL_CENTS).toBe(2500);
+    expect(pricing.shippingCents).toBe(FLAT_SHIPPING_INTL_CENTS);
+    expect(pricing.shippingLabel).toMatch(/international/i);
+    expect(pricing.taxCents).toBe(Math.round((5000 * 2000) / 10000));
+    expect(pricing.taxLabel).toBe("United Kingdom estimated tax (20.00%)");
+  });
+
+  it("varies estimated tax by selected country", () => {
+    const gb = computePricing([line(10000)], { state: "ENG", country: "GB" });
+    const de = computePricing([line(10000)], { state: "BY", country: "DE" });
+    const hk = computePricing([line(10000)], { state: "HK", country: "HK" });
+    expect(gb.taxLabel).toBe("United Kingdom estimated tax (20.00%)");
+    expect(de.taxLabel).toBe("Germany estimated tax (19.00%)");
+    expect(hk.taxCents).toBe(0);
+    expect(de.taxCents).not.toBe(gb.taxCents);
   });
 });
 
@@ -64,7 +96,7 @@ describe("checkout form schema", () => {
     expect(result.success).toBe(true);
   });
 
-  it("rejects bad ZIP", () => {
+  it("rejects bad postal code", () => {
     const result = checkoutFormSchema.safeParse({
       email: "buyer@example.com",
       phone: "4155550100",
@@ -72,7 +104,7 @@ describe("checkout form schema", () => {
       line1: "1 Market St",
       city: "San Francisco",
       state: "CA",
-      postalCode: "abc",
+      postalCode: "!",
       country: "US",
       paymentMethod: "paybis_btc",
       confirmAge: "on",
@@ -107,6 +139,22 @@ describe("checkout form schema", () => {
       postalCode: "78701",
       country: "US",
       paymentMethod: "zelle",
+      confirmAge: "on",
+    });
+    expect(result.success).toBe(true);
+  });
+
+  it("accepts international shipping addresses", () => {
+    const result = checkoutFormSchema.safeParse({
+      email: "buyer@example.com",
+      phone: "+447700900123",
+      fullName: "Ada Lovelace",
+      line1: "10 Downing St",
+      city: "London",
+      state: "England",
+      postalCode: "SW1A 2AA",
+      country: "GB",
+      paymentMethod: "paybis_btc",
       confirmAge: "on",
     });
     expect(result.success).toBe(true);

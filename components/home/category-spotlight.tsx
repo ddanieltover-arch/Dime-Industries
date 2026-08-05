@@ -66,7 +66,7 @@ function CategoryTile({
   prefersReducedMotion: boolean | null;
 }) {
   return (
-    <article className="group relative h-full min-h-[300px] overflow-hidden bg-[var(--color-surface)] sm:min-h-[340px]">
+    <article className="group relative h-full min-h-[260px] overflow-hidden bg-[var(--color-surface)] sm:min-h-[340px]">
       <Link href={tile.href} className="absolute inset-0 z-10" aria-label={`Shop ${tile.label}`}>
         <span className="sr-only">Shop {tile.label}</span>
       </Link>
@@ -255,7 +255,7 @@ export function CategorySpotlight() {
               <button
                 type="button"
                 onClick={() => go(-1)}
-                className="inline-flex h-10 w-10 items-center justify-center border border-[var(--color-border-interactive)] text-[var(--color-ink)] transition-colors hover:border-[var(--color-resin)] hover:text-[var(--color-resin)]"
+                className="inline-flex h-11 w-11 touch-manipulation items-center justify-center border border-[var(--color-border-interactive)] text-[var(--color-ink)] transition-colors hover:border-[var(--color-resin)] hover:text-[var(--color-resin)]"
                 aria-label="Previous category"
               >
                 <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
@@ -265,7 +265,7 @@ export function CategorySpotlight() {
               <button
                 type="button"
                 onClick={() => go(1)}
-                className="inline-flex h-10 w-10 items-center justify-center border border-[var(--color-border-interactive)] text-[var(--color-ink)] transition-colors hover:border-[var(--color-resin)] hover:text-[var(--color-resin)]"
+                className="inline-flex h-11 w-11 touch-manipulation items-center justify-center border border-[var(--color-border-interactive)] text-[var(--color-ink)] transition-colors hover:border-[var(--color-resin)] hover:text-[var(--color-resin)]"
                 aria-label="Next category"
               >
                 <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
@@ -351,12 +351,17 @@ export function CategorySpotlight() {
                 scrollToIndex(base + i, prefersReducedMotion ? "auto" : "smooth");
                 window.setTimeout(normalizeLoop, prefersReducedMotion ? 0 : 420);
               }}
-              className={`h-1.5 rounded-full transition-all duration-300 ${
-                active === i
-                  ? "w-8 bg-[var(--color-resin)]"
-                  : "w-1.5 bg-[var(--color-border-interactive)] hover:bg-[var(--color-resin)]/50"
-              }`}
-            />
+              className="flex min-h-11 min-w-11 touch-manipulation items-center justify-center rounded-full p-3"
+            >
+              <span
+                className={`block rounded-full transition-all duration-300 ${
+                  active === i
+                    ? "h-1.5 w-8 bg-[var(--color-resin)]"
+                    : "h-1.5 w-1.5 bg-[var(--color-border-interactive)]"
+                }`}
+                aria-hidden
+              />
+            </button>
           ))}
         </div>
       </div>

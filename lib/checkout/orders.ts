@@ -19,7 +19,7 @@ const orderSchema = z.object({
     city: z.string(),
     state: z.string().min(2).max(40),
     postalCode: z.string(),
-    country: z.literal("US").optional().default("US"),
+    country: z.string().min(2).max(2).optional().default("US"),
   }),
   jurisdiction: z.enum(["CA", "MA"]),
   lines: z.array(z.any()),

@@ -33,7 +33,11 @@ export function CatalogToolbar({ basePath, filters, total }: Props) {
         {total === 1 ? "result" : "results"}
       </p>
 
-      <form method="get" action={action} className="flex flex-col gap-3 sm:flex-row sm:items-center">
+      <form
+        method="get"
+        action={action}
+        className="grid grid-cols-1 gap-3 sm:flex sm:flex-row sm:items-end"
+      >
         {filters.strain ? <input type="hidden" name="strain" value={filters.strain} /> : null}
         {filters.potency ? <input type="hidden" name="potency" value={filters.potency} /> : null}
         {filters.format ? <input type="hidden" name="format" value={filters.format} /> : null}
@@ -46,7 +50,8 @@ export function CatalogToolbar({ basePath, filters, total }: Props) {
             name="q"
             defaultValue={filters.q ?? ""}
             placeholder="Strain, line, SKU…"
-            className="min-w-[12rem] rounded-[var(--radius-pill)] border border-[var(--color-border-interactive)] bg-[var(--color-surface)] px-4 py-2.5 text-[var(--scale-sm)] text-[var(--color-ink)]"
+            enterKeyHint="search"
+            className="field-control min-h-11 w-full min-w-0 rounded-[var(--radius-pill)] border border-[var(--color-border-interactive)] bg-[var(--color-surface)] px-4 py-2.5 text-[var(--color-ink)] sm:min-w-[12rem]"
           />
         </label>
 
@@ -55,7 +60,7 @@ export function CatalogToolbar({ basePath, filters, total }: Props) {
           <select
             name="sort"
             defaultValue={filters.sort ?? "popularity"}
-            className="rounded-[var(--radius-pill)] border border-[var(--color-border-interactive)] bg-[var(--color-surface)] px-4 py-2.5 text-[var(--scale-sm)] text-[var(--color-ink)]"
+            className="field-control min-h-11 w-full rounded-[var(--radius-pill)] border border-[var(--color-border-interactive)] bg-[var(--color-surface)] px-4 py-2.5 text-[var(--color-ink)]"
           >
             {SORT_OPTIONS.map((opt) => (
               <option key={opt.value} value={opt.value}>
@@ -65,18 +70,20 @@ export function CatalogToolbar({ basePath, filters, total }: Props) {
           </select>
         </label>
 
-        <button type="submit" className="btn-primary py-2.5">
-          Apply
-        </button>
+        <div className="flex flex-col gap-2 sm:flex-row sm:items-center">
+          <button type="submit" className="btn-primary min-h-11 touch-manipulation py-2.5">
+            Apply
+          </button>
 
-        {filters.q ? (
-          <Link
-            href={basePath}
-            className="text-center text-[var(--scale-sm)] text-[var(--color-ink-soft)] underline-offset-4 hover:underline"
-          >
-            Reset search
-          </Link>
-        ) : null}
+          {filters.q ? (
+            <Link
+              href={basePath}
+              className="inline-flex min-h-11 items-center justify-center text-center text-[var(--scale-sm)] text-[var(--color-ink-soft)] underline-offset-4 hover:underline"
+            >
+              Reset search
+            </Link>
+          ) : null}
+        </div>
       </form>
     </div>
   );

@@ -1,5 +1,6 @@
 // lib/checkout/validate.ts
 import { z } from "zod";
+import { isShippingCountry } from "@/lib/checkout/countries";
 import { LAUNCH_JURISDICTIONS } from "@/lib/compliance/age-gate";
 import { RETAIL_PAYMENT_METHODS } from "@/lib/payments/methods";
 
@@ -17,14 +18,19 @@ export const checkoutFormSchema = z.object({
   state: z
     .string()
     .trim()
-    .min(2, "Enter a state")
-    .max(40, "Enter a valid state"),
+    .min(1, "Enter a state, province, or region")
+    .max(80, "Enter a valid state, province, or region"),
   postalCode: z
     .string()
-    .regex(/^\d{5}(-\d{4})?$/, "Enter a valid US ZIP code"),
-  country: z.literal("US", {
-    errorMap: () => ({ message: "Shipping is only available in the United States" }),
-  }),
+    .trim()
+    .min(2, "Enter a postal code")
+    .max(16, "Enter a valid postal code")
+    .regex(/^[A-Za-z0-9][A-Za-z0-9\s-]{1,15}$/, "Enter a valid postal code"),
+  country: z
+    .string()
+    .trim()
+    .toUpperCase()
+    .refine(isShippingCountry, { message: "Select a shipping country" }),
   paymentMethod: z
     .enum(RETAIL_PAYMENT_METHODS, {
       errorMap: () => ({ message: "Select a payment method" }),

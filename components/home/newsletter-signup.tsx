@@ -46,11 +46,18 @@ export function NewsletterSignup({
               name="email"
               required
               placeholder="Email address"
+              autoComplete="email"
+              inputMode="email"
+              enterKeyHint="send"
               aria-invalid={Boolean(state.error)}
               aria-describedby={state.error ? "newsletter-error" : undefined}
-              className="field-input flex-1"
+              className="field-input field-control min-h-12 flex-1"
             />
-            <button type="submit" disabled={pending} className="btn-primary shrink-0">
+            <button
+              type="submit"
+              disabled={pending}
+              className="btn-primary min-h-12 w-full shrink-0 touch-manipulation sm:w-auto"
+            >
               {pending ? "Signing up…" : "Sign up"}
             </button>
           </form>

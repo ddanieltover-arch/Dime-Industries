@@ -27,11 +27,11 @@ export function HeroVideo({
         {headline}
       </h1>
       <p className="mt-4 max-w-md text-[var(--scale-base)] leading-relaxed text-white/80">{body}</p>
-      <div className="mt-9 flex flex-wrap gap-3">
-        <Link href={ctaHref} className="btn-primary">
+      <div className="mt-9 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
+        <Link href={ctaHref} className="btn-primary min-h-12 w-full touch-manipulation sm:w-auto">
           {ctaLabel}
         </Link>
-        <Link href="/shop/vapes" className="btn-outline-light">
+        <Link href="/shop/vapes" className="btn-outline-light min-h-12 w-full touch-manipulation sm:w-auto">
           Shop vapes
         </Link>
       </div>
@@ -50,11 +50,11 @@ export function HeroVideo({
         <p className="mt-4 max-w-md text-[var(--scale-base)] leading-relaxed text-white/80">{body}</p>
       </FadeInItem>
       <FadeInItem>
-        <div className="mt-9 flex flex-wrap gap-3">
-          <Link href={ctaHref} className="btn-primary">
+        <div className="mt-9 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
+          <Link href={ctaHref} className="btn-primary min-h-12 w-full touch-manipulation sm:w-auto">
             {ctaLabel}
           </Link>
-          <Link href="/shop/vapes" className="btn-outline-light">
+          <Link href="/shop/vapes" className="btn-outline-light min-h-12 w-full touch-manipulation sm:w-auto">
             Shop vapes
           </Link>
         </div>
@@ -63,7 +63,7 @@ export function HeroVideo({
   );
 
   return (
-    <section aria-label="Introduction" className="relative isolate min-h-[88vh] w-full overflow-hidden bg-black">
+    <section aria-label="Introduction" className="relative isolate min-h-[min(88vh,52rem)] w-full overflow-hidden bg-black lg:min-h-[88vh]">
       {prefersReducedMotion ? (
         <picture>
           <source srcSet="/brand/hero-poster.webp" type="image/webp" />
@@ -92,7 +92,7 @@ export function HeroVideo({
 
       <div className="media-veil absolute inset-0" />
 
-      <div className="relative z-10 mx-auto flex min-h-[88vh] max-w-7xl flex-col justify-end px-[var(--container-pad-x)] pb-16 pt-28 lg:pb-24">
+      <div className="relative z-10 mx-auto flex min-h-[min(88vh,52rem)] max-w-7xl flex-col justify-end px-[var(--container-pad-x)] pb-[calc(5.5rem+env(safe-area-inset-bottom))] pt-24 sm:pb-16 sm:pt-28 lg:min-h-[88vh] lg:pb-24">
         {copy}
       </div>
     </section>

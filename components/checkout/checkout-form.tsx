@@ -6,8 +6,13 @@ import {
   startCheckout,
   type CheckoutActionState,
 } from "@/app/(commerce)/checkout-actions";
-import type { LaunchJurisdiction } from "@/lib/compliance/jurisdictions";
-import type { PricingBreakdown } from "@/lib/checkout/pricing";
+import { SHIPPING_COUNTRIES } from "@/lib/checkout/countries";
+import {
+  defaultSubdivisionForCountry,
+  getCountrySubdivisions,
+  subdivisionFieldLabel,
+} from "@/lib/checkout/subdivisions";
+import { FLAT_SHIPPING_CENTS, FLAT_SHIPPING_INTL_CENTS, type PricingBreakdown } from "@/lib/checkout/pricing";
 import { formatPrice } from "@/lib/format";
 import {
   MANUAL_PAYMENT_METHODS,
@@ -23,8 +28,11 @@ import {
 const initial: CheckoutActionState = {};
 
 type Props = {
-  jurisdiction: LaunchJurisdiction;
   pricing: PricingBreakdown;
+  shipState: string;
+  shipCountry: string;
+  onShipStateChange: (state: string) => void;
+  onShipCountryChange: (country: string) => void;
   defaultEmail?: string;
   defaultPhone?: string;
   manualHandles?: ManualPaymentHandles;
@@ -48,11 +56,14 @@ function FieldError({ errors }: { errors?: string[] }) {
 }
 
 const fieldClass =
-  "mt-1.5 w-full rounded-[var(--radius-pill)] border border-[var(--color-border-interactive)] bg-[var(--color-surface)] px-4 py-3 text-[var(--scale-sm)] text-[var(--color-ink)]";
+  "field-control mt-1.5 w-full min-h-11 rounded-[var(--radius-pill)] border border-[var(--color-border-interactive)] bg-[var(--color-surface)] px-4 py-3 text-[var(--color-ink)]";
 
 export function CheckoutForm({
-  jurisdiction,
   pricing,
+  shipState,
+  shipCountry,
+  onShipStateChange,
+  onShipCountryChange,
   defaultEmail,
   defaultPhone,
   manualHandles = {},
@@ -65,6 +76,8 @@ export function CheckoutForm({
   const manualMethod =
     showManualMethods && !isBitcoin ? (method as ManualPaymentMethod) : null;
   const handle = manualMethod ? manualHandles[manualMethod] : undefined;
+  const subdivisions = getCountrySubdivisions(shipCountry);
+  const stateLabel = subdivisionFieldLabel(shipCountry);
 
   useEffect(() => {
     if (!showManualMethods && method !== "paybis_btc") {
@@ -163,20 +176,41 @@ export function CheckoutForm({
           </label>
 
           <label className="block text-[var(--scale-xs)] text-[var(--color-ink-soft)]">
-            State
-            <input
-              name="state"
-              required
-              autoComplete="address-level1"
-              defaultValue={defaults?.state ?? ""}
-              placeholder="State"
-              className={fieldClass}
-            />
+            {stateLabel}
+            {subdivisions ? (
+              <select
+                name="state"
+                required
+                autoComplete="address-level1"
+                value={shipState}
+                onChange={(event) => onShipStateChange(event.target.value)}
+                className={fieldClass}
+              >
+                <option value="" disabled>
+                  Select {stateLabel.toLowerCase()}
+                </option>
+                {subdivisions.map((s) => (
+                  <option key={s.code} value={s.code}>
+                    {s.name}
+                  </option>
+                ))}
+              </select>
+            ) : (
+              <input
+                name="state"
+                required
+                autoComplete="address-level1"
+                value={shipState}
+                onChange={(event) => onShipStateChange(event.target.value)}
+                placeholder={stateLabel}
+                className={fieldClass}
+              />
+            )}
             <FieldError errors={state.fieldErrors?.state} />
           </label>
 
           <label className="block text-[var(--scale-xs)] text-[var(--color-ink-soft)]">
-            ZIP
+            Postal code
             <input
               name="postalCode"
               required
@@ -190,8 +224,23 @@ export function CheckoutForm({
 
         <label className="block text-[var(--scale-xs)] text-[var(--color-ink-soft)]">
           Country
-          <select name="country" required defaultValue="US" autoComplete="country" className={fieldClass}>
-            <option value="US">United States</option>
+          <select
+            name="country"
+            required
+            autoComplete="off"
+            value={shipCountry}
+            onChange={(event) => {
+              const next = event.target.value;
+              onShipCountryChange(next);
+              onShipStateChange(defaultSubdivisionForCountry(next));
+            }}
+            className={fieldClass}
+          >
+            {SHIPPING_COUNTRIES.map((country) => (
+              <option key={country.code} value={country.code}>
+                {country.name}
+              </option>
+            ))}
           </select>
           <FieldError errors={state.fieldErrors?.country} />
         </label>
@@ -322,6 +371,10 @@ export function CheckoutForm({
           <input type="checkbox" name="confirmAge" className="mt-1 accent-[var(--color-resin)]" required />
           <span>I confirm I am 21 years of age or older and the shipping address is accurate.</span>
         </label>
+        <p className="text-[var(--scale-xs)] text-[var(--color-ink-muted)]">
+          Shipping is available worldwide. US {formatPrice(FLAT_SHIPPING_CENTS)} · International{" "}
+          {formatPrice(FLAT_SHIPPING_INTL_CENTS)} (free at $300+).
+        </p>
         <FieldError errors={state.fieldErrors?.confirmAge} />
       </section>
 
@@ -334,7 +387,11 @@ export function CheckoutForm({
       <button
         type="submit"
         disabled={pending}
-        className={isBitcoin ? "btn-primary w-full text-[var(--scale-sm)] py-4" : "btn-outline w-full"}
+        className={
+          isBitcoin
+            ? "btn-primary min-h-12 w-full touch-manipulation py-4 text-[var(--scale-sm)]"
+            : "btn-outline min-h-12 w-full touch-manipulation"
+        }
       >
         {pending
           ? isBitcoin

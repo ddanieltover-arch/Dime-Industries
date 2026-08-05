@@ -22,7 +22,7 @@ export function MobileNav() {
       <Dialog.Trigger asChild>
         <button
           type="button"
-          className="flex h-11 w-11 items-center justify-center border border-[var(--color-border-interactive)] text-[var(--color-ink)] transition-[border-color,color] duration-[var(--motion-fast)] hover:border-[var(--color-resin)] hover:text-[var(--color-resin)] lg:hidden"
+          className="flex h-11 w-11 touch-manipulation items-center justify-center border border-[var(--color-border-interactive)] text-[var(--color-ink)] transition-[border-color,color] duration-[var(--motion-fast)] hover:border-[var(--color-resin)] hover:text-[var(--color-resin)] lg:hidden"
           aria-label={open ? "Close menu" : "Open menu"}
           aria-expanded={open}
         >
@@ -49,7 +49,7 @@ export function MobileNav() {
       <Dialog.Portal>
         <Dialog.Overlay className="drawer-overlay fixed inset-0 z-50 bg-black/75 backdrop-blur-sm" />
         <Dialog.Content
-          className="drawer-panel fixed inset-y-0 right-0 z-50 flex w-[min(100vw,22rem)] flex-col border-l border-[var(--color-border)] bg-[var(--color-bg)] shadow-[var(--shadow-elevated)] outline-none"
+          className="drawer-panel-left fixed inset-y-0 left-0 z-50 flex w-[min(100vw,22rem)] flex-col border-r border-[var(--color-border)] bg-[var(--color-bg)] shadow-[var(--shadow-elevated)] outline-none"
           aria-describedby={undefined}
         >
           <div className="glass-panel flex h-16 items-center justify-between border-b border-[var(--color-border)] px-5">
@@ -59,7 +59,7 @@ export function MobileNav() {
             <Dialog.Close asChild>
               <button
                 type="button"
-                className="min-h-11 min-w-11 font-[var(--font-display)] text-[10px] uppercase tracking-[0.14em] text-[var(--color-ink-soft)] transition-colors hover:text-[var(--color-resin)]"
+                className="min-h-11 min-w-11 touch-manipulation font-[var(--font-display)] text-[10px] uppercase tracking-[0.14em] text-[var(--color-ink-soft)] transition-colors hover:text-[var(--color-resin)]"
                 aria-label="Close menu"
               >
                 Close
@@ -67,7 +67,7 @@ export function MobileNav() {
             </Dialog.Close>
           </div>
 
-          <nav aria-label="Main mobile" className="flex-1 overflow-y-auto px-5 py-6">
+          <nav aria-label="Main mobile" className="flex-1 overflow-y-auto overscroll-contain px-5 py-6">
             <ul className="space-y-0" role="list">
               {HEADER_NAV_LINKS.map((link) => {
                 const active =
@@ -80,7 +80,7 @@ export function MobileNav() {
                       <Link
                         href={link.href}
                         aria-current={active ? "page" : undefined}
-                        className={`block border-b border-[var(--color-border)] py-4 font-[var(--font-display)] text-[var(--scale-sm)] uppercase tracking-[0.14em] transition-colors duration-[var(--motion-fast)] ${
+                        className={`block min-h-12 border-b border-[var(--color-border)] py-4 font-[var(--font-display)] text-[var(--scale-sm)] uppercase tracking-[0.14em] transition-colors duration-[var(--motion-fast)] ${
                           active
                             ? "text-[var(--color-resin)]"
                             : "text-[var(--color-ink)] hover:text-[var(--color-resin)]"
@@ -103,7 +103,7 @@ export function MobileNav() {
                   <Dialog.Close asChild>
                     <Link
                       href={link.href}
-                      className="block border-b border-[var(--color-border)] py-3.5 font-[var(--font-display)] text-[var(--scale-xs)] uppercase tracking-[0.14em] text-[var(--color-ink-soft)] transition-colors hover:text-[var(--color-resin)]"
+                      className="block min-h-12 border-b border-[var(--color-border)] py-3.5 font-[var(--font-display)] text-[var(--scale-xs)] uppercase tracking-[0.14em] text-[var(--color-ink-soft)] transition-colors hover:text-[var(--color-resin)]"
                     >
                       {link.label}
                     </Link>
@@ -113,9 +113,12 @@ export function MobileNav() {
             </ul>
           </nav>
 
-          <div className="border-t border-[var(--color-border)] p-5">
+          <div
+            className="border-t border-[var(--color-border)] p-5"
+            style={{ paddingBottom: "max(1.25rem, env(safe-area-inset-bottom))" }}
+          >
             <Dialog.Close asChild>
-              <Link href="/shop" className="btn-primary w-full">
+              <Link href="/shop" className="btn-primary min-h-12 w-full touch-manipulation">
                 Shop now
               </Link>
             </Dialog.Close>

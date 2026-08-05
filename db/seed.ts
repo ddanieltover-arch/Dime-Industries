@@ -36,6 +36,14 @@ async function seed() {
   await db.insert(schema.siteSettings).values([
     { key: "launch_jurisdictions", value: JSON.stringify(["CA", "MA"]) },
     { key: "feature_flags", value: JSON.stringify({ wholesale_enabled: true, vendor_onboarding: false }) },
+    {
+      key: "shipping_rates",
+      value: {
+        usFlatCents: 1200,
+        intlFlatCents: 2500,
+        freeThresholdCents: 30000,
+      },
+    },
   ]);
 
   // --- Sample products ---------------------------------------------------

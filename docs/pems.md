@@ -23,8 +23,8 @@
 | Tech stack (one line) | TypeScript, Next 15, React 19, Tailwind 4, Drizzle, Supabase, Zod, Framer Motion, Vitest, Playwright, Sentry |
 | Design system | DIME brand tokens in `app/globals.css` — dark concrete + resin gold; Gotham / Retro Signature |
 | Primary risks | Custom-domain DNS/TLS cutover; age-gate crawlability vs compliance; heavy hero.mp4 when loaded; `.com` SEO cannibalization; cannabis legal/compliance |
-| Open decisions | Confirm live Paybis vs mock for public launch; GSC/GA4 owner setup |
-| Recent changes | EQTA CWV probe (age-verified `/`): CLS PASS ~0.022; LCP FAIL ~3.4–4.0s local P0 / ~2.7s live — blocked by ~49MB hero.mp4 |
+| Open decisions | Confirm live Paybis vs mock for public launch; GSC/GA4 owner setup; legal review of worldwide ship-to vs cannabis regs |
+| Recent changes | EQTA CWV probe (age-verified `/`): CLS PASS ~0.022; LCP FAIL ~3.4–4.0s local P0 / ~2.7s live — blocked by ~49MB hero.mp4; **mobile UX pass** (PDP/shop/checkout + homepage rails, fullscreen age-gate, account sticky nav) |
 | Next priorities | Compress/replace hero.mp4 (≤2MB web hero or poster-only); deploy P0 + re-run `pnpm cwv:home`; owner DNS; GSC/GA4 |
 
 ---
@@ -38,7 +38,7 @@
 | Goals | Production DTC + wholesale commerce for CA/MA launch jurisdictions; replace fragmented WordPress/Heroku brand surfaces with one compliant, durable storefront; grow organic/AI visibility via SEO+GEO. |
 | Target users | 21+ adult-use retail customers (CA, MA); wholesale buyers (NET-30/60 or BTC upfront); platform admins |
 | Industry / domain | Cannabis / hemp DTC commerce (regulated adult-use) |
-| Key features | Age gate (21+); jurisdiction-aware catalog; shop/PDP/cart/checkout (Paybis BTC); account portal; admin back office; CMS/blog; coupons; loyalty + affiliate; wholesale apply/shop; COA + AI assistant adapters; PWA; SEO/schema/GEO; returns (schema `0011`) |
+| Key features | Age gate (21+); jurisdiction-aware catalog; shop/PDP/cart/checkout (Paybis BTC); account portal; admin back office; CMS/blog; coupons; loyalty + affiliate; wholesale apply/shop; COA + AI assistant adapters; PWA; SEO/schema/GEO; returns (schema `0011`); worldwide shipping (schema `0012`) |
 | Phase | **Launch** (soft-launch on Vercel; custom domain owner-gated) transitioning to **Maintain** + SEO growth |
 | Ownership (client / Pulse / stakeholders) | Client: DIME Industries. Delivery: Pulse Software Studio. Prior build history in `docs/` (DevOS sprint charters 00–46). |
 | Success metrics | Durable orders with `DATABASE_URL`; production smoke/`/api/ready` green; Lighthouse/CWV targets (LCP &lt; 2.5s, WCAG 2.2 AA); SEO indexation + keyword map execution; DNS live on `dimeindustries.us` |
@@ -53,7 +53,7 @@
 | Web framework | Next.js 15.5 App Router | `app/`; React 19 |
 | Mobile framework | N/A (responsive web + PWA) | `components/pwa`, service worker |
 | Backend | Next.js Route Handlers + server modules | `app/api/*`, `lib/*` |
-| Database | PostgreSQL via Supabase | Migrations `db/migrations/0001`–`0011` |
+| Database | PostgreSQL via Supabase | Migrations `db/migrations/0001`–`0012` |
 | ORM / data layer | Drizzle ORM 0.33 + `postgres` | `db/schema.ts`; cookie/session fallbacks when DB unset |
 | Auth | Supabase Auth (email/password + Google OAuth) | Demo auth cookie when Supabase unset (blocked in prod unless `ALLOW_DEMO_AUTH`) |
 | Styling | Tailwind CSS 4 + CSS variables | `@import "tailwindcss"`; tokens in `globals.css` |
@@ -144,6 +144,10 @@ Source: `dime-enterprise-commerce/docs/10-decisions-d1-d7-locked.md`. Soft-launc
 | 2026-08-01 | Sprint 15 complete — adapters, loyalty redeem, affiliate payouts, load test, cutover docs | Exit soft-launch engineering | Rebuild rewards in-house | Production package ready; DNS owner-gated |
 | 2026-08-02+ | SEO+GEO program on `.us` storefront | Capture brand/commercial intent; AI citation readiness | Rely only on `.com` brand site | Content, schema, CI audits, CWV backlog |
 | 2026-08-04 | P0: www canonical + apex redirects; poster-first hero LCP; dime-roll CI guards | Align with SERP facts, CWV budget, single preferred host | Apex-as-canonical; autoplay hero video on load | SEO + performance path for launch |
+| 2026-08-04 | Checkout shipping opened worldwide | Owner request — ship outside CA/MA | Keep CA/MA-only ship-to | Address/country validation + retail/wholesale checkout gates; catalog/tax still use age-gate jurisdiction |
+| 2026-08-04 | Mobile UX optimization pass (EXA + Full Stack) | Reduce purchase friction on phone; align touch targets / safe areas | Desktop-only tweaks | Sticky PDP ATC, shop rails, checkout order summary first on mobile, left sheet menu, iOS zoom-safe inputs |
+| 2026-08-04 | Mobile UX pass 2 — home / age-gate / account | Same friction goals on remaining high-traffic surfaces | Leave as-is | Edge-bleed product rails; fullscreen age gate with sticky CTAs; sticky account nav + tappable overview |
+| 2026-08-04 | Migration `0012_worldwide_shipping` — denormalized ship/tax columns + country_tax_rates + shipping_rates setting | Persist worldwide checkout economics in Supabase | JSONB-only payload | Apply `db/migrations/0012_worldwide_shipping.sql` on Supabase |
 
 ---
 
@@ -154,7 +158,7 @@ Source: `dime-enterprise-commerce/docs/10-decisions-d1-d7-locked.md`. Soft-launc
 | Budget / timeline | Owner-gated DNS/secrets final step; engineering package treated complete through Sprint 15 |
 | Technical | Paybis BTC-only at launch; COA/Rewards/Assistant depend on external hosts; Next 15 + Sentry Edge quirks already patched |
 | Business | Platform assumed licensed seller of record (D3) — legal confirmation remains business-owned |
-| Legal / compliance | 21+ age gate; CA/MA jurisdiction gating; cannabis advertising/SEO compliance; noindex on cart/checkout/admin |
+| Legal / compliance | 21+ age gate; catalog still CA/MA jurisdiction-aware; shipping addresses accepted worldwide (owner policy); cannabis advertising/SEO compliance; noindex on cart/checkout/admin |
 | Other | Brand site `dimeindustries.com` still competes for organic brand SERPs |
 
 ---
@@ -219,7 +223,7 @@ Source: `dime-enterprise-commerce/docs/10-decisions-d1-d7-locked.md`. Soft-launc
 
 | Note | Detail |
 |---|---|
-| Assumptions | D1–D7 still owner baseline; production should not enable demo auth; `ORDERS_PERSISTENCE=auto` with migrations `0004`–`0011` applied for full commerce |
+| Assumptions | D1–D7 still owner baseline; production should not enable demo auth; `ORDERS_PERSISTENCE=auto` with migrations `0004`–`0012` applied for full commerce |
 | Cross-team decisions | Wholesale delivered as Phase 2 in-product; Rewards on-site loyalty is source of truth with legacy SPA link |
 | External dependencies | Supabase project, Vercel projects (staging/production), Paybis, Resend, Sentry, DIME COA/Assistant Heroku hosts, registrar DNS |
 | Specialist handoffs | **CPA/DSRA** — cutover/DNS/observability; **EQTA** — CWV + e2e expansion; **ECSA** — payment/webhook/secrets review at live Paybis; **BXA/EXA** — age-gate UX vs SEO; **Full Stack** — performance + content fixes; **MTD** — re-verify domain status after owner “DNS published” |

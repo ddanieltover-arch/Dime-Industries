@@ -1,19 +1,17 @@
 // app/checkout/page.tsx
-import type { Metadata } from "next";
-import Image from "next/image";
-import Link from "next/link";
 import { AgeGateDialog } from "@/components/shared/age-gate-dialog";
-import { BeginCheckoutEvent } from "@/components/analytics/begin-checkout-event";
-import { CheckoutForm } from "@/components/checkout/checkout-form";
+import { CheckoutWorkspace } from "@/components/checkout/checkout-workspace";
 import { getAgeGateState } from "@/lib/compliance/age-gate";
 import { CouponForm } from "@/components/cart/coupon-form";
 import { LoyaltyRedeemForm } from "@/components/checkout/loyalty-redeem-form";
 import { getCartSnapshot } from "@/lib/cart";
 import { computePricing } from "@/lib/checkout";
 import { resolveAppliedCoupon } from "@/lib/coupons/store";
-import { formatPrice } from "@/lib/format";
 import { getCurrentProfile } from "@/lib/auth/session";
 import { getManualPaymentHandles } from "@/lib/payments/methods";
+import Link from "next/link";
+import Image from "next/image";
+import type { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "Checkout",
@@ -67,10 +65,16 @@ export default async function CheckoutPage({ searchParams }: { searchParams: Sea
     ? (await import("@/lib/loyalty/store")).getLoyaltyAccount(profile.email).then((a) => a.pointsBalance)
     : Promise.resolve(0);
   const balance = await loyaltyBalance;
-  const checkoutJurisdiction = ageGate.jurisdiction ?? "CA";
+  const initialShipState = defaultAddress?.state || ageGate.jurisdiction || "CA";
+  const initialShipCountry = defaultAddress?.country || "US";
   const pricing =
     ageGate.ageVerified && cart.lines.length
-      ? computePricing(cart.lines, checkoutJurisdiction, coupon, loyalty)
+      ? computePricing(
+          cart.lines,
+          { state: initialShipState, country: initialShipCountry },
+          coupon,
+          loyalty
+        )
       : null;
 
   return (
@@ -105,7 +109,7 @@ export default async function CheckoutPage({ searchParams }: { searchParams: Sea
               <p className="mt-3 max-w-md text-[var(--scale-base)] text-white/75">
                 {cart.lines.length === 0
                   ? "Add products to your cart before checking out."
-                  : `Secure checkout for ${cart.itemCount} item${cart.itemCount === 1 ? "" : "s"} — CA & MA delivery.`}
+                  : `Secure checkout for ${cart.itemCount} item${cart.itemCount === 1 ? "" : "s"} — worldwide shipping.`}
               </p>
               {cart.lines.length > 0 ? (
                 <div className="mt-6 flex flex-wrap gap-3">
@@ -163,151 +167,55 @@ export default async function CheckoutPage({ searchParams }: { searchParams: Sea
             </section>
           ) : (
             <section className="bg-[var(--color-bg)]">
-              <div className="mx-auto grid max-w-7xl gap-10 px-[var(--container-pad-x)] py-[var(--section-y)] lg:grid-cols-[1fr_22rem] lg:gap-12">
-                <div id="checkout-form" className="scroll-mt-24">
-                  {paymentError ? (
-                    <p
-                      role="alert"
-                      className="mb-6 border border-[var(--color-flag)] bg-[var(--color-surface)] px-4 py-3 text-[var(--scale-sm)] text-[var(--color-flag)]"
-                    >
-                      Payment was not completed. You can try again below.
-                    </p>
-                  ) : null}
-
-                  <div className="border border-[var(--color-border)] bg-[var(--color-surface)] p-5 sm:p-7">
-                    <p className="font-[var(--font-display)] text-[10px] uppercase tracking-[0.16em] text-[var(--color-resin)]">
-                      Offers
-                    </p>
-                    <h2 className="mt-2 font-[var(--font-display)] text-[var(--scale-lg)] uppercase tracking-[0.06em] text-[var(--color-ink)]">
-                      Coupons & rewards
-                    </h2>
-                    <div className="mt-5 space-y-4">
-                      <CouponForm appliedCode={pricing?.couponCode ?? null} />
-                      {profile ? (
-                        <LoyaltyRedeemForm
-                          balance={balance}
-                          appliedPoints={pricing?.loyaltyPointsRedeemed ?? 0}
-                          appliedDiscountCents={pricing?.loyaltyDiscountCents ?? 0}
-                        />
-                      ) : (
-                        <p className="text-[var(--scale-sm)] text-[var(--color-ink-soft)]">
-                          <Link
-                            href="/login?next=/checkout"
-                            className="text-[var(--color-resin)] underline-offset-4 hover:underline"
-                          >
-                            Sign in
-                          </Link>{" "}
-                          to redeem loyalty points.
-                        </p>
-                      )}
-                    </div>
-                  </div>
-
-                  <div className="mt-8 border border-[var(--color-border)] bg-[var(--color-surface)] p-5 sm:p-7">
-                    <p className="font-[var(--font-display)] text-[10px] uppercase tracking-[0.16em] text-[var(--color-resin)]">
-                      Details
-                    </p>
-                    <h2 className="mt-2 font-[var(--font-display)] text-[var(--scale-lg)] uppercase tracking-[0.06em] text-[var(--color-ink)]">
-                      Shipping & payment
-                    </h2>
-                    <div className="mt-6">
-                      <BeginCheckoutEvent valueUsd={(pricing?.totalCents ?? 0) / 100} />
-                      <CheckoutForm
-                        jurisdiction={checkoutJurisdiction}
-                        pricing={pricing!}
-                        defaultEmail={profile?.email}
-                        defaultPhone={accountPrefs?.phone || undefined}
-                        manualHandles={getManualPaymentHandles()}
-                        defaults={{
-                          fullName: accountPrefs?.displayName || undefined,
-                          line1: defaultAddress?.line1,
-                          line2: defaultAddress?.line2,
-                          city: defaultAddress?.city,
-                          state: defaultAddress?.state,
-                          postalCode: defaultAddress?.postalCode,
-                        }}
+              <div className="mx-auto max-w-7xl px-[var(--container-pad-x)] pt-[var(--section-y)]">
+                <div className="border border-[var(--color-border)] bg-[var(--color-surface)] p-5 sm:p-7 lg:max-w-[calc(100%-22rem-3rem)]">
+                  <p className="font-[var(--font-display)] text-[10px] uppercase tracking-[0.16em] text-[var(--color-resin)]">
+                    Offers
+                  </p>
+                  <h2 className="mt-2 font-[var(--font-display)] text-[var(--scale-lg)] uppercase tracking-[0.06em] text-[var(--color-ink)]">
+                    Coupons & rewards
+                  </h2>
+                  <div className="mt-5 space-y-4">
+                    <CouponForm appliedCode={pricing?.couponCode ?? null} />
+                    {profile ? (
+                      <LoyaltyRedeemForm
+                        balance={balance}
+                        appliedPoints={pricing?.loyaltyPointsRedeemed ?? 0}
+                        appliedDiscountCents={pricing?.loyaltyDiscountCents ?? 0}
                       />
-                    </div>
+                    ) : (
+                      <p className="text-[var(--scale-sm)] text-[var(--color-ink-soft)]">
+                        <Link
+                          href="/login?next=/checkout"
+                          className="text-[var(--color-resin)] underline-offset-4 hover:underline"
+                        >
+                          Sign in
+                        </Link>{" "}
+                        to redeem loyalty points.
+                      </p>
+                    )}
                   </div>
                 </div>
-
-                <aside className="h-fit border border-[var(--color-border)] bg-[var(--color-surface)] p-6 sm:p-7 lg:sticky lg:top-24">
-                  <p className="font-[var(--font-display)] text-[10px] uppercase tracking-[0.16em] text-[var(--color-resin)]">
-                    Order summary
-                  </p>
-                  <h2 className="mt-2 font-[var(--font-display)] text-[var(--scale-xl)] uppercase tracking-[0.06em] text-[var(--color-ink)]">
-                    Your bag
-                  </h2>
-
-                  <ul className="mt-5 space-y-4" role="list">
-                    {cart.lines.map((line) => (
-                      <li
-                        key={line.variantId}
-                        className="border-b border-[var(--color-border)] pb-4 text-[var(--scale-sm)] last:border-0 last:pb-0"
-                      >
-                        <p className="font-[var(--font-display)] uppercase tracking-[0.04em] text-[var(--color-ink)]">
-                          {line.productName}{" "}
-                          <span className="text-[var(--color-ink-soft)]">× {line.quantity}</span>
-                        </p>
-                        <p className="mt-1 text-[var(--scale-xs)] text-[var(--color-ink-muted)]">
-                          {line.weightOrFormat} · {formatPrice(line.unitPriceCents * line.quantity)}
-                        </p>
-                      </li>
-                    ))}
-                  </ul>
-
-                  {pricing ? (
-                    <dl className="mt-6 space-y-2.5 border-t border-[var(--color-border)] pt-5 text-[var(--scale-sm)]">
-                      <div className="flex justify-between gap-3">
-                        <dt className="text-[var(--color-ink-soft)]">Subtotal</dt>
-                        <dd className="text-[var(--color-ink)]">{formatPrice(pricing.subtotalCents)}</dd>
-                      </div>
-                      {pricing.discountCents > 0 ? (
-                        <div className="flex justify-between gap-3">
-                          <dt className="text-[var(--color-terp)]">{pricing.discountLabel ?? "Discount"}</dt>
-                          <dd className="text-[var(--color-terp)]">−{formatPrice(pricing.discountCents)}</dd>
-                        </div>
-                      ) : null}
-                      {pricing.loyaltyDiscountCents > 0 ? (
-                        <div className="flex justify-between gap-3">
-                          <dt className="text-[var(--color-terp)]">
-                            Loyalty ({pricing.loyaltyPointsRedeemed} pts)
-                          </dt>
-                          <dd className="text-[var(--color-terp)]">
-                            −{formatPrice(pricing.loyaltyDiscountCents)}
-                          </dd>
-                        </div>
-                      ) : null}
-                      <div className="flex justify-between gap-3">
-                        <dt className="text-[var(--color-ink-soft)]">{pricing.taxLabel}</dt>
-                        <dd className="text-[var(--color-ink)]">{formatPrice(pricing.taxCents)}</dd>
-                      </div>
-                      <div className="flex justify-between gap-3">
-                        <dt className="text-[var(--color-ink-soft)]">{pricing.shippingLabel}</dt>
-                        <dd className="text-[var(--color-ink)]">{formatPrice(pricing.shippingCents)}</dd>
-                      </div>
-                      <div className="flex justify-between gap-3 border-t border-[var(--color-border)] pt-4">
-                        <dt className="font-[var(--font-display)] text-[10px] uppercase tracking-[0.14em] text-[var(--color-ink)]">
-                          Total
-                        </dt>
-                        <dd className="font-[var(--font-display)] text-[var(--scale-lg)] text-[var(--color-resin)]">
-                          {formatPrice(pricing.totalCents)}
-                        </dd>
-                      </div>
-                    </dl>
-                  ) : null}
-
-                  <p className="mt-4 text-[var(--scale-xs)] text-[var(--color-ink-muted)]">
-                    No hidden fees. Every charge is shown before you pay.
-                  </p>
-                  <Link
-                    href="/cart"
-                    className="mt-5 inline-block font-[var(--font-display)] text-[10px] uppercase tracking-[0.14em] text-[var(--color-ink-soft)] transition-colors hover:text-[var(--color-resin)]"
-                  >
-                    Edit cart →
-                  </Link>
-                </aside>
               </div>
+
+              <CheckoutWorkspace
+                lines={cart.lines}
+                coupon={coupon}
+                loyalty={loyalty}
+                paymentError={paymentError}
+                defaultEmail={profile?.email}
+                defaultPhone={accountPrefs?.phone || undefined}
+                manualHandles={getManualPaymentHandles()}
+                defaults={{
+                  fullName: accountPrefs?.displayName || undefined,
+                  line1: defaultAddress?.line1,
+                  line2: defaultAddress?.line2,
+                  city: defaultAddress?.city,
+                  state: defaultAddress?.state || ageGate.jurisdiction || "CA",
+                  postalCode: defaultAddress?.postalCode,
+                  country: defaultAddress?.country || "US",
+                }}
+              />
             </section>
           )}
         </>

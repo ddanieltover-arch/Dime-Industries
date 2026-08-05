@@ -99,6 +99,15 @@ async function create(input: CreateOrderInput): Promise<CheckoutOrder> {
     paymentRequestId: null,
     paymentMode: null,
     paidAt: null,
+    shipCountry: order.address.country || "US",
+    shipState: order.address.state,
+    shippingCents: order.shippingCents,
+    taxCents: order.taxCents,
+    taxRateBps: input.pricing.taxRateBps,
+    shippingLabel: order.shippingLabel,
+    taxLabel: order.taxLabel,
+    subtotalCents: order.subtotalCents,
+    totalCents: order.totalCents,
   });
 
   return order;
@@ -122,6 +131,14 @@ async function update(
       paymentRequestId: next.paymentRequestId,
       paymentMode: next.paymentMode,
       paidAt: next.paidAt ? new Date(next.paidAt) : null,
+      shipCountry: next.address.country || "US",
+      shipState: next.address.state,
+      shippingCents: next.shippingCents,
+      taxCents: next.taxCents,
+      shippingLabel: next.shippingLabel,
+      taxLabel: next.taxLabel,
+      subtotalCents: next.subtotalCents,
+      totalCents: next.totalCents,
       updatedAt: new Date(),
     })
     .where(eq(commerceOrders.id, orderId));

@@ -39,7 +39,7 @@ export function ReturnRequestForm({ orderId }: { orderId: string }) {
         <input type="hidden" name="orderId" value={orderId} />
         <label className="flex flex-col gap-1.5 text-[var(--scale-xs)] text-[var(--color-ink-soft)]">
           Reason
-          <select name="reason" required className="field-input">
+          <select name="reason" required className="field-input field-control min-h-11">
             <option value="">Select a reason</option>
             {REASONS.map(([value, label]) => (
               <option key={value} value={value}>
@@ -55,10 +55,10 @@ export function ReturnRequestForm({ orderId }: { orderId: string }) {
             rows={3}
             maxLength={2000}
             placeholder="SKU, photos description, retailer, or validation code…"
-            className="field-input resize-y"
+            className="field-input field-control resize-y"
           />
         </label>
-        <button type="submit" disabled={pending} className="btn-primary">
+        <button type="submit" disabled={pending} className="btn-primary min-h-12 w-full touch-manipulation sm:w-auto">
           {pending ? "Submitting…" : "Submit return request"}
         </button>
         {state.error ? (

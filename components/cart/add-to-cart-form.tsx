@@ -14,6 +14,8 @@ type Props = {
   defaultVariantId?: string;
   productId?: string;
   productName?: string;
+  /** Stable id so the mobile sticky buy bar can submit this form */
+  formId?: string;
 };
 
 export function AddToCartForm({
@@ -21,6 +23,7 @@ export function AddToCartForm({
   defaultVariantId,
   productId,
   productName,
+  formId = "pdp-add-to-cart",
 }: Props) {
   const { setItemCount } = useCart();
   const lastTracked = useRef(0);
@@ -75,14 +78,14 @@ export function AddToCartForm({
   }
 
   return (
-    <form action={formAction} className="space-y-4">
+    <form id={formId} action={formAction} className="space-y-4">
       <div className="flex flex-col gap-3 sm:flex-row sm:items-end">
         <label className="flex flex-1 flex-col gap-1.5 text-[var(--scale-xs)] text-[var(--color-ink-soft)]">
           Format
           <select
             name="variantId"
             defaultValue={defaultId}
-            className="rounded-[var(--radius-pill)] border border-[var(--color-border-interactive)] bg-[var(--color-bg)] px-4 py-3 text-[var(--scale-sm)] text-[var(--color-ink)]"
+            className="field-control min-h-11 rounded-[var(--radius-pill)] border border-[var(--color-border-interactive)] bg-[var(--color-bg)] px-4 py-3 text-[var(--color-ink)]"
           >
             {variants.map((v) => (
               <option key={v.id} value={v.id} disabled={v.quantityOnHand <= 0}>
@@ -94,7 +97,7 @@ export function AddToCartForm({
           </select>
         </label>
 
-        <label className="flex w-24 flex-col gap-1.5 text-[var(--scale-xs)] text-[var(--color-ink-soft)]">
+        <label className="flex w-full flex-col gap-1.5 text-[var(--scale-xs)] text-[var(--color-ink-soft)] sm:w-24">
           Qty
           <input
             type="number"
@@ -102,12 +105,17 @@ export function AddToCartForm({
             min={1}
             max={20}
             defaultValue={1}
-            className="rounded-[var(--radius-pill)] border border-[var(--color-border-interactive)] bg-[var(--color-bg)] px-3 py-3 text-[var(--scale-sm)] text-[var(--color-ink)]"
+            inputMode="numeric"
+            className="field-control min-h-11 rounded-[var(--radius-pill)] border border-[var(--color-border-interactive)] bg-[var(--color-bg)] px-3 py-3 text-[var(--color-ink)]"
           />
         </label>
       </div>
 
-      <button type="submit" disabled={pending} className="btn-primary w-full sm:w-auto">
+      <button
+        type="submit"
+        disabled={pending}
+        className="btn-primary min-h-12 w-full touch-manipulation"
+      >
         {pending ? "Adding…" : "Add to cart"}
       </button>
 

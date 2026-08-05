@@ -126,6 +126,56 @@ body {
   background: var(--color-bg);
   color: var(--color-ink);
   font-family: var(--font-body);
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* 16px+ on form controls prevents iOS Safari zoom-on-focus */
+.field-control,
+.field-input,
+input:not([type="checkbox"]):not([type="radio"]):not([type="range"]):not([type="hidden"]),
+select,
+textarea {
+  font-size: max(1rem, var(--scale-sm));
+}
+
+button,
+a,
+[role="button"],
+summary {
+  touch-action: manipulation;
+}
+
+/* Hover lift only for fine pointers — avoids sticky hover on touch */
+@media (hover: hover) and (pointer: fine) {
+  .btn-primary:hover {
+    background: var(--color-resin-hover);
+    transform: translateY(-1px);
+    box-shadow: 0 6px 20px rgba(201, 177, 56, 0.28);
+  }
+
+  .btn-outline:hover {
+    background: var(--color-resin);
+    color: #000;
+    transform: translateY(-1px);
+    box-shadow: 0 6px 18px rgba(201, 177, 56, 0.22);
+  }
+
+  .surface-elevated:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-elevated);
+  }
+}
+
+/* Cookie banner sits above mobile bottom nav */
+.cookie-banner {
+  bottom: 0;
+  padding-bottom: max(1rem, calc(0.75rem + env(safe-area-inset-bottom, 0px)));
+}
+
+@media (max-width: 1023px) {
+  .cookie-banner {
+    bottom: calc(3.5rem + env(safe-area-inset-bottom, 0px));
+  }
 }
 
 :focus-visible {
@@ -157,8 +207,6 @@ body {
 
 .btn-primary:hover {
   background: var(--color-resin-hover);
-  transform: translateY(-1px);
-  box-shadow: 0 6px 20px rgba(201, 177, 56, 0.28);
 }
 
 .btn-primary:active {
@@ -196,8 +244,6 @@ body {
 .btn-outline:hover {
   background: var(--color-resin);
   color: #000;
-  transform: translateY(-1px);
-  box-shadow: 0 6px 18px rgba(201, 177, 56, 0.22);
 }
 
 .btn-outline:active {
@@ -248,8 +294,7 @@ body {
 }
 
 .surface-elevated:hover {
-  transform: translateY(-3px);
-  box-shadow: var(--shadow-elevated);
+  background: var(--color-surface-raised);
 }
 
 .glass-panel {
@@ -366,6 +411,36 @@ body {
   animation: drawer-panel-in var(--motion-slow) var(--ease-out) forwards;
 }
 
+@keyframes drawer-panel-left-in {
+  from {
+    opacity: 0;
+    transform: translateX(-100%);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes drawer-panel-left-out {
+  from {
+    opacity: 1;
+    transform: translateX(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateX(-100%);
+  }
+}
+
+.drawer-panel-left {
+  animation: drawer-panel-left-out var(--motion-base) var(--ease-out) forwards;
+}
+
+.drawer-panel-left[data-state="open"] {
+  animation: drawer-panel-left-in var(--motion-slow) var(--ease-out) forwards;
+}
+
 .section-pad {
   padding-block: var(--section-y);
 }
@@ -421,6 +496,12 @@ body {
 .rail-scroll {
   scrollbar-width: thin;
   scrollbar-color: var(--color-border-interactive) transparent;
+  -webkit-overflow-scrolling: touch;
+  scroll-snap-type: x proximity;
+}
+
+.rail-scroll > * {
+  scroll-snap-align: start;
 }
 
 .rail-scroll::-webkit-scrollbar {

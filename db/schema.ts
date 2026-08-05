@@ -53,12 +53,14 @@ export const addresses = pgTable(
     city: text("city").notNull(),
     state: text("state").notNull(),
     postalCode: text("postal_code").notNull(),
+    country: text("country").notNull().default("US"),
     jurisdiction: text("jurisdiction").notNull(),
     isDefault: boolean("is_default").notNull().default(false),
   },
   (t) => ({
     byUser: index("addresses_user_idx").on(t.userId),
     byJurisdiction: index("addresses_jurisdiction_idx").on(t.jurisdiction),
+    byCountry: index("addresses_country_idx").on(t.country),
   })
 );
 
@@ -422,14 +424,32 @@ export const commerceOrders = pgTable(
     paymentRequestId: text("payment_request_id"),
     paymentMode: text("payment_mode"),
     paidAt: timestamp("paid_at", { withTimezone: true }),
+    /** Denormalized ship-to + pricing for reporting (full snapshot stays in payload). */
+    shipCountry: text("ship_country"),
+    shipState: text("ship_state"),
+    shippingCents: integer("shipping_cents"),
+    taxCents: integer("tax_cents"),
+    taxRateBps: integer("tax_rate_bps"),
+    shippingLabel: text("shipping_label"),
+    taxLabel: text("tax_label"),
+    subtotalCents: integer("subtotal_cents"),
+    totalCents: integer("total_cents"),
     createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
     updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow(),
   },
   (t) => ({
     byEmailCreated: index("commerce_orders_email_created_idx").on(t.email, t.createdAt),
     paymentRequestUnique: uniqueIndex("commerce_orders_payment_request_uidx").on(t.paymentRequestId),
+    byShipCountry: index("commerce_orders_ship_country_idx").on(t.shipCountry),
+    byShipState: index("commerce_orders_ship_state_idx").on(t.shipState),
   })
 );
+
+export const countryTaxRates = pgTable("country_tax_rates", {
+  countryCode: text("country_code").primaryKey(),
+  taxRateBps: integer("tax_rate_bps").notNull(),
+  updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow(),
+});
 
 export const commerceCarts = pgTable("commerce_carts", {
   ownerKey: text("owner_key").primaryKey(),

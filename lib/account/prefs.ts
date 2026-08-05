@@ -2,6 +2,7 @@
 import "server-only";
 import { cookies } from "next/headers";
 import { z } from "zod";
+import { isShippingCountry } from "@/lib/checkout/countries";
 
 export const ACCOUNT_PREFS_COOKIE = "dime_account_prefs";
 
@@ -11,8 +12,19 @@ const addressSchema = z.object({
   line1: z.string().min(3).max(120),
   line2: z.string().max(120).optional(),
   city: z.string().min(2).max(80),
-  state: z.enum(["CA", "MA"]),
-  postalCode: z.string().regex(/^\d{5}(-\d{4})?$/),
+  state: z.string().trim().min(1).max(80),
+  postalCode: z
+    .string()
+    .trim()
+    .min(2)
+    .max(16)
+    .regex(/^[A-Za-z0-9][A-Za-z0-9\s-]{1,15}$/),
+  country: z
+    .string()
+    .trim()
+    .toUpperCase()
+    .refine(isShippingCountry, { message: "Select a shipping country" })
+    .default("US"),
   isDefault: z.boolean(),
 });
 
@@ -41,13 +53,34 @@ const defaults: AccountPrefs = {
   addresses: [],
 };
 
+function normalizePrefs(raw: unknown): AccountPrefs {
+  if (!raw || typeof raw !== "object") {
+    return { ...defaults, notifications: { ...defaults.notifications }, addresses: [] };
+  }
+  const candidate = raw as AccountPrefs;
+  const addresses = Array.isArray(candidate.addresses)
+    ? candidate.addresses
+        .map((a) => {
+          const parsed = addressSchema.safeParse({
+            ...a,
+            country: a.country ?? "US",
+          });
+          return parsed.success ? parsed.data : null;
+        })
+        .filter((a): a is AccountAddress => Boolean(a))
+    : [];
+  const parsed = prefsSchema.safeParse({ ...candidate, addresses });
+  return parsed.success
+    ? parsed.data
+    : { ...defaults, notifications: { ...defaults.notifications }, addresses: [] };
+}
+
 export async function getAccountPrefs(): Promise<AccountPrefs> {
   const store = await cookies();
   const raw = store.get(ACCOUNT_PREFS_COOKIE)?.value;
   if (!raw) return { ...defaults, notifications: { ...defaults.notifications }, addresses: [] };
   try {
-    const parsed = prefsSchema.safeParse(JSON.parse(decodeURIComponent(raw)));
-    return parsed.success ? parsed.data : { ...defaults, notifications: { ...defaults.notifications }, addresses: [] };
+    return normalizePrefs(JSON.parse(decodeURIComponent(raw)));
   } catch {
     return { ...defaults, notifications: { ...defaults.notifications }, addresses: [] };
   }

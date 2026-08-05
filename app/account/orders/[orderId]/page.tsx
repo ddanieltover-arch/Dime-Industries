@@ -7,6 +7,7 @@ import { ReturnRequestForm } from "@/components/account/return-request-form";
 import { ReturnStatusCard } from "@/components/account/return-status-card";
 import { requireUser } from "@/lib/auth/session";
 import { getOrderById } from "@/lib/checkout";
+import { shippingCountryName } from "@/lib/checkout/countries";
 import { formatPrice } from "@/lib/format";
 import { getReturnByOrderId } from "@/lib/returns/store";
 
@@ -32,7 +33,7 @@ export default async function AccountOrderDetailPage({ params }: { params: Param
     <div>
       <Link
         href="/account/orders"
-        className="nav-link text-[var(--color-ink-muted)] hover:text-[var(--color-resin)]"
+        className="nav-link inline-flex min-h-11 items-center text-[var(--color-ink-muted)] hover:text-[var(--color-resin)]"
       >
         ← All orders
       </Link>
@@ -107,9 +108,7 @@ export default async function AccountOrderDetailPage({ params }: { params: Param
             Ship to {order.address.fullName}
             {order.address.phone ? `, ${order.address.phone}` : ""}, {order.address.line1},{" "}
             {order.address.city}, {order.address.state} {order.address.postalCode}
-            {order.address.country
-              ? `, ${order.address.country === "US" ? "United States" : order.address.country}`
-              : ""}
+            {order.address.country ? `, ${shippingCountryName(order.address.country)}` : ""}
           </p>
         </section>
       </div>

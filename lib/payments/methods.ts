@@ -62,14 +62,42 @@ export function manualPaymentHint(method: ManualPaymentMethod): string {
   }
 }
 
-/** Placeholder until PAYMENT_BTC_WALLET_ADDRESS is set. */
-export const PLACEHOLDER_BTC_WALLET =
-  "bc1qdimeplaceholderwalletreplacewithrealaddress000";
+/** Live receive addresses — override via env if needed. */
+export const DEFAULT_CRYPTO_WALLETS = {
+  btc: "1NZq2DekteiVLcbv8TndUfE6pHhEYtXEsf",
+  eth: "0x9ebC5BDb44dfC0c451637A9Dbc6eBD1B24CD9034",
+  bch: "qrz4dutrw4tt6wlfgk6dza7spv6lg4gppc9szzgwc8",
+} as const;
 
-export function getBitcoinWalletAddress(): string {
-  return process.env.PAYMENT_BTC_WALLET_ADDRESS?.trim() || PLACEHOLDER_BTC_WALLET;
+export type CryptoWalletNetwork = keyof typeof DEFAULT_CRYPTO_WALLETS;
+
+export type CryptoWallet = {
+  network: CryptoWalletNetwork;
+  label: string;
+  address: string;
+};
+
+export function getCryptoWallets(): CryptoWallet[] {
+  return [
+    {
+      network: "btc",
+      label: "Bitcoin (BTC)",
+      address: process.env.PAYMENT_BTC_WALLET_ADDRESS?.trim() || DEFAULT_CRYPTO_WALLETS.btc,
+    },
+    {
+      network: "eth",
+      label: "Ethereum (ETH)",
+      address: process.env.PAYMENT_ETH_WALLET_ADDRESS?.trim() || DEFAULT_CRYPTO_WALLETS.eth,
+    },
+    {
+      network: "bch",
+      label: "Bitcoin Cash (BCH)",
+      address: process.env.PAYMENT_BCH_WALLET_ADDRESS?.trim() || DEFAULT_CRYPTO_WALLETS.bch,
+    },
+  ];
 }
 
-export function isPlaceholderBitcoinWallet(address: string = getBitcoinWalletAddress()): boolean {
-  return address === PLACEHOLDER_BTC_WALLET || !process.env.PAYMENT_BTC_WALLET_ADDRESS?.trim();
+/** @deprecated Prefer getCryptoWallets() — kept for existing callers. */
+export function getBitcoinWalletAddress(): string {
+  return getCryptoWallets().find((w) => w.network === "btc")!.address;
 }

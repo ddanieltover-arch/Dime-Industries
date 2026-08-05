@@ -23,15 +23,21 @@ export function ProfileForm({
   return (
     <form action={formAction} className="max-w-md space-y-4">
       <p className="text-[var(--scale-sm)] text-[var(--color-ink-soft)]">
-        Signed in as <span className="text-[var(--color-ink)]">{email}</span>
+        Signed in as <span className="break-all text-[var(--color-ink)]">{email}</span>
       </p>
       <label className="block text-[var(--scale-xs)] text-[var(--color-ink-soft)]">
         Display name
-        <input name="displayName" defaultValue={displayName} className="field-input mt-1.5" />
+        <input name="displayName" defaultValue={displayName} className="field-input field-control mt-1.5 min-h-11" />
       </label>
       <label className="block text-[var(--scale-xs)] text-[var(--color-ink-soft)]">
         Phone
-        <input name="phone" defaultValue={phone} autoComplete="tel" className="field-input mt-1.5" />
+        <input
+          name="phone"
+          type="tel"
+          defaultValue={phone}
+          autoComplete="tel"
+          className="field-input field-control mt-1.5 min-h-11"
+        />
       </label>
       {state.error ? (
         <p role="alert" className="text-[var(--scale-sm)] text-[var(--color-flag)]">
@@ -43,7 +49,7 @@ export function ProfileForm({
           {state.message}
         </p>
       ) : null}
-      <button type="submit" disabled={pending} className="btn-primary">
+      <button type="submit" disabled={pending} className="btn-primary min-h-12 w-full touch-manipulation sm:w-auto">
         {pending ? "Saving…" : "Save profile"}
       </button>
     </form>

@@ -37,35 +37,32 @@ export default async function AccountOrdersPage() {
       ) : (
         <ul className="mt-8 space-y-3" role="list">
           {orders.map((order) => (
-            <li key={order.id} className="bg-[var(--color-surface)] p-5">
-              <div className="flex flex-wrap items-start justify-between gap-3">
-                <div>
-                  <Link
-                    href={`/account/orders/${order.id}`}
-                    className="font-[var(--font-display)] uppercase tracking-[0.04em] text-[var(--color-ink)] hover:text-[var(--color-resin)]"
-                  >
-                    {order.id}
-                  </Link>
-                  <p className="mt-1 text-[var(--scale-sm)] text-[var(--color-ink-soft)]">
-                    {new Date(order.createdAt).toLocaleString()}
-                  </p>
-                  <p className="mt-2 font-[var(--font-display)] text-[10px] uppercase tracking-[0.14em] text-[var(--color-resin)]">
-                    {statusLabel(order.status)}
-                    {order.trackingNumber ? " · tracking available" : ""}
-                  </p>
+            <li key={order.id}>
+              <Link
+                href={`/account/orders/${order.id}`}
+                className="block bg-[var(--color-surface)] p-4 transition-colors touch-manipulation hover:border-[var(--color-resin)] sm:p-5 border border-transparent"
+              >
+                <div className="flex flex-wrap items-start justify-between gap-3">
+                  <div className="min-w-0">
+                    <p className="truncate font-[var(--font-display)] uppercase tracking-[0.04em] text-[var(--color-ink)]">
+                      {order.id}
+                    </p>
+                    <p className="mt-1 text-[var(--scale-sm)] text-[var(--color-ink-soft)]">
+                      {new Date(order.createdAt).toLocaleString()}
+                    </p>
+                    <p className="mt-2 font-[var(--font-display)] text-[10px] uppercase tracking-[0.14em] text-[var(--color-resin)]">
+                      {statusLabel(order.status)}
+                      {order.trackingNumber ? " · tracking available" : ""}
+                    </p>
+                  </div>
+                  <div className="text-right">
+                    <p className="font-[var(--font-display)] text-[var(--scale-lg)] text-[var(--color-resin-strong)]">
+                      {formatPrice(order.totalCents)}
+                    </p>
+                    <p className="mt-2 nav-link text-[var(--color-ink-muted)]">Track order</p>
+                  </div>
                 </div>
-                <div className="text-right">
-                  <p className="font-[var(--font-display)] text-[var(--scale-lg)] text-[var(--color-resin-strong)]">
-                    {formatPrice(order.totalCents)}
-                  </p>
-                  <Link
-                    href={`/account/orders/${order.id}`}
-                    className="mt-2 inline-block nav-link text-[var(--color-ink-muted)] hover:text-[var(--color-resin)]"
-                  >
-                    Track order
-                  </Link>
-                </div>
-              </div>
+              </Link>
             </li>
           ))}
         </ul>

@@ -20,7 +20,9 @@ export function ValidateForm() {
           name="code"
           required
           placeholder="e.g. LR-GELATO-1G or LR-GELATO-1G-AB12"
-          className="field-input mt-1.5 font-[var(--font-mono)]"
+          autoCapitalize="characters"
+          enterKeyHint="go"
+          className="field-input field-control mt-1.5 min-h-12 font-[var(--font-mono)]"
         />
       </label>
       <p className="text-[var(--scale-xs)] text-[var(--color-ink-soft)]">
@@ -36,7 +38,7 @@ export function ValidateForm() {
           {state.message}
         </p>
       ) : null}
-      <button type="submit" disabled={pending} className="btn-primary">
+      <button type="submit" disabled={pending} className="btn-primary min-h-12 w-full touch-manipulation sm:w-auto">
         {pending ? "Checking…" : "Validate product"}
       </button>
     </form>

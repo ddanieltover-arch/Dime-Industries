@@ -14,7 +14,7 @@ export function PromoBanner({ banner }: { banner: HomepageBanner }) {
           </h2>
           <p className="mt-1 text-[var(--scale-sm)] text-[var(--color-ink-soft)]">{banner.body}</p>
         </div>
-        <Link href={banner.ctaHref} className="btn-primary shrink-0 self-start sm:self-auto">
+        <Link href={banner.ctaHref} className="btn-primary min-h-11 w-full shrink-0 touch-manipulation self-stretch sm:w-auto sm:self-auto">
           {banner.ctaLabel}
         </Link>
       </Reveal>

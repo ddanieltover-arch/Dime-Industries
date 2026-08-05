@@ -46,11 +46,11 @@ export function RewardsTeaser({
             </p>
           ) : null}
         </div>
-        <div className="flex flex-wrap gap-3 lg:justify-end">
-          <Link href={primaryHref} className="btn-primary">
+        <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap lg:justify-end">
+          <Link href={primaryHref} className="btn-primary min-h-12 w-full touch-manipulation sm:w-auto">
             {primaryLabel}
           </Link>
-          <Link href="/rewards" className="btn-outline">
+          <Link href="/rewards" className="btn-outline min-h-12 w-full touch-manipulation sm:w-auto">
             How it works
           </Link>
         </div>

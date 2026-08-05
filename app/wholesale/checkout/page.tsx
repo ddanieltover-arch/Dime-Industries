@@ -61,7 +61,7 @@ export default async function WholesaleCheckoutPage({
   const cart = await getWholesaleCartSnapshot();
   const checkoutJurisdiction = gate.jurisdiction ?? "CA";
   const pricing = gate.ageVerified
-    ? computePricing(cart.lines, checkoutJurisdiction, null)
+    ? computePricing(cart.lines, { state: checkoutJurisdiction, country: "US" }, null)
     : null;
 
   if (cart.lines.length === 0) {

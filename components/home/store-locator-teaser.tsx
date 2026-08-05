@@ -32,7 +32,7 @@ export function StoreLocatorTeaser({
           {headline}
         </h2>
         <p className="mx-auto mt-4 max-w-lg text-[var(--scale-base)] text-white/75">{body}</p>
-        <Link href={ctaHref} className="btn-outline mt-8">
+        <Link href={ctaHref} className="btn-outline mt-8 min-h-12 w-full max-w-xs touch-manipulation sm:w-auto">
           {ctaLabel}
         </Link>
       </Reveal>

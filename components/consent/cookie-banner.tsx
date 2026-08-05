@@ -25,7 +25,7 @@ export function CookieBanner({ show }: { show: boolean }) {
 
   return (
     <div
-      className="fixed inset-x-0 bottom-0 z-[55] border-t border-[var(--color-border)] bg-[var(--color-surface-raised)] px-4 py-4 shadow-lg sm:px-6"
+      className="cookie-banner fixed inset-x-0 z-[55] border-t border-[var(--color-border)] bg-[var(--color-surface-raised)] px-4 py-4 shadow-lg sm:px-6"
       role="dialog"
       aria-label="Cookie preferences"
     >

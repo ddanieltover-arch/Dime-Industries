@@ -2,6 +2,9 @@
 export * from "./pricing";
 export * from "./types";
 export * from "./validate";
+export * from "./countries";
+export * from "./tax-rates";
+export * from "./subdivisions";
 export { newOrderId } from "./orders";
 export {
   getOrderRepository,

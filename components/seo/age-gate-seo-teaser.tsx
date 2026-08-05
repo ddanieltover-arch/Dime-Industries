@@ -23,22 +23,22 @@ export function AgeGateSeoTeaser({
   return (
     <section
       aria-label="About DIME Industries"
-      className="border-b border-[var(--color-border)] bg-[var(--color-bg)] px-[var(--container-pad-x)] py-14"
+      className="border-b border-[var(--color-border)] bg-[var(--color-bg)] px-[var(--container-pad-x)] py-10 sm:py-14"
     >
       <div className="mx-auto max-w-3xl">
         <p className="section-eyebrow text-[var(--color-resin)]">DIME Industries</p>
-        <h1 className="mt-3 font-[var(--font-display)] text-[var(--scale-2xl)] uppercase tracking-[0.06em] text-[var(--color-ink)] sm:text-[var(--scale-3xl)]">
+        <h1 className="mt-3 font-[var(--font-display)] text-[clamp(1.5rem,6vw,2.75rem)] uppercase tracking-[0.06em] text-[var(--color-ink)]">
           {title}
         </h1>
         <p className="mt-4 text-[var(--scale-base)] leading-relaxed text-[var(--color-ink-soft)]">
           {description}
         </p>
-        <ul className="mt-8 flex flex-wrap gap-x-5 gap-y-3" role="list">
+        <ul className="mt-8 grid grid-cols-2 gap-2 sm:flex sm:flex-wrap sm:gap-x-5 sm:gap-y-3" role="list">
           {LINKS.map((link) => (
             <li key={link.href}>
               <Link
                 href={link.href}
-                className="font-[var(--font-display)] text-[10px] uppercase tracking-[0.14em] text-[var(--color-resin)] underline-offset-4 hover:underline"
+                className="flex min-h-11 items-center font-[var(--font-display)] text-[10px] uppercase tracking-[0.14em] text-[var(--color-resin)] underline-offset-4 touch-manipulation hover:underline sm:inline-flex"
               >
                 {link.label}
               </Link>

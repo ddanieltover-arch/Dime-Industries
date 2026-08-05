@@ -22,7 +22,7 @@ export function TrustStrip() {
           <StaggerItem key={it.label} as="div">
             <Link
               href={it.href}
-              className="group relative block px-2 py-6 text-center transition-colors hover:bg-[var(--color-surface-raised)] sm:px-6 sm:text-left"
+              className="group relative block min-h-[4.5rem] px-2 py-6 text-center transition-colors hover:bg-[var(--color-surface-raised)] sm:px-6 sm:text-left"
             >
               <span
                 className="absolute inset-x-6 bottom-0 h-px origin-left scale-x-0 bg-[var(--color-resin)] transition-transform duration-[var(--motion-base)] ease-[var(--ease-out)] group-hover:scale-x-100 sm:inset-x-6"

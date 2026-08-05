@@ -10,6 +10,7 @@ import { ViewItemEvent } from "@/components/analytics/view-item-event";
 import { AddToCartForm } from "@/components/cart/add-to-cart-form";
 import { WishlistToggle } from "@/components/cart/wishlist-toggle";
 import { LoyaltyEarnCallout } from "@/components/product/loyalty-earn-callout";
+import { MobilePdpBuyBar } from "@/components/product/mobile-pdp-buy-bar";
 import { ProductRatingSummary, ProductReviews } from "@/components/product/product-reviews";
 import { RecordProductView } from "@/components/catalog/record-product-view";
 import { getAgeGateState } from "@/lib/compliance/age-gate";
@@ -164,12 +165,18 @@ export default async function ProductDetailPage({ params }: { params: Params }) 
       <JsonLdScript data={jsonLd} />
       <JsonLdScript data={breadcrumbs} />
 
-      <article className="mx-auto max-w-7xl px-[var(--container-pad-x)] py-10 lg:py-14">
+      <MobilePdpBuyBar
+        priceCents={v.retailPriceCents}
+        productName={product.name}
+        inStock={v.quantityOnHand > 0}
+      />
+
+      <article className="mx-auto max-w-7xl px-[var(--container-pad-x)] py-8 pb-24 sm:py-10 lg:py-14 lg:pb-14">
         <nav
           aria-label="Breadcrumb"
-          className="mb-8 text-[var(--scale-xs)] uppercase tracking-[0.12em] text-[var(--color-ink-muted)]"
+          className="mb-6 overflow-x-auto text-[var(--scale-xs)] uppercase tracking-[0.12em] text-[var(--color-ink-muted)] sm:mb-8"
         >
-          <ol className="flex flex-wrap items-center gap-2 font-[var(--font-display)]">
+          <ol className="flex min-w-max flex-wrap items-center gap-2 font-[var(--font-display)] sm:min-w-0">
             <li>
               <Link href="/shop" className="hover:text-[var(--color-resin)]">
                 Shop
@@ -201,7 +208,7 @@ export default async function ProductDetailPage({ params }: { params: Params }) 
           </ol>
         </nav>
 
-        <div className="grid gap-10 lg:grid-cols-2 lg:items-start lg:gap-14">
+        <div className="grid gap-8 lg:grid-cols-2 lg:items-start lg:gap-14">
           <ProductGallery images={gallery} productName={product.name} fallbackLabel={v.sku} />
 
           <div className="lg:sticky lg:top-[5.5rem] lg:self-start">
@@ -233,12 +240,12 @@ export default async function ProductDetailPage({ params }: { params: Params }) 
               </p>
             ) : null}
 
-            <dl className="mt-8 grid grid-cols-3 gap-4 border-y border-[var(--color-border)] py-6">
+            <dl className="mt-6 grid grid-cols-3 gap-3 border-y border-[var(--color-border)] py-5 sm:mt-8 sm:gap-4 sm:py-6">
               <div>
                 <dt className="font-[var(--font-display)] text-[10px] uppercase tracking-[0.14em] text-[var(--color-ink-muted)]">
                   THC
                 </dt>
-                <dd className="mt-1 font-[var(--font-display)] text-[var(--scale-xl)] text-[var(--color-ink)]">
+                <dd className="mt-1 font-[var(--font-display)] text-[var(--scale-lg)] text-[var(--color-ink)] sm:text-[var(--scale-xl)]">
                   {formatPct(v.thcPct)}
                 </dd>
               </div>
@@ -246,7 +253,7 @@ export default async function ProductDetailPage({ params }: { params: Params }) 
                 <dt className="font-[var(--font-display)] text-[10px] uppercase tracking-[0.14em] text-[var(--color-ink-muted)]">
                   CBD
                 </dt>
-                <dd className="mt-1 font-[var(--font-display)] text-[var(--scale-xl)] text-[var(--color-ink)]">
+                <dd className="mt-1 font-[var(--font-display)] text-[var(--scale-lg)] text-[var(--color-ink)] sm:text-[var(--scale-xl)]">
                   {formatPct(v.cbdPct)}
                 </dd>
               </div>
@@ -255,7 +262,7 @@ export default async function ProductDetailPage({ params }: { params: Params }) 
                   <dt className="font-[var(--font-display)] text-[10px] uppercase tracking-[0.14em] text-[var(--color-ink-muted)]">
                     CBN
                   </dt>
-                  <dd className="mt-1 font-[var(--font-display)] text-[var(--scale-xl)] text-[var(--color-ink)]">
+                  <dd className="mt-1 font-[var(--font-display)] text-[var(--scale-lg)] text-[var(--color-ink)] sm:text-[var(--scale-xl)]">
                     {formatPct(v.cbnPct)}
                   </dd>
                 </div>
@@ -268,6 +275,27 @@ export default async function ProductDetailPage({ params }: { params: Params }) 
                 </div>
               )}
             </dl>
+
+            {/* Purchase first — details follow so mobile shoppers reach ATC without scrolling past copy */}
+            <div className="mt-6 space-y-4 border border-[var(--color-border)] bg-[var(--color-surface)] p-4 sm:mt-8 sm:p-5">
+              <ViewItemEvent
+                itemId={product.id}
+                itemName={product.name}
+                itemVariant={v.weightOrFormat}
+                priceUsd={v.retailPriceCents / 100}
+              />
+              <AddToCartForm
+                variants={product.variants}
+                defaultVariantId={v.id}
+                productId={product.id}
+                productName={product.name}
+              />
+              <WishlistToggle variantId={v.id} initiallySaved={primarySaved} />
+            </div>
+
+            <div className="mt-4">
+              <LoyaltyEarnCallout priceCents={v.retailPriceCents} signedIn={Boolean(profile)} />
+            </div>
 
             <p className="mt-6 text-[var(--scale-base)] leading-relaxed text-[var(--color-ink-soft)]">
               {product.description}
@@ -305,71 +333,53 @@ export default async function ProductDetailPage({ params }: { params: Params }) 
               </ul>
             ) : null}
 
-            <section className="mt-10" aria-labelledby="variants-heading">
-              <h2
-                id="variants-heading"
-                className="font-[var(--font-display)] text-[10px] uppercase tracking-[0.16em] text-[var(--color-resin)]"
-              >
-                Formats
-              </h2>
-              <ul className="mt-3 space-y-2" role="list">
-                {product.variants.map((variant) => (
-                  <li
-                    key={variant.id}
-                    className="flex items-center justify-between bg-[var(--color-surface)] px-4 py-3"
-                  >
-                    <div>
-                      <p className="font-[var(--font-display)] uppercase tracking-[0.06em] text-[var(--color-ink)]">
-                        {variant.weightOrFormat}
+            {product.variants.length > 1 ? (
+              <section className="mt-8 sm:mt-10" aria-labelledby="variants-heading">
+                <h2
+                  id="variants-heading"
+                  className="font-[var(--font-display)] text-[10px] uppercase tracking-[0.16em] text-[var(--color-resin)]"
+                >
+                  All formats
+                </h2>
+                <ul className="mt-3 space-y-2" role="list">
+                  {product.variants.map((variant) => (
+                    <li
+                      key={variant.id}
+                      className="flex items-center justify-between gap-3 bg-[var(--color-surface)] px-4 py-3"
+                    >
+                      <div className="min-w-0">
+                        <p className="font-[var(--font-display)] uppercase tracking-[0.06em] text-[var(--color-ink)]">
+                          {variant.weightOrFormat}
+                        </p>
+                        <p className="text-[var(--scale-xs)] text-[var(--color-ink-muted)]">
+                          {variant.sku}
+                          {variant.quantityOnHand <= 0
+                            ? " · Out of stock"
+                            : variant.quantityOnHand < 20
+                              ? " · Low stock"
+                              : ""}
+                        </p>
+                      </div>
+                      <p className="shrink-0 font-[var(--font-display)] text-[var(--scale-base)] text-[var(--color-resin-strong)] sm:text-[var(--scale-lg)]">
+                        {formatPrice(variant.retailPriceCents)}
                       </p>
-                      <p className="text-[var(--scale-xs)] text-[var(--color-ink-muted)]">
-                        {variant.sku}
-                        {variant.quantityOnHand <= 0
-                          ? " · Out of stock"
-                          : variant.quantityOnHand < 20
-                            ? " · Low stock"
-                            : ""}
-                      </p>
-                    </div>
-                    <p className="font-[var(--font-display)] text-[var(--scale-lg)] text-[var(--color-resin-strong)]">
-                      {formatPrice(variant.retailPriceCents)}
-                    </p>
-                  </li>
-                ))}
-              </ul>
-            </section>
+                    </li>
+                  ))}
+                </ul>
+              </section>
+            ) : null}
 
-            <div className="mt-8 space-y-4 border border-[var(--color-border)] bg-[var(--color-surface)] p-5">
-              <ViewItemEvent
-                itemId={product.id}
-                itemName={product.name}
-                itemVariant={v.weightOrFormat}
-                priceUsd={v.retailPriceCents / 100}
-              />
-              <AddToCartForm
-                variants={product.variants}
-                defaultVariantId={v.id}
-                productId={product.id}
-                productName={product.name}
-              />
-              <WishlistToggle variantId={v.id} initiallySaved={primarySaved} />
-            </div>
-
-            <div className="mt-4">
-              <LoyaltyEarnCallout priceCents={v.retailPriceCents} signedIn={Boolean(profile)} />
-            </div>
-
-            <div className="mt-6 flex flex-wrap gap-x-6 gap-y-2">
+            <div className="mt-6 flex flex-wrap gap-x-6 gap-y-3">
               <Link
                 href={`/lab-results?sku=${encodeURIComponent(v.sku)}`}
-                className="nav-link text-[var(--color-resin)] hover:text-[var(--color-resin-hover)]"
+                className="nav-link min-h-11 inline-flex items-center text-[var(--color-resin)] hover:text-[var(--color-resin-hover)]"
               >
                 View lab results / COA
                 {coa?.source === "live" ? " (live)" : ""}
               </Link>
               <Link
                 href="/validate"
-                className="nav-link text-[var(--color-resin)] hover:text-[var(--color-resin-hover)]"
+                className="nav-link min-h-11 inline-flex items-center text-[var(--color-resin)] hover:text-[var(--color-resin-hover)]"
               >
                 Validate product
               </Link>

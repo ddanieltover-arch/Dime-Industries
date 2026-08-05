@@ -1,19 +1,26 @@
 // components/wholesale/checkout-form.tsx
 "use client";
 
-import { useActionState } from "react";
+import { useActionState, useState } from "react";
 import {
   startWholesaleCheckout,
   type WholesaleActionState,
 } from "@/app/(commerce)/wholesale-actions";
 import type { LaunchJurisdiction } from "@/lib/compliance/age-gate";
 import type { PricingBreakdown } from "@/lib/checkout";
+import { SHIPPING_COUNTRIES } from "@/lib/checkout/countries";
+import {
+  defaultSubdivisionForCountry,
+  getCountrySubdivisions,
+  subdivisionFieldLabel,
+} from "@/lib/checkout/subdivisions";
 import type { PaymentTerms } from "@/lib/wholesale/types";
 
 const initial: WholesaleActionState = {};
 
 export function WholesaleCheckoutForm({
   email,
+  jurisdiction,
   defaultTerms,
   pricing,
 }: {
@@ -23,6 +30,10 @@ export function WholesaleCheckoutForm({
   pricing: PricingBreakdown | null;
 }) {
   const [state, action, pending] = useActionState(startWholesaleCheckout, initial);
+  const [country, setCountry] = useState("US");
+  const [shipState, setShipState] = useState(jurisdiction);
+  const subdivisions = getCountrySubdivisions(country);
+  const stateLabel = subdivisionFieldLabel(country);
 
   return (
     <form action={action} className="space-y-4">
@@ -49,24 +60,61 @@ export function WholesaleCheckoutForm({
           <input name="city" required className="field-input mt-1.5" />
         </label>
         <label className="block text-[var(--scale-xs)] text-[var(--color-ink-soft)]">
-          State
-          <input
-            name="state"
-            required
-            autoComplete="address-level1"
-            placeholder="State"
-            className="field-input mt-1.5"
-          />
+          {stateLabel}
+          {subdivisions ? (
+            <select
+              name="state"
+              required
+              autoComplete="address-level1"
+              value={shipState}
+              onChange={(event) => setShipState(event.target.value)}
+              className="field-input mt-1.5"
+            >
+              <option value="" disabled>
+                Select {stateLabel.toLowerCase()}
+              </option>
+              {subdivisions.map((s) => (
+                <option key={s.code} value={s.code}>
+                  {s.name}
+                </option>
+              ))}
+            </select>
+          ) : (
+            <input
+              name="state"
+              required
+              autoComplete="address-level1"
+              value={shipState}
+              onChange={(event) => setShipState(event.target.value)}
+              placeholder={stateLabel}
+              className="field-input mt-1.5"
+            />
+          )}
         </label>
         <label className="block text-[var(--scale-xs)] text-[var(--color-ink-soft)]">
           Postal code
-          <input name="postalCode" required className="field-input mt-1.5" />
+          <input name="postalCode" required autoComplete="postal-code" className="field-input mt-1.5" />
         </label>
       </div>
       <label className="block text-[var(--scale-xs)] text-[var(--color-ink-soft)]">
         Country
-        <select name="country" required defaultValue="US" autoComplete="country" className="field-input mt-1.5">
-          <option value="US">United States</option>
+        <select
+          name="country"
+          required
+          autoComplete="off"
+          value={country}
+          onChange={(event) => {
+            const next = event.target.value;
+            setCountry(next);
+            setShipState(defaultSubdivisionForCountry(next, jurisdiction));
+          }}
+          className="field-input mt-1.5"
+        >
+          {SHIPPING_COUNTRIES.map((c) => (
+            <option key={c.code} value={c.code}>
+              {c.name}
+            </option>
+          ))}
         </select>
       </label>
       <label className="block text-[var(--scale-xs)] text-[var(--color-ink-soft)]">

@@ -137,12 +137,15 @@ export async function CatalogPageShell({
                 </nav>
               ) : null}
 
-              <nav aria-label="Shop categories" className="mt-8">
-                <ul className="flex flex-wrap gap-2" role="list">
-                  <li>
+              <nav aria-label="Shop categories" className="mt-8 -mx-[var(--container-pad-x)] sm:mx-0">
+                <ul
+                  className="rail-scroll flex gap-2 overflow-x-auto px-[var(--container-pad-x)] pb-1 sm:flex-wrap sm:overflow-visible sm:px-0"
+                  role="list"
+                >
+                  <li className="shrink-0">
                     <Link
                       href="/shop"
-                      className={`inline-flex border px-4 py-2 font-[var(--font-display)] text-[10px] uppercase tracking-[0.14em] transition-colors duration-[var(--motion-fast)] ${
+                      className={`inline-flex min-h-11 items-center border px-4 py-2.5 font-[var(--font-display)] text-[10px] uppercase tracking-[0.14em] transition-colors duration-[var(--motion-fast)] ${
                         !activeCategory
                           ? "border-[var(--color-resin)] bg-[var(--color-resin)] text-black"
                           : "border-white/35 text-white hover:border-[var(--color-resin)] hover:text-[var(--color-resin)]"
@@ -155,10 +158,10 @@ export async function CatalogPageShell({
                   {CATALOG_CATEGORIES.map((cat) => {
                     const active = activeCategory === cat.slug;
                     return (
-                      <li key={cat.slug}>
+                      <li key={cat.slug} className="shrink-0">
                         <Link
                           href={`/shop/${cat.slug}`}
-                          className={`inline-flex border px-4 py-2 font-[var(--font-display)] text-[10px] uppercase tracking-[0.14em] transition-colors duration-[var(--motion-fast)] ${
+                          className={`inline-flex min-h-11 items-center border px-4 py-2.5 font-[var(--font-display)] text-[10px] uppercase tracking-[0.14em] transition-colors duration-[var(--motion-fast)] ${
                             active
                               ? "border-[var(--color-resin)] bg-[var(--color-resin)] text-black"
                               : "border-white/35 text-white hover:border-[var(--color-resin)] hover:text-[var(--color-resin)]"
@@ -175,8 +178,8 @@ export async function CatalogPageShell({
             </div>
           </section>
 
-          <div className="mx-auto max-w-7xl px-[var(--container-pad-x)] py-10 lg:py-12">
-            <div className="grid gap-10 lg:grid-cols-[15rem_1fr] lg:gap-12">
+          <div className="mx-auto max-w-7xl px-[var(--container-pad-x)] py-8 pb-24 sm:py-10 lg:py-12 lg:pb-12">
+            <div className="grid gap-8 lg:grid-cols-[15rem_1fr] lg:gap-12">
               <aside className="hidden lg:block">
                 <p className="font-[var(--font-display)] text-[10px] uppercase tracking-[0.18em] text-[var(--color-resin)]">
                   Filters
@@ -186,14 +189,22 @@ export async function CatalogPageShell({
                 </div>
               </aside>
 
-              <div className="space-y-6">
+              <div className="space-y-5 sm:space-y-6">
                 <CatalogToolbar basePath={basePath} filters={filters} total={total} />
 
                 <ActiveFilterChips basePath={basePath} filters={filters} />
 
                 <details className="border border-[var(--color-border)] bg-[var(--color-surface)] lg:hidden">
-                  <summary className="cursor-pointer list-none px-4 py-3 font-[var(--font-display)] text-[var(--scale-xs)] uppercase tracking-[0.14em] text-[var(--color-ink)] [&::-webkit-details-marker]:hidden">
-                    Filters
+                  <summary className="flex min-h-12 cursor-pointer list-none items-center justify-between gap-3 px-4 py-3 font-[var(--font-display)] text-[var(--scale-xs)] uppercase tracking-[0.14em] text-[var(--color-ink)] touch-manipulation [&::-webkit-details-marker]:hidden">
+                    <span>
+                      Filters
+                      {hasFilters ? (
+                        <span className="ml-2 text-[var(--color-resin)]">(active)</span>
+                      ) : null}
+                    </span>
+                    <span className="text-[var(--color-ink-muted)]" aria-hidden>
+                      +
+                    </span>
                   </summary>
                   <div className="border-t border-[var(--color-border)] px-4 py-4">
                     <CatalogFilters basePath={basePath} filters={filters} facets={facets} />

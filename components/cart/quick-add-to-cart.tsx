@@ -59,7 +59,7 @@ export function QuickAddToCart({
       <button
         type="submit"
         disabled={pending}
-        className="btn-primary w-full py-2.5 text-[10px] tracking-[0.12em]"
+        className="btn-primary min-h-11 w-full touch-manipulation py-2.5 text-[10px] tracking-[0.12em]"
         aria-label={pending ? `Adding ${productName}` : `Add ${productName} to cart`}
       >
         {pending ? "Adding…" : "Add to cart"}

@@ -3,13 +3,8 @@
 
 import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
-import { cookies } from "next/headers";
 import { getAgeGateState } from "@/lib/compliance/age-gate";
-import type { LaunchJurisdiction } from "@/lib/compliance/jurisdictions";
-import {
-  activeJurisdictionsLabel,
-  isActiveLaunchJurisdiction,
-} from "@/lib/admin/site-settings-store";
+import { isLaunchJurisdiction } from "@/lib/compliance/jurisdictions";
 import { getCartSnapshot, persistCartLines } from "@/lib/cart";
 import {
   computePricing,
@@ -65,30 +60,10 @@ export async function startCheckout(
   }
 
   const data = parsed.data;
-  if (!(await isActiveLaunchJurisdiction(data.state))) {
-    const markets = await activeJurisdictionsLabel();
-    return { error: `Shipping is only available in ${markets}.` };
-  }
-  // Shipping state is the jurisdiction of record when the age gate no longer
-  // collects it up front. Keep any existing cookie in sync.
-  const jurisdiction = data.state as LaunchJurisdiction;
-  if (gate.jurisdiction && gate.jurisdiction !== jurisdiction) {
-    return {
-      error: `Shipping state must match your verified jurisdiction (${gate.jurisdiction}).`,
-    };
-  }
-  try {
-    const store = await cookies();
-    store.set("dime_jurisdiction", jurisdiction, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-      sameSite: "lax",
-      maxAge: 60 * 60 * 24 * 365,
-      path: "/",
-    });
-  } catch (err) {
-    console.warn("[checkout] jurisdiction cookie write failed", err);
-  }
+  // Catalog / tax / inventory jurisdiction stays on the age-gate market.
+  // Shipping address may be worldwide and is not limited to CA/MA.
+  const jurisdiction =
+    gate.jurisdiction && isLaunchJurisdiction(gate.jurisdiction) ? gate.jurisdiction : "CA";
 
   const cart = await getCartSnapshot();
   if (cart.lines.length === 0) {
@@ -128,7 +103,12 @@ export async function startCheckout(
     email: data.email,
     subtotalAfterCouponCents: afterCoupon,
   });
-  const pricing = computePricing(cart.lines, jurisdiction, coupon, loyalty);
+  const pricing = computePricing(
+    cart.lines,
+    { state: data.state, country: data.country },
+    coupon,
+    loyalty
+  );
   const orders = getOrderRepository();
   const order = await orders.create({
     email: data.email,

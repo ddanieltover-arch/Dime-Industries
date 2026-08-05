@@ -4,14 +4,9 @@
 import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
-import { cookies } from "next/headers";
 import { getAgeGateState } from "@/lib/compliance/age-gate";
-import type { LaunchJurisdiction } from "@/lib/compliance/jurisdictions";
-import {
-  activeJurisdictionsLabel,
-  isActiveLaunchJurisdiction,
-  isWholesaleEnabled,
-} from "@/lib/admin/site-settings-store";
+import { isLaunchJurisdiction } from "@/lib/compliance/jurisdictions";
+import { isWholesaleEnabled } from "@/lib/admin/site-settings-store";
 import {
   checkoutFormSchema,
   computePricing,
@@ -260,28 +255,10 @@ export async function startWholesaleCheckout(
       fieldErrors: parsed.error.flatten().fieldErrors as Record<string, string[]>,
     };
   }
-  if (!(await isActiveLaunchJurisdiction(parsed.data.state))) {
-    const markets = await activeJurisdictionsLabel();
-    return { error: `Shipping is only available in ${markets}.` };
-  }
-  const jurisdiction = parsed.data.state as LaunchJurisdiction;
-  if (gate.jurisdiction && gate.jurisdiction !== jurisdiction) {
-    return {
-      error: `Shipping state must match your verified jurisdiction (${gate.jurisdiction}).`,
-    };
-  }
-  try {
-    const store = await cookies();
-    store.set("dime_jurisdiction", jurisdiction, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-      sameSite: "lax",
-      maxAge: 60 * 60 * 24 * 365,
-      path: "/",
-    });
-  } catch (err) {
-    console.warn("[wholesale] jurisdiction cookie write failed", err);
-  }
+  // Catalog / tax / inventory jurisdiction stays on the age-gate market.
+  // Shipping address may be worldwide and is not limited to CA/MA.
+  const jurisdiction =
+    gate.jurisdiction && isLaunchJurisdiction(gate.jurisdiction) ? gate.jurisdiction : "CA";
 
   const cart = await getWholesaleCartSnapshot();
   if (cart.lines.length === 0) return { error: "Wholesale cart is empty." };
@@ -311,7 +288,10 @@ export async function startWholesaleCheckout(
     country: parsed.data.country,
   };
 
-  const pricing = computePricing(cart.lines, jurisdiction, null);
+  const pricing = computePricing(cart.lines, {
+    state: parsed.data.state,
+    country: parsed.data.country,
+  }, null);
   const orders = getOrderRepository();
   const isNet = paymentTerms === "net30" || paymentTerms === "net60";
 

@@ -5,6 +5,7 @@ import { notFound } from "next/navigation";
 import { PurchaseEvent } from "@/components/analytics/purchase-event";
 import { OrderTrackingPanel } from "@/components/checkout/order-tracking";
 import { getOrderById, markOrderPaid } from "@/lib/checkout";
+import { shippingCountryName } from "@/lib/checkout/countries";
 import { persistCartLines } from "@/lib/cart";
 import { formatPrice } from "@/lib/format";
 import {
@@ -183,9 +184,7 @@ export default async function ConfirmationPage({
             Ship to {order.address.fullName}
             {order.address.phone ? `, ${order.address.phone}` : ""}, {order.address.line1},{" "}
             {order.address.city}, {order.address.state} {order.address.postalCode}
-            {order.address.country
-              ? `, ${order.address.country === "US" ? "United States" : order.address.country}`
-              : ""}
+            {order.address.country ? `, ${shippingCountryName(order.address.country)}` : ""}
             .
           </p>
           <p className="mt-2 text-[var(--scale-xs)] text-[var(--color-ink-muted)]">

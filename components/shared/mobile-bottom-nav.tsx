@@ -147,9 +147,9 @@ export function MobileBottomNav() {
                 href={item.href}
                 aria-current={active ? "page" : undefined}
                 className={[
-                  "relative flex h-full flex-col items-center justify-center gap-0.5 px-1",
+                  "relative flex h-full min-h-14 flex-col items-center justify-center gap-0.5 px-1",
                   "font-[var(--font-display)] text-[0.625rem] uppercase tracking-[0.1em]",
-                  "transition-colors duration-[var(--motion-fast)]",
+                  "touch-manipulation transition-colors duration-[var(--motion-fast)]",
                   active
                     ? "text-[var(--color-resin)]"
                     : "text-[var(--color-ink-muted)] hover:text-[var(--color-resin)]",

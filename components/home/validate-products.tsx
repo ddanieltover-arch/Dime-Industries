@@ -36,7 +36,7 @@ export function ValidateProducts({
           <p className="mt-5 max-w-lg text-[var(--scale-base)] leading-relaxed text-[var(--color-ink-soft)]">
             {body}
           </p>
-          <Link href={ctaHref} className="btn-primary mt-8">
+          <Link href={ctaHref} className="btn-primary mt-8 inline-flex min-h-12 w-full touch-manipulation sm:w-auto">
             {ctaLabel}
           </Link>
         </Reveal>

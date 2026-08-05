@@ -62,8 +62,18 @@ const addressFormSchema = z.object({
   line1: z.string().min(3).max(120),
   line2: z.string().max(120).optional().or(z.literal("")),
   city: z.string().min(2).max(80),
-  state: z.enum(["CA", "MA"]),
-  postalCode: z.string().regex(/^\d{5}(-\d{4})?$/),
+  state: z.string().trim().min(1).max(80),
+  postalCode: z
+    .string()
+    .trim()
+    .min(2)
+    .max(16)
+    .regex(/^[A-Za-z0-9][A-Za-z0-9\s-]{1,15}$/),
+  country: z
+    .string()
+    .trim()
+    .toUpperCase()
+    .refine((v) => v.length === 2, { message: "Select a shipping country" }),
   isDefault: z.boolean(),
 });
 
@@ -79,6 +89,7 @@ export async function addAccountAddress(
     city: formData.get("city"),
     state: formData.get("state"),
     postalCode: formData.get("postalCode"),
+    country: formData.get("country") ?? "US",
     isDefault: formData.get("isDefault") === "on",
   });
   if (!parsed.success) {
@@ -94,6 +105,7 @@ export async function addAccountAddress(
     city: parsed.data.city,
     state: parsed.data.state,
     postalCode: parsed.data.postalCode,
+    country: parsed.data.country,
     isDefault: parsed.data.isDefault || prefs.addresses.length === 0,
   };
 

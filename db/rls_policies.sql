@@ -293,6 +293,15 @@ create policy settings_admin_only on site_settings for all
   using (current_user_role() = 'admin') with check (current_user_role() = 'admin');
 
 -- ---------------------------------------------------------------------------
+-- country_tax_rates — admin read/write (service role for seed/checkout)
+-- ---------------------------------------------------------------------------
+alter table if exists country_tax_rates enable row level security;
+
+drop policy if exists country_tax_rates_admin_all on country_tax_rates;
+create policy country_tax_rates_admin_all on country_tax_rates for all
+  using (current_user_role() = 'admin') with check (current_user_role() = 'admin');
+
+-- ---------------------------------------------------------------------------
 -- audit_logs — admin read only, service-role insert only
 -- ---------------------------------------------------------------------------
 alter table audit_logs enable row level security;

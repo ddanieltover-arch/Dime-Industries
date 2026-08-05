@@ -29,14 +29,14 @@ export function NotificationsForm({
           ["productAlerts", "Product & drop alerts", productAlerts],
         ] as const
       ).map(([name, label, checked]) => (
-        <label key={name} className="flex items-start gap-3 text-[var(--scale-sm)] text-[var(--color-ink)]">
+        <label key={name} className="flex min-h-12 items-start gap-3 text-[var(--scale-sm)] text-[var(--color-ink)]">
           <input
             type="checkbox"
             name={name}
             defaultChecked={checked}
-            className="mt-1 accent-[var(--color-resin)]"
+            className="mt-1 h-5 w-5 accent-[var(--color-resin)]"
           />
-          <span>{label}</span>
+          <span className="pt-0.5">{label}</span>
         </label>
       ))}
       {state.success ? (
@@ -44,7 +44,7 @@ export function NotificationsForm({
           {state.message}
         </p>
       ) : null}
-      <button type="submit" disabled={pending} className="btn-primary">
+      <button type="submit" disabled={pending} className="btn-primary min-h-12 w-full touch-manipulation sm:w-auto">
         {pending ? "Saving…" : "Save preferences"}
       </button>
     </form>

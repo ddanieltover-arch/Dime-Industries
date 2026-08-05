@@ -59,6 +59,7 @@ export const viewport: Viewport = {
     { media: "(prefers-color-scheme: light)", color: "#0e0e0e" },
   ],
   colorScheme: "dark",
+  viewportFit: "cover",
 };
 
 const organizationJsonLd = buildOrganizationJsonLd();
