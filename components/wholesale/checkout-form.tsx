@@ -31,7 +31,9 @@ export function WholesaleCheckoutForm({
 }) {
   const [state, action, pending] = useActionState(startWholesaleCheckout, initial);
   const [country, setCountry] = useState("US");
-  const [shipState, setShipState] = useState(jurisdiction);
+  const [shipState, setShipState] = useState(() =>
+    defaultSubdivisionForCountry("US", jurisdiction)
+  );
   const subdivisions = getCountrySubdivisions(country);
   const stateLabel = subdivisionFieldLabel(country);
 

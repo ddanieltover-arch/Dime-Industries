@@ -9,6 +9,7 @@ import {
   type AccountAddress,
 } from "@/lib/account/prefs";
 import { validateProductCode } from "@/lib/account/validate-product";
+import { isShippingCountry } from "@/lib/checkout/countries";
 import { withEffectiveCatalog } from "@/lib/catalog/effective";
 import { z } from "zod";
 
@@ -73,7 +74,7 @@ const addressFormSchema = z.object({
     .string()
     .trim()
     .toUpperCase()
-    .refine((v) => v.length === 2, { message: "Select a shipping country" }),
+    .refine(isShippingCountry, { message: "Select a shipping country" }),
   isDefault: z.boolean(),
 });
 
