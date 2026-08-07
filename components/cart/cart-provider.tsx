@@ -16,7 +16,7 @@ type CartContextValue = {
   cart: CartSnapshot;
   itemCount: number;
   setItemCount: (count: number | ((prev: number) => number)) => void;
-  setCart: (cart: CartSnapshot) => void;
+  setCart: (cart: CartSnapshot | ((prev: CartSnapshot) => CartSnapshot)) => void;
   refreshCart: () => Promise<CartSnapshot | null>;
 };
 
@@ -34,7 +34,21 @@ export function CartProvider({
   const [cart, setCart] = useState<CartSnapshot>(initialCart);
 
   useEffect(() => {
-    setCart(initialCart);
+    // Layout hydrates count-only (empty lines). Preserve client lines when the
+    // badge count still matches so soft navigations don't wipe drawer state.
+    setCart((prev) => {
+      if (initialCart.lines.length === 0 && prev.lines.length > 0) {
+        if (initialCart.itemCount === prev.itemCount) {
+          return prev;
+        }
+        return {
+          lines: [],
+          itemCount: initialCart.itemCount,
+          subtotalCents: 0,
+        };
+      }
+      return initialCart;
+    });
   }, [initialCart]);
 
   const setItemCount = useCallback((count: number | ((prev: number) => number)) => {

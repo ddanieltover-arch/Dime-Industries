@@ -1,11 +1,12 @@
 // components/cart/add-to-cart-form.tsx
 "use client";
 
-import { useActionState, useEffect, useRef } from "react";
+import { useActionState, useEffect, useRef, useState } from "react";
 import { addItemToCart, type CommerceActionState } from "@/app/(commerce)/cart-actions";
 import { useCart } from "@/components/cart/cart-provider";
 import { trackAddToCart } from "@/lib/analytics/track";
 import type { CatalogVariant } from "@/lib/catalog/types";
+import type { CartLine, CartSnapshot } from "@/lib/cart/types";
 
 const initial: CommerceActionState = {};
 
@@ -14,30 +15,89 @@ type Props = {
   defaultVariantId?: string;
   productId?: string;
   productName?: string;
+  productSlug?: string;
   /** Stable id so the mobile sticky buy bar can submit this form */
   formId?: string;
 };
+
+function optimisticLine(
+  variant: CatalogVariant,
+  qty: number,
+  productName: string,
+  productSlug: string,
+  productId?: string
+): CartLine {
+  return {
+    variantId: variant.id,
+    quantity: qty,
+    productSlug: productSlug || productId || variant.sku,
+    productName,
+    lineName: variant.weightOrFormat,
+    weightOrFormat: variant.weightOrFormat,
+    sku: variant.sku,
+    unitPriceCents: variant.retailPriceCents,
+    thcPct: variant.thcPct,
+    cbdPct: variant.cbdPct,
+    maxQuantity: Math.max(1, variant.quantityOnHand),
+  };
+}
+
+function mergeOptimisticLine(cart: CartSnapshot, line: CartLine): CartSnapshot {
+  const existing = cart.lines.find((l) => l.variantId === line.variantId);
+  const lines = existing
+    ? cart.lines.map((l) =>
+        l.variantId === line.variantId
+          ? { ...l, quantity: Math.min(l.maxQuantity, l.quantity + line.quantity) }
+          : l
+      )
+    : [...cart.lines, line];
+  const itemCount = lines.reduce((sum, l) => sum + l.quantity, 0);
+  const subtotalCents = lines.reduce((sum, l) => sum + l.quantity * l.unitPriceCents, 0);
+  return { lines, itemCount, subtotalCents };
+}
 
 export function AddToCartForm({
   variants,
   defaultVariantId,
   productId,
   productName,
+  productSlug,
   formId = "pdp-add-to-cart",
 }: Props) {
-  const { setItemCount } = useCart();
+  const { setItemCount, setCart } = useCart();
   const lastTracked = useRef(0);
+  const [justAdded, setJustAdded] = useState(false);
+  const rollbackRef = useRef<CartSnapshot | null>(null);
   const [state, formAction, pending] = useActionState(
     async (prev: CommerceActionState, formData: FormData) => {
       const qty = Math.min(20, Math.max(1, Number(formData.get("quantity") ?? 1) || 1));
       const variantId = String(formData.get("variantId") ?? "");
       const variant = variants.find((v) => v.id === variantId);
-      setItemCount((c) => c + qty);
+
+      setJustAdded(true);
+      if (variant) {
+        const line = optimisticLine(
+          variant,
+          qty,
+          productName ?? variant.weightOrFormat,
+          productSlug ?? "",
+          productId
+        );
+        setCart((current) => {
+          rollbackRef.current = current;
+          return mergeOptimisticLine(current, line);
+        });
+      } else {
+        setItemCount((c) => c + qty);
+      }
+
       const result = await addItemToCart(prev, formData);
       if (result.error) {
-        setItemCount((c) => c - qty);
-      } else if (typeof result.itemCount === "number") {
-        setItemCount(result.itemCount);
+        if (rollbackRef.current) setCart(rollbackRef.current);
+        else setItemCount((c) => c - qty);
+        setJustAdded(false);
+      } else if (result.cart) {
+        setCart(result.cart);
         if (variant) {
           const price = variant.retailPriceCents / 100;
           trackAddToCart(
@@ -51,6 +111,8 @@ export function AddToCartForm({
             price * qty
           );
         }
+      } else if (typeof result.itemCount === "number") {
+        setItemCount(result.itemCount);
       }
       return result;
     },
@@ -60,14 +122,24 @@ export function AddToCartForm({
   const defaultId = defaultVariantId ?? inStock[0]?.id ?? variants[0]?.id;
 
   useEffect(() => {
-    if (state.ok && typeof state.itemCount === "number") {
+    if (state.ok && state.cart) {
+      setCart(state.cart);
+      if (state.itemCount !== lastTracked.current && typeof state.itemCount === "number") {
+        lastTracked.current = state.itemCount;
+      }
+    } else if (state.ok && typeof state.itemCount === "number") {
       setItemCount(state.itemCount);
-      // Deduplicate Strict Mode double-effects for server-reconciled ok state
       if (state.itemCount !== lastTracked.current) {
         lastTracked.current = state.itemCount;
       }
     }
-  }, [state.ok, state.itemCount, setItemCount]);
+  }, [state.ok, state.itemCount, state.cart, setItemCount, setCart]);
+
+  useEffect(() => {
+    if (!justAdded) return;
+    const t = window.setTimeout(() => setJustAdded(false), 2200);
+    return () => window.clearTimeout(t);
+  }, [justAdded]);
 
   if (inStock.length === 0) {
     return (
@@ -76,6 +148,8 @@ export function AddToCartForm({
       </p>
     );
   }
+
+  const showAdded = justAdded || Boolean(state.ok && !state.error);
 
   return (
     <form id={formId} action={formAction} className="space-y-4">
@@ -113,10 +187,10 @@ export function AddToCartForm({
 
       <button
         type="submit"
-        disabled={pending}
+        disabled={pending && !justAdded}
         className="btn-primary min-h-12 w-full touch-manipulation"
       >
-        {pending ? "Adding…" : "Add to cart"}
+        {showAdded ? "Added to cart" : pending ? "Adding…" : "Add to cart"}
       </button>
 
       {state.error ? (
@@ -124,7 +198,7 @@ export function AddToCartForm({
           {state.error}
         </p>
       ) : null}
-      {state.ok ? (
+      {showAdded && !state.error ? (
         <p role="status" className="status-pulse text-[var(--scale-sm)] text-[var(--color-resin)]">
           Added to cart.
         </p>

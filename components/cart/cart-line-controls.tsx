@@ -2,7 +2,6 @@
 "use client";
 
 import { useActionState, useEffect } from "react";
-import { useRouter } from "next/navigation";
 import { updateCartItem, type CommerceActionState } from "@/app/(commerce)/cart-actions";
 import { CartRemoveButton } from "@/components/cart/cart-remove-button";
 import { useCart } from "@/components/cart/cart-provider";
@@ -19,16 +18,18 @@ export function CartLineControls({
   maxQuantity: number;
 }) {
   const [updateState, updateAction, updatePending] = useActionState(updateCartItem, initial);
-  const router = useRouter();
-  const { setItemCount, refreshCart } = useCart();
+  const { setItemCount, setCart } = useCart();
 
   useEffect(() => {
-    if (updateState.ok && typeof updateState.itemCount === "number") {
-      setItemCount(updateState.itemCount);
-      void refreshCart();
-      router.refresh();
+    if (!updateState.ok) return;
+    if (updateState.cart) {
+      setCart(updateState.cart);
+      return;
     }
-  }, [updateState.ok, updateState.itemCount, setItemCount, refreshCart, router]);
+    if (typeof updateState.itemCount === "number") {
+      setItemCount(updateState.itemCount);
+    }
+  }, [updateState.ok, updateState.itemCount, updateState.cart, setItemCount, setCart]);
 
   return (
     <div className="flex flex-wrap items-center gap-2">

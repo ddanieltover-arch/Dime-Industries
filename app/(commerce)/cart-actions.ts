@@ -11,6 +11,7 @@ import {
   readCartInputs,
   removeFromCart,
   updateCartQuantity,
+  type CartSnapshot,
 } from "@/lib/cart";
 import { findVariantAcrossCatalog } from "@/lib/cart/catalog-lookup";
 import { loadEffectiveCatalog } from "@/lib/catalog/effective";
@@ -20,6 +21,7 @@ export type CommerceActionState = {
   ok?: boolean;
   error?: string;
   itemCount?: number;
+  cart?: CartSnapshot;
 };
 
 /** Cart count is updated client-side — avoid layout revalidation (that was the slow "Adding…" stall). */
@@ -56,7 +58,7 @@ export async function addItemToCart(
   const next = addToCart(hydrateCart(inputs, lookup), found.product, found.variant, quantity);
   const snap = await persistCartLines(next);
   revalidateCartViews();
-  return { ok: true, itemCount: snap.itemCount };
+  return { ok: true, itemCount: snap.itemCount, cart: snap };
 }
 
 export async function updateCartItem(
@@ -80,7 +82,7 @@ export async function updateCartItem(
   const next = updateCartQuantity(hydrateCart(inputs, lookup), variantId, quantity, lookup);
   const snap = await persistCartLines(next);
   revalidateCartViews();
-  return { ok: true, itemCount: snap.itemCount };
+  return { ok: true, itemCount: snap.itemCount, cart: snap };
 }
 
 export async function removeCartItem(
@@ -93,13 +95,13 @@ export async function removeCartItem(
   const lookup = createCatalogLookup(catalog);
   const snap = await persistCartLines(removeFromCart(hydrateCart(inputs, lookup), variantId));
   revalidateCartViews();
-  return { ok: true, itemCount: snap.itemCount };
+  return { ok: true, itemCount: snap.itemCount, cart: snap };
 }
 
 export async function clearCart(): Promise<CommerceActionState> {
-  await persistCartLines([]);
+  const snap = await persistCartLines([]);
   revalidateCartViews();
-  return { ok: true, itemCount: 0 };
+  return { ok: true, itemCount: 0, cart: snap };
 }
 
 export async function getCartCount(): Promise<number> {

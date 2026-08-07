@@ -25,9 +25,9 @@ export async function toggleWishlistItem(
   if (!found) return { error: "Variant not found." };
 
   const snap = await toggleWishlist(variantId);
+  // Avoid layout revalidation — client already reflects inWishlist; full-tree
+  // refresh was making wishlist toggles and subsequent navigations feel slow.
   revalidatePath("/wishlist");
-  revalidatePath("/", "layout");
-  revalidatePath(`/product/${found.product.slug}`);
   return {
     ok: true,
     inWishlist: snap.variantIds.includes(variantId),

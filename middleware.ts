@@ -14,6 +14,13 @@ const PROTECTED_PREFIXES: { prefix: string; role: Role }[] = [
 
 const DEMO_SESSION_COOKIE = "dime_demo_session";
 
+/** True when a Supabase auth cookie is present (chunked tokens included). */
+function hasSupabaseAuthCookie(request: NextRequest): boolean {
+  return request.cookies
+    .getAll()
+    .some((c) => c.name.includes("auth-token") || (c.name.startsWith("sb-") && c.value.length > 0));
+}
+
 function readDemoRole(request: NextRequest): Role | null {
   if (!isDemoAuthAllowed()) return null;
   const raw = request.cookies.get(DEMO_SESSION_COOKIE)?.value;
@@ -53,6 +60,11 @@ export async function middleware(request: NextRequest) {
     if (!hasAtLeastRole(demoRole, match.role)) {
       return NextResponse.redirect(new URL("/403", request.url));
     }
+    return NextResponse.next();
+  }
+
+  // Public routes with no session cookie: skip Supabase getUser() round-trip.
+  if (!match && !hasSupabaseAuthCookie(request)) {
     return NextResponse.next();
   }
 

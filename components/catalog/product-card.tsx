@@ -89,6 +89,7 @@ export function ProductCard({ product }: { product: ProductCardModel }) {
             variantId={product.primaryVariantId}
             productName={product.name}
             productId={product.primarySku}
+            productSlug={product.slug}
             priceCents={product.retailPriceCents}
           />
         )}

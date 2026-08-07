@@ -2,7 +2,6 @@
 "use client";
 
 import { useActionState, useEffect } from "react";
-import { useRouter } from "next/navigation";
 import {
   removeCartItem,
   type CommerceActionState,
@@ -13,16 +12,18 @@ const initial: CommerceActionState = {};
 
 export function CartRemoveButton({ variantId }: { variantId: string }) {
   const [removeState, removeAction, removePending] = useActionState(removeCartItem, initial);
-  const router = useRouter();
-  const { setItemCount, refreshCart } = useCart();
+  const { setItemCount, setCart } = useCart();
 
   useEffect(() => {
-    if (removeState.ok && typeof removeState.itemCount === "number") {
-      setItemCount(removeState.itemCount);
-      void refreshCart();
-      router.refresh();
+    if (!removeState.ok) return;
+    if (removeState.cart) {
+      setCart(removeState.cart);
+      return;
     }
-  }, [removeState.ok, removeState.itemCount, setItemCount, refreshCart, router]);
+    if (typeof removeState.itemCount === "number") {
+      setItemCount(removeState.itemCount);
+    }
+  }, [removeState.ok, removeState.itemCount, removeState.cart, setItemCount, setCart]);
 
   return (
     <form action={removeAction}>

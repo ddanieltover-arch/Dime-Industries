@@ -87,6 +87,15 @@ export async function writeCartInputs(items: CartLineInput[]): Promise<void> {
   await writeCookieCartInputs(items);
 }
 
+/**
+ * Cheap count for layout chrome — sums cookie/DB qty without loading the catalog.
+ * Full line hydration happens on /cart, /api/cart, or drawer open.
+ */
+export async function getCartItemCount(): Promise<number> {
+  const inputs = await readCartInputs();
+  return inputs.reduce((sum, item) => sum + item.quantity, 0);
+}
+
 export async function getCartSnapshot(lookup?: CartLookup): Promise<CartSnapshot> {
   const inputs = await readCartInputs();
   let resolved = lookup;

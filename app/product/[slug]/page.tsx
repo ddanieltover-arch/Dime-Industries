@@ -104,23 +104,22 @@ export default async function ProductDetailPage({ params }: { params: Params }) 
   const related = withCatalogSource(catalog, () =>
     getRelatedProducts(product, ageGate.jurisdiction)
   );
-  const recent = await getRecentlyViewedCards(ageGate.jurisdiction, product.slug);
-  const { applyLiveCoaToCards } = await import("@/lib/integrations/coa/client");
-  const [relatedLive, recentLive] = await Promise.all([
-    applyLiveCoaToCards(related),
-    applyLiveCoaToCards(recent),
-  ]);
-  const wishlistIds = await readWishlistIds();
-  const profile = await getCurrentProfile();
-  const approvedReviews = await listApprovedReviewsForProduct({
-    id: product.id,
-    slug: product.slug,
-  });
-  const reviewAvg = averageRating(approvedReviews);
   const v = primaryVariant(product);
+  const { applyLiveCoaToCards, fetchCoaBySku } = await import("@/lib/integrations/coa/client");
+
+  const [relatedLive, recentLive, wishlistIds, profile, approvedReviews, coa] = await Promise.all([
+    applyLiveCoaToCards(related),
+    getRecentlyViewedCards(ageGate.jurisdiction, product.slug).then(applyLiveCoaToCards),
+    readWishlistIds(),
+    getCurrentProfile(),
+    listApprovedReviewsForProduct({
+      id: product.id,
+      slug: product.slug,
+    }),
+    fetchCoaBySku(v.sku, product.coaUrl, product.name),
+  ]);
+  const reviewAvg = averageRating(approvedReviews);
   const primarySaved = wishlistIds.includes(v.id);
-  const { fetchCoaBySku } = await import("@/lib/integrations/coa/client");
-  const coa = await fetchCoaBySku(v.sku, product.coaUrl, product.name);
   const gallery =
     product.galleryUrls.length > 0 ? product.galleryUrls : product.imageUrl ? [product.imageUrl] : [];
 
@@ -289,6 +288,7 @@ export default async function ProductDetailPage({ params }: { params: Params }) 
                 defaultVariantId={v.id}
                 productId={product.id}
                 productName={product.name}
+                productSlug={product.slug}
               />
               <WishlistToggle variantId={v.id} initiallySaved={primarySaved} />
             </div>

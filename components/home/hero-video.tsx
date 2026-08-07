@@ -64,31 +64,17 @@ export function HeroVideo({
 
   return (
     <section aria-label="Introduction" className="relative isolate min-h-[min(88vh,52rem)] w-full overflow-hidden bg-black lg:min-h-[88vh]">
-      {prefersReducedMotion ? (
-        <picture>
-          <source srcSet="/brand/hero-poster.webp" type="image/webp" />
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            src="/brand/hero-poster.jpg"
-            alt=""
-            fetchPriority="high"
-            decoding="async"
-            className="absolute inset-0 h-full w-full object-cover"
-          />
-        </picture>
-      ) : (
-        <video
+      <picture>
+        <source srcSet="/brand/hero-poster.webp" type="image/webp" />
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src="/brand/hero-poster.jpg"
+          alt=""
+          fetchPriority="high"
+          decoding="async"
           className="absolute inset-0 h-full w-full object-cover"
-          autoPlay
-          muted
-          loop
-          playsInline
-          poster="/brand/hero-poster.webp"
-          aria-hidden="true"
-        >
-          <source src="/brand/hero.mp4" type="video/mp4" />
-        </video>
-      )}
+        />
+      </picture>
 
       <div className="media-veil absolute inset-0" />
 

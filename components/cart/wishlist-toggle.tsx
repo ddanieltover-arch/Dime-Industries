@@ -1,8 +1,7 @@
 // components/cart/wishlist-toggle.tsx
 "use client";
 
-import { useActionState, useEffect } from "react";
-import { useRouter } from "next/navigation";
+import { useActionState } from "react";
 import {
   toggleWishlistItem,
   type WishlistActionState,
@@ -18,12 +17,7 @@ export function WishlistToggle({
   initiallySaved: boolean;
 }) {
   const [state, formAction, pending] = useActionState(toggleWishlistItem, initial);
-  const router = useRouter();
   const saved = state.inWishlist ?? initiallySaved;
-
-  useEffect(() => {
-    if (state.ok) router.refresh();
-  }, [state.ok, router]);
 
   return (
     <form action={formAction}>
