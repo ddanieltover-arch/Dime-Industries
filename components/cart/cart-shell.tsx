@@ -1,12 +1,25 @@
 // components/cart/cart-shell.tsx
+import { Suspense } from "react";
 import { getCartItemCount } from "@/lib/cart";
 import { CartProvider } from "@/components/cart/cart-provider";
+import { CartCountSetter } from "@/components/cart/cart-count-setter";
 
-/** Layout shell — count only. Full cart lines hydrate via /api/cart when the drawer opens. */
-export async function CartShell({ children }: { children: React.ReactNode }) {
+/**
+ * Non-blocking cart chrome. Never await here — an async parent that waits
+ * before rendering `{children}` stalls every navigation on cart/auth I/O.
+ * Count streams in via Suspense; lines hydrate when the drawer opens.
+ */
+async function CartCountHydrator() {
   const itemCount = await getCartItemCount();
+  return <CartCountSetter count={itemCount} />;
+}
+
+export function CartShell({ children }: { children: React.ReactNode }) {
   return (
-    <CartProvider initialCart={{ lines: [], itemCount, subtotalCents: 0 }}>
+    <CartProvider initialCart={{ lines: [], itemCount: 0, subtotalCents: 0 }}>
+      <Suspense fallback={null}>
+        <CartCountHydrator />
+      </Suspense>
       {children}
     </CartProvider>
   );

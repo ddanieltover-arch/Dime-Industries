@@ -130,13 +130,16 @@ async function fetchContractV1(sku: string): Promise<CoaRecord | null> {
   };
 }
 
+const COA_FETCH_BUDGET_MS = 800;
+
 export async function fetchCoaBySku(
   sku: string,
   catalogUrl?: string | null,
   productName?: string | null
 ): Promise<CoaRecord | null> {
+  const fallback = catalogCoaFallback(sku, catalogUrl);
   const base = resolveCoaApiBase();
-  if (!base) return catalogCoaFallback(sku, catalogUrl);
+  if (!base) return fallback;
 
   const queries = [
     productName?.replace(/\s*[|:–—-].*$/, "").trim(),
@@ -145,19 +148,30 @@ export async function fetchCoaBySku(
     sku,
   ].filter((q): q is string => Boolean(q && q.length >= 2));
 
-  try {
-    for (const q of [...new Set(queries)]) {
-      const row = await searchHerokuCoas(q);
-      if (row?.id) return mapHerokuRow(row, sku, base);
+  const live = (async (): Promise<CoaRecord | null> => {
+    try {
+      for (const q of [...new Set(queries)]) {
+        const row = await searchHerokuCoas(q);
+        if (row?.id) return mapHerokuRow(row, sku, base);
+      }
+
+      const contract = await fetchContractV1(sku);
+      if (contract) return contract;
+    } catch (err) {
+      console.warn("[coa] fetch failed", sku, err);
     }
+    return null;
+  })();
 
-    const contract = await fetchContractV1(sku);
-    if (contract) return contract;
-  } catch (err) {
-    console.warn("[coa] fetch failed", sku, err);
-  }
+  // Never let a slow/unreachable COA host stall PDP or lab-results HTML.
+  const winner = await Promise.race([
+    live,
+    new Promise<null>((resolve) => {
+      setTimeout(() => resolve(null), COA_FETCH_BUDGET_MS);
+    }),
+  ]);
 
-  return catalogCoaFallback(sku, catalogUrl);
+  return winner ?? fallback;
 }
 
 /**
@@ -186,32 +200,19 @@ export async function probeCoaLive(
   }
 }
 
-/** Mark cards with a live lab COA. Skips SKUs without a catalog COA URL. Chunks remote probes. */
+/**
+ * Mark cards that have a lab COA link.
+ *
+ * Previously this probed the live Heroku COA host for every card (chunked
+ * sequential HTTP). That blocked shop/home HTML for seconds in production.
+ * List UIs now use catalog COA URL presence; PDP still calls fetchCoaBySku.
+ */
 export async function applyLiveCoaToCards(
   cards: import("@/lib/catalog/types").ProductCardModel[]
 ): Promise<import("@/lib/catalog/types").ProductCardModel[]> {
-  if (!coaConfigured() || cards.length === 0) {
-    return cards.map((c) => ({ ...c, coaLive: false }));
-  }
-
-  const CHUNK = 6;
-  const liveBySku = new Map<string, boolean>();
-  const candidates = cards.filter((c) => c.coaUrl && c.primarySku);
-
-  for (let i = 0; i < candidates.length; i += CHUNK) {
-    const chunk = candidates.slice(i, i + CHUNK);
-    const results = await Promise.all(
-      chunk.map(async (c) => {
-        const live = await probeCoaLive(c.primarySku, c.name);
-        return [c.primarySku, live] as const;
-      })
-    );
-    for (const [sku, live] of results) liveBySku.set(sku, live);
-  }
-
   return cards.map((c) => ({
     ...c,
-    coaLive: Boolean(c.coaUrl && liveBySku.get(c.primarySku)),
+    coaLive: Boolean(c.coaUrl),
   }));
 }
 

@@ -16,6 +16,7 @@ import {
   type CartLineInput,
   type CartSnapshot,
 } from "./types";
+import { hasAuthSessionCookie } from "@/lib/auth/session-cookie";
 import { isGrowthDatabaseMode } from "@/lib/db/growth-mode";
 import { cartOwnerKey, readDbCartInputs, writeDbCartInputs } from "./cart-db";
 
@@ -66,8 +67,9 @@ async function currentOwnerEmail(): Promise<string | null> {
 }
 
 export async function readCartInputs(): Promise<CartLineInput[]> {
-  // Cookie carts skip auth — getCurrentProfile() is a Supabase round-trip guests shouldn't pay for.
-  if (isGrowthDatabaseMode()) {
+  // Guests must not pay for getCurrentProfile() — that Supabase round-trip
+  // was stalling every layout/cart read in production.
+  if (isGrowthDatabaseMode() && (await hasAuthSessionCookie())) {
     const email = await currentOwnerEmail();
     if (email) return readDbCartInputs(cartOwnerKey(email));
   }
@@ -75,7 +77,7 @@ export async function readCartInputs(): Promise<CartLineInput[]> {
 }
 
 export async function writeCartInputs(items: CartLineInput[]): Promise<void> {
-  if (isGrowthDatabaseMode()) {
+  if (isGrowthDatabaseMode() && (await hasAuthSessionCookie())) {
     const email = await currentOwnerEmail();
     if (email) {
       await writeDbCartInputs(cartOwnerKey(email), items);
@@ -88,11 +90,11 @@ export async function writeCartInputs(items: CartLineInput[]): Promise<void> {
 }
 
 /**
- * Cheap count for layout chrome — sums cookie/DB qty without loading the catalog.
- * Full line hydration happens on /cart, /api/cart, or drawer open.
+ * Badge count for layout chrome — cookie only, no auth/catalog/DB.
+ * Durable DB carts are mirrored to the cookie on write, so this stays honest.
  */
 export async function getCartItemCount(): Promise<number> {
-  const inputs = await readCartInputs();
+  const inputs = await readCookieCartInputs();
   return inputs.reduce((sum, item) => sum + item.quantity, 0);
 }
 

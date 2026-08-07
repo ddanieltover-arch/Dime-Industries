@@ -1,6 +1,7 @@
 // lib/inventory/index.ts
 import "server-only";
 import { cache } from "react";
+import { unstable_cache } from "next/cache";
 import { isGrowthDatabaseMode } from "@/lib/db/growth-mode";
 import type { ReserveLine } from "./logic";
 import * as inventoryDb from "./inventory-db";
@@ -27,11 +28,17 @@ export async function syncInventoryQuantity(variantId: string, quantityOnHand: n
   await inventoryDb.setInventoryQuantity(variantId, quantityOnHand);
 }
 
+const getCachedInventoryOverlay = unstable_cache(
+  async () => inventoryDb.readAllInventoryQuantities(),
+  ["dime-inventory-overlay-v1"],
+  { revalidate: 30 }
+);
+
 export const loadInventoryOverlay = cache(async (): Promise<Record<string, number>> => {
   if (!isGrowthDatabaseMode()) return {};
   if (process.env.NEXT_PHASE === "phase-production-build") return {};
   try {
-    return await inventoryDb.readAllInventoryQuantities();
+    return await getCachedInventoryOverlay();
   } catch (err) {
     console.error("[inventory] overlay read failed", err);
     return {};

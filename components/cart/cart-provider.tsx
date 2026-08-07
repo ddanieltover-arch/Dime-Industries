@@ -5,7 +5,6 @@ import {
   createContext,
   useCallback,
   useContext,
-  useEffect,
   useMemo,
   useState,
   type ReactNode,
@@ -31,25 +30,9 @@ export function CartProvider({
   initialCart: CartSnapshot;
   children: ReactNode;
 }) {
+  // Intentionally no sync-from-props effect — root layout remounts/refetches
+  // must not wipe optimistic client cart state on every navigation.
   const [cart, setCart] = useState<CartSnapshot>(initialCart);
-
-  useEffect(() => {
-    // Layout hydrates count-only (empty lines). Preserve client lines when the
-    // badge count still matches so soft navigations don't wipe drawer state.
-    setCart((prev) => {
-      if (initialCart.lines.length === 0 && prev.lines.length > 0) {
-        if (initialCart.itemCount === prev.itemCount) {
-          return prev;
-        }
-        return {
-          lines: [],
-          itemCount: initialCart.itemCount,
-          subtotalCents: 0,
-        };
-      }
-      return initialCart;
-    });
-  }, [initialCart]);
 
   const setItemCount = useCallback((count: number | ((prev: number) => number)) => {
     setCart((prev) => ({

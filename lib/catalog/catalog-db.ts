@@ -5,6 +5,7 @@
 
 import "server-only";
 import { cache } from "react";
+import { unstable_cache } from "next/cache";
 import { eq } from "drizzle-orm";
 import {
   categories,
@@ -47,16 +48,7 @@ function num(value: string | null | undefined, fallback = 0): number {
   return Number.isFinite(n) ? n : fallback;
 }
 
-/**
- * Request-memoized DB catalog load. Returns null when DB mode is off,
- * URL missing, query fails, or the products table is empty (caller falls back).
- */
-export const loadCatalogFromDatabase = cache(async (): Promise<CatalogProduct[] | null> => {
-  if (!isGrowthDatabaseMode() || !isDatabaseUrlConfigured()) return null;
-  // Avoid Postgres during `next build` SSG — parallel product/shop pages + a cold
-  // pool previously stalled workers past Next's 60s static timeout on Vercel.
-  if (process.env.NEXT_PHASE === "phase-production-build") return null;
-
+async function queryCatalogFromDatabase(): Promise<CatalogProduct[] | null> {
   try {
     const db = getDb();
 
@@ -185,4 +177,23 @@ export const loadCatalogFromDatabase = cache(async (): Promise<CatalogProduct[] 
     console.error("[catalog-db] load failed, falling back to seed catalog", err);
     return null;
   }
+}
+
+const getCachedCatalogFromDatabase = unstable_cache(
+  queryCatalogFromDatabase,
+  ["dime-catalog-from-db-v1"],
+  { revalidate: 60 }
+);
+
+/**
+ * Request-memoized DB catalog load (+ 60s cross-request cache).
+ * Returns null when DB mode is off, URL missing, query fails, or empty.
+ */
+export const loadCatalogFromDatabase = cache(async (): Promise<CatalogProduct[] | null> => {
+  if (!isGrowthDatabaseMode() || !isDatabaseUrlConfigured()) return null;
+  // Avoid Postgres during `next build` SSG — parallel product/shop pages + a cold
+  // pool previously stalled workers past Next's 60s static timeout on Vercel.
+  if (process.env.NEXT_PHASE === "phase-production-build") return null;
+
+  return getCachedCatalogFromDatabase();
 });
