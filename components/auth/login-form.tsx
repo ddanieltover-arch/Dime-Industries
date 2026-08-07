@@ -41,6 +41,7 @@ export function LoginForm({
       {supabaseConfigured ? (
         <>
           <form action={formAction} className="space-y-4">
+            <input type="hidden" name="next" value={nextPath} />
             <label className="block text-[var(--scale-xs)] text-[var(--color-ink-soft)]">
               Email
               <input type="email" name="email" required autoComplete="email" className="field-input mt-1.5" />
@@ -67,7 +68,10 @@ export function LoginForm({
 
           <p className="text-center text-[var(--scale-sm)] text-[var(--color-ink-soft)]">
             No account?{" "}
-            <Link href="/signup" className="text-[var(--color-resin)] underline-offset-4 hover:underline">
+            <Link
+              href={nextPath && nextPath !== "/account" ? `/signup?next=${encodeURIComponent(nextPath)}` : "/signup"}
+              className="text-[var(--color-resin)] underline-offset-4 hover:underline"
+            >
               Create one
             </Link>
           </p>

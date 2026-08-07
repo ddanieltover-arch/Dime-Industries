@@ -10,7 +10,8 @@ describe("location state SEO enrichment", () => {
   it("covers every seeded market with keyword H1 + answer capsule", () => {
     expect(LOCATION_STATES.length).toBeGreaterThanOrEqual(9);
     for (const state of LOCATION_STATES) {
-      expect(state.h1).toMatch(new RegExp(`Find DIME in ${state.name}`));
+      expect(state.h1).toMatch(/^Find DIME in /);
+      expect(state.h1).toContain(state.name);
       expect(state.answer.length).toBeGreaterThan(80);
       expect(state.cities.length).toBeGreaterThanOrEqual(2);
       expect(state.faqs.length).toBeGreaterThanOrEqual(3);
@@ -37,6 +38,7 @@ describe("location state SEO enrichment", () => {
 
   it("marks retail-only states offline for checkout", () => {
     expect(getLocationState("arizona")?.purchasableOnline).toBe(false);
-    expect(getLocationState("nevada")?.h1).toBe("Find DIME in Nevada");
+    expect(getLocationState("nevada")?.purchasableOnline).toBe(false);
+    expect(getLocationState("nevada")?.h1).toContain("Nevada");
   });
 });

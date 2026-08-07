@@ -1,6 +1,7 @@
 // components/catalog/catalog-toolbar.tsx
 import Link from "next/link";
 import type { CatalogFilters, CatalogSort } from "@/lib/catalog/types";
+import { buildCatalogHref } from "@/lib/catalog/url";
 
 const SORT_OPTIONS: { value: CatalogSort; label: string }[] = [
   { value: "popularity", label: "Popular" },
@@ -77,7 +78,7 @@ export function CatalogToolbar({ basePath, filters, total }: Props) {
 
           {filters.q ? (
             <Link
-              href={basePath}
+              href={buildCatalogHref(basePath, filters, { q: undefined, page: 1 })}
               className="inline-flex min-h-11 items-center justify-center text-center text-[var(--scale-sm)] text-[var(--color-ink-soft)] underline-offset-4 hover:underline"
             >
               Reset search

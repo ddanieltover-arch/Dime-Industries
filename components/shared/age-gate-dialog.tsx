@@ -16,11 +16,15 @@ const initialState: AgeGateActionState = {};
 export function AgeGateDialog({ initiallyOpen }: { initiallyOpen: boolean }) {
   const [state, formAction, pending] = useActionState(confirmAgeGate, initialState);
   const headingRef = useRef<HTMLHeadingElement>(null);
+  const dialogRef = useRef<HTMLDivElement>(null);
   const gateSucceeded = Boolean(state.success);
 
   useEffect(() => {
     if (!gateSucceeded) return;
-    window.location.replace(window.location.pathname);
+    // Preserve query + hash so deep links / UTMs survive age verification.
+    window.location.replace(
+      `${window.location.pathname}${window.location.search}${window.location.hash}`,
+    );
   }, [gateSucceeded]);
 
   useEffect(() => {
@@ -34,6 +38,38 @@ export function AgeGateDialog({ initiallyOpen }: { initiallyOpen: boolean }) {
     return () => {
       document.body.style.overflow = previous;
     };
+  }, [initiallyOpen, gateSucceeded]);
+
+  useEffect(() => {
+    if (!initiallyOpen || gateSucceeded) return;
+    const root = dialogRef.current;
+    if (!root) return;
+
+    const focusableSelector =
+      'a[href], button:not([disabled]), textarea, input, select, [tabindex]:not([tabindex="-1"])';
+
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key !== "Tab") return;
+      const nodes = Array.from(root.querySelectorAll<HTMLElement>(focusableSelector)).filter(
+        (el) => !el.hasAttribute("disabled") && el.getClientRects().length > 0,
+      );
+      if (nodes.length === 0) return;
+      const first = nodes[0]!;
+      const last = nodes[nodes.length - 1]!;
+      if (event.shiftKey && document.activeElement === first) {
+        event.preventDefault();
+        last.focus();
+      } else if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault();
+        first.focus();
+      } else if (!root.contains(document.activeElement)) {
+        event.preventDefault();
+        first.focus();
+      }
+    };
+
+    document.addEventListener("keydown", onKeyDown);
+    return () => document.removeEventListener("keydown", onKeyDown);
   }, [initiallyOpen, gateSucceeded]);
 
   if (!initiallyOpen) return null;
@@ -50,6 +86,7 @@ export function AgeGateDialog({ initiallyOpen }: { initiallyOpen: boolean }) {
 
   return (
     <div
+      ref={dialogRef}
       role="dialog"
       aria-modal="true"
       aria-labelledby="age-gate-title"

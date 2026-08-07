@@ -166,15 +166,33 @@ summary {
   }
 }
 
-/* Cookie banner sits above mobile bottom nav */
+/* Cookie + PWA banners sit above mobile bottom nav */
 .cookie-banner {
   bottom: 0;
   padding-bottom: max(1rem, calc(0.75rem + env(safe-area-inset-bottom, 0px)));
 }
 
+.pwa-banner {
+  bottom: 0;
+}
+
+/* Sticky PDP ATC sits above bottom nav; rises further when cookie banner is open */
+.mobile-pdp-buy-bar {
+  bottom: calc(
+    3.5rem + env(safe-area-inset-bottom, 0px) + var(--cookie-banner-height, 0px)
+  );
+}
+
 @media (max-width: 1023px) {
-  .cookie-banner {
+  .cookie-banner,
+  .pwa-banner {
     bottom: calc(3.5rem + env(safe-area-inset-bottom, 0px));
+  }
+}
+
+@media (min-width: 1024px) {
+  .mobile-pdp-buy-bar {
+    bottom: var(--cookie-banner-height, 0px);
   }
 }
 

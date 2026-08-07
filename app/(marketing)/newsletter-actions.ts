@@ -21,7 +21,12 @@ export async function subscribeToNewsletter(
 
   try {
     const { notifyNewsletterSignup } = await import("@/lib/email/notifications");
-    await notifyNewsletterSignup(parsed.data.email);
+    const result = await notifyNewsletterSignup(parsed.data.email);
+    // dualSend logs failures without throwing — require customer welcome to succeed.
+    if (!result.customer.ok) {
+      console.warn("[newsletter] customer welcome failed", result.customer.error);
+      return { error: "Could not complete signup. Please try again." };
+    }
   } catch (err) {
     console.warn("[newsletter] email failed", err);
     return { error: "Could not complete signup. Please try again." };

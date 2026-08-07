@@ -1,7 +1,7 @@
 // components/consent/cookie-banner.tsx
 "use client";
 
-import { useActionState } from "react";
+import { useActionState, useEffect, useRef } from "react";
 import Link from "next/link";
 import {
   acceptAllCookiesAction,
@@ -12,11 +12,32 @@ import {
 const initial: ConsentActionState = {};
 
 export function CookieBanner({ show }: { show: boolean }) {
+  const bannerRef = useRef<HTMLDivElement>(null);
   const [acceptState, acceptAction, acceptPending] = useActionState(acceptAllCookiesAction, initial);
   const [rejectState, rejectAction, rejectPending] = useActionState(
     rejectOptionalCookiesAction,
     initial
   );
+
+  useEffect(() => {
+    if (!show) return;
+    const el = bannerRef.current;
+    if (!el || typeof ResizeObserver === "undefined") return;
+
+    const apply = () => {
+      document.documentElement.style.setProperty(
+        "--cookie-banner-height",
+        `${el.offsetHeight}px`,
+      );
+    };
+    apply();
+    const observer = new ResizeObserver(apply);
+    observer.observe(el);
+    return () => {
+      observer.disconnect();
+      document.documentElement.style.removeProperty("--cookie-banner-height");
+    };
+  }, [show]);
 
   if (!show) return null;
 
@@ -25,6 +46,7 @@ export function CookieBanner({ show }: { show: boolean }) {
 
   return (
     <div
+      ref={bannerRef}
       className="cookie-banner fixed inset-x-0 z-[55] border-t border-[var(--color-border)] bg-[var(--color-surface-raised)] px-4 py-4 shadow-lg sm:px-6"
       role="dialog"
       aria-label="Cookie preferences"

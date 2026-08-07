@@ -111,7 +111,10 @@ export async function signInWithEmail(
 
   const { getCurrentProfile } = await import("@/lib/auth/session");
   const profile = await getCurrentProfile();
-  redirect(profile?.role === "admin" ? "/admin" : "/account");
+  const nextRaw = String(formData.get("next") ?? "");
+  const next =
+    nextRaw.startsWith("/") && !nextRaw.startsWith("//") ? nextRaw : "/account";
+  redirect(profile?.role === "admin" ? "/admin" : next);
 }
 
 export async function resendVerificationEmail(

@@ -140,12 +140,17 @@ export function ElevateAwards() {
                   onClick={() => goTo(index)}
                   aria-label={`Show image ${index + 1} of ${GALLERY.length}: ${shot.alt}`}
                   aria-current={selected ? "true" : undefined}
-                  className={`h-1.5 rounded-full transition-[width,background-color] duration-[var(--motion-base)] ease-[var(--ease-out)] ${
-                    selected
-                      ? "w-6 bg-[var(--color-resin)]"
-                      : "w-1.5 bg-white/35 hover:bg-white/55"
-                  }`}
-                />
+                  className="flex min-h-11 min-w-11 touch-manipulation items-center justify-center rounded-full p-3"
+                >
+                  <span
+                    className={`block rounded-full transition-[width,background-color] duration-[var(--motion-base)] ease-[var(--ease-out)] ${
+                      selected
+                        ? "h-1.5 w-6 bg-[var(--color-resin)]"
+                        : "h-1.5 w-1.5 bg-white/35"
+                    }`}
+                    aria-hidden
+                  />
+                </button>
               );
             })}
           </div>

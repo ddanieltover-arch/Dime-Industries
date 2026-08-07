@@ -42,10 +42,7 @@ export function MobilePdpBuyBar({
 
   return (
     <div
-      className="fixed inset-x-0 z-[45] border-t border-[var(--color-border)] bg-[var(--color-bg)]/95 px-[var(--container-pad-x)] py-3 backdrop-blur-md lg:hidden"
-      style={{
-        bottom: "calc(3.5rem + env(safe-area-inset-bottom, 0px))",
-      }}
+      className="mobile-pdp-buy-bar fixed inset-x-0 z-[45] border-t border-[var(--color-border)] bg-[var(--color-bg)]/95 px-[var(--container-pad-x)] py-3 backdrop-blur-md lg:hidden"
       role="region"
       aria-label="Quick add to cart"
     >

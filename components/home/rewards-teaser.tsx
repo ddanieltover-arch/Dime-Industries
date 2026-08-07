@@ -21,8 +21,9 @@ export function RewardsTeaser({
   const defaultBody =
     body ??
     `Join DIME Rewards — validate products, activate warranty, and earn ${POINTS_PER_DOLLAR} point per dollar (${REDEEM_POINTS_PER_DOLLAR} pts = $1 off at checkout).`;
-  const primaryHref = ctaHref ?? (signedIn ? "/account/loyalty" : "/rewards");
-  const primaryLabel = ctaLabel ?? (signedIn ? "View my points" : "Join rewards");
+  // Signed-in users always get account loyalty — CMS guest CTAs must not override.
+  const primaryHref = signedIn ? "/account/loyalty" : (ctaHref ?? "/rewards");
+  const primaryLabel = signedIn ? "View my points" : (ctaLabel ?? "Join rewards");
 
   return (
     <section

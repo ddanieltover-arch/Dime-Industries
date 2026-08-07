@@ -11,9 +11,11 @@ type Props = {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   cart: CartSnapshot;
+  /** True while lines are hydrating from `/api/cart` (badge may already show a count). */
+  loading?: boolean;
 };
 
-export function CartDrawer({ open, onOpenChange, cart }: Props) {
+export function CartDrawer({ open, onOpenChange, cart, loading = false }: Props) {
   return (
     <Dialog.Root open={open} onOpenChange={onOpenChange}>
       <Dialog.Portal>
@@ -36,7 +38,18 @@ export function CartDrawer({ open, onOpenChange, cart }: Props) {
           </p>
 
           <div className="flex-1 overflow-y-auto overscroll-contain px-5 py-4">
-            {cart.lines.length === 0 ? (
+            {loading && cart.lines.length === 0 ? (
+              <div className="py-12 text-center" aria-live="polite">
+                <p className="font-[var(--font-display)] text-[var(--scale-lg)] text-[var(--color-ink)]">
+                  Loading cart…
+                </p>
+                {cart.itemCount > 0 ? (
+                  <p className="mt-2 text-[var(--scale-sm)] text-[var(--color-ink-soft)]">
+                    {cart.itemCount} {cart.itemCount === 1 ? "item" : "items"} in your bag
+                  </p>
+                ) : null}
+              </div>
+            ) : cart.lines.length === 0 ? (
               <div className="py-12 text-center">
                 <p className="font-[var(--font-display)] text-[var(--scale-lg)] text-[var(--color-ink)]">
                   Your cart is empty
@@ -95,13 +108,13 @@ export function CartDrawer({ open, onOpenChange, cart }: Props) {
             >
               View cart
             </Link>
-            {cart.lines.length > 0 ? (
+            {cart.lines.length > 0 || cart.itemCount > 0 ? (
               <Link
-                href="/checkout"
+                href={cart.lines.length > 0 ? "/checkout" : "/cart"}
                 onClick={() => onOpenChange(false)}
                 className="btn-primary min-h-12 w-full touch-manipulation"
               >
-                Checkout
+                {cart.lines.length > 0 ? "Checkout" : "Review cart"}
               </Link>
             ) : null}
           </div>

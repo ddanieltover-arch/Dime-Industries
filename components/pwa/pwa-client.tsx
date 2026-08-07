@@ -122,7 +122,7 @@ export function PwaClient() {
 
   return (
     <div
-      className="fixed inset-x-0 bottom-0 z-[60] flex justify-center px-3 pb-[calc(0.75rem+env(safe-area-inset-bottom))] pointer-events-none"
+      className="pwa-banner pointer-events-none fixed inset-x-0 bottom-0 z-[60] flex justify-center px-3 pb-3"
       role="region"
       aria-label="App install and updates"
     >

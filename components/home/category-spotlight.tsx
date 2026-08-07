@@ -101,10 +101,12 @@ export function CategorySpotlight() {
   const trackRef = useRef<HTMLDivElement>(null);
   const viewportRef = useRef<HTMLDivElement>(null);
   const indexRef = useRef(TILES.length);
+  const pointerDownRef = useRef(false);
   const draggingRef = useRef(false);
   const dragStartXRef = useRef(0);
   const dragStartScrollRef = useRef(0);
-  const dragMovedRef = useRef(false);
+  /** Suppress only the click synthesized from the current drag gesture. */
+  const suppressClickUntilRef = useRef(0);
   const autoTimerRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const [active, setActive] = useState(0);
   const [paused, setPaused] = useState(false);
@@ -192,46 +194,57 @@ export function CategorySpotlight() {
     if (e.pointerType === "mouse" && e.button !== 0) return;
     const viewport = viewportRef.current;
     if (!viewport) return;
-    draggingRef.current = true;
-    dragMovedRef.current = false;
+    // Defer pointer capture until movement exceeds the drag threshold so
+    // clicks can still reach category Links (immediate capture was swallowing navigation).
+    pointerDownRef.current = true;
+    draggingRef.current = false;
     dragStartXRef.current = e.clientX;
     dragStartScrollRef.current = viewport.scrollLeft;
-    viewport.setPointerCapture(e.pointerId);
     setPaused(true);
   };
 
   const onPointerMove = (e: ReactPointerEvent<HTMLDivElement>) => {
-    if (!draggingRef.current) return;
+    if (!pointerDownRef.current) return;
     const viewport = viewportRef.current;
     if (!viewport) return;
     const dx = e.clientX - dragStartXRef.current;
-    if (Math.abs(dx) > 6) dragMovedRef.current = true;
+    if (!draggingRef.current) {
+      if (Math.abs(dx) <= 6) return;
+      draggingRef.current = true;
+      viewport.setPointerCapture(e.pointerId);
+    }
     viewport.scrollLeft = dragStartScrollRef.current - dx;
   };
 
   const endDrag = (e: ReactPointerEvent<HTMLDivElement>) => {
-    if (!draggingRef.current) return;
+    if (!pointerDownRef.current) return;
     const viewport = viewportRef.current;
+    const didDrag = draggingRef.current;
+    pointerDownRef.current = false;
     draggingRef.current = false;
     if (viewport?.hasPointerCapture(e.pointerId)) {
       viewport.releasePointerCapture(e.pointerId);
     }
 
-    const step = measureStep();
-    if (viewport && step) {
-      const nearest = Math.round(viewport.scrollLeft / step);
-      scrollToIndex(nearest, prefersReducedMotion ? "auto" : "smooth");
-      window.setTimeout(normalizeLoop, prefersReducedMotion ? 0 : 420);
+    if (didDrag) {
+      // Block the click that browsers may synthesize from this gesture, then
+      // expire so the next intentional tap is not swallowed (esp. on touch).
+      suppressClickUntilRef.current = Date.now() + 350;
+      const step = measureStep();
+      if (viewport && step) {
+        const nearest = Math.round(viewport.scrollLeft / step);
+        scrollToIndex(nearest, prefersReducedMotion ? "auto" : "smooth");
+        window.setTimeout(normalizeLoop, prefersReducedMotion ? 0 : 420);
+      }
     }
 
     setPaused(false);
   };
 
   const onClickCapture = (e: React.MouseEvent) => {
-    if (dragMovedRef.current) {
+    if (Date.now() < suppressClickUntilRef.current) {
       e.preventDefault();
       e.stopPropagation();
-      dragMovedRef.current = false;
     }
   };
 

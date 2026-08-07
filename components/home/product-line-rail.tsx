@@ -12,7 +12,7 @@ export function ProductLineRail({ section }: { section: ProductLineSection }) {
       headingId={headingId}
       eyebrow="Product line"
       title={section.name}
-      viewAllHref={`/shop/vapes/${section.slug}`}
+      viewAllHref={`/shop?line=${encodeURIComponent(section.slug)}`}
     >
       {section.products.map((product) => (
         <StaggerItem

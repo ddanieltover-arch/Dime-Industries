@@ -10,11 +10,18 @@ import { CartIcon, HeartIcon, headerIconBtnClass } from "@/components/shared/hea
 export function CartHeaderControls() {
   const { cart, itemCount, refreshCart } = useCart();
   const [open, setOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    if (open) {
-      void refreshCart();
-    }
+    if (!open) return;
+    let cancelled = false;
+    setLoading(true);
+    void refreshCart().finally(() => {
+      if (!cancelled) setLoading(false);
+    });
+    return () => {
+      cancelled = true;
+    };
   }, [open, refreshCart]);
 
   return (
@@ -39,7 +46,7 @@ export function CartHeaderControls() {
       >
         <HeartIcon />
       </Link>
-      <CartDrawer open={open} onOpenChange={setOpen} cart={cart} />
+      <CartDrawer open={open} onOpenChange={setOpen} cart={cart} loading={loading} />
     </>
   );
 }
