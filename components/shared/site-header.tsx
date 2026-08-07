@@ -2,7 +2,6 @@
 import Image from "next/image";
 import Link from "next/link";
 import { ThemeToggle } from "@/components/shared/theme-toggle";
-import { MobileNav } from "@/components/shared/mobile-nav";
 import { MobileBottomNav } from "@/components/shared/mobile-bottom-nav";
 import { HeaderSearch } from "@/components/shared/header-search";
 import { HeaderNav } from "@/components/shared/header-nav";
@@ -26,7 +25,6 @@ export function SiteHeader() {
         <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-[var(--color-resin)]/[0.04] to-transparent" aria-hidden />
         <div className="relative mx-auto flex h-16 max-w-7xl items-center justify-between gap-3 px-[var(--container-pad-x)] lg:gap-4 xl:h-[4.25rem]">
           <div className="flex min-w-0 shrink-0 items-center gap-2 sm:gap-3">
-            <MobileNav />
             <Link
               href="/"
               className="relative h-8 w-[7.5rem] shrink-0 transition-opacity duration-[var(--motion-fast)] hover:opacity-90 sm:h-9 sm:w-36 lg:w-[8.25rem]"

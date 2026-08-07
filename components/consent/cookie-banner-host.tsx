@@ -1,8 +1,10 @@
 // components/consent/cookie-banner-host.tsx
-import { getCookieConsent } from "@/lib/consent/cookie";
-import { CookieBanner } from "@/components/consent/cookie-banner";
-
+/**
+ * Cookie banner host — disabled (owner request 2026-08-07).
+ * Not mounted from `app/layout.tsx` while disabled (chrome #8).
+ * Consent store + `/cookies` preferences remain.
+ * Restore: render `<CookieBannerHost />` next to `<PwaHost />` in root layout.
+ */
 export async function CookieBannerHost() {
-  const consent = await getCookieConsent();
-  return <CookieBanner show={!consent.decided} />;
+  return null;
 }

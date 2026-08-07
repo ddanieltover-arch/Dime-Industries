@@ -4,8 +4,8 @@ import type { ProductLineSection } from "@/lib/data/products";
 import { HeroVideo } from "@/components/home/hero-video";
 import { PromoBanner } from "@/components/home/promo-banner";
 import { TrustStrip } from "@/components/home/trust-strip";
-import { CategorySpotlight } from "@/components/home/category-spotlight";
-import { ElevateAwards } from "@/components/home/elevate-awards";
+import { CategorySpotlightDeferred } from "@/components/home/category-spotlight-deferred";
+import { ElevateAwardsDeferred } from "@/components/home/elevate-awards-deferred";
 import { BundlesRail } from "@/components/home/bundles-rail";
 import { ProductLineRail } from "@/components/home/product-line-rail";
 import { RewardsTeaser } from "@/components/home/rewards-teaser";
@@ -58,9 +58,9 @@ export function HomepageSections({
           case "trust":
             return <TrustStrip key={section.id} />;
           case "categories":
-            return <CategorySpotlight key={section.id} />;
+            return <CategorySpotlightDeferred key={section.id} />;
           case "awards":
-            return <ElevateAwards key={section.id} />;
+            return <ElevateAwardsDeferred key={section.id} />;
           case "bundles":
             return bundles ? <BundlesRail key={section.id} section={bundles} /> : null;
           case "product-lines":

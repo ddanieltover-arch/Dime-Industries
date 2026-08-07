@@ -4,30 +4,17 @@
 import { useCallback, useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { useReducedMotion } from "framer-motion";
-import { Reveal } from "@/components/motion";
+import { Reveal, usePrefersReducedMotion } from "@/components/motion";
+import { ELEVATE_AWARDS_GALLERY } from "@/components/home/elevate-awards-data";
 
 /** Products first, then medals, then hardware — infinite fade loop. */
-const GALLERY = [
-  {
-    src: "/brand/awards.webp",
-    alt: "DIME award-winning product lineup",
-  },
-  {
-    src: "/brand/awards-medals.webp",
-    alt: "Gold award medals and engraved plaque",
-  },
-  {
-    src: "/brand/awards-hardware.webp",
-    alt: "Industry award trophies on dark concrete",
-  },
-] as const;
+const GALLERY = ELEVATE_AWARDS_GALLERY;
 
 const FADE_MS = 900;
 const HOLD_MS = 4200;
 
 export function ElevateAwards() {
-  const prefersReducedMotion = useReducedMotion();
+  const prefersReducedMotion = usePrefersReducedMotion();
   const [active, setActive] = useState(0);
   const [paused, setPaused] = useState(false);
 

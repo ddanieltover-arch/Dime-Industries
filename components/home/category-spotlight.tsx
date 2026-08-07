@@ -11,46 +11,10 @@ import {
   useState,
   type PointerEvent as ReactPointerEvent,
 } from "react";
-import { useReducedMotion } from "framer-motion";
+import { usePrefersReducedMotion } from "@/components/motion";
+import { CATEGORY_SPOTLIGHT_TILES } from "@/components/home/category-spotlight-data";
 
-const TILES = [
-  {
-    href: "/shop/vapes",
-    label: "Vapes",
-    image: "/brand/category-vapes.webp",
-    alt: "DIME Live Reserve vape",
-  },
-  {
-    href: "/shop/edibles",
-    label: "Edibles",
-    image: "/brand/category-edibles.webp",
-    alt: "DIME peach edibles",
-  },
-  {
-    href: "/shop/prerolls",
-    label: "Prerolls",
-    image: "/brand/category-prerolls.webp",
-    alt: "DIME product lineup",
-  },
-  {
-    href: "/shop/vapes/live-reserve",
-    label: "Live Reserve",
-    image: "/brand/category-live-reserve.webp",
-    alt: "Kushmint Live Reserve",
-  },
-  {
-    href: "/shop/edibles?format=gummies",
-    label: "Gummies",
-    image: "/brand/category-gummies.webp",
-    alt: "Peach Ice T gummies",
-  },
-  {
-    href: "/shop/vapes/rosin",
-    label: "Rosin",
-    image: "/brand/category-live-reserve.webp",
-    alt: "DIME Industries rosin vape cartridge",
-  },
-];
+const TILES = CATEGORY_SPOTLIGHT_TILES;
 
 const GAP_PX = 12;
 const AUTO_MS = 4200;
@@ -63,7 +27,7 @@ function CategoryTile({
   prefersReducedMotion,
 }: {
   tile: Tile;
-  prefersReducedMotion: boolean | null;
+  prefersReducedMotion: boolean;
 }) {
   return (
     <article className="group relative h-full min-h-[260px] overflow-hidden bg-[var(--color-surface)] sm:min-h-[340px]">
@@ -97,10 +61,10 @@ function CategoryTile({
 }
 
 export function CategorySpotlight() {
-  const prefersReducedMotion = useReducedMotion();
+  const prefersReducedMotion = usePrefersReducedMotion();
   const trackRef = useRef<HTMLDivElement>(null);
   const viewportRef = useRef<HTMLDivElement>(null);
-  const indexRef = useRef(TILES.length);
+  const indexRef = useRef<number>(TILES.length);
   const pointerDownRef = useRef(false);
   const draggingRef = useRef(false);
   const dragStartXRef = useRef(0);

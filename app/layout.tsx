@@ -1,13 +1,11 @@
 // app/layout.tsx
 import type { Metadata, Viewport } from "next";
-import { ThemeProvider } from "@/components/shared/theme-provider";
-import { StorefrontChrome } from "@/components/shared/storefront-chrome";
 import { CartShell } from "@/components/cart/cart-shell";
-import { PwaClient } from "@/components/pwa/pwa-client";
-import { CookieBannerHost } from "@/components/consent/cookie-banner-host";
+import { PwaHost } from "@/components/pwa/pwa-host";
 import { GoogleAnalyticsHost } from "@/components/analytics/google-analytics-host";
 import { JsonLdScript } from "@/components/seo/json-ld-script";
 import { buildOrganizationJsonLd, buildWebSiteJsonLd } from "@/lib/seo/json-ld";
+import { THEME_STORAGE_KEY } from "@/lib/theme/storage";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -65,25 +63,25 @@ export const viewport: Viewport = {
 const organizationJsonLd = buildOrganizationJsonLd();
 const websiteJsonLd = buildWebSiteJsonLd();
 
+/** Blocking boot — applies saved theme before paint (no next-themes provider). */
+const themeBootScript = `(!function(){try{var k=${JSON.stringify(THEME_STORAGE_KEY)};var t=localStorage.getItem(k);if(t!=="light"&&t!=="dark")t="dark";document.documentElement.setAttribute("data-theme",t);}catch(e){document.documentElement.setAttribute("data-theme","dark");}})();`;
+
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="en" data-theme="dark" suppressHydrationWarning>
       <head>
+        <script dangerouslySetInnerHTML={{ __html: themeBootScript }} />
         <link rel="preload" as="image" href="/brand/hero-poster.webp" fetchPriority="high" />
         <JsonLdScript data={organizationJsonLd} />
         <JsonLdScript data={websiteJsonLd} />
       </head>
       <body>
-        <ThemeProvider>
-          <CartShell>
-            <StorefrontChrome>
-              <main id="main-content">{children}</main>
-            </StorefrontChrome>
-            <PwaClient />
-            <CookieBannerHost />
-            <GoogleAnalyticsHost />
-          </CartShell>
-        </ThemeProvider>
+        <CartShell>
+          {children}
+          {/* PWA deferred until idle — see `PwaHost`. Cookie banner host omitted while disabled (restore via `CookieBannerHost`). */}
+          <PwaHost />
+          <GoogleAnalyticsHost />
+        </CartShell>
       </body>
     </html>
   );

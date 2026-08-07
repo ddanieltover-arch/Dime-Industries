@@ -22,7 +22,7 @@ export function PwaClient() {
 
     // Dev: never register — cache-first `/_next/static` from a prior SW serves
     // stale webpack chunks and surfaces as `Cannot read properties of undefined
-    // (reading 'call')` in RootLayout / StorefrontChrome.
+    // (reading 'call')` in RootLayout / storefront chrome.
     if (process.env.NODE_ENV === "development") {
       void navigator.serviceWorker.getRegistrations().then((regs) => {
         for (const reg of regs) void reg.unregister();

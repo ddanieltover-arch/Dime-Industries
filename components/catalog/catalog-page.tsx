@@ -1,8 +1,7 @@
 // components/catalog/catalog-page.tsx
 import Image from "next/image";
 import Link from "next/link";
-import { AgeGateDialog } from "@/components/shared/age-gate-dialog";
-import { AgeGateSeoTeaser } from "@/components/seo/age-gate-seo-teaser";
+import { AGE_GATE_ENTRY_ENABLED } from "@/lib/compliance/age-gate-flags";
 import { ActiveFilterChips, hasActiveCatalogFilters } from "@/components/catalog/active-filter-chips";
 import { CatalogFilters } from "@/components/catalog/catalog-filters";
 import { CatalogPagination } from "@/components/catalog/catalog-pagination";
@@ -74,11 +73,14 @@ export async function CatalogPageShell({
   const activeCategory = basePath.startsWith("/shop/") ? basePath.split("/")[2] : undefined;
   const outbound = outboundKey ? outboundCitationsFor(outboundKey) : [];
 
-  return (
-    <>
-      <AgeGateDialog initiallyOpen={!ageVerified} />
-
-      {!ageVerified ? (
+  if (AGE_GATE_ENTRY_ENABLED && !ageVerified) {
+    const [{ AgeGateDialog }, { AgeGateSeoTeaser }] = await Promise.all([
+      import("@/components/shared/age-gate-dialog"),
+      import("@/components/seo/age-gate-seo-teaser"),
+    ]);
+    return (
+      <>
+        <AgeGateDialog initiallyOpen />
         <AgeGateSeoTeaser
           title={title}
           description={
@@ -86,8 +88,12 @@ export async function CatalogPageShell({
             "Confirm you are 21+ (or a qualifying patient) to browse lab-tested DIME products available in your jurisdiction."
           }
         />
-      ) : (
-        <>
+      </>
+    );
+  }
+
+  return (
+    <>
           <section className="relative isolate overflow-hidden border-b border-[var(--color-border)]">
             <Image
               src={hero}
@@ -227,8 +233,6 @@ export async function CatalogPageShell({
               </div>
             </div>
           </div>
-        </>
-      )}
     </>
   );
 }

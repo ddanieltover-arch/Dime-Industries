@@ -1,7 +1,4 @@
 // components/home/hero-video.tsx
-"use client";
-
-import { useReducedMotion } from "framer-motion";
 import Link from "next/link";
 import { FadeInItem, FadeInStagger } from "@/components/motion";
 
@@ -18,50 +15,6 @@ export function HeroVideo({
   ctaLabel?: string;
   ctaHref?: string;
 } = {}) {
-  const prefersReducedMotion = useReducedMotion();
-
-  const copy = prefersReducedMotion ? (
-    <div>
-      <p className="section-eyebrow text-[clamp(1.75rem,4vw,2.75rem)]">{eyebrow}</p>
-      <h1 className="mt-3 max-w-2xl font-[var(--font-display)] text-[clamp(2.25rem,6vw,4rem)] uppercase leading-[1.02] tracking-[0.04em] text-white">
-        {headline}
-      </h1>
-      <p className="mt-4 max-w-md text-[var(--scale-base)] leading-relaxed text-white/80">{body}</p>
-      <div className="mt-9 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
-        <Link href={ctaHref} className="btn-primary min-h-12 w-full touch-manipulation sm:w-auto">
-          {ctaLabel}
-        </Link>
-        <Link href="/shop/vapes" className="btn-outline-light min-h-12 w-full touch-manipulation sm:w-auto">
-          Shop vapes
-        </Link>
-      </div>
-    </div>
-  ) : (
-    <FadeInStagger>
-      <FadeInItem>
-        <p className="section-eyebrow text-[clamp(1.75rem,4vw,2.75rem)]">{eyebrow}</p>
-      </FadeInItem>
-      <FadeInItem>
-        <h1 className="mt-3 max-w-2xl font-[var(--font-display)] text-[clamp(2.25rem,6vw,4rem)] uppercase leading-[1.02] tracking-[0.04em] text-white">
-          {headline}
-        </h1>
-      </FadeInItem>
-      <FadeInItem>
-        <p className="mt-4 max-w-md text-[var(--scale-base)] leading-relaxed text-white/80">{body}</p>
-      </FadeInItem>
-      <FadeInItem>
-        <div className="mt-9 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
-          <Link href={ctaHref} className="btn-primary min-h-12 w-full touch-manipulation sm:w-auto">
-            {ctaLabel}
-          </Link>
-          <Link href="/shop/vapes" className="btn-outline-light min-h-12 w-full touch-manipulation sm:w-auto">
-            Shop vapes
-          </Link>
-        </div>
-      </FadeInItem>
-    </FadeInStagger>
-  );
-
   return (
     <section aria-label="Introduction" className="relative isolate min-h-[min(88vh,52rem)] w-full overflow-hidden bg-black lg:min-h-[88vh]">
       <picture>
@@ -79,7 +32,29 @@ export function HeroVideo({
       <div className="media-veil absolute inset-0" />
 
       <div className="relative z-10 mx-auto flex min-h-[min(88vh,52rem)] max-w-7xl flex-col justify-end px-[var(--container-pad-x)] pb-[calc(5.5rem+env(safe-area-inset-bottom))] pt-24 sm:pb-16 sm:pt-28 lg:min-h-[88vh] lg:pb-24">
-        {copy}
+        <FadeInStagger>
+          <FadeInItem>
+            <p className="section-eyebrow text-[clamp(1.75rem,4vw,2.75rem)]">{eyebrow}</p>
+          </FadeInItem>
+          <FadeInItem>
+            <h1 className="mt-3 max-w-2xl font-[var(--font-display)] text-[clamp(2.25rem,6vw,4rem)] uppercase leading-[1.02] tracking-[0.04em] text-white">
+              {headline}
+            </h1>
+          </FadeInItem>
+          <FadeInItem>
+            <p className="mt-4 max-w-md text-[var(--scale-base)] leading-relaxed text-white/80">{body}</p>
+          </FadeInItem>
+          <FadeInItem>
+            <div className="mt-9 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
+              <Link href={ctaHref} className="btn-primary min-h-12 w-full touch-manipulation sm:w-auto">
+                {ctaLabel}
+              </Link>
+              <Link href="/shop/vapes" className="btn-outline-light min-h-12 w-full touch-manipulation sm:w-auto">
+                Shop vapes
+              </Link>
+            </div>
+          </FadeInItem>
+        </FadeInStagger>
       </div>
     </section>
   );

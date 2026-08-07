@@ -3,7 +3,6 @@
 
 import { useState } from "react";
 import Image from "next/image";
-import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 
 type Props = {
   images: string[];
@@ -13,7 +12,6 @@ type Props = {
 
 export function ProductGallery({ images, productName, fallbackLabel }: Props) {
   const [active, setActive] = useState(0);
-  const prefersReducedMotion = useReducedMotion();
   const current = images[active] ?? null;
 
   if (!current) {
@@ -29,25 +27,16 @@ export function ProductGallery({ images, productName, fallbackLabel }: Props) {
   return (
     <div className="space-y-3">
       <figure className="group relative m-0 aspect-square overflow-hidden bg-[var(--color-surface)]">
-        <AnimatePresence mode="wait" initial={false}>
-          <motion.div
-            key={current}
-            className="absolute inset-0"
-            initial={prefersReducedMotion ? false : { opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={prefersReducedMotion ? undefined : { opacity: 0 }}
-            transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
-          >
-            <Image
-              src={current}
-              alt={productName}
-              fill
-              priority
-              className="object-contain p-8 transition-transform duration-500 ease-[var(--ease-out)] group-hover:scale-105"
-              sizes="(max-width: 1024px) 100vw, 50vw"
-            />
-          </motion.div>
-        </AnimatePresence>
+        <div key={current} className="absolute inset-0 dime-gallery-fade">
+          <Image
+            src={current}
+            alt={productName}
+            fill
+            priority
+            className="object-contain p-8 transition-transform duration-500 ease-[var(--ease-out)] motion-safe:group-hover:scale-105"
+            sizes="(max-width: 1024px) 100vw, 50vw"
+          />
+        </div>
         <figcaption className="sr-only">
           {productName}
           {images.length > 1 ? ` — image ${active + 1} of ${images.length}` : ""}

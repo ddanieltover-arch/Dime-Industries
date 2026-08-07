@@ -1,16 +1,36 @@
 // components/cart/cart-header-controls.tsx
 "use client";
 
-import { useEffect, useState } from "react";
+import dynamic from "next/dynamic";
+import { useCallback, useEffect, useState } from "react";
 import Link from "next/link";
-import { CartDrawer } from "@/components/cart/cart-drawer";
 import { useCart } from "@/components/cart/cart-provider";
 import { CartIcon, HeartIcon, headerIconBtnClass } from "@/components/shared/header-icons";
+
+const CartDrawer = dynamic(
+  () => import("@/components/cart/cart-drawer").then((m) => m.CartDrawer),
+  { ssr: false },
+);
+
+function prefetchCartDrawer() {
+  void import("@/components/cart/cart-drawer");
+}
 
 export function CartHeaderControls() {
   const { cart, itemCount, refreshCart } = useCart();
   const [open, setOpen] = useState(false);
+  const [drawerReady, setDrawerReady] = useState(false);
   const [loading, setLoading] = useState(false);
+
+  const ensureDrawer = useCallback(() => {
+    setDrawerReady(true);
+    prefetchCartDrawer();
+  }, []);
+
+  const openCart = useCallback(() => {
+    ensureDrawer();
+    setOpen(true);
+  }, [ensureDrawer]);
 
   useEffect(() => {
     if (!open) return;
@@ -28,7 +48,9 @@ export function CartHeaderControls() {
     <>
       <button
         type="button"
-        onClick={() => setOpen(true)}
+        onClick={openCart}
+        onPointerEnter={ensureDrawer}
+        onFocus={ensureDrawer}
         aria-label={`View cart, ${itemCount} items`}
         className={headerIconBtnClass}
       >
@@ -46,7 +68,9 @@ export function CartHeaderControls() {
       >
         <HeartIcon />
       </Link>
-      <CartDrawer open={open} onOpenChange={setOpen} cart={cart} loading={loading} />
+      {drawerReady ? (
+        <CartDrawer open={open} onOpenChange={setOpen} cart={cart} loading={loading} />
+      ) : null}
     </>
   );
 }

@@ -6,9 +6,9 @@ export function GoogleAnalytics({ measurementId }: { measurementId: string }) {
     <>
       <Script
         src={`https://www.googletagmanager.com/gtag/js?id=${measurementId}`}
-        strategy="afterInteractive"
+        strategy="lazyOnload"
       />
-      <Script id="ga-gtag" strategy="afterInteractive">
+      <Script id="ga-gtag" strategy="lazyOnload">
         {`
           window.dataLayer = window.dataLayer || [];
           function gtag(){dataLayer.push(arguments);}

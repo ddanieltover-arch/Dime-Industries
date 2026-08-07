@@ -2,8 +2,8 @@
 "use client";
 
 import { useMemo, useState } from "react";
+import dynamic from "next/dynamic";
 import Link from "next/link";
-import { BeginCheckoutEvent } from "@/components/analytics/begin-checkout-event";
 import { CheckoutForm } from "@/components/checkout/checkout-form";
 import type { CartLine } from "@/lib/cart/types";
 import type { AppliedCoupon } from "@/lib/coupons/types";
@@ -12,6 +12,14 @@ import { defaultSubdivisionForCountry } from "@/lib/checkout/subdivisions";
 import { formatPrice } from "@/lib/format";
 import type { ManualPaymentHandles } from "@/lib/payments/methods";
 
+const BeginCheckoutEvent = dynamic(
+  () =>
+    import("@/components/analytics/begin-checkout-event").then(
+      (m) => m.BeginCheckoutEvent,
+    ),
+  { ssr: false },
+);
+
 type Props = {
   lines: CartLine[];
   coupon: AppliedCoupon | null;
@@ -19,6 +27,8 @@ type Props = {
   defaultEmail?: string;
   defaultPhone?: string;
   manualHandles?: ManualPaymentHandles;
+  /** When false, skip begin_checkout island (no analytics consent). */
+  analyticsEnabled?: boolean;
   defaults?: {
     fullName?: string;
     line1?: string;
@@ -38,6 +48,7 @@ export function CheckoutWorkspace({
   defaultEmail,
   defaultPhone,
   manualHandles,
+  analyticsEnabled = false,
   defaults,
   paymentError,
 }: Props) {
@@ -72,7 +83,9 @@ export function CheckoutWorkspace({
             Shipping & payment
           </h2>
           <div className="mt-6">
-            <BeginCheckoutEvent valueUsd={pricing.totalCents / 100} />
+            {analyticsEnabled ? (
+              <BeginCheckoutEvent valueUsd={pricing.totalCents / 100} />
+            ) : null}
             <CheckoutForm
               pricing={pricing}
               shipState={shipState}

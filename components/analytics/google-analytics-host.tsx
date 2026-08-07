@@ -6,7 +6,10 @@ import { GoogleAnalytics } from "@/components/analytics/google-analytics";
 import { GaRouteListener } from "@/components/analytics/ga-route-listener";
 import { OutboundClickTracker } from "@/components/analytics/outbound-click-tracker";
 
-/** Loads gtag only after the visitor opts into analytics cookies. */
+/**
+ * Loads gtag + client trackers only after analytics consent.
+ * Undecided / declined visitors get zero GA scripts and no tracker islands.
+ */
 export async function GoogleAnalyticsHost() {
   if (!GA_MEASUREMENT_ID) return null;
   const consent = await getCookieConsent();

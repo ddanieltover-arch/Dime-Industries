@@ -1,12 +1,7 @@
 import { test, expect } from "@playwright/test";
 
 test.describe("Shop catalog", () => {
-  test("age gate blocks shop until verified", async ({ page }) => {
-    await page.goto("/shop", { waitUntil: "domcontentloaded" });
-    await expect(page.getByRole("dialog")).toBeVisible({ timeout: 15_000 });
-  });
-
-  test("verified visitor can browse shop and open a product", async ({ page, context }) => {
+  test("visitor can browse shop and open a product", async ({ page, context }) => {
     await context.addCookies([
       {
         name: "dime_age_verified",

@@ -1,85 +1,80 @@
 // components/motion/stagger.tsx
 "use client";
 
-import { motion, useReducedMotion } from "framer-motion";
-import type { ReactNode } from "react";
-
-const EASE_OUT: [number, number, number, number] = [0.16, 1, 0.3, 1];
-
-const itemVariants = {
-  hidden: { opacity: 0, y: 20 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: { duration: 0.45, ease: EASE_OUT },
-  },
-};
+import {
+  useEffect,
+  useRef,
+  useState,
+  type CSSProperties,
+  type ReactNode,
+} from "react";
+import { usePrefersReducedMotion } from "@/lib/motion/use-prefers-reduced-motion";
 
 type StaggerProps = {
   children: ReactNode;
   className?: string;
   as?: "div" | "ul";
+  /** Stagger step in seconds (API compatible with prior Framer usage). */
   staggerDelay?: number;
   role?: string;
 };
 
+/**
+ * Parent observer — children (`StaggerItem`) animate in with CSS delays.
+ */
 export function Stagger({
   children,
-  className,
+  className = "",
   as = "div",
   staggerDelay = 0.06,
   role,
 }: StaggerProps) {
-  const prefersReducedMotion = useReducedMotion();
+  const ref = useRef<HTMLElement | null>(null);
+  const [visible, setVisible] = useState(false);
+  const reduced = usePrefersReducedMotion();
 
-  if (prefersReducedMotion) {
-    if (as === "ul") {
-      return (
-        <ul className={className} role={role}>
-          {children}
-        </ul>
-      );
+  useEffect(() => {
+    if (reduced) {
+      setVisible(true);
+      return;
     }
-    return (
-      <div className={className} role={role}>
-        {children}
-      </div>
-    );
-  }
+    const el = ref.current;
+    if (!el) return;
 
-  const variants = {
-    hidden: {},
-    visible: {
-      transition: { staggerChildren: staggerDelay },
-    },
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry?.isIntersecting) {
+          setVisible(true);
+          observer.disconnect();
+        }
+      },
+      { rootMargin: "0px 0px -6% 0px", threshold: 0.1 },
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, [reduced]);
+
+  const style = {
+    ["--stagger-step" as string]: `${Math.round(staggerDelay * 1000)}ms`,
+  } as CSSProperties;
+
+  const classes = `dime-stagger ${visible || reduced ? "dime-stagger--in" : ""} ${className}`;
+  const setRef = (node: HTMLElement | null) => {
+    ref.current = node;
   };
 
   if (as === "ul") {
     return (
-      <motion.ul
-        className={className}
-        role={role}
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true, margin: "-60px" }}
-        variants={variants}
-      >
+      <ul ref={setRef} className={classes} role={role} style={style}>
         {children}
-      </motion.ul>
+      </ul>
     );
   }
 
   return (
-    <motion.div
-      className={className}
-      role={role}
-      initial="hidden"
-      whileInView="visible"
-      viewport={{ once: true, margin: "-60px" }}
-      variants={variants}
-    >
+    <div ref={setRef} className={classes} role={role} style={style}>
       {children}
-    </motion.div>
+    </div>
   );
 }
 
@@ -89,27 +84,9 @@ type StaggerItemProps = {
   as?: "div" | "li";
 };
 
-export function StaggerItem({ children, className, as = "div" }: StaggerItemProps) {
-  const prefersReducedMotion = useReducedMotion();
-
-  if (prefersReducedMotion) {
-    if (as === "li") {
-      return <li className={className}>{children}</li>;
-    }
-    return <div className={className}>{children}</div>;
-  }
-
+export function StaggerItem({ children, className = "", as = "div" }: StaggerItemProps) {
   if (as === "li") {
-    return (
-      <motion.li className={className} variants={itemVariants}>
-        {children}
-      </motion.li>
-    );
+    return <li className={`dime-stagger-item ${className}`}>{children}</li>;
   }
-
-  return (
-    <motion.div className={className} variants={itemVariants}>
-      {children}
-    </motion.div>
-  );
+  return <div className={`dime-stagger-item ${className}`}>{children}</div>;
 }
