@@ -4,13 +4,18 @@
 
 import { SiteHeader } from "@/components/shared/site-header";
 import { SiteFooter } from "@/components/shared/site-footer";
+import { PurchaseToastHost } from "@/components/social-proof/purchase-toast-host";
+import { getSocialProofProducts } from "@/lib/social-proof/products";
 
 export default function StorefrontLayout({ children }: { children: React.ReactNode }) {
+  const socialProofProducts = getSocialProofProducts();
+
   return (
     <>
       <SiteHeader />
       <main id="main-content">{children}</main>
       <SiteFooter />
+      <PurchaseToastHost products={socialProofProducts} />
     </>
   );
 }
