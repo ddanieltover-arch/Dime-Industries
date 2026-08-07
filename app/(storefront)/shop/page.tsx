@@ -2,6 +2,7 @@
 import type { Metadata } from "next";
 import { getAgeGateState } from "@/lib/compliance/age-gate";
 import { listProducts, parseCatalogSearchParams } from "@/lib/catalog";
+import { CATALOG_DEFAULT_PAGE_SIZE } from "@/lib/catalog/types";
 import { withEffectiveCatalog } from "@/lib/catalog/effective";
 import { CatalogPageShell } from "@/components/catalog/catalog-page";
 import { JsonLdScript } from "@/components/seo/json-ld-script";
@@ -37,7 +38,7 @@ export default async function ShopPage({ searchParams }: { searchParams: SearchP
 
   const result = ageGate.ageVerified
     ? await withEffectiveCatalog(() => listProducts(filters))
-    : { items: [], total: 0, page: 1, pageSize: 24, facets: { categories: [], lines: [], strains: [], potencyBands: [], formats: [] } };
+    : { items: [], total: 0, page: 1, pageSize: CATALOG_DEFAULT_PAGE_SIZE, facets: { categories: [], lines: [], strains: [], potencyBands: [], formats: [] } };
 
   const breadcrumbs = buildBreadcrumbJsonLd([
     { name: "Home", path: "/" },

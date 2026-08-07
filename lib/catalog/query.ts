@@ -3,16 +3,17 @@
 // Storefront loads Postgres via loadEffectiveCatalog() → withCatalogSource();
 // unit tests and offline fallback use SEED_CATALOG.
 
-import type {
-  CatalogFacetCounts,
-  CatalogFilters,
-  CatalogListResult,
-  CatalogProduct,
-  CatalogSort,
-  CatalogVariant,
-  PotencyBand,
-  ProductCardModel,
-  StrainType,
+import {
+  CATALOG_DEFAULT_PAGE_SIZE,
+  type CatalogFacetCounts,
+  type CatalogFilters,
+  type CatalogListResult,
+  type CatalogProduct,
+  type CatalogSort,
+  type CatalogVariant,
+  type PotencyBand,
+  type ProductCardModel,
+  type StrainType,
 } from "./types";
 import { SEED_CATALOG } from "./seed-catalog";
 
@@ -181,7 +182,7 @@ export function withCatalogSource<T>(source: CatalogProduct[], fn: () => T): T {
 
 export function listProducts(filters: CatalogFilters = {}): CatalogListResult {
   const page = Math.max(1, filters.page ?? 1);
-  const pageSize = Math.min(48, Math.max(1, filters.pageSize ?? 24));
+  const pageSize = Math.min(48, Math.max(1, filters.pageSize ?? CATALOG_DEFAULT_PAGE_SIZE));
 
   const jurisdictionScoped = getCatalogSource().filter(
     (p) => p.status === "active" && matchesJurisdiction(p, filters.jurisdiction)
@@ -262,6 +263,6 @@ export function parseCatalogSearchParams(
     q: one("q"),
     sort: sort ?? "popularity",
     page: page ? Number(page) : 1,
-    pageSize: pageSize ? Number(pageSize) : 24,
+    pageSize: pageSize ? Number(pageSize) : CATALOG_DEFAULT_PAGE_SIZE,
   };
 }

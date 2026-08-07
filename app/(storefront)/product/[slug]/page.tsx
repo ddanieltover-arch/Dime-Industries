@@ -106,7 +106,7 @@ export default async function ProductDetailPage({ params }: { params: Params }) 
   if (!product) notFound();
 
   const related = withCatalogSource(catalog, () =>
-    getRelatedProducts(product, ageGate.jurisdiction)
+    getRelatedProducts(product, ageGate.jurisdiction, 4)
   );
   const v = primaryVariant(product);
   const { applyLiveCoaToCards, fetchCoaBySku } = await import("@/lib/integrations/coa/client");
@@ -124,8 +124,8 @@ export default async function ProductDetailPage({ params }: { params: Params }) 
   ]);
   const reviewAvg = averageRating(approvedReviews);
   const primarySaved = wishlistIds.includes(v.id);
-  const gallery =
-    product.galleryUrls.length > 0 ? product.galleryUrls : product.imageUrl ? [product.imageUrl] : [];
+  const primaryImage =
+    product.imageUrl || product.galleryUrls[0] || null;
 
   const jsonLd = buildProductJsonLd({
     name: product.name,
@@ -211,7 +211,11 @@ export default async function ProductDetailPage({ params }: { params: Params }) 
         </nav>
 
         <div className="grid gap-8 lg:grid-cols-2 lg:items-start lg:gap-14">
-          <ProductGallery images={gallery} productName={product.name} fallbackLabel={v.sku} />
+          <ProductGallery
+            imageUrl={primaryImage}
+            productName={product.name}
+            fallbackLabel={v.sku}
+          />
 
           <div className="lg:sticky lg:top-[5.5rem] lg:self-start">
             <p className="font-[var(--font-display)] text-[10px] uppercase tracking-[0.16em] text-[var(--color-resin)]">
@@ -406,7 +410,7 @@ export default async function ProductDetailPage({ params }: { params: Params }) 
             <h2 id="related-heading" className="section-title mb-8">
               Related in {product.categoryName}
             </h2>
-            <ProductGrid products={relatedLive} />
+            <ProductGrid products={relatedLive} columns={4} />
           </section>
         ) : null}
 

@@ -8,6 +8,7 @@ import {
   listProducts,
   parseCatalogSearchParams,
 } from "@/lib/catalog";
+import { CATALOG_DEFAULT_PAGE_SIZE } from "@/lib/catalog/types";
 import { withEffectiveCatalog } from "@/lib/catalog/effective";
 import { CatalogPageShell } from "@/components/catalog/catalog-page";
 import { JsonLdScript } from "@/components/seo/json-ld-script";
@@ -176,7 +177,7 @@ export default async function LinePage({
         items: [],
         total: 0,
         page: 1,
-        pageSize: 24,
+        pageSize: CATALOG_DEFAULT_PAGE_SIZE,
         facets: { categories: [], lines: [], strains: [], potencyBands: [], formats: [] },
       };
 

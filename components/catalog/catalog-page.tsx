@@ -9,7 +9,12 @@ import { CatalogToolbar } from "@/components/catalog/catalog-toolbar";
 import { ProductGrid } from "@/components/catalog/product-grid";
 import { CATALOG_CATEGORIES } from "@/lib/catalog";
 import { applyLiveCoaToCards } from "@/lib/integrations/coa/client";
-import type { CatalogFacetCounts, CatalogFilters as Filters, ProductCardModel } from "@/lib/catalog/types";
+import {
+  CATALOG_DEFAULT_PAGE_SIZE,
+  type CatalogFacetCounts,
+  type CatalogFilters as Filters,
+  type ProductCardModel,
+} from "@/lib/catalog/types";
 import type { CatalogSeoLink } from "@/lib/seo/related-posts";
 import { AnswerCapsule } from "@/components/seo/answer-capsule";
 import { OutboundCitations } from "@/components/seo/outbound-citations";
@@ -60,7 +65,7 @@ export async function CatalogPageShell({
   items: rawItems,
   total,
   page = 1,
-  pageSize = 24,
+  pageSize = CATALOG_DEFAULT_PAGE_SIZE,
   facets,
   heroImage,
   seoLinks = [],

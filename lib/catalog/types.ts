@@ -98,6 +98,9 @@ export type CatalogFilters = {
   pageSize?: number;
 };
 
+/** Default products per page on shop + category catalog routes. */
+export const CATALOG_DEFAULT_PAGE_SIZE = 6;
+
 export type CatalogFacetCounts = {
   categories: { slug: string; name: string; count: number }[];
   lines: { slug: string; name: string; count: number }[];

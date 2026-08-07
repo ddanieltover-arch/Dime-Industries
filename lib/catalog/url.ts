@@ -1,5 +1,6 @@
 // lib/catalog/url.ts
 import type { CatalogFilters } from "@/lib/catalog/types";
+import { CATALOG_DEFAULT_PAGE_SIZE } from "@/lib/catalog/types";
 
 /** Build a shareable catalog URL from the current filters + a patch. */
 export function buildCatalogHref(
@@ -19,7 +20,9 @@ export function buildCatalogHref(
   if (next.minPriceCents != null) params.set("minPrice", String(next.minPriceCents));
   if (next.maxPriceCents != null) params.set("maxPrice", String(next.maxPriceCents));
   if (next.page && next.page > 1) params.set("page", String(next.page));
-  if (next.pageSize && next.pageSize !== 24) params.set("pageSize", String(next.pageSize));
+  if (next.pageSize && next.pageSize !== CATALOG_DEFAULT_PAGE_SIZE) {
+    params.set("pageSize", String(next.pageSize));
+  }
 
   const qs = params.toString();
   return qs ? `${basePath}?${qs}` : basePath;

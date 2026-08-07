@@ -4,14 +4,23 @@ import type { ProductCardModel } from "@/lib/catalog/types";
 import { ProductCard } from "@/components/catalog/product-card";
 import { Stagger, StaggerItem } from "@/components/motion";
 
+const GRID_COLS = {
+  2: "grid grid-cols-2 gap-3 sm:gap-4",
+  3: "grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-3",
+  4: "grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-4",
+} as const;
+
 export function ProductGrid({
   products,
   basePath = "/shop",
   hasActiveFilters = false,
+  columns = 3,
 }: {
   products: ProductCardModel[];
   basePath?: string;
   hasActiveFilters?: boolean;
+  /** Desktop column count (mobile stays 2). */
+  columns?: 2 | 3 | 4;
 }) {
   if (products.length === 0) {
     return (
@@ -45,7 +54,7 @@ export function ProductGrid({
   }
 
   return (
-    <Stagger as="ul" className="grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-3" role="list">
+    <Stagger as="ul" className={GRID_COLS[columns]} role="list">
       {products.map((product) => (
         <StaggerItem key={product.slug} as="li">
           <ProductCard product={product} />

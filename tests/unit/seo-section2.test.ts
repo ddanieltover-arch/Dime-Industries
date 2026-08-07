@@ -5,6 +5,7 @@ import {
   catalogRobotsForFilters,
   isCatalogUrlIndexable,
 } from "../../lib/seo/catalog-indexability";
+import { CATALOG_DEFAULT_PAGE_SIZE } from "../../lib/catalog/types";
 import { SECURITY_HEADERS } from "../../lib/security/headers";
 
 describe("CMS meta helpers", () => {
@@ -30,7 +31,7 @@ describe("CMS meta helpers", () => {
 describe("catalog indexability", () => {
   it("indexes clean category paths", () => {
     expect(
-      isCatalogUrlIndexable({ sort: "popularity", page: 1, pageSize: 24 }, "/shop/vapes")
+      isCatalogUrlIndexable({ sort: "popularity", page: 1, pageSize: CATALOG_DEFAULT_PAGE_SIZE }, "/shop/vapes")
     ).toBe(true);
     expect(catalogRobotsForFilters({ sort: "popularity", page: 1 }, "/shop").index).toBe(true);
   });
