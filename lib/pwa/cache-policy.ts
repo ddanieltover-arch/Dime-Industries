@@ -11,11 +11,13 @@ export function isPwaBypassedPath(pathname: string): boolean {
 }
 
 export function isPwaStaticAssetPath(pathname: string): boolean {
-  if (pathname.startsWith("/_next/static/")) return true;
+  // Never cache-first Next hashed bundles — a deploy changes chunk hashes and a
+  // stale SW would pair new HTML with old JS (`reading 'call'` / error.tsx).
+  if (pathname.startsWith("/_next/")) return false;
   if (pathname.startsWith("/fonts/")) return true;
   if (pathname.startsWith("/brand/")) return true;
   if (pathname.startsWith("/catalog/")) return true;
-  return /\.(?:js|css|woff2?|png|jpe?g|webp|avif|svg|ico|mp4)$/i.test(pathname);
+  return /\.(?:woff2?|png|jpe?g|webp|avif|svg|ico|mp4)$/i.test(pathname);
 }
 
 export const PWA_SW_PATH = "/sw.js";

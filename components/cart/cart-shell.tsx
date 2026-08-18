@@ -10,8 +10,12 @@ import { CartCountSetter } from "@/components/cart/cart-count-setter";
  * Count streams in via Suspense; lines hydrate when the drawer opens.
  */
 async function CartCountHydrator() {
-  const itemCount = await getCartItemCount();
-  return <CartCountSetter count={itemCount} />;
+  try {
+    const itemCount = await getCartItemCount();
+    return <CartCountSetter count={itemCount} />;
+  } catch {
+    return null;
+  }
 }
 
 export function CartShell({ children }: { children: React.ReactNode }) {

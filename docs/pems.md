@@ -3,8 +3,8 @@
 *Fill one record per project. Save as `docs/pems.md` in the project repo. Read before starting work; update after major decisions.*
 
 **PEMS Version:** 1.0  
-**Last Updated:** 2026-08-07  
-**Updated By:** Senior Full Stack (Pulse) — analytics consent harden (#10)  
+**Last Updated:** 2026-08-18  
+**Updated By:** Senior Full Stack (Pulse) — production error.tsx hotfix (theme IIFE + PWA)  
 
 **Primary codebase:** `dime-enterprise-commerce/` (git repo). Workspace also holds `claude-devos-enterprise/`, `motion-ux-enhancement-expert/`, and SEO research assets. Mirror: `dime-enterprise-commerce/docs/pems.md`.
 
@@ -17,15 +17,15 @@
 | Field | Value |
 |---|---|
 | Project | DIME Industries — Enterprise Commerce Platform |
-| Current version | `0.1.0` (`package.json`); git `main` @ `a381bda` |
-| Current sprint / phase | **Launch / Maintain** — engineering through Sprint 15 done; SEO program active; **owner DNS cutover** is the remaining production gate |
+| Current version | `0.1.0` (`package.json`); git `main` @ `f11516e` + hotfix (theme boot / PWA v2) |
+| Current sprint / phase | **Launch / Maintain** — production live on `www.dimeindustries.us`; SEO program active |
 | Architecture (one line) | Next.js 15 App Router modular monolith — storefront + account + admin + wholesale; Supabase Auth/Postgres + Drizzle; Vercel |
 | Tech stack (one line) | TypeScript, Next 15, React 19, Tailwind 4, Drizzle, Supabase, Zod, CSS motion/tiny reveal, Vitest, Playwright, Sentry |
 | Design system | DIME brand tokens in `app/globals.css` — dark concrete + resin gold; Gotham / Retro Signature |
-| Primary risks | Custom-domain DNS/TLS cutover; age-gate crawlability vs compliance; LCP/CLS budgets; `.com` SEO cannibalization; cannabis legal/compliance |
-| Open decisions | Confirm live Paybis vs mock for public launch; GSC/GA4 owner setup; www vs apex canonical consolidation; legal review of worldwide ship-to vs cannabis regs |
-| Recent changes | **Analytics consent harden** (#10): event islands gated; GA trackers dynamic; gtag `lazyOnload`; homepage carousels deferred (#9) |
-| Next priorities | CWV re-probe; owner DNS; restore cookie banner if owner wants analytics opt-in UX |
+| Primary risks | Age-gate crawlability vs compliance; LCP/CLS budgets; `.com` SEO cannibalization; cannabis legal/compliance |
+| Open decisions | Confirm live Paybis vs mock for public launch; GSC/GA4 owner setup; legal review of worldwide ship-to vs cannabis regs |
+| Recent changes | **Hotfix:** theme boot IIFE was `(!fn)()` → `false()` (uncaught TypeError on every page); PWA no longer cache-firsts `/_next`; toast isolated behind error boundary |
+| Next priorities | Deploy hotfix; hard-refresh mobile SW; CWV re-probe |
 
 ---
 

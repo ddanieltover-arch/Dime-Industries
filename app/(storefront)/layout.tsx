@@ -4,6 +4,7 @@
 
 import { SiteHeader } from "@/components/shared/site-header";
 import { SiteFooter } from "@/components/shared/site-footer";
+import { PurchaseToastBoundary } from "@/components/social-proof/purchase-toast-boundary";
 import { PurchaseToastHost } from "@/components/social-proof/purchase-toast-host";
 import { getSocialProofProducts } from "@/lib/social-proof/products";
 
@@ -15,7 +16,9 @@ export default function StorefrontLayout({ children }: { children: React.ReactNo
       <SiteHeader />
       <main id="main-content">{children}</main>
       <SiteFooter />
-      <PurchaseToastHost products={socialProofProducts} />
+      <PurchaseToastBoundary>
+        <PurchaseToastHost products={socialProofProducts} />
+      </PurchaseToastBoundary>
     </>
   );
 }

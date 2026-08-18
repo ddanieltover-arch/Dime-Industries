@@ -1,11 +1,11 @@
 /* public/sw.js — DIME storefront service worker
  * Strategy:
  * - Precache shell + offline fallback
- * - Cache-first for static assets (_next/static, fonts, brand images)
+ * - Cache-first for brand/catalog/fonts (not `/_next` — hashed bundles use HTTP cache)
  * - Network-first for HTML navigations (fallback to offline.html)
  * - Bypass API, admin, checkout, account, and other sensitive surfaces
  */
-const VERSION = "dime-pwa-v1";
+const VERSION = "dime-pwa-v2";
 const PRECACHE = `${VERSION}-precache`;
 const RUNTIME = `${VERSION}-runtime`;
 const PRECACHE_URLS = ["/", "/offline.html", "/icon.png", "/apple-icon.png", "/brand/logo.png", "/manifest.webmanifest"];
@@ -24,11 +24,12 @@ function isBypassed(url) {
 
 function isStaticAsset(url) {
   const path = url.pathname;
-  if (path.startsWith("/_next/static/")) return true;
+  // Hashed Next bundles must hit the network (browser HTTP cache is enough).
+  if (path.startsWith("/_next/")) return false;
   if (path.startsWith("/fonts/")) return true;
   if (path.startsWith("/brand/")) return true;
   if (path.startsWith("/catalog/")) return true;
-  return /\.(?:js|css|woff2?|png|jpe?g|webp|avif|svg|ico|mp4)$/i.test(path);
+  return /\.(?:woff2?|png|jpe?g|webp|avif|svg|ico|mp4)$/i.test(path);
 }
 
 self.addEventListener("install", (event) => {

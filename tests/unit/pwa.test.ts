@@ -19,8 +19,9 @@ describe("PWA cache policy", () => {
     expect(isPwaBypassedPath("/shop")).toBe(false);
   });
 
-  it("treats brand and next static assets as cacheable", () => {
-    expect(isPwaStaticAssetPath("/_next/static/chunks/main.js")).toBe(true);
+  it("does not intercept hashed Next.js bundles", () => {
+    expect(isPwaStaticAssetPath("/_next/static/chunks/main.js")).toBe(false);
+    expect(isPwaStaticAssetPath("/_next/static/css/app.css")).toBe(false);
     expect(isPwaStaticAssetPath("/brand/logo.png")).toBe(true);
     expect(isPwaStaticAssetPath("/fonts/display.woff2")).toBe(true);
     expect(isPwaStaticAssetPath("/shop")).toBe(false);

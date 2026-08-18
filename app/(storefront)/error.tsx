@@ -1,9 +1,9 @@
-// app/error.tsx
+// app/(storefront)/error.tsx
 "use client";
 
 import { RouteErrorFallback } from "@/components/shared/route-error-fallback";
 
-export default function RootError({
+export default function StorefrontError({
   error,
   reset,
 }: {
