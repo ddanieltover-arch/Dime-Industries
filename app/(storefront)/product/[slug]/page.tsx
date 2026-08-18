@@ -211,11 +211,14 @@ export default async function ProductDetailPage({ params }: { params: Params }) 
         </nav>
 
         <div className="grid gap-8 lg:grid-cols-2 lg:items-start lg:gap-14">
-          <ProductGallery
-            imageUrl={primaryImage}
-            productName={product.name}
-            fallbackLabel={v.sku}
-          />
+          <div>
+            <ProductGallery
+              imageUrl={primaryImage}
+              productName={product.name}
+              fallbackLabel={v.sku}
+            />
+            <OutboundCitations citations={outbound} className="hidden lg:block lg:mt-8" />
+          </div>
 
           <div className="lg:sticky lg:top-[5.5rem] lg:self-start">
             <p className="font-[var(--font-display)] text-[10px] uppercase tracking-[0.16em] text-[var(--color-resin)]">
@@ -394,7 +397,7 @@ export default async function ProductDetailPage({ params }: { params: Params }) 
               </Link>
             </div>
 
-            <OutboundCitations citations={outbound} />
+            <OutboundCitations citations={outbound} className="lg:hidden" />
           </div>
         </div>
 

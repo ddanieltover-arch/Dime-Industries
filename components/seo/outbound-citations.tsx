@@ -5,14 +5,18 @@ import type { OutboundCitation } from "@/lib/seo/outbound-citations";
 export function OutboundCitations({
   citations,
   heading = "Related references",
+  className,
 }: {
   citations: readonly OutboundCitation[];
   heading?: string;
+  className?: string;
 }) {
   if (!citations.length) return null;
   return (
     <aside
-      className="mt-10 border border-[var(--color-border)] bg-[var(--color-surface)] p-5"
+      className={["mt-10 border border-[var(--color-border)] bg-[var(--color-surface)] p-5", className]
+        .filter(Boolean)
+        .join(" ")}
       aria-label={heading}
     >
       <p className="font-[var(--font-display)] text-[10px] uppercase tracking-[0.18em] text-[var(--color-resin)]">
