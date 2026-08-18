@@ -23,6 +23,11 @@ DIME Industries is a licensed cannabis brand helping adult consumers and retaile
 - /blog/dime-cart-vs-disposable: Cart vs all-in-one disposable
 - /blog/dime-live-reserve-explained: What is DIME Live Reserve?
 - /blog/signature-vs-live-reserve: Signature vs Live Reserve
+- /blog/signature-vs-balanced: Signature vs Balanced
+- /blog/dime-vape-heat-settings: DIME vape heat settings (voltage, presets, USB-C)
+- /blog/dime-disposable-vapes: DIME disposable / all-in-one vapes
+- /blog/dime-gummies: DIME gummies shopping guide
+- /blog/find-dime-new-york: Find DIME in New York
 - /blog/how-to-spot-fake-dime-carts: Authenticity checklist
 - /blog/how-many-dimes-in-a-roll: How many dimes in a U.S. coin roll (50 / $5)
 - /shop/vapes/disposables: DIME disposables / all-in-ones educational landing

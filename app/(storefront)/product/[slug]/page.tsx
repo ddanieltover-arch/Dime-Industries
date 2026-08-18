@@ -35,6 +35,11 @@ import { OutboundCitations } from "@/components/seo/outbound-citations";
 import { buildBreadcrumbJsonLd, buildProductJsonLd } from "@/lib/seo/json-ld";
 import { outboundCitationsFor } from "@/lib/seo/outbound-citations";
 import { productSeoInternalLinks } from "@/lib/seo/product-internal-links";
+import {
+  isStrainSeoProduct,
+  productSeoMetaDescription,
+  productSeoTitle,
+} from "@/lib/catalog/seo-copy";
 
 type Params = Promise<{ slug: string }>;
 
@@ -42,25 +47,19 @@ export async function generateStaticParams() {
   return listAllActiveSlugs().map((slug) => ({ slug }));
 }
 
-const STRAIN_SEO_SLUGS = new Set([
-  "key-lime-pie",
-  "birthday-cake",
-  "king-louis-xiii",
-  "sour-grape",
-  "blackberry-og",
-]);
-
 export async function generateMetadata({ params }: { params: Params }): Promise<Metadata> {
   const { slug } = await params;
   const product = await withCatalogSource(await loadEffectiveCatalog(), () => getProductBySlug(slug));
   if (!product) return { title: "Product" };
   const v = primaryVariant(product);
-  const strainSeo = STRAIN_SEO_SLUGS.has(product.slug) && product.strainType !== "na";
-  const title = strainSeo
-    ? `${product.name} Strain — DIME ${product.lineName ?? "Cart"}`
-    : product.name;
+  const strainSeo = isStrainSeoProduct(product);
+  const title = productSeoTitle(product);
   const description = strainSeo
-    ? `Shop ${product.name} strain ${product.variants[0]?.weightOrFormat ?? "cart"} from DIME ${product.lineName ?? "Industries"}. Lab-tested ${formatPct(v.thcPct)} THC — licensed markets only.`
+    ? productSeoMetaDescription(
+        product,
+        product.variants[0]?.weightOrFormat ?? "cart",
+        formatPct(v.thcPct)
+      )
     : product.description;
   return {
     title,
@@ -228,7 +227,7 @@ export default async function ProductDetailPage({ params }: { params: Params }) 
               {!isBundleProduct(product) && product.lineName ? ` · ${product.lineName}` : ""}
             </p>
             <h1 className="mt-3 font-[var(--font-display)] text-[clamp(1.75rem,4vw,2.75rem)] uppercase leading-[1.05] tracking-[0.04em] text-[var(--color-ink)]">
-              {product.name}
+              {isStrainSeoProduct(product) ? productSeoTitle(product) : product.name}
             </h1>
 
             <p className="mt-4 font-[var(--font-display)] text-[var(--scale-xl)] text-[var(--color-resin-strong)]">

@@ -95,6 +95,11 @@ export const SEO_BLOG_SLUGS = [
   "find-dime-los-angeles-orange-county",
   "find-dime-phoenix-arizona",
   "dime-promotions-safe-shopping",
+  "signature-vs-balanced",
+  "dime-vape-heat-settings",
+  "dime-disposable-vapes",
+  "dime-gummies",
+  "find-dime-new-york",
 ] as const;
 
 export const SEO_DISALLOW_PATHS = [

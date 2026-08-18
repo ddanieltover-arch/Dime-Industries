@@ -6,6 +6,7 @@ import { z } from "zod";
 import { DEFAULT_HOMEPAGE_LAYOUT, normalizeHomepageLayout } from "./homepage-layout";
 import { CALENDAR_POSTS_2026 } from "./calendar-posts-2026";
 import { BEGINNERS_GUIDE_PILLAR } from "./posts/beginners-guide-to-dime-carts";
+import { KEYWORD_GAP_POSTS_2026 } from "./posts/keyword-gap-posts-2026";
 import type { BlogPost, CmsPage, HomepageBanner, HomepageLayout } from "./types";
 
 /** Fail soft instead of hanging the storefront when Postgres stalls. */
@@ -680,7 +681,7 @@ A Dime cart is a filled DIME Industries cartridge or tank. Most shoppers mean a 
 
 ### What is a Dime disposable / all-in-one?
 
-A DIME all-in-one (often searched as “dime disposable”) ships ready to use: extract plus rechargeable battery in one body, typically with heat presets designed for that fill. No separate battery purchase required. When the oil is done, the device is finished as a unit — convenience first.
+A DIME all-in-one (often searched as “dime disposable”) ships ready to use: extract plus rechargeable battery in one body, typically with heat presets designed for that fill. No separate battery purchase required. When the oil is done, the device is finished as a unit — convenience first. Dedicated commercial explainer: [DIME disposable vapes](/blog/dime-disposable-vapes). Educational landing: [Disposables](/shop/vapes/disposables).
 
 ### Side-by-side comparison
 
@@ -914,13 +915,13 @@ You need an authentic DIME cart or tank from a licensed seller, a charged compat
 | 1 | Confirm the pack is from a licensed retailer and scratch/validate the code on [Validate](/validate). |
 | 2 | Charge your DIME or compatible 510 battery fully before the first session. |
 | 3 | Thread the cart on straight — snug, not overtightened — so the contacts seat cleanly. |
-| 4 | Start on a mid heat preset; raise only if vapor is thin, lower if flavor tastes harsh. |
+| 4 | Start on a mid heat preset; raise only if vapor is thin, lower if flavor tastes harsh. See [heat settings](/blog/dime-vape-heat-settings). |
 | 5 | Take slow draws. Avoid chain-hitting that overheats thick oil. |
 | 6 | Store upright with the battery off between sessions. |
 
 ### How do I charge a DIME battery?
 
-Use the USB-C path your DIME battery supports and the cable that ships with it when available. Do not leave batteries on unsafe chargers overnight. If the device will not power on, confirm charge, connection, and that the cart is seated — then contact support through licensed purchase channels if hardware fails after validation.
+Use the USB-C path your DIME battery supports and the cable that ships with it when available. Full USB-C walkthrough: [How to charge a DIME battery](/blog/how-to-charge-a-dime-battery). Heat presets and battery modes: [DIME vape heat settings](/blog/dime-vape-heat-settings). Do not leave batteries on unsafe chargers overnight. If the device will not power on, confirm charge, connection, and that the cart is seated — then contact support through licensed purchase channels if hardware fails after validation.
 
 ### Why does my cart taste burnt or weak?
 
@@ -950,6 +951,7 @@ This article is for educational purposes only. It is not medical advice. DIME pr
     updatedAt: "2026-08-03T12:00:00.000Z",
   },
   ...CALENDAR_POSTS_2026.filter((p) => p.slug !== BEGINNERS_GUIDE_PILLAR.slug),
+  ...KEYWORD_GAP_POSTS_2026,
   BEGINNERS_GUIDE_PILLAR,
 ];
 

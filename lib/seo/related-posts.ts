@@ -17,6 +17,7 @@ export const BLOG_CLUSTER_MAP: Record<string, readonly string[]> = {
     "built-to-beat-leaks-the-dime-hardware-story",
   ],
   "dime-cart-vs-disposable": [
+    "dime-disposable-vapes",
     "what-is-a-dime-cart",
     "how-to-use-a-dime-cart",
     "built-to-beat-leaks-the-dime-hardware-story",
@@ -38,6 +39,7 @@ export const BLOG_CLUSTER_MAP: Record<string, readonly string[]> = {
     "built-to-beat-leaks-the-dime-hardware-story",
   ],
   "how-to-use-a-dime-cart": [
+    "dime-vape-heat-settings",
     "what-is-a-dime-cart",
     "dime-cart-vs-disposable",
     "built-to-beat-leaks-the-dime-hardware-story",
@@ -73,6 +75,7 @@ export const BLOG_CLUSTER_MAP: Record<string, readonly string[]> = {
     "dime-live-reserve-explained",
   ],
   "best-dime-industries-flavors": [
+    "signature-vs-balanced",
     "signature-vs-live-reserve",
     "dime-signature-explained",
     "dime-live-reserve-explained",
@@ -85,6 +88,7 @@ export const BLOG_CLUSTER_MAP: Record<string, readonly string[]> = {
     "solventless-cart-guide",
   ],
   "how-to-charge-a-dime-battery": [
+    "dime-vape-heat-settings",
     "how-to-use-a-dime-cart",
     "what-battery-for-dime-cart",
     "dime-hardware-accessories-guide",
@@ -124,6 +128,7 @@ export const BLOG_CLUSTER_MAP: Record<string, readonly string[]> = {
     "beginners-guide-to-dime-carts",
   ],
   "dime-signature-explained": [
+    "signature-vs-balanced",
     "signature-vs-live-reserve",
     "best-dime-industries-flavors",
     "what-is-a-dime-cart",
@@ -134,6 +139,7 @@ export const BLOG_CLUSTER_MAP: Record<string, readonly string[]> = {
     "what-is-in-a-dime-cartridge",
   ],
   "dime-edibles-buying-guide": [
+    "dime-gummies",
     "shopping-by-potency",
     "how-we-publish-coas",
     "best-dime-industries-flavors",
@@ -162,13 +168,15 @@ export const BLOG_CLUSTER_MAP: Record<string, readonly string[]> = {
     "are-dime-carts-worth-it",
   ],
   "what-battery-for-dime-cart": [
+    "dime-vape-heat-settings",
     "how-to-charge-a-dime-battery",
     "dime-hardware-accessories-guide",
     "how-to-use-a-dime-cart",
   ],
   "dime-balanced-explained": [
+    "signature-vs-balanced",
     "dime-signature-explained",
-    "shopping-by-potency",
+    "dime-gummies",
     "beginners-guide-to-dime-carts",
   ],
   "dime-state-exclusive-guide": [
@@ -199,10 +207,12 @@ export const BLOG_CLUSTER_MAP: Record<string, readonly string[]> = {
   "where-to-buy-dime-carts": [
     "buy-dime-carts-online",
     "how-to-spot-fake-dime-carts",
+    "find-dime-new-york",
     "find-dime-los-angeles-orange-county",
   ],
   "find-dime-los-angeles-orange-county": [
     "where-to-buy-dime-carts",
+    "find-dime-new-york",
     "buy-dime-carts-online",
     "dime-state-exclusive-guide",
   ],
@@ -215,6 +225,36 @@ export const BLOG_CLUSTER_MAP: Record<string, readonly string[]> = {
     "how-to-spot-fake-dime-carts",
     "dime-rewards-explained",
     "where-to-buy-dime-carts",
+  ],
+  "signature-vs-balanced": [
+    "dime-signature-explained",
+    "dime-balanced-explained",
+    "signature-vs-live-reserve",
+    "dime-gummies",
+  ],
+  "dime-vape-heat-settings": [
+    "how-to-use-a-dime-cart",
+    "how-to-charge-a-dime-battery",
+    "what-battery-for-dime-cart",
+    "dime-disposable-vapes",
+  ],
+  "dime-disposable-vapes": [
+    "dime-cart-vs-disposable",
+    "dime-vape-heat-settings",
+    "what-is-a-dime-cart",
+    "how-to-spot-fake-dime-carts",
+  ],
+  "dime-gummies": [
+    "dime-edibles-buying-guide",
+    "signature-vs-balanced",
+    "shopping-by-potency",
+    "how-we-publish-coas",
+  ],
+  "find-dime-new-york": [
+    "where-to-buy-dime-carts",
+    "buy-dime-carts-online",
+    "find-dime-los-angeles-orange-county",
+    "how-to-spot-fake-dime-carts",
   ],
 };
 
@@ -357,6 +397,71 @@ const SIDEBAR_BY_SLUG: Record<string, readonly BlogSidebarLink[]> = {
       body: "Learn the brand story behind the name.",
     },
   ],
+  "signature-vs-balanced": [
+    {
+      href: "/shop/vapes/signature",
+      label: "Shop Signature",
+      body: "Everyday distillate-forward DIME carts and all-in-ones.",
+    },
+    {
+      href: "/shop/vapes/balanced",
+      label: "Shop Balanced",
+      body: "Ratio-minded DIME formats where your market lists them.",
+    },
+    DEFAULT_SIDEBAR[2]!,
+  ],
+  "dime-vape-heat-settings": [
+    {
+      href: "/shop/accessories",
+      label: "Shop DIME batteries",
+      body: "USB-C batteries with heat presets designed for DIME carts.",
+    },
+    {
+      href: "/blog/how-to-use-a-dime-cart",
+      label: "How to use a Dime cart",
+      body: "Session steps, mid heat, and storage habits.",
+    },
+    DEFAULT_SIDEBAR[2]!,
+  ],
+  "dime-disposable-vapes": [
+    {
+      href: "/shop/vapes/disposables",
+      label: "DIME disposables guide",
+      body: "Educational landing for dime disposable searches — plus shoppable DIME carts.",
+    },
+    {
+      href: "/shop/vapes",
+      label: "Shop DIME carts",
+      body: "Browse Signature, Live Reserve, Rosin, and more lab-tested vapes.",
+    },
+    DEFAULT_SIDEBAR[2]!,
+  ],
+  "dime-gummies": [
+    {
+      href: "/shop/edibles",
+      label: "Shop DIME edibles",
+      body: "Gummies and softgels — check potency labels and COAs.",
+    },
+    {
+      href: "/shop/edibles/rosin",
+      label: "Rosin gummies",
+      body: "Solventless-style edible lane where listed.",
+    },
+    DEFAULT_SIDEBAR[2]!,
+  ],
+  "find-dime-new-york": [
+    {
+      href: "/locations/new-york",
+      label: "New York locations",
+      body: "Licensed DIME retailers in New York.",
+    },
+    {
+      href: "/locations",
+      label: "Find DIME near me",
+      body: "Nationwide licensed retailer map.",
+    },
+    DEFAULT_SIDEBAR[2]!,
+  ],
 };
 
 export function pickRelatedPosts<T extends { slug: string }>(
@@ -400,6 +505,7 @@ export function catalogSeoLinks(basePath: string): CatalogSeoLink[] {
       { href: "/blog/what-is-a-dime-cart", label: "What is a Dime cart?" },
       { href: "/blog/best-dime-industries-flavors", label: "Best DIME flavors" },
       { href: "/blog/dime-cart-vs-disposable", label: "Dime cart vs disposable" },
+      { href: "/blog/dime-disposable-vapes", label: "DIME disposable vapes" },
       { href: "/shop/vapes/disposables", label: "DIME disposables / pens guide" },
       { href: "/shop/vapes/signature", label: "Signature carts" },
       { href: "/shop/vapes/live-reserve", label: "Live Reserve" },
@@ -408,8 +514,10 @@ export function catalogSeoLinks(basePath: string): CatalogSeoLink[] {
   }
   if (basePath === "/shop/vapes/disposables") {
     return [
+      { href: "/blog/dime-disposable-vapes", label: "DIME disposable vapes" },
       { href: "/blog/dime-cart-vs-disposable", label: "Cart vs disposable" },
       { href: "/shop/vapes", label: "Shop all DIME carts & pens" },
+      { href: "/blog/dime-vape-heat-settings", label: "Heat settings & battery modes" },
       { href: "/blog/what-is-a-dime-cart", label: "What is a Dime cart?" },
       { href: "/shop/vapes/signature", label: "Signature line" },
     ];
@@ -436,17 +544,39 @@ export function catalogSeoLinks(basePath: string): CatalogSeoLink[] {
       { href: "/blog/dime-live-reserve-explained", label: "What is Live Reserve?" },
       { href: "/blog/signature-vs-live-reserve", label: "Signature vs Live Reserve" },
       { href: "/shop/vapes", label: "All DIME carts" },
+      { href: "/product/banana-mac", label: "Banana Mac DIME" },
+      { href: "/product/papaya", label: "Papaya DIME" },
+      { href: "/product/miami-ice", label: "Miami Ice DIME" },
       { href: "/product/king-louis-xiii", label: "King Louis XIII" },
     ];
   }
   if (basePath === "/shop/vapes/signature") {
     return [
+      { href: "/blog/signature-vs-balanced", label: "Signature vs Balanced" },
       { href: "/blog/signature-vs-live-reserve", label: "Signature vs Live Reserve" },
       { href: "/blog/best-dime-industries-flavors", label: "Best DIME flavors" },
-      { href: "/blog/what-is-a-dime-cart", label: "What is a Dime cart?" },
       { href: "/shop/vapes", label: "All DIME carts" },
-      { href: "/product/key-lime-pie", label: "Key Lime Pie" },
-      { href: "/product/blackberry-og", label: "Blackberry OG" },
+      { href: "/product/lime-sherbanger", label: "Lime Sherbanger DIME" },
+      { href: "/product/guavalicious", label: "Guavalicious DIME" },
+      { href: "/product/blueberry-lemon-haze", label: "Blueberry Lemon Haze DIME" },
+      { href: "/product/paradise-passion", label: "Paradise Passion DIME" },
+    ];
+  }
+  if (basePath === "/shop/edibles") {
+    return [
+      { href: "/blog/dime-gummies", label: "DIME gummies" },
+      { href: "/blog/dime-edibles-buying-guide", label: "Edibles buying guide" },
+      { href: "/blog/signature-vs-balanced", label: "Signature vs Balanced" },
+      { href: "/shop/edibles/rosin", label: "Rosin edibles" },
+      { href: "/product/peach", label: "Peach Balanced Gummies" },
+    ];
+  }
+  if (basePath === "/shop/vapes/balanced") {
+    return [
+      { href: "/blog/signature-vs-balanced", label: "Signature vs Balanced" },
+      { href: "/blog/dime-balanced-explained", label: "Balanced explained" },
+      { href: "/blog/dime-gummies", label: "DIME gummies" },
+      { href: "/shop/vapes/signature", label: "Signature carts" },
     ];
   }
   if (basePath === "/shop/prerolls") {

@@ -42,7 +42,7 @@ Compare Signature and Live Reserve side by side: [Signature vs Live Reserve](/bl
 
 Other lines you may see:
 
-- **Balanced** — ratio-minded formats where listed: [Balanced explained](/blog/dime-balanced-explained)
+- **Balanced** — ratio-minded formats where listed: [Balanced explained](/blog/dime-balanced-explained) · [Signature vs Balanced](/blog/signature-vs-balanced)
 - **State Exclusive** — region-inspired flavors: [State Exclusive guide](/blog/dime-state-exclusive-guide) · [How State Exclusives capture a place](/blog/how-dime-state-exclusives-capture-a-place)
 - **Collabs** — collaborative drops when stocked (filter [Shop vapes](/shop/vapes))
 
@@ -62,6 +62,7 @@ Flavor shopping without hype lists: [Best DIME Industries flavors (2026)](/blog/
 | Las Vegas / Nevada retail | [Find DIME in Las Vegas & Nevada](/locations/nevada) |
 | LA / Orange County | [Find DIME in LA & OC](/blog/find-dime-los-angeles-orange-county) |
 | Phoenix / Arizona | [Find DIME in Phoenix](/blog/find-dime-phoenix-arizona) |
+| New York | [Find DIME in New York](/blog/find-dime-new-york) |
 
 Transactional overview: [Where to buy Dime carts](/blog/where-to-buy-dime-carts). Value mindset (licensed price vs fake “deals”): [Are Dime carts worth it?](/blog/are-dime-carts-worth-it). Safe promos: [Promotions & safe shopping](/blog/dime-promotions-safe-shopping) · [Promotions](/promotions).
 
@@ -193,7 +194,7 @@ Many tanks use a universal 510 thread; DIME recommends its own batteries for ful
 
 ### What heat / voltage should I use?
 
-Start mid. Raise only if vapor is thin; lower if harsh. Avoid chain-hitting on max heat. [How to use](/blog/how-to-use-a-dime-cart) · [FAQ](/faq).
+Start mid. Raise only if vapor is thin; lower if harsh. Avoid chain-hitting on max heat. Dedicated guide: [DIME vape heat settings](/blog/dime-vape-heat-settings). [How to use](/blog/how-to-use-a-dime-cart) · [FAQ](/faq).
 
 ### Why is my cart clogged?
 

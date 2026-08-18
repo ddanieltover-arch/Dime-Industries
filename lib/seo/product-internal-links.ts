@@ -20,7 +20,12 @@ export function productSeoInternalLinks(input: {
   } else if (input.lineSlug === "signature") {
     links.push(
       { href: "/shop/vapes/signature", label: "Shop Signature" },
-      { href: "/blog/signature-vs-live-reserve", label: "Signature vs Live Reserve" }
+      { href: "/blog/signature-vs-balanced", label: "Signature vs Balanced" }
+    );
+  } else if (input.lineSlug === "balanced") {
+    links.push(
+      { href: "/shop/vapes/balanced", label: "Shop Balanced" },
+      { href: "/blog/signature-vs-balanced", label: "Signature vs Balanced" }
     );
   } else if (input.lineSlug === "rosin") {
     links.push(
@@ -30,12 +35,12 @@ export function productSeoInternalLinks(input: {
   } else if (input.categorySlug === "edibles") {
     links.push(
       { href: "/shop/edibles", label: "Shop DIME edibles" },
-      { href: "/blog/shopping-by-potency", label: "Shopping by potency" }
+      { href: "/blog/dime-gummies", label: "DIME gummies guide" }
     );
   } else {
     links.push({
-      href: "/blog/dime-cart-vs-disposable",
-      label: "Dime cart vs disposable",
+      href: "/blog/dime-disposable-vapes",
+      label: "DIME disposable vapes",
     });
   }
 
