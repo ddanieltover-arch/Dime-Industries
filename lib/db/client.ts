@@ -45,7 +45,7 @@ export function getDb() {
       idle_timeout: 20,
       max_lifetime: 60 * 5,
       connection: {
-        statement_timeout: "4s",
+        statement_timeout: 4_000,
       },
       ...(local ? {} : { ssl: "require" as const }),
     });
