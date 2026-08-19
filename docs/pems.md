@@ -4,7 +4,7 @@
 
 **PEMS Version:** 1.0  
 **Last Updated:** 2026-08-18  
-**Updated By:** Senior Full Stack (Pulse) — keyword-gap posts + ranking SKU metadata  
+**Updated By:** Senior Full Stack (Pulse) — shop/home fail-fast catalog + CMS timeouts  
 
 **Primary codebase:** `dime-enterprise-commerce/` (git repo). Workspace also holds `claude-devos-enterprise/`, `motion-ux-enhancement-expert/`, and SEO research assets. Mirror: `dime-enterprise-commerce/docs/pems.md`.
 
@@ -24,8 +24,8 @@
 | Design system | DIME brand tokens in `app/globals.css` — dark concrete + resin gold; Gotham / Retro Signature |
 | Primary risks | Age-gate crawlability vs compliance; LCP/CLS budgets; `.com` SEO cannibalization; cannabis legal/compliance |
 | Open decisions | Confirm live Paybis vs mock for public launch; GSC/GA4 owner setup; legal review of worldwide ship-to vs cannabis regs |
-| Recent changes | **SEO:** ranking SKU titles (`{flavor} DIME`); five keyword-gap posts (`signature-vs-balanced`, heat settings, disposables, gummies, NY locator). Prior hotfix: theme boot IIFE + PWA v2 |
-| Next priorities | Deploy content; GSC URL inspection on new posts/PDPs; keep brand-head rank work (homepage) separate |
+| Recent changes | **Perf:** catalog/CMS DB budgets so /shop does not stick on loading skeletons; PWA `dime-pwa-v3` aborts hung navigations at 8s. Prior: keyword-gap posts + ranking SKU titles |
+| Next priorities | Deploy fail-fast catalog; hard-refresh SW to v3; re-time live TTFB |
 
 ---
 
@@ -163,6 +163,7 @@ Source: `dime-enterprise-commerce/docs/10-decisions-d1-d7-locked.md`. Soft-launc
 | 2026-08-07 | Keep GA behind consent; no eager trackers | Audit #10 — consent already gated host; avoid expanding hop-level trackers | Always-on gtag / event islands | `AnalyticsWhenConsented`; checkout `analyticsEnabled`; dynamic route/outbound trackers; gtag `lazyOnload` |
 | 2026-08-18 | Theme boot IIFE + PWA static cache | Live `error.tsx` on mobile; every page threw `(!fn)()` as `false()` | Keep bang-IIFE; cache-first `/_next` | Valid `(function(){})()` boot; SW `dime-pwa-v2` skips `/_next`; toast error boundary |
 | 2026-08-18 | Keyword-gap URLs + ranking SKU metadata | GSC/Ahrefs queries ranked with no dedicated URL (signature vs balanced, heat settings, dime disposable, gummies, NY) and SKU names ranked 1–3 with thin titles | New flower SKUs / duplicate flavor posts | `KEYWORD_GAP_POSTS_2026` + `STRAIN_SEO_SLUGS` titles `{flavor} DIME`; no invented catalog |
+| 2026-08-18 | Fail-fast catalog/CMS for shop HTML | Live /shop stuck on loading.tsx; home ~5s cold; Postgres could hang past connect_timeout | Wait on full DB or keep 8s CMS seed on HTML | `withTimeout` 2.5–3s → seed; parallel catalog SQL; `statement_timeout 4s`; SW v3 8s navigate abort |
 
 ---
 

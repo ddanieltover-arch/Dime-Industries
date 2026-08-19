@@ -41,9 +41,12 @@ export function getDb() {
       prepare: false,
       max: 5,
       // Fail fast during builds / cold starts instead of hanging until Next's 60s page timeout.
-      connect_timeout: 10,
+      connect_timeout: 5,
       idle_timeout: 20,
       max_lifetime: 60 * 5,
+      connection: {
+        statement_timeout: "4s",
+      },
       ...(local ? {} : { ssl: "require" as const }),
     });
     cached = drizzle(cachedSql, { schema });

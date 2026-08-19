@@ -9,6 +9,7 @@ import { loadCatalogFromDatabase } from "@/lib/catalog/catalog-db";
 import { SEED_CATALOG } from "@/lib/catalog/seed-catalog";
 import type { CatalogProduct, CatalogVariant } from "@/lib/catalog/types";
 import { isGrowthDatabaseMode } from "@/lib/db/growth-mode";
+import { withTimeout } from "@/lib/async/with-timeout";
 import * as overridesDb from "./catalog-overrides-db";
 import { hasProductOverride, type CatalogOverrides, type ProductOverride } from "./catalog-override-logic";
 
@@ -61,7 +62,7 @@ async function readOverrides(): Promise<CatalogOverrides> {
   }
   if (isGrowthDatabaseMode()) {
     try {
-      return await overridesDb.dbReadCatalogOverrides();
+      return await withTimeout(overridesDb.dbReadCatalogOverrides(), 2_000, "catalog-overrides");
     } catch (err) {
       console.error("[catalog-overrides] db read failed, using empty overrides", err);
       return {};

@@ -5,7 +5,7 @@
  * - Network-first for HTML navigations (fallback to offline.html)
  * - Bypass API, admin, checkout, account, and other sensitive surfaces
  */
-const VERSION = "dime-pwa-v2";
+const VERSION = "dime-pwa-v3";
 const PRECACHE = `${VERSION}-precache`;
 const RUNTIME = `${VERSION}-runtime`;
 const PRECACHE_URLS = ["/", "/offline.html", "/icon.png", "/apple-icon.png", "/brand/logo.png", "/manifest.webmanifest"];
@@ -83,7 +83,7 @@ self.addEventListener("fetch", (event) => {
   // Navigations: network first, offline HTML fallback
   if (request.mode === "navigate") {
     event.respondWith(
-      fetch(request)
+      fetch(request, { signal: AbortSignal.timeout(8000) })
         .then((response) => {
           const copy = response.clone();
           caches.open(RUNTIME).then((cache) => cache.put(request, copy));

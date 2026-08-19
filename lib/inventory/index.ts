@@ -3,6 +3,7 @@ import "server-only";
 import { cache } from "react";
 import { unstable_cache } from "next/cache";
 import { isGrowthDatabaseMode } from "@/lib/db/growth-mode";
+import { withTimeout } from "@/lib/async/with-timeout";
 import type { ReserveLine } from "./logic";
 import * as inventoryDb from "./inventory-db";
 
@@ -38,7 +39,7 @@ export const loadInventoryOverlay = cache(async (): Promise<Record<string, numbe
   if (!isGrowthDatabaseMode()) return {};
   if (process.env.NEXT_PHASE === "phase-production-build") return {};
   try {
-    return await getCachedInventoryOverlay();
+    return await withTimeout(getCachedInventoryOverlay(), 2_000, "inventory-overlay");
   } catch (err) {
     console.error("[inventory] overlay read failed", err);
     return {};

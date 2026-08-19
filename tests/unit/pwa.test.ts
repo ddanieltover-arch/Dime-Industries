@@ -1,4 +1,6 @@
 import { describe, expect, it } from "vitest";
+import { readFileSync } from "node:fs";
+import { join } from "node:path";
 import manifest from "@/app/manifest";
 import {
   isPwaBypassedPath,
@@ -30,6 +32,13 @@ describe("PWA cache policy", () => {
   it("exposes SW and offline paths", () => {
     expect(PWA_SW_PATH).toBe("/sw.js");
     expect(PWA_OFFLINE_PATH).toBe("/offline.html");
+  });
+
+  it("times out hung HTML navigations and bumps cache version", () => {
+    const sw = readFileSync(join(process.cwd(), "public/sw.js"), "utf8");
+    expect(sw).toContain('const VERSION = "dime-pwa-v3"');
+    expect(sw).toContain("AbortSignal.timeout(8000)");
+    expect(sw).not.toContain('const VERSION = "dime-pwa-v2"');
   });
 });
 

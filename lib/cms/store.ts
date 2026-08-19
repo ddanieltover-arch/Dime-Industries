@@ -7,28 +7,13 @@ import { DEFAULT_HOMEPAGE_LAYOUT, normalizeHomepageLayout } from "./homepage-lay
 import { CALENDAR_POSTS_2026 } from "./calendar-posts-2026";
 import { BEGINNERS_GUIDE_PILLAR } from "./posts/beginners-guide-to-dime-carts";
 import { KEYWORD_GAP_POSTS_2026 } from "./posts/keyword-gap-posts-2026";
+import { withTimeout, withTimeoutFallback } from "@/lib/async/with-timeout";
 import type { BlogPost, CmsPage, HomepageBanner, HomepageLayout } from "./types";
 
 /** Fail soft instead of hanging the storefront when Postgres stalls. */
-const CMS_DB_TIMEOUT_MS = 8_000;
-
-function withTimeout<T>(promise: Promise<T>, ms: number, label: string): Promise<T> {
-  return new Promise<T>((resolve, reject) => {
-    const timer = setTimeout(() => {
-      reject(new Error(`[cms] ${label} timed out after ${ms}ms`));
-    }, ms);
-    promise.then(
-      (value) => {
-        clearTimeout(timer);
-        resolve(value);
-      },
-      (err) => {
-        clearTimeout(timer);
-        reject(err);
-      }
-    );
-  });
-}
+const CMS_DB_TIMEOUT_MS = 2_500;
+/** Don't block HTML on first-request CMS seed; seed can finish in the background. */
+const CMS_SEED_WAIT_MS = 300;
 
 export const CMS_COOKIE = "dime_cms";
 
@@ -1044,7 +1029,7 @@ async function useDbCms(): Promise<boolean> {
       await withTimeout(
         dbSeedCmsIfEmpty(DEFAULT_PAGES, DEFAULT_POSTS, DEFAULT_BANNER, DEFAULT_HOMEPAGE_LAYOUT),
         CMS_DB_TIMEOUT_MS,
-        "seed"
+        "cms seed"
       );
       return true;
     })().catch((err) => {
@@ -1053,7 +1038,7 @@ async function useDbCms(): Promise<boolean> {
       return false;
     });
   }
-  return dbCmsReady;
+  return withTimeoutFallback(dbCmsReady, CMS_SEED_WAIT_MS, false);
 }
 
 function publishedOnly<T extends { status: string }>(items: T[], includeDrafts: boolean): T[] {
@@ -1072,7 +1057,7 @@ const cachedListCmsPages = cache(async (includeDrafts: boolean): Promise<CmsPage
     try {
       const { dbListCmsPages } = await import("./cms-db");
       return publishedOnly(
-        await withTimeout(dbListCmsPages(), CMS_DB_TIMEOUT_MS, "list pages"),
+        await withTimeout(dbListCmsPages(), CMS_DB_TIMEOUT_MS, "cms list pages"),
         includeDrafts
       );
     } catch (err) {
@@ -1116,7 +1101,7 @@ const cachedListBlogPosts = cache(async (includeDrafts: boolean): Promise<BlogPo
   if (await useDbCms()) {
     try {
       const { dbListBlogPosts } = await import("./cms-db");
-      const rows = await withTimeout(dbListBlogPosts(), CMS_DB_TIMEOUT_MS, "list posts");
+      const rows = await withTimeout(dbListBlogPosts(), CMS_DB_TIMEOUT_MS, "cms list posts");
       return sortPosts(mergeSeedPosts(rows));
     } catch (err) {
       console.error("[cms] list posts failed, using defaults", err);
@@ -1152,7 +1137,7 @@ export async function getHomepageBanner(): Promise<HomepageBanner> {
   if (await useDbCms()) {
     try {
       const { dbGetBanner } = await import("./cms-db");
-      return (await dbGetBanner()) ?? DEFAULT_BANNER;
+      return (await withTimeout(dbGetBanner(), CMS_DB_TIMEOUT_MS, "cms banner")) ?? DEFAULT_BANNER;
     } catch (err) {
       console.error("[cms] banner failed, using defaults", err);
       return DEFAULT_BANNER;
@@ -1179,7 +1164,7 @@ export async function getHomepageLayout(): Promise<HomepageLayout> {
   if (await useDbCms()) {
     try {
       const { dbGetHomepageLayout } = await import("./cms-db");
-      const fromDb = await dbGetHomepageLayout();
+      const fromDb = await withTimeout(dbGetHomepageLayout(), CMS_DB_TIMEOUT_MS, "cms homepage layout");
       return fromDb ? normalizeHomepageLayout(fromDb) : DEFAULT_HOMEPAGE_LAYOUT;
     } catch (err) {
       console.error("[cms] homepage layout failed, using defaults", err);

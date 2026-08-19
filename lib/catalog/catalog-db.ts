@@ -18,6 +18,7 @@ import {
 } from "@/db/schema";
 import { getDb, isDatabaseUrlConfigured } from "@/lib/db/client";
 import { isGrowthDatabaseMode } from "@/lib/db/growth-mode";
+import { withTimeout } from "@/lib/async/with-timeout";
 import { SEED_CATALOG } from "./seed-catalog";
 import type { CatalogProduct, CatalogVariant, StrainType } from "./types";
 
@@ -52,45 +53,45 @@ async function queryCatalogFromDatabase(): Promise<CatalogProduct[] | null> {
   try {
     const db = getDb();
 
-    const productRows = await db
-      .select({
-        id: products.id,
-        slug: products.slug,
-        name: products.name,
-        description: products.description,
-        strainType: products.strainType,
-        status: products.status,
-        allowedJurisdictions: products.allowedJurisdictions,
-        createdAt: products.createdAt,
-        imageUrl: products.imageUrl,
-        galleryUrls: products.galleryUrls,
-        categorySlug: categories.slug,
-        categoryName: categories.name,
-        lineSlug: productLines.slug,
-        lineName: productLines.name,
-      })
-      .from(products)
-      .innerJoin(categories, eq(products.categoryId, categories.id))
-      .leftJoin(productLines, eq(products.lineId, productLines.id));
+    const [productRows, variantRows, inventoryRows, coaRows] = await Promise.all([
+      db
+        .select({
+          id: products.id,
+          slug: products.slug,
+          name: products.name,
+          description: products.description,
+          strainType: products.strainType,
+          status: products.status,
+          allowedJurisdictions: products.allowedJurisdictions,
+          createdAt: products.createdAt,
+          imageUrl: products.imageUrl,
+          galleryUrls: products.galleryUrls,
+          categorySlug: categories.slug,
+          categoryName: categories.name,
+          lineSlug: productLines.slug,
+          lineName: productLines.name,
+        })
+        .from(products)
+        .innerJoin(categories, eq(products.categoryId, categories.id))
+        .leftJoin(productLines, eq(products.lineId, productLines.id)),
+      db
+        .select({
+          id: productVariants.id,
+          productId: productVariants.productId,
+          sku: productVariants.sku,
+          weightOrFormat: productVariants.weightOrFormat,
+          retailPriceCents: productVariants.retailPriceCents,
+          thcPct: productPotency.thcPct,
+          cbdPct: productPotency.cbdPct,
+          cbnPct: productPotency.cbnPct,
+        })
+        .from(productVariants)
+        .leftJoin(productPotency, eq(productPotency.variantId, productVariants.id)),
+      db.select().from(inventory),
+      db.select().from(coaRecords),
+    ]);
 
     if (productRows.length === 0) return null;
-
-    const variantRows = await db
-      .select({
-        id: productVariants.id,
-        productId: productVariants.productId,
-        sku: productVariants.sku,
-        weightOrFormat: productVariants.weightOrFormat,
-        retailPriceCents: productVariants.retailPriceCents,
-        thcPct: productPotency.thcPct,
-        cbdPct: productPotency.cbdPct,
-        cbnPct: productPotency.cbnPct,
-      })
-      .from(productVariants)
-      .leftJoin(productPotency, eq(productPotency.variantId, productVariants.id));
-
-    const inventoryRows = await db.select().from(inventory);
-    const coaRows = await db.select().from(coaRecords);
 
     const seedBySlug = new Map(SEED_CATALOG.map((p) => [p.slug, p]));
     const seedVariantBySku = new Map<string, { product: CatalogProduct; variant: CatalogVariant }>();
@@ -179,9 +180,11 @@ async function queryCatalogFromDatabase(): Promise<CatalogProduct[] | null> {
   }
 }
 
+const CATALOG_DB_TIMEOUT_MS = 2_500;
+
 const getCachedCatalogFromDatabase = unstable_cache(
   queryCatalogFromDatabase,
-  ["dime-catalog-from-db-v1"],
+  ["dime-catalog-from-db-v2"],
   { revalidate: 60 }
 );
 
@@ -195,5 +198,14 @@ export const loadCatalogFromDatabase = cache(async (): Promise<CatalogProduct[] 
   // pool previously stalled workers past Next's 60s static timeout on Vercel.
   if (process.env.NEXT_PHASE === "phase-production-build") return null;
 
-  return getCachedCatalogFromDatabase();
+  try {
+    return await withTimeout(
+      getCachedCatalogFromDatabase(),
+      CATALOG_DB_TIMEOUT_MS,
+      "catalog-db"
+    );
+  } catch (err) {
+    console.error("[catalog-db] load timed out or failed, falling back to seed catalog", err);
+    return null;
+  }
 });

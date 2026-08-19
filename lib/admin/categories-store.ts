@@ -4,6 +4,7 @@ import { cookies } from "next/headers";
 import { z } from "zod";
 import { eq } from "drizzle-orm";
 import { isGrowthDatabaseMode } from "@/lib/db/growth-mode";
+import { withTimeout } from "@/lib/async/with-timeout";
 import {
   applyCategoryNameOverrides,
   type CategoryOverride,
@@ -87,7 +88,7 @@ export async function getCategoryOverrides(): Promise<CategoryOverrides> {
   if (process.env.NEXT_PHASE === "phase-production-build") return {};
   if (isGrowthDatabaseMode()) {
     try {
-      return await readDb();
+      return await withTimeout(readDb(), 2_000, "category-overrides");
     } catch (err) {
       console.error("[categories] db read failed", err);
       return {};
