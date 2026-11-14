@@ -80,9 +80,7 @@ export default async function WholesaleCheckoutPage({
     <div className="mx-auto grid max-w-7xl gap-10 px-[var(--container-pad-x)] py-10 lg:grid-cols-[1fr_22rem] lg:py-14">
       <div>
         <header className="border-b border-[var(--color-border)] pb-8">
-          <p className="font-[var(--font-display)] text-[10px] uppercase tracking-[0.18em] text-[var(--color-resin)]">
-            B2B
-          </p>
+          <p className="section-eyebrow">B2B</p>
           <h1 className="section-title mt-2">Wholesale checkout</h1>
           <p className="mt-2 text-[var(--scale-sm)] text-[var(--color-ink-soft)]">
             {buyer.account.businessName} · default {termsLabel(buyer.account.defaultPaymentTerms)}
@@ -108,9 +106,7 @@ export default async function WholesaleCheckoutPage({
         </div>
       </div>
       <aside className="h-fit border border-[var(--color-border)] bg-[var(--color-surface)] p-6">
-        <h2 className="font-[var(--font-display)] text-[10px] uppercase tracking-[0.16em] text-[var(--color-resin)]">
-          Summary
-        </h2>
+        <h2 className="section-eyebrow">Summary</h2>
         <ul className="mt-5 space-y-3 text-[var(--scale-sm)]">
           {cart.lines.map((l) => (
             <li key={l.variantId} className="flex justify-between gap-2">
@@ -137,7 +133,7 @@ export default async function WholesaleCheckoutPage({
             </div>
             <div className="flex justify-between border-t border-[var(--color-border)] pt-3 font-[var(--font-display)]">
               <dt>Total</dt>
-              <dd className="text-[var(--color-resin-strong)]">{formatPrice(pricing.totalCents)}</dd>
+              <dd className="text-[var(--color-ink)]">{formatPrice(pricing.totalCents)}</dd>
             </div>
           </dl>
         ) : null}

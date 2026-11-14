@@ -11,15 +11,10 @@ test.describe("Home page", () => {
     });
   });
 
-  test("theme toggle switches between light and dark", async ({ page }) => {
+  test("boots the retail theme", async ({ page }) => {
     await page.goto("/");
-
-    // Default theme is dark — toggle to light, then back to dark.
-    await page.getByRole("button", { name: /switch to light mode/i }).click();
-    await expect(page.locator("html")).toHaveAttribute("data-theme", "light");
-    await page.getByRole("button", { name: /switch to dark mode/i }).click();
-    await expect(page.locator("html")).toHaveAttribute("data-theme", "dark");
-    await expect(page.getByRole("button", { name: /switch to light mode/i })).toBeVisible();
+    await expect(page.locator("html")).toHaveAttribute("data-theme", "retail");
+    await expect(page.getByRole("button", { name: /switch to light mode/i })).toHaveCount(0);
   });
 
   test("skip link moves focus to main content", async ({ page }) => {

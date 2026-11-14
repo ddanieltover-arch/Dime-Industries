@@ -1,6 +1,5 @@
 // app/lab-results/page.tsx
 import type { Metadata } from "next";
-import Image from "next/image";
 import Link from "next/link";
 import { primaryVariant, SEED_CATALOG } from "@/lib/catalog";
 import { loadEffectiveCatalog } from "@/lib/catalog/effective";
@@ -56,34 +55,18 @@ export default async function LabResultsPage({ searchParams }: { searchParams: S
 
   return (
     <>
-      <section className="relative isolate min-h-[min(58vh,520px)] overflow-hidden">
-        <Image
-          src="/brand/awards-medals.webp"
-          alt=""
-          fill
-          priority
-          className="object-cover object-center"
-          sizes="100vw"
-        />
-        <div className="media-veil absolute inset-0" aria-hidden />
-        <div
-          className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_30%_40%,rgba(201,177,56,0.14),transparent_55%)]"
-          aria-hidden
-        />
-
-        <div className="relative mx-auto flex min-h-[min(58vh,520px)] max-w-7xl flex-col justify-end px-[var(--container-pad-x)] pb-12 pt-28 sm:pb-16 sm:pt-32">
+      <section className="page-header">
+        <div className="mx-auto max-w-7xl px-[var(--container-pad-x)]">
           <p className="section-eyebrow rise">DIME</p>
-          <h1 className="rise rise-delay-1 mt-2 max-w-xl font-[var(--font-display)] text-[clamp(2.25rem,6vw,3.75rem)] uppercase leading-[0.95] tracking-[0.06em] text-white">
-            Lab Results
-          </h1>
-          <p className="rise rise-delay-2 mt-4 max-w-md text-[var(--scale-base)] leading-relaxed text-white/80">
+          <h1 className="page-header-title rise rise-delay-1">Lab Results</h1>
+          <p className="page-header-lede rise rise-delay-2">
             Look up certificates of analysis by SKU or product name — potency you can verify.
           </p>
           <div className="rise rise-delay-3 mt-8 flex flex-wrap gap-3">
             <a href="#lab-search" className="btn-primary">
               Search COAs
             </a>
-            <Link href="/validate" className="btn-outline-light">
+            <Link href="/validate" className="btn-outline">
               Validate product
             </Link>
           </div>

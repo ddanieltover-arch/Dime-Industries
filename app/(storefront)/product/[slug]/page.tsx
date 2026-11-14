@@ -230,7 +230,7 @@ export default async function ProductDetailPage({ params }: { params: Params }) 
               {isStrainSeoProduct(product) ? productSeoTitle(product) : product.name}
             </h1>
 
-            <p className="mt-4 font-[var(--font-display)] text-[var(--scale-xl)] text-[var(--color-resin-strong)]">
+            <p className="mt-4 font-[var(--font-display)] text-[var(--scale-xl)] text-[var(--color-ink)] sm:text-[var(--scale-2xl)]">
               {formatPrice(v.retailPriceCents)}
               {product.compareAtPriceCents != null &&
               product.compareAtPriceCents > v.retailPriceCents ? (

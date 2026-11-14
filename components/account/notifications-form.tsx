@@ -34,13 +34,13 @@ export function NotificationsForm({
             type="checkbox"
             name={name}
             defaultChecked={checked}
-            className="mt-1 h-5 w-5 accent-[var(--color-resin)]"
+            className="mt-1 h-5 w-5 accent-[var(--color-ink)]"
           />
           <span className="pt-0.5">{label}</span>
         </label>
       ))}
       {state.success ? (
-        <p role="status" className="text-[var(--scale-sm)] text-[var(--color-resin)]">
+        <p role="status" className="text-[var(--scale-sm)] text-[var(--color-ink)]">
           {state.message}
         </p>
       ) : null}

@@ -23,19 +23,21 @@ export default function TrustPage() {
     <>
       <JsonLdScript data={breadcrumbs} />
 
-      <section className="border-b border-[var(--color-border)] bg-[var(--color-bg)]">
-        <div className="mx-auto max-w-3xl px-[var(--container-pad-x)] py-12 lg:py-16">
+      <section className="page-header">
+        <div className="mx-auto max-w-7xl px-[var(--container-pad-x)]">
           <p className="section-eyebrow">E-E-A-T</p>
-          <h1 className="section-title mt-2">Trust &amp; quality at DIME</h1>
-          <AnswerCapsule className="mt-6">
-            DIME Industries is a licensed cannabis brand (est. 2016) that publishes lab results,
-            offers official product validation, engineers its own hardware, and sells only through
-            licensed channels for adults 21+ or qualifying patients.
-          </AnswerCapsule>
-          <p className="mt-4 text-[var(--scale-base)] leading-relaxed text-[var(--color-ink-soft)]">
+          <h1 className="page-header-title">Trust &amp; quality at DIME</h1>
+          <div className="mt-4 max-w-xl">
+            <AnswerCapsule>
+              DIME Industries is a licensed cannabis brand (est. 2016) that publishes lab results,
+              offers official product validation, engineers its own hardware, and sells only through
+              licensed channels for adults 21+ or qualifying patients.
+            </AnswerCapsule>
+          </div>
+          <p className="page-header-lede mt-4">
             Use this page as the trust hub for authenticity, testing, and shopping signals. For
             company story and awards, see{" "}
-            <Link href="/about" className="text-[var(--color-resin)] hover:underline">
+            <Link href="/about" className="prose-link">
               About DIME Industries
             </Link>
             .
@@ -57,10 +59,7 @@ export default function TrustPage() {
                 <p className="mt-3 text-[var(--scale-sm)] leading-relaxed text-[var(--color-ink-soft)]">
                   {pillar.body}
                 </p>
-                <Link
-                  href={pillar.href}
-                  className="mt-5 inline-block font-[var(--font-display)] text-[10px] uppercase tracking-[0.14em] text-[var(--color-resin)] hover:underline"
-                >
+                <Link href={pillar.href} className="nav-link mt-5 inline-block">
                   {pillar.label} →
                 </Link>
               </li>
@@ -79,38 +78,32 @@ export default function TrustPage() {
           </h2>
           <dl className="mt-8 space-y-6">
             <div>
-              <dt className="font-[var(--font-display)] text-[10px] uppercase tracking-[0.14em] text-[var(--color-resin)]">
-                Licensing
-              </dt>
+              <dt className="section-eyebrow">Licensing</dt>
               <dd className="mt-2 text-[var(--scale-sm)] leading-relaxed text-[var(--color-ink-soft)]">
                 Products are sold under cannabis licensing rules in participating U.S. markets.
                 Availability and formats vary by state — start at{" "}
-                <Link href="/locations" className="text-[var(--color-resin)] hover:underline">
+                <Link href="/locations" className="prose-link">
                   Find DIME
                 </Link>
                 .
               </dd>
             </div>
             <div>
-              <dt className="font-[var(--font-display)] text-[10px] uppercase tracking-[0.14em] text-[var(--color-resin)]">
-                Testing
-              </dt>
+              <dt className="section-eyebrow">Testing</dt>
               <dd className="mt-2 text-[var(--scale-sm)] leading-relaxed text-[var(--color-ink-soft)]">
                 Batch-level lab data lives on{" "}
-                <Link href="/lab-results" className="text-[var(--color-resin)] hover:underline">
+                <Link href="/lab-results" className="prose-link">
                   Lab Results
                 </Link>
                 . Definitions:{" "}
-                <Link href="/glossary#coa" className="text-[var(--color-resin)] hover:underline">
+                <Link href="/glossary#coa" className="prose-link">
                   COA in the glossary
                 </Link>
                 .
               </dd>
             </div>
             <div>
-              <dt className="font-[var(--font-display)] text-[10px] uppercase tracking-[0.14em] text-[var(--color-resin)]">
-                Reviews
-              </dt>
+              <dt className="section-eyebrow">Reviews</dt>
               <dd className="mt-2 text-[var(--scale-sm)] leading-relaxed text-[var(--color-ink-soft)]">
                 Approved customer reviews appear on product pages with AggregateRating / Review
                 schema where available.

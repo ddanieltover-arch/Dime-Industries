@@ -16,9 +16,7 @@ export function SignupForm() {
   return (
     <div className="mx-auto w-full max-w-md space-y-8 px-[var(--container-pad-x)] py-16">
       <div>
-        <p className="font-[var(--font-display)] text-[10px] uppercase tracking-[0.18em] text-[var(--color-resin)]">
-          Account
-        </p>
+        <p className="section-eyebrow">Account</p>
         <h1 className="section-title mt-2">Create account</h1>
         <p className="mt-2 text-[var(--scale-sm)] text-[var(--color-ink-soft)]">
           Password must be at least 10 characters with an uppercase letter and a number.
@@ -28,9 +26,9 @@ export function SignupForm() {
       {state.success ? (
         <>
           <GaSuccessEffect ready onSuccess={onSignUp} />
-          <p role="status" className="text-[var(--scale-sm)] text-[var(--color-resin)]">
+          <p role="status" className="text-[var(--scale-sm)] text-[var(--color-ink)]">
             Check your email to verify your account, then{" "}
-            <Link href="/login" className="underline-offset-4 hover:underline">
+            <Link href="/login" className="prose-link">
               sign in
             </Link>
             .
@@ -71,7 +69,7 @@ export function SignupForm() {
 
       <p className="text-center text-[var(--scale-sm)] text-[var(--color-ink-soft)]">
         Already have an account?{" "}
-        <Link href="/login" className="text-[var(--color-resin)] underline-offset-4 hover:underline">
+        <Link href="/login" className="prose-link">
           Sign in
         </Link>
       </p>

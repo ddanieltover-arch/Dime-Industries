@@ -20,9 +20,7 @@ export default async function AccountOrdersPage() {
 
   return (
     <div>
-      <h2 className="font-[var(--font-display)] text-[10px] uppercase tracking-[0.16em] text-[var(--color-resin)]">
-        Orders
-      </h2>
+      <h2 className="section-eyebrow">Orders</h2>
       <p className="mt-2 text-[var(--scale-sm)] text-[var(--color-ink-soft)]">
         Track payment and shipping for {profile.email}.
       </p>
@@ -30,7 +28,7 @@ export default async function AccountOrdersPage() {
       {orders.length === 0 ? (
         <p className="mt-8 text-[var(--scale-sm)] text-[var(--color-ink-soft)]">
           No orders yet.{" "}
-          <Link href="/shop" className="text-[var(--color-resin)] underline-offset-4 hover:underline">
+          <Link href="/shop" className="prose-link">
             Shop now
           </Link>
         </p>
@@ -40,7 +38,7 @@ export default async function AccountOrdersPage() {
             <li key={order.id}>
               <Link
                 href={`/account/orders/${order.id}`}
-                className="block bg-[var(--color-surface)] p-4 transition-colors touch-manipulation hover:border-[var(--color-resin)] sm:p-5 border border-transparent"
+                className="block border border-transparent bg-[var(--color-surface)] p-4 transition-colors touch-manipulation hover:border-[var(--color-ink)] sm:p-5"
               >
                 <div className="flex flex-wrap items-start justify-between gap-3">
                   <div className="min-w-0">
@@ -50,13 +48,13 @@ export default async function AccountOrdersPage() {
                     <p className="mt-1 text-[var(--scale-sm)] text-[var(--color-ink-soft)]">
                       {new Date(order.createdAt).toLocaleString()}
                     </p>
-                    <p className="mt-2 font-[var(--font-display)] text-[10px] uppercase tracking-[0.14em] text-[var(--color-resin)]">
+                    <p className="section-eyebrow mt-2">
                       {statusLabel(order.status)}
                       {order.trackingNumber ? " · tracking available" : ""}
                     </p>
                   </div>
                   <div className="text-right">
-                    <p className="font-[var(--font-display)] text-[var(--scale-lg)] text-[var(--color-resin-strong)]">
+                    <p className="font-[var(--font-display)] text-[var(--scale-lg)] text-[var(--color-ink)]">
                       {formatPrice(order.totalCents)}
                     </p>
                     <p className="mt-2 nav-link text-[var(--color-ink-muted)]">Track order</p>

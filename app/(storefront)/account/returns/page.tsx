@@ -16,16 +16,14 @@ export default async function AccountReturnsPage() {
 
   return (
     <div>
-      <h2 className="font-[var(--font-display)] text-[10px] uppercase tracking-[0.16em] text-[var(--color-resin)]">
-        Returns
-      </h2>
+      <h2 className="section-eyebrow">Returns</h2>
       <p className="mt-2 max-w-xl text-[var(--scale-sm)] text-[var(--color-ink-soft)]">
         Track return and refund requests for paid orders. Start a request from an{" "}
-        <Link href="/account/orders" className="text-[var(--color-resin)] hover:underline">
+        <Link href="/account/orders" className="prose-link">
           order detail
         </Link>{" "}
         page. Policy:{" "}
-        <Link href="/legal/returns" className="text-[var(--color-resin)] hover:underline">
+        <Link href="/legal/returns" className="prose-link">
           Returns Policy
         </Link>
         .
@@ -48,7 +46,7 @@ export default async function AccountReturnsPage() {
                     {RETURN_REASON_LABELS[r.reason]} · order{" "}
                     <Link
                       href={`/account/orders/${r.orderId}`}
-                      className="text-[var(--color-resin)] hover:underline"
+                      className="prose-link"
                     >
                       {r.orderId}
                     </Link>

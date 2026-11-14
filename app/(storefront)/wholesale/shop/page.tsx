@@ -47,9 +47,7 @@ export default async function WholesaleShopPage() {
     <div className="mx-auto max-w-6xl px-[var(--container-pad-x)] py-10 lg:py-14">
       <div className="flex flex-wrap items-end justify-between gap-4 border-b border-[var(--color-border)] pb-8">
         <div>
-          <p className="font-[var(--font-display)] text-[10px] uppercase tracking-[0.18em] text-[var(--color-resin)]">
-            B2B
-          </p>
+          <p className="section-eyebrow">B2B</p>
           <h1 className="section-title mt-2">Wholesale shop</h1>
           <p className="mt-2 text-[var(--scale-sm)] text-[var(--color-ink-soft)]">
             Prices reflect wholesale tiers. MOQ applies per SKU.
@@ -76,7 +74,7 @@ export default async function WholesaleShopPage() {
               <p className="mt-1 text-[var(--scale-sm)] text-[var(--color-ink-soft)]">
                 {variant.weightOrFormat} · SKU {variant.sku}
               </p>
-              <p className="mt-3 font-[var(--font-display)] text-[var(--color-resin-strong)]">
+              <p className="mt-3 font-[var(--font-display)] text-[var(--color-ink)]">
                 {formatPrice(meta.wholesalePriceCents)}
                 <span className="ml-2 text-[var(--scale-sm)] font-normal text-[var(--color-ink-muted)] line-through">
                   {formatPrice(meta.retailPriceCents)}
@@ -105,9 +103,7 @@ export default async function WholesaleShopPage() {
 
       {cart.lines.length > 0 ? (
         <section className="mt-12 border-t border-[var(--color-border)] pt-8">
-          <h2 className="font-[var(--font-display)] text-[10px] uppercase tracking-[0.16em] text-[var(--color-resin)]">
-            Cart
-          </h2>
+          <h2 className="section-eyebrow">Cart</h2>
           <ul className="mt-4 space-y-3">
             {cart.lines.map((line) => (
               <li
@@ -126,7 +122,7 @@ export default async function WholesaleShopPage() {
                     defaultValue={line.quantity}
                     className="field-input w-20 px-3"
                   />
-                  <button type="submit" className="nav-link text-[var(--color-resin)]">
+                  <button type="submit" className="nav-link">
                     Update
                   </button>
                 </form>

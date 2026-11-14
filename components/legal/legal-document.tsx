@@ -1,6 +1,5 @@
 // components/legal/legal-document.tsx
 import type { ReactNode } from "react";
-import Image from "next/image";
 import Link from "next/link";
 import { renderCmsBody } from "@/lib/cms/render";
 
@@ -29,30 +28,11 @@ export function LegalDocument({
 
   return (
     <>
-      <section className="relative isolate min-h-[min(48vh,420px)] overflow-hidden">
-        <Image
-          src="/brand/concrete.jpg"
-          alt=""
-          fill
-          priority
-          className="object-cover object-center"
-          sizes="100vw"
-        />
-        <div
-          className="absolute inset-0 bg-[linear-gradient(to_top,rgba(14,14,14,0.95)_0%,rgba(14,14,14,0.6)_50%,rgba(14,14,14,0.45)_100%)]"
-          aria-hidden
-        />
-        <div
-          className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_20%_40%,rgba(201,177,56,0.1),transparent_55%)]"
-          aria-hidden
-        />
-
-        <div className="relative mx-auto flex min-h-[min(48vh,420px)] max-w-7xl flex-col justify-end px-[var(--container-pad-x)] pb-12 pt-28 sm:pb-14 sm:pt-32">
+      <section className="page-header">
+        <div className="mx-auto max-w-7xl px-[var(--container-pad-x)]">
           <p className="section-eyebrow">DIME</p>
-          <h1 className="mt-2 max-w-2xl font-[var(--font-display)] text-[clamp(2rem,5vw,3.25rem)] uppercase leading-[0.95] tracking-[0.06em] text-white">
-            {title}
-          </h1>
-          <p className="mt-4 max-w-lg text-[var(--scale-base)] leading-relaxed text-white/80">{intro}</p>
+          <h1 className="page-header-title">{title}</h1>
+          <p className="page-header-lede">{intro}</p>
         </div>
       </section>
 
@@ -68,8 +48,8 @@ export function LegalDocument({
                       href={item.href}
                       className={`font-[var(--font-display)] text-[10px] uppercase tracking-[0.14em] transition-colors duration-[var(--motion-fast)] ${
                         active
-                          ? "text-[var(--color-resin)]"
-                          : "text-[var(--color-ink-soft)] hover:text-[var(--color-resin)]"
+                          ? "text-[var(--color-ink)]"
+                          : "text-[var(--color-ink-soft)] hover:text-[var(--color-ink)]"
                       }`}
                       aria-current={active ? "page" : undefined}
                     >
@@ -92,7 +72,7 @@ export function LegalDocument({
                   return (
                     <h2
                       key={i}
-                      className="pt-6 font-[var(--font-display)] text-[var(--scale-lg)] uppercase tracking-[0.08em] text-[var(--color-resin)] first:pt-0"
+                      className="pt-6 font-[var(--font-display)] text-[var(--scale-lg)] uppercase tracking-[0.08em] text-[var(--color-ink)] first:pt-0"
                     >
                       {block.text}
                     </h2>
@@ -109,7 +89,7 @@ export function LegalDocument({
                               <th
                                 key={h}
                                 scope="col"
-                                className="px-3 py-3 font-[var(--font-display)] text-[10px] uppercase tracking-[0.14em] text-[var(--color-resin)]"
+                                className="section-eyebrow px-3 py-3 text-left"
                               >
                                 {h}
                               </th>
@@ -152,9 +132,7 @@ export function LegalDocument({
       <section className="border-t border-[var(--color-border)] bg-[var(--color-surface)]">
         <div className="mx-auto flex max-w-7xl flex-col items-start justify-between gap-6 px-[var(--container-pad-x)] py-12 sm:flex-row sm:items-center">
           <div>
-            <p className="font-[var(--font-display)] text-[10px] uppercase tracking-[0.18em] text-[var(--color-resin)]">
-              Questions?
-            </p>
+            <p className="section-eyebrow">Questions?</p>
             <p className="mt-2 max-w-xl font-[var(--font-display)] text-[var(--scale-lg)] uppercase tracking-[0.06em] text-[var(--color-ink)]">
               Contact sales@dimeindustries.us
             </p>

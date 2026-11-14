@@ -10,7 +10,6 @@ import { getCurrentProfile } from "@/lib/auth/session";
 import { getCookieConsent } from "@/lib/consent/cookie";
 import { getManualPaymentHandles } from "@/lib/payments/methods";
 import Link from "next/link";
-import Image from "next/image";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -81,30 +80,11 @@ export default async function CheckoutPage({ searchParams }: { searchParams: Sea
     <>
       {!ageGate.ageVerified ? null : (
         <>
-          <section className="relative isolate overflow-hidden border-b border-[var(--color-border)]">
-            <Image
-              src="/brand/concrete.jpg"
-              alt=""
-              fill
-              priority
-              className="object-cover object-center opacity-40"
-              sizes="100vw"
-            />
-            <div
-              className="absolute inset-0 bg-[linear-gradient(to_right,rgba(14,14,14,0.96)_0%,rgba(14,14,14,0.88)_55%,rgba(14,14,14,0.75)_100%)]"
-              aria-hidden
-            />
-            <div
-              className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_85%_25%,rgba(201,177,56,0.12),transparent_50%)]"
-              aria-hidden
-            />
-
-            <div className="relative mx-auto max-w-7xl px-[var(--container-pad-x)] py-12 sm:py-14">
+          <section className="page-header">
+            <div className="mx-auto max-w-7xl px-[var(--container-pad-x)]">
               <p className="section-eyebrow">DIME</p>
-              <h1 className="mt-2 font-[var(--font-display)] text-[clamp(2rem,5vw,3.25rem)] uppercase leading-[0.95] tracking-[0.06em] text-white">
-                Checkout
-              </h1>
-              <p className="mt-3 max-w-md text-[var(--scale-base)] text-white/75">
+              <h1 className="page-header-title">Checkout</h1>
+              <p className="page-header-lede">
                 {cart.lines.length === 0
                   ? "Add products to your cart before checking out."
                   : `Secure checkout for ${cart.itemCount} item${cart.itemCount === 1 ? "" : "s"} — worldwide shipping.`}
@@ -114,7 +94,7 @@ export default async function CheckoutPage({ searchParams }: { searchParams: Sea
                   <a href="#checkout-form" className="btn-primary">
                     Continue to details
                   </a>
-                  <Link href="/cart" className="btn-outline-light">
+                  <Link href="/cart" className="btn-outline">
                     Edit cart
                   </Link>
                 </div>

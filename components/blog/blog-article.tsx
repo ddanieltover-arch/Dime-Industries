@@ -3,8 +3,7 @@ import Link from "next/link";
 import { isExternalHref, parseCmsInline, renderCmsBody } from "@/lib/cms/render";
 
 function CmsLink({ href, text }: { href: string; text: string }) {
-  const className =
-    "text-[var(--color-resin)] underline-offset-4 hover:underline";
+  const className = "prose-link";
   if (isExternalHref(href)) {
     return (
       <a href={href} target="_blank" rel="noopener noreferrer" className={className}>

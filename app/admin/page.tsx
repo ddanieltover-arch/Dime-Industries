@@ -120,7 +120,7 @@ export default async function AdminDashboardPage() {
             </h2>
             <Link
               href="/admin/orders"
-              className="font-[var(--font-mono)] text-[10px] uppercase tracking-[0.14em] text-[var(--color-resin)] underline-offset-4 hover:underline"
+              className="prose-link font-[var(--font-display)] text-[10px] uppercase tracking-[0.14em]"
             >
               See all
             </Link>
@@ -131,35 +131,27 @@ export default async function AdminDashboardPage() {
             </p>
           ) : (
             <div className="overflow-x-auto">
-              <table className="w-full min-w-[36rem] text-left text-[var(--scale-sm)]">
+              <table className="admin-table min-w-[36rem]">
                 <thead>
-                  <tr className="border-b border-[var(--color-border)] text-[var(--color-ink-muted)]">
-                    <th className="px-4 py-3 font-[var(--font-mono)] text-[10px] font-normal uppercase tracking-[0.14em] sm:px-5">
-                      Order
-                    </th>
-                    <th className="px-4 py-3 font-[var(--font-mono)] text-[10px] font-normal uppercase tracking-[0.14em]">
-                      Customer
-                    </th>
-                    <th className="px-4 py-3 font-[var(--font-mono)] text-[10px] font-normal uppercase tracking-[0.14em]">
-                      Total
-                    </th>
-                    <th className="px-4 py-3 font-[var(--font-mono)] text-[10px] font-normal uppercase tracking-[0.14em]">
-                      Status
-                    </th>
+                  <tr>
+                    <th className="pl-4 sm:pl-5">Order</th>
+                    <th>Customer</th>
+                    <th>Total</th>
+                    <th>Status</th>
                   </tr>
                 </thead>
                 <tbody>
                   {recent.map((order) => (
-                    <tr key={order.id} className="border-b border-[var(--color-border)] last:border-b-0">
-                      <td className="px-4 py-3 font-[var(--font-mono)] text-[var(--scale-xs)] text-[var(--color-ink)] sm:px-5">
+                    <tr key={order.id}>
+                      <td className="pl-4 font-[var(--font-mono)] text-[var(--scale-xs)] text-[var(--color-ink)] sm:pl-5">
                         {order.id.slice(0, 12)}
                         {order.id.length > 12 ? "…" : ""}
                       </td>
-                      <td className="max-w-[12rem] truncate px-4 py-3 text-[var(--color-ink-soft)]">
+                      <td className="max-w-[12rem] truncate text-[var(--color-ink-soft)]">
                         {order.email}
                       </td>
-                      <td className="px-4 py-3 text-[var(--color-ink)]">{formatPrice(order.totalCents)}</td>
-                      <td className="px-4 py-3">
+                      <td className="text-[var(--color-ink)]">{formatPrice(order.totalCents)}</td>
+                      <td>
                         <span
                           className={`inline-flex border px-2 py-0.5 font-[var(--font-mono)] text-[10px] uppercase tracking-[0.12em] ${statusTone(order.status)}`}
                         >

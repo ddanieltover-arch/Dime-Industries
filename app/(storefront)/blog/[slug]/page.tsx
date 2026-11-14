@@ -1,6 +1,5 @@
 // app/blog/[slug]/page.tsx
 import type { Metadata } from "next";
-import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { BlogArticle } from "@/components/blog/blog-article";
@@ -162,44 +161,34 @@ export default async function BlogPostPage({ params }: { params: Params }) {
       {faqJsonLd ? <JsonLdScript data={faqJsonLd} /> : null}
       {howToJsonLd ? <JsonLdScript data={howToJsonLd} /> : null}
 
-      <section className="relative isolate min-h-[min(48vh,420px)] overflow-hidden border-b border-[var(--color-border)]">
-        <Image
-          src="/brand/awards-hardware.webp"
-          alt=""
-          fill
-          priority
-          className="pointer-events-none object-cover object-center"
-          sizes="100vw"
-        />
-        <div className="media-veil absolute inset-0" aria-hidden />
-        <div
-          className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_70%_20%,rgba(201,177,56,0.14),transparent_50%)]"
-          aria-hidden
-        />
-
-        <div className="relative mx-auto flex min-h-[min(48vh,420px)] max-w-7xl flex-col justify-end px-[var(--container-pad-x)] pb-12 pt-24 sm:pb-16 sm:pt-28">
-          <nav aria-label="Breadcrumb" className="text-[var(--scale-sm)] text-white/65">
+      <section className="page-header">
+        <div className="mx-auto max-w-7xl px-[var(--container-pad-x)]">
+          <nav aria-label="Breadcrumb" className="text-[var(--scale-sm)] text-[var(--color-ink-muted)]">
             <ol className="flex flex-wrap items-center gap-2">
               <li>
-                <Link href="/" className="transition-colors hover:text-[var(--color-resin)]">
+                <Link href="/" className="prose-link">
                   Home
                 </Link>
               </li>
-              <li aria-hidden>/</li>
+              <li aria-hidden className="text-[var(--color-ink-muted)]">
+                /
+              </li>
               <li>
-                <Link href="/blog" className="transition-colors hover:text-[var(--color-resin)]">
+                <Link href="/blog" className="prose-link">
                   Blog
                 </Link>
               </li>
-              <li aria-hidden>/</li>
-              <li className="max-w-[12rem] truncate text-white/90 sm:max-w-xs" aria-current="page">
+              <li aria-hidden className="text-[var(--color-ink-muted)]">
+                /
+              </li>
+              <li className="max-w-[12rem] truncate text-[var(--color-ink)] sm:max-w-xs" aria-current="page">
                 {post.title}
               </li>
             </ol>
           </nav>
 
-          <p className="section-eyebrow mt-8">DIME</p>
-          <p className="mt-3 font-[var(--font-display)] text-[10px] uppercase tracking-[0.18em] text-[var(--color-resin)]">
+          <p className="section-eyebrow mt-6">DIME</p>
+          <p className="mt-3 font-[var(--font-display)] text-[10px] uppercase tracking-[0.18em] text-[var(--color-ink-muted)]">
             <time dateTime={post.publishedAt}>Published {published}</time>
             {showUpdated ? (
               <>
@@ -208,17 +197,13 @@ export default async function BlogPostPage({ params }: { params: Params }) {
               </>
             ) : null}
           </p>
-          <h1 className="mt-3 max-w-3xl font-[var(--font-display)] text-[clamp(1.75rem,4.5vw,3.25rem)] uppercase leading-[1.02] tracking-[0.04em] text-white">
-            {post.title}
-          </h1>
-          <p className="mt-4 max-w-2xl text-[var(--scale-base)] leading-relaxed text-white/80">
-            {post.excerpt}
-          </p>
+          <h1 className="page-header-title mt-3">{post.title}</h1>
+          <p className="page-header-lede max-w-2xl">{post.excerpt}</p>
           <div className="mt-8 flex flex-wrap gap-3">
             <a href="#article" className="btn-primary">
               Read article
             </a>
-            <Link href="/blog" className="btn-outline-light">
+            <Link href="/blog" className="btn-outline">
               All posts
             </Link>
           </div>

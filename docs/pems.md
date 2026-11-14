@@ -4,7 +4,7 @@
 
 **PEMS Version:** 1.0  
 **Last Updated:** 2026-11-14  
-**Updated By:** Senior Full Stack (Pulse) — fail-fast auth + cart/commerce I/O for stuck skeletons  
+**Updated By:** Senior Full Stack + EXA (Pulse) — clean modern retail UI storefront + admin  
 
 **Primary codebase:** `dime-enterprise-commerce/` (git repo). Workspace also holds `claude-devos-enterprise/`, `motion-ux-enhancement-expert/`, and SEO research assets. Mirror: `dime-enterprise-commerce/docs/pems.md`.
 
@@ -21,7 +21,7 @@
 | Current sprint / phase | **Launch / Maintain** — production live on `www.dimeindustries.us`; SEO program active |
 | Architecture (one line) | Next.js 15 App Router modular monolith — storefront + account + admin + wholesale; Supabase Auth/Postgres + Drizzle; Vercel |
 | Tech stack (one line) | TypeScript, Next 15, React 19, Tailwind 4, Drizzle, Supabase, Zod, CSS motion/tiny reveal, Vitest, Playwright, Sentry |
-| Design system | DIME brand tokens in `app/globals.css` — dark concrete + resin gold; Gotham / Retro Signature |
+| Design system | DIME brand tokens in `app/globals.css` — clean retail white + near-black actions; Gotham / Retro Signature |
 | Primary risks | Age-gate crawlability vs compliance; LCP/CLS budgets; `.com` SEO cannibalization; cannabis legal/compliance |
 | Open decisions | Confirm live Paybis vs mock for public launch; GSC/GA4 owner setup; legal review of worldwide ship-to vs cannabis regs |
 | Recent changes | **Perf:** fail-fast Auth middleware/`getCurrentProfile`, cart snapshot, wishlist guest path, coupons/loyalty/settings DB budgets, drawer `AbortSignal.timeout(5s)` so product/cart/checkout soft-nav and cart drawer cannot stick on skeletons. Prior: catalog/CMS budgets + PWA v3 |
@@ -107,8 +107,8 @@ Source: `dime-enterprise-commerce/docs/10-decisions-d1-d7-locked.md`. Soft-launc
 |---|---|
 | Brand / product name | DIME Industries |
 | Design system name / location | Inline design language — `app/globals.css` + `components/ui` / `components/shared` |
-| Color tokens (summary or path) | Dark concrete `#0e0e0e` / surfaces; resin gold `#c9b138`–`#e5bd6f`; flag `#8b232d`; borders + focus tokens in `:root` |
-| Typography | Gotham Black (display), Gotham (body), Retro Signature (script flourishes) — `/public/fonts/` |
+| Color tokens (summary or path) | Clean retail: bg `#ffffff`, band `#f6f6f6`, ink `#111111`, muted `#5c5c5c`, border `#e6e6e6`; resin tokens map to ink for CTA/accent compatibility; flag `#8b232d`; single `data-theme="retail"` |
+| Typography | Gotham Black (display), Gotham (body), Retro Signature retained for rare flourishes — `/public/fonts/` |
 | Spacing / radius conventions | `--space-1`…`--space-24`; `--radius-sm/md/lg/pill`; type scale `--scale-xs`…`--scale-4xl` |
 | Component library | Custom + Radix Dialog; feature components under `components/*` |
 | Icon set | Project-local / inline (no dominant third-party icon kit mandated) |
@@ -167,6 +167,7 @@ Source: `dime-enterprise-commerce/docs/10-decisions-d1-d7-locked.md`. Soft-launc
 | 2026-11-14 | Curated Semrush Positions → hub anchors | Homepage-ranked commercial/intent queries need natural exact-match internal links to existing hubs | Keyword cloud / all-27 exact / brand-nav stuffing | Map in `docs/seo/organic_positions_anchor_map_2026-11.md`; skip brand-nav + Buena Vista GA |
 | 2026-11-14 | HTML editorial blog imports → calendar seeds | Owner-supplied HTML posts need CMS-dialect seeds with even publish cadence | Admin-only cookie/DB posts; same-day dumps | Convert HTML→CMS dialect; `CALENDAR_POSTS_2026`; **3–4 posts/week**, one day each, backdate from 2026-11-14; posts: pre-roll (11-14), cartridges (11-12), vape tech (11-07), `what-is-dime-industries` (11-05); **refresh** `dime-disposable-vapes` (updatedAt 11-14, URL preserved) |
 | 2026-11-14 | Fail-fast auth + cart/commerce for stuck skeletons | Live product/cart/checkout soft-nav stuck on `loading.tsx`; drawer “Loading cart…” with badge 1 / $0 while Auth or Postgres hung | Catalog-only budgets; wait forever on `getUser` / cart DB / coupons | Middleware `getUser` 3s (public fail-open); `getCurrentProfile` 3s → null; cart snapshot 4s + DB/wishlist/coupons/loyalty/settings 2s; wishlist cookie fast-path; drawer fetch abort 5s |
+| 2026-11-14 | Clean modern retail UI (storefront + admin) | Owner chose white retail over dark concrete/gold; gold fails AA on white and fights minimal shop | Light polish of dark theme; cream light theme | `:root` white/black tokens; black primary buttons; `theme-retail-v1` boot; ThemeToggle removed; page-header pattern; logo in black brand-mark; admin shell/tables match |
 
 ---
 

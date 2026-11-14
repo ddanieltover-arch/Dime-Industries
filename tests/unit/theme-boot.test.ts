@@ -12,13 +12,15 @@ describe("theme boot script", () => {
     expect(THEME_BOOT_SCRIPT).toContain(THEME_STORAGE_KEY);
   });
 
-  it("applies a stored theme without throwing", () => {
+  it("applies retail theme without throwing", () => {
     const setAttribute = vi.fn();
+    const setItem = vi.fn();
     vi.stubGlobal("document", {
       documentElement: { setAttribute },
     });
     vi.stubGlobal("localStorage", {
-      getItem: () => "light",
+      getItem: () => "dark",
+      setItem,
     });
 
     expect(() => {
@@ -27,7 +29,8 @@ describe("theme boot script", () => {
       eval(THEME_BOOT_SCRIPT);
     }).not.toThrow();
 
-    expect(setAttribute).toHaveBeenCalledWith("data-theme", "light");
+    expect(setAttribute).toHaveBeenCalledWith("data-theme", "retail");
+    expect(setItem).toHaveBeenCalledWith(THEME_STORAGE_KEY, "retail");
   });
 
   it("documents why (!function(){})() is invalid", () => {

@@ -45,7 +45,7 @@ export function ProfileForm({
         </p>
       ) : null}
       {state.success ? (
-        <p role="status" className="text-[var(--scale-sm)] text-[var(--color-resin)]">
+        <p role="status" className="text-[var(--scale-sm)] text-[var(--color-ink)]">
           {state.message}
         </p>
       ) : null}

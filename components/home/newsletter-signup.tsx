@@ -32,7 +32,7 @@ export function NewsletterSignup({
         </p>
 
         {state.success ? (
-          <p role="status" className="status-pulse mt-8 text-[var(--scale-sm)] text-[var(--color-resin)]">
+          <p role="status" className="status-pulse mt-8 text-[var(--scale-sm)] text-[var(--color-ink)]">
             You&apos;re on the list — check your inbox for a welcome email.
           </p>
         ) : (

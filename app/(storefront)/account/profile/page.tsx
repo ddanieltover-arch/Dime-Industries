@@ -34,18 +34,18 @@ export default async function AccountProfilePage() {
       </div>
       <p className="text-[var(--scale-sm)] text-[var(--color-ink-soft)]">
         Manage{" "}
-        <Link href="/account/addresses" className="text-[var(--color-resin)] underline-offset-4 hover:underline">
+        <Link href="/account/addresses" className="prose-link">
           addresses
         </Link>
         ,{" "}
         <Link
           href="/account/notifications"
-          className="text-[var(--color-resin)] underline-offset-4 hover:underline"
+          className="prose-link"
         >
           notifications
         </Link>
         , and{" "}
-        <Link href="/cookies" className="text-[var(--color-resin)] underline-offset-4 hover:underline">
+        <Link href="/cookies" className="prose-link">
           cookie preferences
         </Link>
         .

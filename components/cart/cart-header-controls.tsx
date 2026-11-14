@@ -56,7 +56,7 @@ export function CartHeaderControls() {
       >
         <CartIcon />
         {itemCount > 0 ? (
-          <span className="absolute -right-1 -top-1 flex h-4 min-w-4 items-center justify-center bg-[var(--color-resin)] px-1 font-[var(--font-display)] text-[9px] leading-none text-black">
+          <span className="absolute -right-1.5 -top-1.5 flex h-4 min-w-4 items-center justify-center rounded-sm bg-[var(--color-ink)] px-1 font-[var(--font-display)] text-[9px] leading-none text-white ring-2 ring-[var(--color-bg)]">
             {itemCount > 99 ? "99+" : itemCount}
           </span>
         ) : null}

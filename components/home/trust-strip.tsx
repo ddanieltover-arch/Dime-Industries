@@ -25,10 +25,10 @@ export function TrustStrip() {
               className="group relative block min-h-[4.5rem] px-2 py-6 text-center transition-colors hover:bg-[var(--color-surface-raised)] sm:px-6 sm:text-left"
             >
               <span
-                className="absolute inset-x-6 bottom-0 h-px origin-left scale-x-0 bg-[var(--color-resin)] transition-transform duration-[var(--motion-base)] ease-[var(--ease-out)] group-hover:scale-x-100 sm:inset-x-6"
+                className="absolute inset-x-6 bottom-0 h-px origin-left scale-x-0 bg-[var(--color-ink)] transition-transform duration-[var(--motion-base)] ease-[var(--ease-out)] group-hover:scale-x-100 sm:inset-x-6"
                 aria-hidden="true"
               />
-              <p className="font-[var(--font-display)] text-[10px] uppercase tracking-[0.16em] text-[var(--color-resin)]">
+              <p className="section-eyebrow">
                 {it.label}
               </p>
               <p className="mt-1.5 text-[var(--scale-sm)] text-[var(--color-ink-soft)] transition-colors group-hover:text-[var(--color-ink)]">

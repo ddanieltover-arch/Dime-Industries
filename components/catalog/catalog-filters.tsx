@@ -42,7 +42,7 @@ function FacetLink({
       href={href}
       className={`flex items-center justify-between px-2 py-2 text-[var(--scale-sm)] transition-colors ${
         active
-          ? "bg-[var(--color-resin)] font-[var(--font-display)] text-[10px] uppercase tracking-[0.12em] text-black"
+          ? "bg-[var(--color-ink)] font-[var(--font-display)] text-[10px] uppercase tracking-[0.12em] text-white"
           : "text-[var(--color-ink-soft)] hover:bg-[var(--color-surface-raised)] hover:text-[var(--color-ink)]"
       }`}
       aria-current={active ? "true" : undefined}

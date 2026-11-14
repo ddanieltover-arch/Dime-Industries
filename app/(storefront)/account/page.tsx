@@ -45,7 +45,7 @@ export default async function AccountDashboardPage() {
       <section className="grid grid-cols-3 gap-2 sm:gap-4">
         <Link
           href="/account/orders"
-          className="min-h-[5.5rem] border border-[var(--color-border)] bg-[var(--color-surface)] p-3 transition-colors touch-manipulation hover:border-[var(--color-resin)] sm:p-4"
+          className="min-h-[5.5rem] border border-[var(--color-border)] bg-[var(--color-surface)] p-3 transition-colors touch-manipulation hover:border-[var(--color-ink)] sm:p-4"
         >
           <p className="font-[var(--font-mono)] text-[var(--scale-xs)] text-[var(--color-ink-soft)]">
             Orders
@@ -56,7 +56,7 @@ export default async function AccountDashboardPage() {
         </Link>
         <Link
           href="/wishlist"
-          className="min-h-[5.5rem] border border-[var(--color-border)] bg-[var(--color-surface)] p-3 transition-colors touch-manipulation hover:border-[var(--color-resin)] sm:p-4"
+          className="min-h-[5.5rem] border border-[var(--color-border)] bg-[var(--color-surface)] p-3 transition-colors touch-manipulation hover:border-[var(--color-ink)] sm:p-4"
         >
           <p className="font-[var(--font-mono)] text-[var(--scale-xs)] text-[var(--color-ink-soft)]">
             Wishlist
@@ -67,7 +67,7 @@ export default async function AccountDashboardPage() {
         </Link>
         <Link
           href="/account/addresses"
-          className="min-h-[5.5rem] border border-[var(--color-border)] bg-[var(--color-surface)] p-3 transition-colors touch-manipulation hover:border-[var(--color-resin)] sm:p-4"
+          className="min-h-[5.5rem] border border-[var(--color-border)] bg-[var(--color-surface)] p-3 transition-colors touch-manipulation hover:border-[var(--color-ink)] sm:p-4"
         >
           <p className="font-[var(--font-mono)] text-[var(--scale-xs)] text-[var(--color-ink-soft)]">
             Addresses
@@ -85,7 +85,7 @@ export default async function AccountDashboardPage() {
           </h2>
           <Link
             href="/account/orders"
-            className="inline-flex min-h-11 items-center text-[var(--scale-sm)] text-[var(--color-resin-strong)] underline-offset-4 hover:underline"
+            className="prose-link inline-flex min-h-11 items-center text-[var(--scale-sm)]"
           >
             View all
           </Link>
@@ -93,7 +93,7 @@ export default async function AccountDashboardPage() {
         {recent.length === 0 ? (
           <p className="mt-4 text-[var(--scale-sm)] text-[var(--color-ink-soft)]">
             No orders yet.{" "}
-            <Link href="/shop" className="underline-offset-4 hover:underline">
+            <Link href="/shop" className="prose-link">
               Browse the shop
             </Link>
           </p>
@@ -103,7 +103,7 @@ export default async function AccountDashboardPage() {
               <li key={order.id}>
                 <Link
                   href={`/account/orders/${order.id}`}
-                  className="flex min-h-14 flex-wrap items-center justify-between gap-2 border border-[var(--color-border)] bg-[var(--color-surface-raised)] px-4 py-3 transition-colors touch-manipulation hover:border-[var(--color-resin)]"
+                  className="flex min-h-14 flex-wrap items-center justify-between gap-2 border border-[var(--color-border)] bg-[var(--color-surface-raised)] px-4 py-3 transition-colors touch-manipulation hover:border-[var(--color-ink)]"
                 >
                   <div className="min-w-0">
                     <p className="truncate font-[var(--font-mono)] text-[var(--scale-sm)] text-[var(--color-ink)]">
@@ -122,15 +122,13 @@ export default async function AccountDashboardPage() {
       </section>
 
       <section aria-label="Quick links">
-        <h2 className="font-[var(--font-display)] text-[10px] uppercase tracking-[0.16em] text-[var(--color-resin)]">
-          Quick links
-        </h2>
+        <h2 className="section-eyebrow">Quick links</h2>
         <ul className="mt-3 grid grid-cols-2 gap-2 sm:grid-cols-3" role="list">
           {QUICK_LINKS.map((link) => (
             <li key={link.href}>
               <Link
                 href={link.href}
-                className="flex min-h-12 items-center justify-center border border-[var(--color-border)] bg-[var(--color-surface)] px-3 text-center font-[var(--font-display)] text-[10px] uppercase tracking-[0.12em] text-[var(--color-ink-soft)] transition-colors touch-manipulation hover:border-[var(--color-resin)] hover:text-[var(--color-resin)]"
+                className="flex min-h-12 items-center justify-center border border-[var(--color-border)] bg-[var(--color-surface)] px-3 text-center font-[var(--font-display)] text-[10px] uppercase tracking-[0.12em] text-[var(--color-ink-soft)] transition-colors touch-manipulation hover:border-[var(--color-ink)] hover:text-[var(--color-ink)]"
               >
                 {link.label}
               </Link>

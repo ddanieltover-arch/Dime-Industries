@@ -1,6 +1,5 @@
 // app/assistant/page.tsx
 import type { Metadata } from "next";
-import Image from "next/image";
 import Link from "next/link";
 import { AssistantChat } from "@/components/assistant/assistant-chat";
 
@@ -34,37 +33,18 @@ const TOPICS = [
 export default function AssistantPage() {
   return (
     <>
-      <section className="relative isolate min-h-[min(58vh,520px)] overflow-hidden">
-        <Image
-          src="/brand/concrete.jpg"
-          alt=""
-          fill
-          priority
-          className="object-cover object-[center_35%]"
-          sizes="100vw"
-        />
-        <div
-          className="absolute inset-0 bg-[linear-gradient(to_top,rgba(14,14,14,0.94)_0%,rgba(14,14,14,0.55)_45%,rgba(14,14,14,0.4)_100%)]"
-          aria-hidden
-        />
-        <div
-          className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_75%_30%,rgba(201,177,56,0.14),transparent_55%)]"
-          aria-hidden
-        />
-
-        <div className="relative mx-auto flex min-h-[min(58vh,520px)] max-w-7xl flex-col justify-end px-[var(--container-pad-x)] pb-12 pt-28 sm:pb-16 sm:pt-32">
+      <section className="page-header">
+        <div className="mx-auto max-w-7xl px-[var(--container-pad-x)]">
           <p className="section-eyebrow rise">DIME</p>
-          <h1 className="rise rise-delay-1 mt-2 max-w-xl font-[var(--font-display)] text-[clamp(2.25rem,6vw,3.75rem)] uppercase leading-[0.95] tracking-[0.06em] text-white">
-            AI Assistant
-          </h1>
-          <p className="rise rise-delay-2 mt-4 max-w-md text-[var(--scale-base)] leading-relaxed text-white/80">
+          <h1 className="page-header-title rise rise-delay-1">AI Assistant</h1>
+          <p className="page-header-lede rise rise-delay-2">
             Your on-site budtender for product lines, authenticity, lab results, and finding DIME.
           </p>
           <div className="rise rise-delay-3 mt-8 flex flex-wrap gap-3">
             <a href="#assistant-chat" className="btn-primary">
               Ask a question
             </a>
-            <Link href="/faq" className="btn-outline-light">
+            <Link href="/faq" className="btn-outline">
               View FAQ
             </Link>
           </div>

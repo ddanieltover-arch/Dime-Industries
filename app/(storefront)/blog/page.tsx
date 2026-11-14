@@ -1,6 +1,5 @@
 // app/blog/page.tsx
 import type { Metadata } from "next";
-import Image from "next/image";
 import Link from "next/link";
 import { listBlogPosts } from "@/lib/cms/store";
 import { JsonLdScript } from "@/components/seo/json-ld-script";
@@ -26,34 +25,18 @@ export default async function BlogIndexPage() {
     <>
       <JsonLdScript data={breadcrumbs} />
 
-      <section className="relative isolate min-h-[min(52vh,480px)] overflow-hidden">
-        <Image
-          src="/brand/awards.webp"
-          alt=""
-          fill
-          priority
-          className="pointer-events-none object-cover object-center"
-          sizes="100vw"
-        />
-        <div className="media-veil absolute inset-0" aria-hidden />
-        <div
-          className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_25%_35%,rgba(201,177,56,0.14),transparent_55%)]"
-          aria-hidden
-        />
-
-        <div className="relative mx-auto flex min-h-[min(52vh,480px)] max-w-7xl flex-col justify-end px-[var(--container-pad-x)] pb-12 pt-28 sm:pb-16 sm:pt-32">
+      <section className="page-header">
+        <div className="mx-auto max-w-7xl px-[var(--container-pad-x)]">
           <p className="section-eyebrow">DIME</p>
-          <h1 className="mt-2 max-w-xl font-[var(--font-display)] text-[clamp(2.25rem,6vw,3.75rem)] uppercase leading-[0.95] tracking-[0.06em] text-white">
-            Blog
-          </h1>
-          <p className="mt-4 max-w-md text-[var(--scale-base)] leading-relaxed text-white/80">
+          <h1 className="page-header-title">Blog</h1>
+          <p className="page-header-lede">
             Product education, potency guides, and notes from the brand — built for curious shoppers.
           </p>
           <div className="mt-8 flex flex-wrap gap-3">
             <a href="#posts" className="btn-primary">
               Read posts
             </a>
-            <Link href="/shop" className="btn-outline-light">
+            <Link href="/shop" className="btn-outline">
               Shop now
             </Link>
           </div>

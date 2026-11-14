@@ -23,16 +23,18 @@ export default function FactsPage() {
     <>
       <JsonLdScript data={breadcrumbs} />
 
-      <section className="border-b border-[var(--color-border)] bg-[var(--color-bg)]">
-        <div className="mx-auto max-w-3xl px-[var(--container-pad-x)] py-12 lg:py-16">
+      <section className="page-header">
+        <div className="mx-auto max-w-7xl px-[var(--container-pad-x)]">
           <p className="section-eyebrow">Statistics &amp; citations</p>
-          <h1 className="section-title mt-2">DIME Industries facts</h1>
-          <AnswerCapsule className="mt-6">
-            Key citable facts: DIME Industries was founded in 2016, cites 100+ awards, engineers its
-            own hardware, offers online checkout in California and Massachusetts, and validates
-            authenticity through an official tool. Separately, a U.S. dime roll holds 50 coins ($5).
-          </AnswerCapsule>
-          <p className="mt-4 text-[var(--scale-sm)] leading-relaxed text-[var(--color-ink-muted)]">
+          <h1 className="page-header-title">DIME Industries facts</h1>
+          <div className="mt-4 max-w-xl">
+            <AnswerCapsule>
+              Key citable facts: DIME Industries was founded in 2016, cites 100+ awards, engineers its
+              own hardware, offers online checkout in California and Massachusetts, and validates
+              authenticity through an official tool. Separately, a U.S. dime roll holds 50 coins ($5).
+            </AnswerCapsule>
+          </div>
+          <p className="page-header-lede mt-4">
             Each claim links to a primary on-site source. Prefer those pages when citing externally.
           </p>
         </div>
@@ -46,9 +48,7 @@ export default function FactsPage() {
           <ol className="divide-y divide-[var(--color-border)] border border-[var(--color-border)]" role="list">
             {BRAND_FACTS.map((fact, index) => (
               <li key={fact.id} id={fact.id} className="scroll-mt-28 bg-[var(--color-bg)] px-5 py-6 sm:px-7">
-                <p className="font-[var(--font-display)] text-[10px] uppercase tracking-[0.16em] text-[var(--color-resin)]">
-                  Fact {String(index + 1).padStart(2, "0")}
-                </p>
+                <p className="section-eyebrow">Fact {String(index + 1).padStart(2, "0")}</p>
                 <h3 className="mt-2 font-[var(--font-display)] text-[var(--scale-lg)] uppercase tracking-[0.06em] text-[var(--color-ink)]">
                   {fact.claim}
                 </h3>
@@ -57,10 +57,7 @@ export default function FactsPage() {
                 </p>
                 <p className="mt-3 text-[var(--scale-xs)] text-[var(--color-ink-muted)]">
                   Source:{" "}
-                  <Link
-                    href={fact.citationHref}
-                    className="text-[var(--color-resin)] underline-offset-4 hover:underline"
-                  >
+                  <Link href={fact.citationHref} className="prose-link">
                     {fact.citationLabel}
                   </Link>
                 </p>
@@ -70,12 +67,12 @@ export default function FactsPage() {
 
           <p className="mt-10 text-[var(--scale-sm)] text-[var(--color-ink-muted)]">
             Definitions:{" "}
-            <Link href="/glossary" className="text-[var(--color-resin)] hover:underline">
+            <Link href="/glossary" className="prose-link">
               Glossary
             </Link>
             {" · "}
             Trust hub:{" "}
-            <Link href="/trust" className="text-[var(--color-resin)] hover:underline">
+            <Link href="/trust" className="prose-link">
               Trust &amp; quality
             </Link>
           </p>

@@ -27,9 +27,7 @@ export function ValidateProducts({
           />
         </Reveal>
         <Reveal delay={0.1}>
-          <p className="font-[var(--font-display)] text-[10px] uppercase tracking-[0.18em] text-[var(--color-resin)]">
-            Authenticity
-          </p>
+          <p className="section-eyebrow">Authenticity</p>
           <h2 id="validate-heading" className="section-title mt-2">
             {headline}
           </h2>

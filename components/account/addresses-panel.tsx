@@ -42,7 +42,7 @@ export function AddressesPanel({ addresses }: { addresses: AccountAddress[] }) {
                 <p className="font-[var(--font-display)] uppercase tracking-[0.04em] text-[var(--color-ink)]">
                   {address.label}
                   {address.isDefault ? (
-                    <span className="ml-2 font-[var(--font-display)] text-[10px] uppercase tracking-[0.14em] text-[var(--color-resin)]">
+                    <span className="section-eyebrow ml-2 inline">
                       default
                     </span>
                   ) : null}
@@ -62,7 +62,7 @@ export function AddressesPanel({ addresses }: { addresses: AccountAddress[] }) {
                     <input type="hidden" name="addressId" value={address.id} />
                     <button
                       type="submit"
-                      className="nav-link inline-flex min-h-11 items-center touch-manipulation text-[var(--color-resin)] hover:text-[var(--color-resin-hover)]"
+                      className="nav-link inline-flex min-h-11 items-center touch-manipulation"
                     >
                       Make default
                     </button>
@@ -86,16 +86,14 @@ export function AddressesPanel({ addresses }: { addresses: AccountAddress[] }) {
       {(defaultState.success || defaultState.error) && (
         <p
           role={defaultState.error ? "alert" : "status"}
-          className={`text-[var(--scale-sm)] ${defaultState.error ? "text-[var(--color-flag)]" : "text-[var(--color-resin)]"}`}
+          className={`text-[var(--scale-sm)] ${defaultState.error ? "text-[var(--color-flag)]" : "text-[var(--color-ink)]"}`}
         >
           {defaultState.error ?? defaultState.message}
         </p>
       )}
 
       <form action={addAction} className="max-w-lg space-y-3 border-t border-[var(--color-border)] pt-8">
-        <h3 className="font-[var(--font-display)] text-[10px] uppercase tracking-[0.16em] text-[var(--color-resin)]">
-          Add address
-        </h3>
+        <h3 className="section-eyebrow">Add address</h3>
         <label className="block text-[var(--scale-xs)] text-[var(--color-ink-soft)]">
           Label
           <input name="label" required placeholder="Home" className="field-input field-control mt-1.5 min-h-11" />
@@ -166,7 +164,7 @@ export function AddressesPanel({ addresses }: { addresses: AccountAddress[] }) {
           </select>
         </label>
         <label className="flex min-h-11 items-center gap-3 text-[var(--scale-sm)] text-[var(--color-ink)]">
-          <input type="checkbox" name="isDefault" className="accent-[var(--color-resin)]" />
+          <input type="checkbox" name="isDefault" className="accent-[var(--color-ink)]" />
           Set as default
         </label>
         {addState.error ? (
@@ -180,7 +178,7 @@ export function AddressesPanel({ addresses }: { addresses: AccountAddress[] }) {
           </p>
         ) : null}
         {addState.success || removeState.success ? (
-          <p role="status" className="text-[var(--scale-sm)] text-[var(--color-resin)]">
+          <p role="status" className="text-[var(--scale-sm)] text-[var(--color-ink)]">
             {addState.message ?? removeState.message}
           </p>
         ) : null}

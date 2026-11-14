@@ -183,7 +183,7 @@ export function MobileBottomNav() {
     <>
       <nav
         aria-label="Mobile primary"
-        className="fixed inset-x-0 bottom-0 z-40 border-t border-[var(--color-border)] bg-[var(--color-bg)]/95 backdrop-blur-md lg:hidden"
+        className="fixed inset-x-0 bottom-0 z-40 border-t border-[var(--color-border)] bg-[var(--color-bg)] lg:hidden"
         style={{ paddingBottom: "env(safe-area-inset-bottom)" }}
       >
         <ul className="mx-auto grid h-14 max-w-lg grid-cols-5" role="list">
@@ -199,14 +199,14 @@ export function MobileBottomNav() {
                     "font-[var(--font-display)] text-[0.625rem] uppercase tracking-[0.1em]",
                     "touch-manipulation transition-colors duration-[var(--motion-fast)]",
                     active
-                      ? "text-[var(--color-resin)]"
-                      : "text-[var(--color-ink-muted)] hover:text-[var(--color-resin)]",
+                      ? "text-[var(--color-ink)]"
+                      : "text-[var(--color-ink-muted)] hover:text-[var(--color-ink)]",
                   ].join(" ")}
                 >
                   <span className="relative">
                     {item.icon}
                     {item.badge && item.badge > 0 ? (
-                      <span className="absolute -right-2.5 -top-1.5 flex h-4 min-w-4 items-center justify-center bg-[var(--color-resin)] px-1 text-[0.5625rem] font-[var(--font-display)] leading-none text-black">
+                      <span className="absolute -right-2.5 -top-1.5 flex h-4 min-w-4 items-center justify-center rounded-sm bg-[var(--color-ink)] px-1 text-[0.5625rem] font-[var(--font-display)] leading-none text-white">
                         {item.badge > 99 ? "99+" : item.badge}
                       </span>
                     ) : null}
@@ -228,8 +228,8 @@ export function MobileBottomNav() {
                 "font-[var(--font-display)] text-[0.625rem] uppercase tracking-[0.1em]",
                 "touch-manipulation transition-colors duration-[var(--motion-fast)]",
                 moreOpen || moreActive
-                  ? "text-[var(--color-resin)]"
-                  : "text-[var(--color-ink-muted)] hover:text-[var(--color-resin)]",
+                  ? "text-[var(--color-ink)]"
+                  : "text-[var(--color-ink-muted)] hover:text-[var(--color-ink)]",
               ].join(" ")}
             >
               <MoreIcon />
@@ -243,7 +243,7 @@ export function MobileBottomNav() {
         <>
           <button
             type="button"
-            className="drawer-overlay fixed inset-0 z-50 bg-black/75 backdrop-blur-sm lg:hidden"
+            className="drawer-overlay fixed inset-0 z-50 bg-black/40 lg:hidden"
             data-state="open"
             aria-label="Close menu"
             tabIndex={-1}
@@ -256,18 +256,18 @@ export function MobileBottomNav() {
             aria-modal="true"
             aria-labelledby={titleId}
             data-state="open"
-            className="drawer-panel-left fixed inset-y-0 left-0 z-50 flex w-[min(100vw,22rem)] flex-col border-r border-[var(--color-border)] bg-[var(--color-bg)] shadow-[var(--shadow-elevated)] outline-none lg:hidden"
+            className="drawer-panel-left fixed inset-y-0 left-0 z-50 flex w-[min(100vw,22rem)] flex-col border-r border-[var(--color-border)] bg-[var(--color-bg)] outline-none lg:hidden"
           >
-            <div className="glass-panel flex h-16 items-center justify-between border-b border-[var(--color-border)] px-5">
+            <div className="flex h-16 items-center justify-between border-b border-[var(--color-border)] px-5">
               <p
                 id={titleId}
-                className="font-[var(--font-display)] text-[10px] uppercase tracking-[0.18em] text-[var(--color-resin)]"
+                className="font-[var(--font-display)] text-[10px] uppercase tracking-[0.14em] text-[var(--color-ink)]"
               >
                 More
               </p>
               <button
                 type="button"
-                className="min-h-11 min-w-11 touch-manipulation font-[var(--font-display)] text-[10px] uppercase tracking-[0.14em] text-[var(--color-ink-soft)] transition-colors hover:text-[var(--color-resin)]"
+                className="min-h-11 min-w-11 touch-manipulation font-[var(--font-display)] text-[10px] uppercase tracking-[0.12em] text-[var(--color-ink-soft)] transition-colors hover:text-[var(--color-ink)]"
                 aria-label="Close menu"
                 onClick={() => setMoreOpen(false)}
               >
@@ -285,10 +285,10 @@ export function MobileBottomNav() {
                         href={link.href}
                         aria-current={active ? "page" : undefined}
                         onClick={() => setMoreOpen(false)}
-                        className={`block min-h-12 border-b border-[var(--color-border)] py-4 font-[var(--font-display)] text-[var(--scale-sm)] uppercase tracking-[0.14em] transition-colors duration-[var(--motion-fast)] ${
+                        className={`block min-h-12 border-b border-[var(--color-border)] py-4 font-[var(--font-display)] text-[var(--scale-sm)] uppercase tracking-[0.12em] transition-colors duration-[var(--motion-fast)] ${
                           active
-                            ? "text-[var(--color-resin)]"
-                            : "text-[var(--color-ink)] hover:text-[var(--color-resin)]"
+                            ? "text-[var(--color-ink)]"
+                            : "text-[var(--color-ink-soft)] hover:text-[var(--color-ink)]"
                         }`}
                       >
                         {link.label}

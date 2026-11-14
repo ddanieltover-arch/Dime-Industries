@@ -21,7 +21,7 @@ export default function SignupPage() {
         </p>
         <Link
           href="/login"
-          className="mt-6 inline-block text-[var(--color-resin-strong)] underline-offset-4 hover:underline"
+          className="prose-link mt-6 inline-block"
         >
           Go to sign in
         </Link>

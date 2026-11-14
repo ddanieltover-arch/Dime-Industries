@@ -1,6 +1,5 @@
 // app/locations/page.tsx
 import type { Metadata } from "next";
-import Image from "next/image";
 import Link from "next/link";
 import { Reveal, Stagger, StaggerItem } from "@/components/motion";
 import { JsonLdScript } from "@/components/seo/json-ld-script";
@@ -35,27 +34,11 @@ export default function LocationsPage() {
       <JsonLdScript data={breadcrumbs} />
       <JsonLdScript data={hubList} />
 
-      <section className="relative isolate min-h-[min(72vh,640px)] overflow-hidden">
-        <Image
-          src="/brand/concrete.jpg"
-          alt=""
-          fill
-          priority
-          className="object-cover object-center"
-          sizes="100vw"
-        />
-        <div className="media-veil absolute inset-0" aria-hidden />
-        <div
-          className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_50%_20%,rgba(201,177,56,0.14),transparent_55%)]"
-          aria-hidden
-        />
-
-        <div className="relative mx-auto flex min-h-[min(72vh,640px)] max-w-7xl flex-col justify-end px-[var(--container-pad-x)] pb-14 pt-28 sm:pb-20 sm:pt-32">
+      <section className="page-header">
+        <div className="mx-auto max-w-7xl px-[var(--container-pad-x)]">
           <p className="section-eyebrow rise">Walk.Run.Drive.</p>
-          <h1 className="rise rise-delay-1 mt-2 max-w-2xl font-[var(--font-display)] text-[clamp(2.25rem,6vw,4rem)] uppercase leading-[0.95] tracking-[0.08em] text-white">
-            Find DIME Near Me
-          </h1>
-          <p className="rise rise-delay-2 mt-4 max-w-md text-[var(--scale-base)] leading-relaxed text-white/80">
+          <h1 className="page-header-title rise rise-delay-1">Find DIME Near Me</h1>
+          <p className="page-header-lede rise rise-delay-2">
             Locate a licensed DIME dispensary or retailer for carts, vape pens, edibles, and prerolls — or shop
             online for delivery in California and Massachusetts.
           </p>
@@ -63,7 +46,7 @@ export default function LocationsPage() {
             <a href="#states" className="btn-primary">
               Browse by state
             </a>
-            <Link href="/shop" className="btn-outline-light">
+            <Link href="/shop" className="btn-outline">
               Shop online
             </Link>
           </div>

@@ -16,7 +16,7 @@ export const metadata: Metadata = {
   applicationName: "DIME Industries",
   appleWebApp: {
     capable: true,
-    statusBarStyle: "black-translucent",
+    statusBarStyle: "default",
     title: "DIME",
   },
   formatDetection: {
@@ -53,10 +53,10 @@ export const metadata: Metadata = {
 
 export const viewport: Viewport = {
   themeColor: [
-    { media: "(prefers-color-scheme: dark)", color: "#0e0e0e" },
-    { media: "(prefers-color-scheme: light)", color: "#0e0e0e" },
+    { media: "(prefers-color-scheme: dark)", color: "#ffffff" },
+    { media: "(prefers-color-scheme: light)", color: "#ffffff" },
   ],
-  colorScheme: "dark",
+  colorScheme: "light",
   viewportFit: "cover",
 };
 
@@ -65,7 +65,7 @@ const websiteJsonLd = buildWebSiteJsonLd();
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" data-theme="dark" suppressHydrationWarning>
+    <html lang="en" data-theme="retail" suppressHydrationWarning>
       <head>
         <script dangerouslySetInnerHTML={{ __html: THEME_BOOT_SCRIPT }} />
         <link rel="preload" as="image" href="/brand/hero-poster.webp" fetchPriority="high" />

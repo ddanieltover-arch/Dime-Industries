@@ -75,7 +75,7 @@ export function ActiveFilterChips({
         <Link
           key={chip.key}
           href={chip.href}
-          className="inline-flex items-center gap-2 border border-[var(--color-resin)] bg-[var(--color-surface)] px-3 py-1.5 font-[var(--font-display)] text-[10px] uppercase tracking-[0.12em] text-[var(--color-resin)] transition-colors hover:bg-[var(--color-resin)] hover:text-black"
+          className="inline-flex items-center gap-2 border border-[var(--color-ink)] bg-[var(--color-surface)] px-3 py-1.5 font-[var(--font-display)] text-[10px] uppercase tracking-[0.12em] text-[var(--color-ink)] transition-colors hover:bg-[var(--color-ink)] hover:text-white"
         >
           <span>{chip.label}</span>
           <span aria-hidden="true">×</span>

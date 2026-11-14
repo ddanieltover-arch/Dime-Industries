@@ -54,25 +54,11 @@ export function SiteFooter() {
   const year = new Date().getFullYear();
 
   return (
-    <footer className="relative overflow-hidden border-t border-[var(--color-border)] bg-[var(--color-bg)] pb-[calc(3.5rem+env(safe-area-inset-bottom))] lg:pb-0">
-      <div
-        className="pointer-events-none absolute inset-0 opacity-[0.07]"
-        style={{
-          backgroundImage: "url(/brand/concrete.jpg)",
-          backgroundSize: "cover",
-          backgroundPosition: "center",
-        }}
-        aria-hidden
-      />
-      <div
-        className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_10%_0%,rgba(201,177,56,0.1),transparent_45%)]"
-        aria-hidden
-      />
-
-      <div className="relative mx-auto max-w-7xl px-[var(--container-pad-x)] pt-14 lg:pt-16">
+    <footer className="border-t border-[var(--color-border)] bg-[var(--color-band)] pb-[calc(3.5rem+env(safe-area-inset-bottom))] lg:pb-0">
+      <div className="mx-auto max-w-7xl px-[var(--container-pad-x)] pt-14 lg:pt-16">
         <div className="flex flex-col gap-8 border-b border-[var(--color-border)] pb-10 lg:flex-row lg:items-end lg:justify-between">
           <div className="max-w-md">
-            <div className="relative h-10 w-40">
+            <div className="brand-mark relative h-10 w-40">
               <Image
                 src="/brand/logo.png"
                 alt="DIME Industries"
@@ -81,10 +67,10 @@ export function SiteFooter() {
                 sizes="160px"
               />
             </div>
-            <p className="mt-3 font-[var(--font-script)] text-[var(--scale-xl)] text-[var(--color-resin)]">
+            <p className="mt-4 text-[var(--scale-sm)] font-normal text-[var(--color-ink-soft)]">
               Elevate your experience
             </p>
-            <p className="mt-3 text-[var(--scale-xs)] uppercase tracking-[0.14em] text-[var(--color-ink-muted)]">
+            <p className="mt-2 text-[var(--scale-xs)] uppercase tracking-[0.12em] text-[var(--color-ink-muted)]">
               Est. 2016 · Official site of DIME Industries
             </p>
             <p className="mt-4 text-[var(--scale-sm)] leading-relaxed text-[var(--color-ink-soft)]">
@@ -108,7 +94,7 @@ export function SiteFooter() {
         <div className="grid grid-cols-2 gap-x-8 gap-y-10 py-12 sm:grid-cols-4">
           {COLUMNS.map((col) => (
             <div key={col.heading}>
-              <h3 className="font-[var(--font-display)] text-[10px] uppercase tracking-[0.18em] text-[var(--color-resin)]">
+              <h3 className="font-[var(--font-display)] text-[10px] uppercase tracking-[0.14em] text-[var(--color-ink)]">
                 {col.heading}
               </h3>
               <ul className="mt-5 space-y-3" role="list">
@@ -116,7 +102,7 @@ export function SiteFooter() {
                   <li key={link.href}>
                     <Link
                       href={link.href}
-                      className="text-[var(--scale-sm)] text-[var(--color-ink-soft)] transition-colors duration-[var(--motion-fast)] hover:text-[var(--color-resin)]"
+                      className="text-[var(--scale-sm)] text-[var(--color-ink-soft)] transition-colors duration-[var(--motion-fast)] hover:text-[var(--color-ink)]"
                     >
                       {link.label}
                     </Link>
@@ -130,7 +116,7 @@ export function SiteFooter() {
         <div className="border-t border-[var(--color-border)] py-10">
           <div className="flex flex-col gap-8 lg:flex-row lg:justify-between">
             <div className="max-w-sm">
-              <p className="font-[var(--font-display)] text-[10px] uppercase tracking-[0.18em] text-[var(--color-resin)]">
+              <p className="font-[var(--font-display)] text-[10px] uppercase tracking-[0.14em] text-[var(--color-ink)]">
                 Licensing
               </p>
               <ul className="mt-4 space-y-1.5 text-[var(--scale-xs)] leading-relaxed text-[var(--color-ink-soft)]" role="list">
@@ -152,7 +138,7 @@ export function SiteFooter() {
           <p className="text-[var(--scale-xs)] text-[var(--color-ink-muted)]">
             © {year} DIME Industries. 21+ only.
           </p>
-          <p className="font-[var(--font-display)] text-[10px] uppercase tracking-[0.14em] text-[var(--color-ink-muted)]">
+          <p className="font-[var(--font-display)] text-[10px] uppercase tracking-[0.12em] text-[var(--color-ink-muted)]">
             Lab-tested · Licensed · Award-winning
           </p>
         </div>

@@ -1,4 +1,3 @@
-// components/account/account-nav.tsx
 "use client";
 
 import Link from "next/link";
@@ -42,14 +41,14 @@ export function AccountNav() {
                   aria-current={active ? "page" : undefined}
                   className={`relative inline-flex min-h-11 items-center touch-manipulation px-3 font-[var(--font-display)] text-[10px] uppercase tracking-[0.14em] transition-colors ${
                     active
-                      ? "text-[var(--color-resin)]"
-                      : "text-[var(--color-ink-soft)] hover:text-[var(--color-resin)]"
+                      ? "text-[var(--color-ink)]"
+                      : "text-[var(--color-ink-soft)] hover:text-[var(--color-ink)]"
                   }`}
                 >
                   {link.label}
                   {active ? (
                     <span
-                      className="absolute inset-x-3 bottom-1 h-px bg-[var(--color-resin)]"
+                      className="absolute inset-x-3 bottom-1 h-px bg-[var(--color-ink)]"
                       aria-hidden
                     />
                   ) : null}

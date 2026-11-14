@@ -38,9 +38,7 @@ export default async function CookiePreferencesPage() {
     >
       <div className="space-y-12">
         <div>
-          <p className="font-[var(--font-display)] text-[10px] uppercase tracking-[0.18em] text-[var(--color-resin)]">
-            Overview
-          </p>
+          <p className="section-eyebrow">Overview</p>
           <h2 className="section-title mt-2">How we use cookies</h2>
           <p className="mt-4 text-[var(--scale-base)] leading-relaxed text-[var(--color-ink-soft)]">
             Cookies and similar technologies store small pieces of data in your browser. We use them to keep you
@@ -48,7 +46,7 @@ export default async function CookiePreferencesPage() {
             performance or marketing. Details on personal data live in the{" "}
             <Link
               href="/legal/privacy"
-              className="text-[var(--color-resin)] underline-offset-4 hover:underline"
+              className="prose-link"
             >
               Privacy Policy
             </Link>
@@ -57,9 +55,7 @@ export default async function CookiePreferencesPage() {
         </div>
 
         <div>
-          <p className="font-[var(--font-display)] text-[10px] uppercase tracking-[0.18em] text-[var(--color-resin)]">
-            Categories
-          </p>
+          <p className="section-eyebrow">Categories</p>
           <h2 className="section-title mt-2">What each category covers</h2>
           <ul className="mt-8 grid gap-px bg-[var(--color-border)] sm:grid-cols-3" role="list">
             {CATEGORIES.map((cat) => (
@@ -74,9 +70,7 @@ export default async function CookiePreferencesPage() {
         </div>
 
         <div>
-          <p className="font-[var(--font-display)] text-[10px] uppercase tracking-[0.18em] text-[var(--color-resin)]">
-            Your choices
-          </p>
+          <p className="section-eyebrow">Your choices</p>
           <h2 className="section-title mt-2">Manage cookies</h2>
           <p className="mt-3 text-[var(--scale-sm)] text-[var(--color-ink-soft)]">
             Update analytics and marketing preferences anytime. Necessary cookies cannot be turned off. Saving
@@ -92,7 +86,7 @@ export default async function CookiePreferencesPage() {
               Email notification settings live under{" "}
               <Link
                 href="/account/notifications"
-                className="text-[var(--color-resin)] underline-offset-4 hover:underline"
+                className="prose-link"
               >
                 Account → Notifications
               </Link>
@@ -102,26 +96,24 @@ export default async function CookiePreferencesPage() {
         </div>
 
         <div>
-          <p className="font-[var(--font-display)] text-[10px] uppercase tracking-[0.18em] text-[var(--color-resin)]">
-            Related
-          </p>
+          <p className="section-eyebrow">Related</p>
           <p className="mt-3 text-[var(--scale-sm)] leading-relaxed text-[var(--color-ink-soft)]">
             See also the{" "}
             <Link
               href="/legal/privacy"
-              className="text-[var(--color-resin)] underline-offset-4 hover:underline"
+              className="prose-link"
             >
               Privacy Policy
             </Link>
             ,{" "}
             <Link
               href="/legal/terms"
-              className="text-[var(--color-resin)] underline-offset-4 hover:underline"
+              className="prose-link"
             >
               Terms of Service
             </Link>
             , and{" "}
-            <Link href="/contact" className="text-[var(--color-resin)] underline-offset-4 hover:underline">
+            <Link href="/contact" className="prose-link">
               Contact
             </Link>{" "}
             for sales@dimeindustries.us data requests.

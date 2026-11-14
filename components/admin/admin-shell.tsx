@@ -38,7 +38,7 @@ export function AdminShell({ email, children }: Props) {
   }, [open]);
 
   return (
-    <div className="flex min-h-[100dvh] bg-[var(--color-bg)] text-[var(--color-ink)]">
+    <div className="flex min-h-[100dvh] bg-[var(--color-band)] text-[var(--color-ink)]">
       <AdminSidebar open={open} onClose={() => setOpen(false)} />
       <div className="flex min-w-0 flex-1 flex-col">
         <AdminTopbar
@@ -47,7 +47,9 @@ export function AdminShell({ email, children }: Props) {
           onMenuOpen={() => setOpen(true)}
         />
         <div className="flex-1 overflow-x-hidden px-4 py-6 sm:px-6 lg:px-8 lg:py-8">
-          <div className="mx-auto w-full max-w-6xl">{children}</div>
+          <div className="mx-auto w-full max-w-6xl rounded-[var(--radius-lg)] border border-[var(--color-border)] bg-[var(--color-bg)] p-4 sm:p-6 lg:p-8">
+            {children}
+          </div>
         </div>
       </div>
     </div>

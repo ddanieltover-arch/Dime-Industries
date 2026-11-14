@@ -36,7 +36,7 @@ export default async function AccountNotificationsPage() {
         </h2>
         <p className="mt-2 text-[var(--scale-sm)] text-[var(--color-ink-soft)]">
           Same controls as the sitewide banner and{" "}
-          <Link href="/cookies" className="text-[var(--color-resin)] underline-offset-4 hover:underline">
+          <Link href="/cookies" className="prose-link">
             /cookies
           </Link>
           .

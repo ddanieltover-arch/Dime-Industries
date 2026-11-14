@@ -33,13 +33,11 @@ export default async function AccountOrderDetailPage({ params }: { params: Param
     <div>
       <Link
         href="/account/orders"
-        className="nav-link inline-flex min-h-11 items-center text-[var(--color-ink-muted)] hover:text-[var(--color-resin)]"
+        className="nav-link inline-flex min-h-11 items-center"
       >
         ← All orders
       </Link>
-      <p className="mt-6 font-[var(--font-display)] text-[10px] uppercase tracking-[0.18em] text-[var(--color-resin)]">
-        Order detail
-      </p>
+      <p className="section-eyebrow mt-6">Order detail</p>
       <h2 className="section-title mt-2">{order.id}</h2>
       <p className="mt-2 text-[var(--scale-sm)] text-[var(--color-ink-soft)]">
         Placed {new Date(order.createdAt).toLocaleString()}
@@ -50,14 +48,12 @@ export default async function AccountOrderDetailPage({ params }: { params: Param
         <OrderTrackingPanel order={order} />
 
         <section className="border border-[var(--color-border)] bg-[var(--color-surface)] p-6">
-          <h3 className="font-[var(--font-display)] text-[10px] uppercase tracking-[0.16em] text-[var(--color-resin)]">
-            Receipt
-          </h3>
+          <h3 className="section-eyebrow">Receipt</h3>
           <ul className="mt-5 space-y-3 text-[var(--scale-sm)]" role="list">
             {order.lines.map((line) => (
               <li key={line.variantId} className="flex justify-between gap-4">
                 <span>
-                  <Link href={`/product/${line.productSlug}`} className="hover:text-[var(--color-resin)]">
+                  <Link href={`/product/${line.productSlug}`} className="prose-link">
                     {line.productName}
                   </Link>{" "}
                   × {line.quantity}
@@ -100,7 +96,7 @@ export default async function AccountOrderDetailPage({ params }: { params: Param
             </div>
             <div className="flex justify-between border-t border-[var(--color-border)] pt-3 font-[var(--font-display)]">
               <dt>Total</dt>
-              <dd className="text-[var(--color-resin-strong)]">{formatPrice(order.totalCents)}</dd>
+              <dd className="text-[var(--color-ink)]">{formatPrice(order.totalCents)}</dd>
             </div>
           </dl>
 

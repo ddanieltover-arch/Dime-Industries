@@ -23,13 +23,13 @@ export function ReturnRequestForm({ orderId }: { orderId: string }) {
     >
       <h3
         id="return-request-heading"
-        className="font-[var(--font-display)] text-[10px] uppercase tracking-[0.16em] text-[var(--color-resin)]"
+        className="section-eyebrow"
       >
         Request a return
       </h3>
       <p className="mt-3 text-[var(--scale-sm)] text-[var(--color-ink-soft)]">
         Defective hardware and shipping issues may qualify under our{" "}
-        <Link href="/legal/returns" className="text-[var(--color-resin)] hover:underline">
+        <Link href="/legal/returns" className="prose-link">
           Returns Policy
         </Link>
         . Validate the product when possible before submitting.
@@ -67,7 +67,7 @@ export function ReturnRequestForm({ orderId }: { orderId: string }) {
           </p>
         ) : null}
         {state.success ? (
-          <p role="status" className="text-[var(--scale-sm)] text-[var(--color-resin)]">
+          <p role="status" className="text-[var(--scale-sm)] text-[var(--color-ink)]">
             {state.success}
           </p>
         ) : null}

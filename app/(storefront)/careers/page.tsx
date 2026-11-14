@@ -1,6 +1,5 @@
 // app/careers/page.tsx
 import type { Metadata } from "next";
-import Image from "next/image";
 import Link from "next/link";
 
 export const metadata: Metadata = {
@@ -30,34 +29,18 @@ const VALUES = [
 export default function CareersPage() {
   return (
     <>
-      <section className="relative isolate min-h-[min(72vh,640px)] overflow-hidden">
-        <Image
-          src="/brand/awards.webp"
-          alt=""
-          fill
-          priority
-          className="object-cover object-center"
-          sizes="100vw"
-        />
-        <div className="media-veil absolute inset-0" aria-hidden />
-        <div
-          className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_75%_25%,rgba(201,177,56,0.16),transparent_50%)]"
-          aria-hidden
-        />
-
-        <div className="relative mx-auto flex min-h-[min(72vh,640px)] max-w-7xl flex-col justify-end px-[var(--container-pad-x)] pb-14 pt-28 sm:pb-20 sm:pt-32">
+      <section className="page-header">
+        <div className="mx-auto max-w-7xl px-[var(--container-pad-x)]">
           <p className="section-eyebrow rise">DIME</p>
-          <h1 className="rise rise-delay-1 mt-2 max-w-xl font-[var(--font-display)] text-[clamp(2.25rem,6vw,4rem)] uppercase leading-[0.95] tracking-[0.06em] text-white">
-            Careers
-          </h1>
-          <p className="rise rise-delay-2 mt-4 max-w-md text-[var(--scale-base)] leading-relaxed text-white/80">
+          <h1 className="page-header-title rise rise-delay-1">Careers</h1>
+          <p className="page-header-lede rise rise-delay-2">
             Join DIME Industries — award-winning cannabis hardware and products, built with craft, compliance, and brand excellence.
           </p>
           <div className="rise rise-delay-3 mt-8 flex flex-wrap gap-3">
             <a href={`mailto:${SUPPORT}?subject=Careers%20inquiry`} className="btn-primary">
               Apply now
             </a>
-            <Link href="/about" className="btn-outline-light">
+            <Link href="/about" className="btn-outline">
               Our story
             </Link>
           </div>

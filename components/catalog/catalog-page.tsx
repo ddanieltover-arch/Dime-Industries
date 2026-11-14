@@ -1,5 +1,4 @@
 // components/catalog/catalog-page.tsx
-import Image from "next/image";
 import Link from "next/link";
 import { AGE_GATE_ENTRY_ENABLED } from "@/lib/compliance/age-gate-flags";
 import { ActiveFilterChips, hasActiveCatalogFilters } from "@/components/catalog/active-filter-chips";
@@ -20,14 +19,6 @@ import { AnswerCapsule } from "@/components/seo/answer-capsule";
 import { OutboundCitations } from "@/components/seo/outbound-citations";
 import { outboundCitationsFor } from "@/lib/seo/outbound-citations";
 
-const CATEGORY_HERO: Record<string, string> = {
-  vapes: "/brand/category-vapes.webp",
-  edibles: "/brand/category-edibles.webp",
-  prerolls: "/brand/category-prerolls.webp",
-  "live-reserve": "/brand/category-live-reserve.webp",
-  gummies: "/brand/category-gummies.webp",
-};
-
 type Props = {
   title: string;
   description?: string;
@@ -39,22 +30,13 @@ type Props = {
   page?: number;
   pageSize?: number;
   facets: CatalogFacetCounts;
-  /** Optional full-bleed hero image; defaults by category or shop poster */
-  heroImage?: string;
-  /** Pillar → cluster educational / commercial links under the hero */
+  /** Pillar → cluster educational / commercial links under the header */
   seoLinks?: CatalogSeoLink[];
   /** GEO answer capsule shown under the H1 */
   answer?: string;
   /** When set, renders 2–3 educational outbound citations under the grid */
   outboundKey?: string;
 };
-
-function resolveHero(basePath: string, heroImage?: string) {
-  if (heroImage) return heroImage;
-  const category = basePath.split("/")[2];
-  if (category && CATEGORY_HERO[category]) return CATEGORY_HERO[category];
-  return "/brand/hero-poster.webp";
-}
 
 export async function CatalogPageShell({
   title,
@@ -67,14 +49,12 @@ export async function CatalogPageShell({
   page = 1,
   pageSize = CATALOG_DEFAULT_PAGE_SIZE,
   facets,
-  heroImage,
   seoLinks = [],
   answer,
   outboundKey,
 }: Props) {
   const hasFilters = hasActiveCatalogFilters(filters, basePath);
   const items = ageVerified ? await applyLiveCoaToCards(rawItems) : rawItems;
-  const hero = resolveHero(basePath, heroImage);
   const activeCategory = basePath.startsWith("/shop/") ? basePath.split("/")[2] : undefined;
   const outbound = outboundKey ? outboundCitationsFor(outboundKey) : [];
 
@@ -99,47 +79,20 @@ export async function CatalogPageShell({
 
   return (
     <>
-          <section className="relative isolate overflow-hidden border-b border-[var(--color-border)]">
-            <Image
-              src={hero}
-              alt=""
-              fill
-              priority
-              className="object-cover object-center"
-              sizes="100vw"
-            />
-            <div className="media-veil absolute inset-0" aria-hidden />
-            <div
-              className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_75%_30%,rgba(201,177,56,0.14),transparent_50%)]"
-              aria-hidden
-            />
-
-            <div className="relative mx-auto max-w-7xl px-[var(--container-pad-x)] pb-10 pt-24 sm:pb-12 sm:pt-28">
+          <section className="page-header">
+            <div className="mx-auto max-w-7xl px-[var(--container-pad-x)]">
               <p className="section-eyebrow">DIME</p>
-              <h1 className="mt-2 max-w-xl font-[var(--font-display)] text-[clamp(2rem,5vw,3.5rem)] uppercase leading-[0.95] tracking-[0.06em] text-white">
-                {title}
-              </h1>
-              {description ? (
-                <p className="mt-3 max-w-lg text-[var(--scale-base)] leading-relaxed text-white/80">
-                  {description}
-                </p>
-              ) : null}
+              <h1 className="page-header-title">{title}</h1>
+              {description ? <p className="page-header-lede">{description}</p> : null}
 
-              {answer ? (
-                <AnswerCapsule className="mt-5 max-w-xl bg-black/40 [&_p]:text-[var(--color-resin)] [&_div]:font-normal [&_div]:text-white/90">
-                  {answer}
-                </AnswerCapsule>
-              ) : null}
+              {answer ? <AnswerCapsule className="mt-5 max-w-xl">{answer}</AnswerCapsule> : null}
 
               {seoLinks.length > 0 ? (
                 <nav aria-label="Related guides" className="mt-5">
                   <ul className="flex flex-wrap gap-x-4 gap-y-2" role="list">
                     {seoLinks.map((link) => (
                       <li key={link.href}>
-                        <Link
-                          href={link.href}
-                          className="font-[var(--font-display)] text-[10px] uppercase tracking-[0.14em] text-white/75 underline-offset-4 transition-colors hover:text-[var(--color-resin)] hover:underline"
-                        >
+                        <Link href={link.href} className="prose-link font-[var(--font-display)] text-[10px] uppercase tracking-[0.14em]">
                           {link.label}
                         </Link>
                       </li>
@@ -158,8 +111,8 @@ export async function CatalogPageShell({
                       href="/shop"
                       className={`inline-flex min-h-11 items-center border px-4 py-2.5 font-[var(--font-display)] text-[10px] uppercase tracking-[0.14em] transition-colors duration-[var(--motion-fast)] ${
                         !activeCategory
-                          ? "border-[var(--color-resin)] bg-[var(--color-resin)] text-black"
-                          : "border-white/35 text-white hover:border-[var(--color-resin)] hover:text-[var(--color-resin)]"
+                          ? "border-[var(--color-ink)] bg-[var(--color-ink)] text-white"
+                          : "border-[var(--color-border-interactive)] text-[var(--color-ink)] hover:border-[var(--color-ink)]"
                       }`}
                       aria-current={!activeCategory ? "page" : undefined}
                     >
@@ -174,8 +127,8 @@ export async function CatalogPageShell({
                           href={`/shop/${cat.slug}`}
                           className={`inline-flex min-h-11 items-center border px-4 py-2.5 font-[var(--font-display)] text-[10px] uppercase tracking-[0.14em] transition-colors duration-[var(--motion-fast)] ${
                             active
-                              ? "border-[var(--color-resin)] bg-[var(--color-resin)] text-black"
-                              : "border-white/35 text-white hover:border-[var(--color-resin)] hover:text-[var(--color-resin)]"
+                              ? "border-[var(--color-ink)] bg-[var(--color-ink)] text-white"
+                              : "border-[var(--color-border-interactive)] text-[var(--color-ink)] hover:border-[var(--color-ink)]"
                           }`}
                           aria-current={active ? "page" : undefined}
                         >

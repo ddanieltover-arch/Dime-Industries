@@ -84,4 +84,4 @@ export function HeartIcon({ className = iconClass }: { className?: string }) {
 
 /** Shared chrome for square header icon buttons. */
 export const headerIconBtnClass =
-  "relative inline-flex h-8 w-8 items-center justify-center border border-[var(--color-border-interactive)] text-[var(--color-ink-soft)] transition-[border-color,color] duration-[var(--motion-fast)] hover:border-[var(--color-resin)] hover:text-[var(--color-resin)]";
+  "relative inline-flex h-8 w-8 items-center justify-center rounded-[var(--radius-md)] border border-[var(--color-border)] text-[var(--color-ink-soft)] transition-[border-color,color,background-color] duration-[var(--motion-fast)] hover:border-[var(--color-ink)] hover:bg-[var(--color-band)] hover:text-[var(--color-ink)]";

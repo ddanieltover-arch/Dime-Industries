@@ -11,7 +11,7 @@ export function ReturnStatusCard({ request }: { request: ReturnRequest }) {
     >
       <h3
         id={`return-status-${request.id}`}
-        className="font-[var(--font-display)] text-[10px] uppercase tracking-[0.16em] text-[var(--color-resin)]"
+        className="section-eyebrow"
       >
         Return status
       </h3>
@@ -39,11 +39,11 @@ export function ReturnStatusCard({ request }: { request: ReturnRequest }) {
       </dl>
       <p className="mt-4 text-[var(--scale-xs)] text-[var(--color-ink-muted)]">
         Submitted {new Date(request.createdAt).toLocaleString()}. See{" "}
-        <Link href="/account/returns" className="text-[var(--color-resin)] hover:underline">
+        <Link href="/account/returns" className="prose-link">
           all returns
         </Link>{" "}
         or the{" "}
-        <Link href="/legal/returns" className="text-[var(--color-resin)] hover:underline">
+        <Link href="/legal/returns" className="prose-link">
           Returns Policy
         </Link>
         .

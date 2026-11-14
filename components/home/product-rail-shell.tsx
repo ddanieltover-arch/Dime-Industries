@@ -31,9 +31,7 @@ export function ProductRailShell({
       <div className="mx-auto max-w-7xl px-[var(--container-pad-x)]">
         <Reveal className="mb-6 flex items-end justify-between gap-4 sm:mb-8">
           <div className="min-w-0">
-            <p className="font-[var(--font-display)] text-[10px] uppercase tracking-[0.18em] text-[var(--color-resin)]">
-              {eyebrow}
-            </p>
+            <p className="section-eyebrow">{eyebrow}</p>
             <h2 id={headingId} className="section-title mt-2">
               {title}
             </h2>
@@ -45,7 +43,7 @@ export function ProductRailShell({
           </div>
           <Link
             href={viewAllHref}
-            className="nav-link inline-flex min-h-11 shrink-0 items-center touch-manipulation text-[var(--color-resin)] hover:text-[var(--color-resin-hover)]"
+            className="nav-link inline-flex min-h-11 shrink-0 items-center touch-manipulation"
           >
             {viewAllLabel}
           </Link>

@@ -33,16 +33,18 @@ export default function GlossaryPage() {
       <JsonLdScript data={breadcrumbs} />
       <JsonLdScript data={faqJsonLd} />
 
-      <section className="border-b border-[var(--color-border)] bg-[var(--color-bg)]">
-        <div className="mx-auto max-w-3xl px-[var(--container-pad-x)] py-12 lg:py-16">
+      <section className="page-header">
+        <div className="mx-auto max-w-7xl px-[var(--container-pad-x)]">
           <p className="section-eyebrow">GEO · Definitions</p>
-          <h1 className="section-title mt-2">DIME Industries glossary</h1>
-          <AnswerCapsule className="mt-6">
-            This glossary defines DIME Industries product and trust terms — Dime cart, Signature,
-            Live Reserve, Rosin, COA, and Validate — so shoppers and AI assistants can cite clear,
-            licensed-market language.
-          </AnswerCapsule>
-          <p className="mt-4 text-[var(--scale-base)] leading-relaxed text-[var(--color-ink-soft)]">
+          <h1 className="page-header-title">DIME Industries glossary</h1>
+          <div className="mt-4 max-w-xl">
+            <AnswerCapsule>
+              This glossary defines DIME Industries product and trust terms — Dime cart, Signature,
+              Live Reserve, Rosin, COA, and Validate — so shoppers and AI assistants can cite clear,
+              licensed-market language.
+            </AnswerCapsule>
+          </div>
+          <p className="page-header-lede mt-4">
             Entity synonyms such as “dimecart” or “dime industries rosin” map to the same licensed
             brand concepts. Cannabis content is for adults 21+ or qualifying patients in legal
             markets only.
@@ -51,10 +53,7 @@ export default function GlossaryPage() {
             <ul className="flex flex-wrap gap-x-4 gap-y-2" role="list">
               {GLOSSARY_TERMS.map((t) => (
                 <li key={t.id}>
-                  <a
-                    href={`#${t.id}`}
-                    className="font-[var(--font-display)] text-[10px] uppercase tracking-[0.14em] text-[var(--color-resin)] hover:underline"
-                  >
+                  <a href={`#${t.id}`} className="nav-link text-[var(--color-ink-muted)] hover:text-[var(--color-ink)]">
                     {t.term}
                   </a>
                 </li>
@@ -85,10 +84,7 @@ export default function GlossaryPage() {
                   {term.href ? (
                     <>
                       {" "}
-                      <Link
-                        href={term.href}
-                        className="text-[var(--color-resin)] underline decoration-[var(--color-border)] underline-offset-2 hover:decoration-[var(--color-resin)]"
-                      >
+                      <Link href={term.href} className="prose-link">
                         {term.term}
                       </Link>
                     </>
@@ -99,11 +95,11 @@ export default function GlossaryPage() {
           </dl>
 
           <p className="mt-10 text-[var(--scale-sm)] text-[var(--color-ink-muted)]">
-            Related: <Link href="/faq" className="text-[var(--color-resin)] hover:underline">FAQ</Link>
+            Related: <Link href="/faq" className="prose-link">FAQ</Link>
             {" · "}
-            <Link href="/facts" className="text-[var(--color-resin)] hover:underline">Brand facts</Link>
+            <Link href="/facts" className="prose-link">Brand facts</Link>
             {" · "}
-            <Link href="/trust" className="text-[var(--color-resin)] hover:underline">Trust</Link>
+            <Link href="/trust" className="prose-link">Trust</Link>
           </p>
         </div>
       </section>

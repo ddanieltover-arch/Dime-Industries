@@ -1,6 +1,5 @@
 // app/promotions/page.tsx
 import type { Metadata } from "next";
-import Image from "next/image";
 import Link from "next/link";
 import { BundlesRail } from "@/components/home/bundles-rail";
 import { NewsletterSignup } from "@/components/home/newsletter-signup";
@@ -63,35 +62,18 @@ export default async function PromotionsPage() {
 
   return (
     <>
-      {/* Hero — one composition: brand, headline, support, CTAs, full-bleed visual */}
-      <section className="relative isolate min-h-[min(72vh,640px)] overflow-hidden">
-        <Image
-          src="/brand/hero-poster.webp"
-          alt=""
-          fill
-          priority
-          className="object-cover object-center"
-          sizes="100vw"
-        />
-        <div className="media-veil absolute inset-0" aria-hidden />
-        <div
-          className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_30%_20%,rgba(201,177,56,0.14),transparent_55%)]"
-          aria-hidden
-        />
-
-        <div className="relative mx-auto flex min-h-[min(72vh,640px)] max-w-7xl flex-col justify-end px-[var(--container-pad-x)] pb-14 pt-28 sm:pb-20 sm:pt-32">
+      <section className="page-header">
+        <div className="mx-auto max-w-7xl px-[var(--container-pad-x)]">
           <p className="section-eyebrow rise">DIME</p>
-          <h1 className="rise rise-delay-1 mt-2 max-w-xl font-[var(--font-display)] text-[clamp(2.25rem,6vw,4rem)] uppercase leading-[0.95] tracking-[0.06em] text-white">
-            Promotions
-          </h1>
-          <p className="rise rise-delay-2 mt-4 max-w-md text-[var(--scale-base)] leading-relaxed text-white/80">
+          <h1 className="page-header-title rise rise-delay-1">Promotions</h1>
+          <p className="page-header-lede rise rise-delay-2">
             Bundle deals, checkout codes, and member perks — lab-tested products ready to shop.
           </p>
           <div className="rise rise-delay-3 mt-8 flex flex-wrap gap-3">
             <Link href="/shop" className="btn-primary">
               Shop now
             </Link>
-            <Link href="/shop/bundles" className="btn-outline-light">
+            <Link href="/shop/bundles" className="btn-outline">
               Shop bundles
             </Link>
           </div>

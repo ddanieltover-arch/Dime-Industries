@@ -22,9 +22,7 @@ export function LoginForm({
   return (
     <div className="mx-auto w-full max-w-md space-y-8 px-[var(--container-pad-x)] py-16">
       <div>
-        <p className="font-[var(--font-display)] text-[10px] uppercase tracking-[0.18em] text-[var(--color-resin)]">
-          Account
-        </p>
+        <p className="section-eyebrow">Account</p>
         <h1 className="section-title mt-2">Sign in</h1>
         <p className="mt-2 text-[var(--scale-sm)] text-[var(--color-ink-soft)]">
           Access orders, wishlist sync, and account preferences.
@@ -70,7 +68,7 @@ export function LoginForm({
             No account?{" "}
             <Link
               href={nextPath && nextPath !== "/account" ? `/signup?next=${encodeURIComponent(nextPath)}` : "/signup"}
-              className="text-[var(--color-resin)] underline-offset-4 hover:underline"
+              className="prose-link"
             >
               Create one
             </Link>

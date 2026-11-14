@@ -78,8 +78,8 @@ export function CatalogPagination({
                 aria-current={p === page ? "page" : undefined}
                 className={`min-w-10 px-3 py-2 text-center font-[var(--font-display)] text-[10px] uppercase tracking-[0.12em] transition-colors ${
                   p === page
-                    ? "bg-[var(--color-resin)] text-black"
-                    : "border border-[var(--color-border)] text-[var(--color-ink-soft)] hover:border-[var(--color-resin)] hover:text-[var(--color-resin)]"
+                    ? "bg-[var(--color-ink)] text-white"
+                    : "border border-[var(--color-border)] text-[var(--color-ink-soft)] hover:border-[var(--color-ink)] hover:text-[var(--color-ink)]"
                 }`}
               >
                 {p}
