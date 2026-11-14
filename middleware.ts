@@ -68,12 +68,14 @@ export async function middleware(request: NextRequest) {
     return NextResponse.next();
   }
 
-  const { response, user, supabase } = await updateSession(request);
+  const { response, user, supabase, timedOut } = await updateSession(request);
+  // Public routes: fail open if Auth is slow so soft-nav never sticks on loading.tsx.
   if (!match) return response;
 
-  if (!user) {
+  if (timedOut || !user) {
     const loginUrl = new URL("/login", request.url);
     loginUrl.searchParams.set("next", path);
+    if (timedOut) loginUrl.searchParams.set("error", "auth_timeout");
     return NextResponse.redirect(loginUrl);
   }
 

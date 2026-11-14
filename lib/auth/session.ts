@@ -8,6 +8,7 @@ import { cache } from "react";
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { isRole, hasAtLeastRole, type Role } from "@/lib/auth/roles";
+import { withTimeout } from "@/lib/async/with-timeout";
 
 export type Profile = {
   id: string;
@@ -18,12 +19,25 @@ export type Profile = {
   medicalPatient: boolean;
 };
 
+/** Fail-fast so PDP/cart/checkout HTML never waits forever on Auth. */
+const PROFILE_TIMEOUT_MS = 3_000;
+
 /**
  * Returns the current authenticated user's profile, or null if not signed in.
  * Never throws on "not signed in" — callers decide whether that's an error.
  * Request-memoized so cart read+write (and similar) don't double-hit Auth.
+ * Times out to null so a stuck Auth host cannot hold loading.tsx open.
  */
 export const getCurrentProfile = cache(async (): Promise<Profile | null> => {
+  try {
+    return await withTimeout(loadCurrentProfile(), PROFILE_TIMEOUT_MS, "getCurrentProfile");
+  } catch (err) {
+    console.warn("[auth] getCurrentProfile timed out or failed", err);
+    return null;
+  }
+});
+
+async function loadCurrentProfile(): Promise<Profile | null> {
   const { isSupabaseConfigured, isDemoAuthAllowed } = await import("@/lib/auth/config");
 
   if (!isSupabaseConfigured()) {
@@ -62,7 +76,7 @@ export const getCurrentProfile = cache(async (): Promise<Profile | null> => {
     ageVerifiedAt: row.age_verified_at,
     medicalPatient: row.medical_patient,
   };
-});
+}
 
 /** Requires a signed-in user; redirects to /login if not. */
 export async function requireUser(): Promise<Profile> {

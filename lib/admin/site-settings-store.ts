@@ -10,6 +10,9 @@ import {
   type LaunchJurisdiction,
 } from "@/lib/compliance/jurisdictions";
 import { isGrowthDatabaseMode } from "@/lib/db/growth-mode";
+import { withTimeout } from "@/lib/async/with-timeout";
+
+const SITE_SETTINGS_DB_TIMEOUT_MS = 2_000;
 
 export const SITE_SETTINGS_COOKIE = "dime_site_settings";
 
@@ -153,9 +156,11 @@ async function loadSiteSettings(): Promise<SiteOpsSettings> {
   }
   if (isGrowthDatabaseMode()) {
     try {
-      return remember(await readDb());
+      return remember(
+        await withTimeout(readDb(), SITE_SETTINGS_DB_TIMEOUT_MS, "site-settings-db")
+      );
     } catch (err) {
-      console.error("[site-settings] db read failed", err);
+      console.error("[site-settings] db read timed out or failed", err);
       return memoryCache?.value ?? DEFAULT_SITE_SETTINGS;
     }
   }

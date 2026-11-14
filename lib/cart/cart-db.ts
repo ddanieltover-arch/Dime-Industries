@@ -4,7 +4,10 @@ import { eq } from "drizzle-orm";
 import { z } from "zod";
 import { commerceCarts } from "@/db/schema";
 import { getDb } from "@/lib/db/client";
+import { withTimeout } from "@/lib/async/with-timeout";
 import type { CartLineInput } from "./types";
+
+const CART_DB_TIMEOUT_MS = 2_000;
 
 const itemsSchema = z.array(
   z.object({
@@ -17,7 +20,7 @@ export function cartOwnerKey(email: string) {
   return email.trim().toLowerCase();
 }
 
-export async function readDbCartInputs(ownerKey: string): Promise<CartLineInput[]> {
+async function readDbCartInputsUnbudgeted(ownerKey: string): Promise<CartLineInput[]> {
   const db = getDb();
   const rows = await db
     .select()
@@ -27,6 +30,15 @@ export async function readDbCartInputs(ownerKey: string): Promise<CartLineInput[
   const raw = rows[0]?.items;
   const parsed = itemsSchema.safeParse(raw ?? []);
   return parsed.success ? parsed.data : [];
+}
+
+/** Throws on timeout so callers can fall back to the cookie mirror. */
+export async function readDbCartInputs(ownerKey: string): Promise<CartLineInput[]> {
+  return withTimeout(
+    readDbCartInputsUnbudgeted(ownerKey),
+    CART_DB_TIMEOUT_MS,
+    "cart-db-read"
+  );
 }
 
 export async function writeDbCartInputs(

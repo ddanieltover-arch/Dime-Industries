@@ -71,7 +71,14 @@ export async function readCartInputs(): Promise<CartLineInput[]> {
   // was stalling every layout/cart read in production.
   if (isGrowthDatabaseMode() && (await hasAuthSessionCookie())) {
     const email = await currentOwnerEmail();
-    if (email) return readDbCartInputs(cartOwnerKey(email));
+    if (email) {
+      try {
+        return await readDbCartInputs(cartOwnerKey(email));
+      } catch (err) {
+        console.error("[cart] db read failed, using cookie mirror", err);
+        return readCookieCartInputs();
+      }
+    }
   }
   return readCookieCartInputs();
 }
@@ -98,7 +105,9 @@ export async function getCartItemCount(): Promise<number> {
   return inputs.reduce((sum, item) => sum + item.quantity, 0);
 }
 
-export async function getCartSnapshot(lookup?: CartLookup): Promise<CartSnapshot> {
+const CART_SNAPSHOT_TIMEOUT_MS = 4_000;
+
+async function getCartSnapshotUnbudgeted(lookup?: CartLookup): Promise<CartSnapshot> {
   const inputs = await readCartInputs();
   let resolved = lookup;
   if (!resolved) {
@@ -113,6 +122,23 @@ export async function getCartSnapshot(lookup?: CartLookup): Promise<CartSnapshot
   return cartSnapshot(lines);
 }
 
+/** Overall budget so /cart, /checkout, and /api/cart never hang HTML/API open. */
+export async function getCartSnapshot(lookup?: CartLookup): Promise<CartSnapshot> {
+  const { withTimeout } = await import("@/lib/async/with-timeout");
+  try {
+    return await withTimeout(
+      getCartSnapshotUnbudgeted(lookup),
+      CART_SNAPSHOT_TIMEOUT_MS,
+      "cart-snapshot"
+    );
+  } catch (err) {
+    console.error("[cart] snapshot timed out or failed, using cookie-only hydrate", err);
+    const inputs = await readCookieCartInputs();
+    const lines = hydrateCart(inputs, lookup ?? createCatalogLookup());
+    return cartSnapshot(lines);
+  }
+}
+
 export async function persistCartLines(lines: CartLine[]): Promise<CartSnapshot> {
   await writeCartInputs(serializeCartInputs(lines));
   return cartSnapshot(lines);
@@ -125,9 +151,13 @@ export async function mergeGuestCartForUser(email: string): Promise<void> {
   const guestInputs = await readCookieCartInputs();
   if (guestInputs.length === 0) {
     if (isGrowthDatabaseMode()) {
-      // Ensure cookie mirrors DB for UX consistency
-      const dbInputs = await readDbCartInputs(cartOwnerKey(email));
-      await writeCookieCartInputs(dbInputs);
+      try {
+        // Ensure cookie mirrors DB for UX consistency
+        const dbInputs = await readDbCartInputs(cartOwnerKey(email));
+        await writeCookieCartInputs(dbInputs);
+      } catch (err) {
+        console.error("[cart] merge mirror failed", err);
+      }
     }
     return;
   }
@@ -136,7 +166,12 @@ export async function mergeGuestCartForUser(email: string): Promise<void> {
   const guestLines = hydrateCart(guestInputs, lookup);
 
   if (isGrowthDatabaseMode()) {
-    const existingInputs = await readDbCartInputs(cartOwnerKey(email));
+    let existingInputs: CartLineInput[] = [];
+    try {
+      existingInputs = await readDbCartInputs(cartOwnerKey(email));
+    } catch (err) {
+      console.error("[cart] merge db read failed, using guest only", err);
+    }
     const existingLines = hydrateCart(existingInputs, lookup);
     const merged = mergeCarts(existingLines, guestLines);
     const serialized = serializeCartInputs(merged);

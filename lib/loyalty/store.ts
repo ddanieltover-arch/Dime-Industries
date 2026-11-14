@@ -71,10 +71,23 @@ async function writeJar(accounts: Record<string, LoyaltyAccount>): Promise<void>
   });
 }
 
+const LOYALTY_DB_TIMEOUT_MS = 2_000;
+
 export async function getLoyaltyAccount(email: string): Promise<LoyaltyAccount> {
   const key = email.toLowerCase();
   if (isGrowthDatabaseMode()) {
-    return (await loyaltyDb.dbGetLoyalty(key)) ?? emptyAccount(key);
+    try {
+      const { withTimeout } = await import("@/lib/async/with-timeout");
+      const row = await withTimeout(
+        loyaltyDb.dbGetLoyalty(key),
+        LOYALTY_DB_TIMEOUT_MS,
+        "loyalty-db-read"
+      );
+      return row ?? emptyAccount(key);
+    } catch (err) {
+      console.error("[loyalty] db read timed out or failed", err);
+      return emptyAccount(key);
+    }
   }
   const accounts = await readJar();
   return accounts[key] ?? emptyAccount(key);

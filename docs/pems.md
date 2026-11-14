@@ -3,8 +3,8 @@
 *Fill one record per project. Save as `docs/pems.md` in the project repo. Read before starting work; update after major decisions.*
 
 **PEMS Version:** 1.0  
-**Last Updated:** 2026-08-18  
-**Updated By:** Senior Full Stack (Pulse) — shop/home fail-fast catalog + CMS timeouts  
+**Last Updated:** 2026-11-14  
+**Updated By:** Senior Full Stack (Pulse) — fail-fast auth + cart/commerce I/O for stuck skeletons  
 
 **Primary codebase:** `dime-enterprise-commerce/` (git repo). Workspace also holds `claude-devos-enterprise/`, `motion-ux-enhancement-expert/`, and SEO research assets. Mirror: `dime-enterprise-commerce/docs/pems.md`.
 
@@ -24,8 +24,8 @@
 | Design system | DIME brand tokens in `app/globals.css` — dark concrete + resin gold; Gotham / Retro Signature |
 | Primary risks | Age-gate crawlability vs compliance; LCP/CLS budgets; `.com` SEO cannibalization; cannabis legal/compliance |
 | Open decisions | Confirm live Paybis vs mock for public launch; GSC/GA4 owner setup; legal review of worldwide ship-to vs cannabis regs |
-| Recent changes | **Perf:** catalog/CMS DB budgets so /shop does not stick on loading skeletons; PWA `dime-pwa-v3` aborts hung navigations at 8s. Prior: keyword-gap posts + ranking SKU titles |
-| Next priorities | Deploy fail-fast catalog; hard-refresh SW to v3; re-time live TTFB |
+| Recent changes | **Perf:** fail-fast Auth middleware/`getCurrentProfile`, cart snapshot, wishlist guest path, coupons/loyalty/settings DB budgets, drawer `AbortSignal.timeout(5s)` so product/cart/checkout soft-nav and cart drawer cannot stick on skeletons. Prior: catalog/CMS budgets + PWA v3 |
+| Next priorities | Deploy auth/cart fail-fast; hard-refresh SW to v3; re-time live TTFB with signed-in session |
 
 ---
 
@@ -166,6 +166,7 @@ Source: `dime-enterprise-commerce/docs/10-decisions-d1-d7-locked.md`. Soft-launc
 | 2026-08-18 | Fail-fast catalog/CMS for shop HTML | Live /shop stuck on loading.tsx; home ~5s cold; Postgres could hang past connect_timeout | Wait on full DB or keep 8s CMS seed on HTML | `withTimeout` 2.5–3s → seed; parallel catalog SQL; `statement_timeout 4s`; SW v3 8s navigate abort |
 | 2026-11-14 | Curated Semrush Positions → hub anchors | Homepage-ranked commercial/intent queries need natural exact-match internal links to existing hubs | Keyword cloud / all-27 exact / brand-nav stuffing | Map in `docs/seo/organic_positions_anchor_map_2026-11.md`; skip brand-nav + Buena Vista GA |
 | 2026-11-14 | HTML editorial blog imports → calendar seeds | Owner-supplied HTML posts need CMS-dialect seeds with even publish cadence | Admin-only cookie/DB posts; same-day dumps | Convert HTML→CMS dialect; `CALENDAR_POSTS_2026`; **3–4 posts/week**, one day each, backdate from 2026-11-14; posts: pre-roll (11-14), cartridges (11-12), vape tech (11-07), `what-is-dime-industries` (11-05); **refresh** `dime-disposable-vapes` (updatedAt 11-14, URL preserved) |
+| 2026-11-14 | Fail-fast auth + cart/commerce for stuck skeletons | Live product/cart/checkout soft-nav stuck on `loading.tsx`; drawer “Loading cart…” with badge 1 / $0 while Auth or Postgres hung | Catalog-only budgets; wait forever on `getUser` / cart DB / coupons | Middleware `getUser` 3s (public fail-open); `getCurrentProfile` 3s → null; cart snapshot 4s + DB/wishlist/coupons/loyalty/settings 2s; wishlist cookie fast-path; drawer fetch abort 5s |
 
 ---
 

@@ -50,14 +50,9 @@ const SEED: Coupon[] = [
   },
 ];
 
-async function readCoupons(): Promise<Coupon[]> {
-  const { isGrowthDatabaseMode } = await import("@/lib/db/growth-mode");
-  if (isGrowthDatabaseMode()) {
-    const { dbSeedCouponsIfEmpty, dbListCoupons } = await import("./coupons-db");
-    await dbSeedCouponsIfEmpty(SEED);
-    return dbListCoupons();
-  }
+const COUPONS_DB_TIMEOUT_MS = 2_000;
 
+async function readCookieCoupons(): Promise<Coupon[]> {
   const store = await cookies();
   const raw = store.get(COUPONS_COOKIE)?.value;
   if (!raw) return [...SEED];
@@ -67,6 +62,29 @@ async function readCoupons(): Promise<Coupon[]> {
   } catch {
     return [...SEED];
   }
+}
+
+async function readCoupons(): Promise<Coupon[]> {
+  const { isGrowthDatabaseMode } = await import("@/lib/db/growth-mode");
+  if (isGrowthDatabaseMode()) {
+    try {
+      const { withTimeout } = await import("@/lib/async/with-timeout");
+      const { dbSeedCouponsIfEmpty, dbListCoupons } = await import("./coupons-db");
+      return await withTimeout(
+        (async () => {
+          await dbSeedCouponsIfEmpty(SEED);
+          return dbListCoupons();
+        })(),
+        COUPONS_DB_TIMEOUT_MS,
+        "coupons-db"
+      );
+    } catch (err) {
+      console.error("[coupons] db read timed out or failed, using seed/cookie", err);
+      return readCookieCoupons();
+    }
+  }
+
+  return readCookieCoupons();
 }
 
 async function writeCoupons(coupons: Coupon[]): Promise<void> {

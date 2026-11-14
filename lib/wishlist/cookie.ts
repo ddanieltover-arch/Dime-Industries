@@ -5,6 +5,7 @@ import { z } from "zod";
 import { createCatalogLookup } from "@/lib/cart/catalog-lookup";
 import { toCartLine } from "@/lib/cart/logic";
 import type { CartLine } from "@/lib/cart/types";
+import { hasAuthSessionCookie } from "@/lib/auth/session-cookie";
 import { isGrowthDatabaseMode } from "@/lib/db/growth-mode";
 import { addWishlistId, mergeWishlistIds, toggleWishlistId } from "./logic";
 import { WISHLIST_COOKIE, WISHLIST_MAX, type WishlistSnapshot } from "./types";
@@ -48,19 +49,30 @@ async function currentOwnerEmail(): Promise<string | null> {
 }
 
 export async function readWishlistIds(): Promise<string[]> {
-  const email = await currentOwnerEmail();
-  if (email && isGrowthDatabaseMode()) {
-    return readDbWishlistIds(wishlistOwnerKey(email));
+  // Guests must not pay for getCurrentProfile() — that Auth round-trip was
+  // stalling every PDP soft-nav on loading.tsx in production.
+  if (isGrowthDatabaseMode() && (await hasAuthSessionCookie())) {
+    const email = await currentOwnerEmail();
+    if (email) {
+      try {
+        return await readDbWishlistIds(wishlistOwnerKey(email));
+      } catch (err) {
+        console.error("[wishlist] db read failed, using cookie mirror", err);
+        return readCookieWishlistIds();
+      }
+    }
   }
   return readCookieWishlistIds();
 }
 
 export async function writeWishlistIds(variantIds: string[]): Promise<void> {
-  const email = await currentOwnerEmail();
-  if (email && isGrowthDatabaseMode()) {
-    await writeDbWishlistIds(wishlistOwnerKey(email), variantIds);
-    await writeCookieWishlistIds(variantIds);
-    return;
+  if (isGrowthDatabaseMode() && (await hasAuthSessionCookie())) {
+    const email = await currentOwnerEmail();
+    if (email) {
+      await writeDbWishlistIds(wishlistOwnerKey(email), variantIds);
+      await writeCookieWishlistIds(variantIds);
+      return;
+    }
   }
   await writeCookieWishlistIds(variantIds);
 }
@@ -95,14 +107,23 @@ export async function mergeGuestWishlistForUser(email: string): Promise<void> {
   const guestIds = await readCookieWishlistIds();
   if (guestIds.length === 0) {
     if (isGrowthDatabaseMode()) {
-      const dbIds = await readDbWishlistIds(wishlistOwnerKey(email));
-      await writeCookieWishlistIds(dbIds);
+      try {
+        const dbIds = await readDbWishlistIds(wishlistOwnerKey(email));
+        await writeCookieWishlistIds(dbIds);
+      } catch (err) {
+        console.error("[wishlist] merge mirror failed", err);
+      }
     }
     return;
   }
 
   if (isGrowthDatabaseMode()) {
-    const existing = await readDbWishlistIds(wishlistOwnerKey(email));
+    let existing: string[] = [];
+    try {
+      existing = await readDbWishlistIds(wishlistOwnerKey(email));
+    } catch (err) {
+      console.error("[wishlist] merge db read failed, using guest only", err);
+    }
     const merged = mergeWishlistIds(existing, guestIds);
     await writeDbWishlistIds(wishlistOwnerKey(email), merged);
     await writeCookieWishlistIds(merged);

@@ -43,12 +43,16 @@ export function CartProvider({
 
   const refreshCart = useCallback(async () => {
     try {
-      const res = await fetch("/api/cart", { cache: "no-store" });
+      const res = await fetch("/api/cart", {
+        cache: "no-store",
+        signal: AbortSignal.timeout(5_000),
+      });
       if (!res.ok) return null;
       const next = (await res.json()) as CartSnapshot;
       setCart(next);
       return next;
     } catch {
+      // Keep badge/optimistic count; drawer clears loading and shows lines or empty.
       return null;
     }
   }, []);
