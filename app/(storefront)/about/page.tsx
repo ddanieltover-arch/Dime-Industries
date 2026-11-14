@@ -78,6 +78,10 @@ export default function AboutPage() {
             <Link href="/shop/vapes" className="prose-link">
               dime cartridge
             </Link>
+            ,{" "}
+            <Link href="/shop/vapes" className="prose-link">
+              dime industries pen
+            </Link>
             .
           </p>
           <div className="rise rise-delay-3 mt-8 flex flex-wrap gap-3">

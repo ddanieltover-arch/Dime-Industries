@@ -5,7 +5,7 @@ const BODY = `Quick Answer: A Dime cart is a DIME Industries cannabis vape cartr
 
 ### Who this guide is for
 
-This beginner’s guide is for adults 21+ (or qualifying patients) shopping in licensed U.S. markets who want a clear path from “I keep seeing DIME carts” to a confident first purchase. It is educational product and shopping guidance — not medical advice. If you landed here looking for U.S. coin rolls, see [How many dimes in a roll?](/blog/how-many-dimes-in-a-roll) and come back when you want the cannabis brand.
+This beginner’s guide is for adults 21+ (or qualifying patients) shopping in licensed U.S. markets who want a clear path from “I keep seeing [dime carts](/shop/vapes)” to a confident first purchase. It is educational product and shopping guidance — not medical advice. If you landed here looking for U.S. coin rolls, see [How many dimes in a roll?](/blog/how-many-dimes-in-a-roll) and come back when you want the cannabis brand.
 
 You do not need to memorize every SKU. You need five skills: (1) know what a Dime cart is, (2) choose cart vs all-in-one, (3) pick a line that matches how you shop, (4) buy only licensed, (5) validate and check the COA. Everything else is optional depth.
 
@@ -24,7 +24,7 @@ When people say [dime pen](/shop/vapes), they usually mean the same shopping uni
 | Cart / tank + battery | Reusable battery, swap fills | You want flexibility and already own (or will buy) a battery | [Cart vs disposable](/blog/dime-cart-vs-disposable) |
 | All-in-one / disposable | Extract + battery in one body | Travel, gifting, zero separate battery | [Disposables landing](/shop/vapes/disposables) |
 
-**Beginner recommendation:** If your licensed retailer stocks a ready all-in-one in a line you like, that is often the simplest first device. If you already own a quality 510 battery — ideally a DIME battery — start with a cart. Battery deep dive: [What battery for a Dime cart?](/blog/what-battery-for-dime-cart) and [How to charge a DIME battery](/blog/how-to-charge-a-dime-battery).
+**Beginner recommendation:** If your licensed retailer stocks a ready all-in-one — including a [dime 2g disposable](/shop/vapes/disposables) where listed — that is often the simplest first device. If you already own a quality 510 battery — ideally a [dime battery](/shop/accessories) — start with a cart. Fill sizes shoppers search as [dime 2g](/shop/vapes) still belong on the carts hub; confirm the SKU label. Battery deep dive: [What battery for a Dime cart?](/blog/what-battery-for-dime-cart) and [How to charge a DIME battery](/blog/how-to-charge-a-dime-battery).
 
 Hardware philosophy (why DIME builds its own tanks): [Built to Beat Leaks](/blog/built-to-beat-leaks-the-dime-hardware-story). Accessories hub: [Hardware & accessories guide](/blog/dime-hardware-accessories-guide) and [Shop accessories](/shop/accessories).
 

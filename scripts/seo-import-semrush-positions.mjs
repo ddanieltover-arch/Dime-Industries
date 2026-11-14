@@ -1,17 +1,13 @@
-// scripts/seo-import-semrush-positions.mjs
+﻿// scripts/seo-import-semrush-positions.mjs
 // Treats the Semrush Organic Positions export as the keyword-gap universe for www.dimeindustries.us
-import { readFileSync, writeFileSync, copyFileSync, existsSync } from "node:fs";
+import { readFileSync, writeFileSync, existsSync, readdirSync } from "node:fs";
 import { join, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
 
 const root = join(dirname(fileURLToPath(import.meta.url)), "..");
-const workspace = join(root, "..");
-const src = join(
-  workspace,
-  "dimeindustries.com-organic.Positions-us-20260802-2026-08-03T10_21_28Z.csv"
-);
 const seoDir = join(root, "docs/seo");
-const destCsv = join(seoDir, "semrush_organic_positions_com_us_2026-08-02.csv");
+const src = join(seoDir, "semrush_organic_positions_com_us_2026-11-12.csv");
+const baselineDate = "2026-11-12";
 
 function parseCsv(text) {
   const rows = [];
@@ -58,7 +54,19 @@ if (existsSync(crawlPath)) {
   }
 }
 
-copyFileSync(src, destCsv);
+// Also seed from catalog image folders when present
+const catalogDir = join(root, "public/catalog");
+if (existsSync(catalogDir)) {
+  for (const name of readdirSync(catalogDir, { withFileTypes: true })) {
+    if (name.isDirectory()) productSlugs.add(name.name.toLowerCase());
+  }
+}
+
+if (!existsSync(src)) {
+  console.error(`Missing Semrush source: ${src}`);
+  process.exit(1);
+}
+
 const rows = parseCsv(readFileSync(src, "utf8").trim());
 const hdr = rows[0];
 const col = (n) => hdr.indexOf(n);
@@ -112,10 +120,12 @@ function classify(row) {
     };
   }
 
-  if (/near me|dispensary|las vegas|nevada|california|massachusetts|arizona/.test(kw)) {
+  if (/near me|near met|dispensary|las vegas|nevada|california|massachusetts|arizona|new jersey|mesquite/.test(kw)) {
     let path = "/locations";
     if (/las vegas|nevada/.test(kw)) path = "/locations/nevada";
     if (/california|los angeles|orange/.test(kw)) path = "/locations/california";
+    if (/new jersey|nj\b/.test(kw)) path = "/locations/new-jersey";
+    if (/find-us|pre-roll near|carts near|disposable near/.test(kw)) path = "/locations";
     return {
       assignedUrl: path,
       pageType: "Location",
@@ -126,13 +136,24 @@ function classify(row) {
     };
   }
 
+  if (/battery|accessor/.test(kw)) {
+    return {
+      assignedUrl: "/shop/accessories",
+      pageType: "Category",
+      gap: "Partial",
+      priority: "High",
+      action: "Accessories hub live — deepen exact-match anchors + battery blog support",
+      cluster: "Accessories",
+    };
+  }
+
   if (/rosin/.test(kw)) {
     return {
       assignedUrl: "/shop/vapes/rosin",
       pageType: "Line",
-      gap: "Partial",
+      gap: "N",
       priority: "High",
-      action: "Rosin hub live — deepen intro + ship what-is-dime-rosin blog",
+      action: "Rosin hub + what-is-dime-rosin live — keep ranking copy aligned",
       cluster: "Rosin",
     };
   }
@@ -141,7 +162,7 @@ function classify(row) {
     return {
       assignedUrl: "/shop/vapes/live-reserve",
       pageType: "Line",
-      gap: "Partial",
+      gap: "N",
       priority: "High",
       action: "Live Reserve hub + explainer shipped — keep ranking copy aligned",
       cluster: "Live Reserve",
@@ -150,11 +171,11 @@ function classify(row) {
 
   if (/dispo|disposable/.test(kw)) {
     return {
-      assignedUrl: "/blog/dime-cart-vs-disposable",
-      pageType: "Blog",
-      gap: "Y",
+      assignedUrl: "/shop/vapes/disposables",
+      pageType: "Category",
+      gap: "N",
       priority: "High",
-      action: "High-volume gap — need dedicated disposable landing (calendar) + cart-vs-disposable already helps",
+      action: "Disposables landing + dime-disposable-vapes blog live — deepen exact-match anchors",
       cluster: "Disposables",
     };
   }
@@ -163,9 +184,9 @@ function classify(row) {
     return {
       assignedUrl: "/blog/best-dime-industries-flavors",
       pageType: "Blog",
-      gap: "Y",
+      gap: "N",
       priority: "High",
-      action: "Ship flavors guide (calendar 2026-08-05); link Signature hub",
+      action: "Flavors guide live — keep Signature/hub cross-links",
       cluster: "Flavors GEO",
     };
   }
@@ -182,14 +203,38 @@ function classify(row) {
   }
 
   if (/flower|pre-?roll|preroll/.test(kw)) {
-    const url = /pre-?roll|preroll/.test(kw) ? "/shop/prerolls" : "/shop";
+    const isPreroll = /pre-?roll|preroll/.test(kw);
     return {
-      assignedUrl: url,
+      assignedUrl: isPreroll ? "/shop/prerolls" : "/shop",
       pageType: "Category",
-      gap: "Y",
+      gap: isPreroll ? "Partial" : "Y",
       priority: "Medium",
-      action: "Category thin or SKUs pending — calendar buying guides; don't invent flower catalog",
-      cluster: /pre-?roll|preroll/.test(kw) ? "Prerolls" : "Flower",
+      action: isPreroll
+        ? "Prerolls hub + buying guide live — deepen copy; don't invent flower SKUs"
+        : "No invented flower catalog — soft /shop hub until SKUs exist",
+      cluster: isPreroll ? "Prerolls" : "Flower",
+    };
+  }
+
+  if (/career/.test(kw)) {
+    return {
+      assignedUrl: "/careers",
+      pageType: "Marketing",
+      gap: "N",
+      priority: "Low",
+      action: "Careers page live",
+      cluster: "Brand",
+    };
+  }
+
+  if (/review|what is dime|products/.test(kw) && /industr/.test(kw)) {
+    return {
+      assignedUrl: /product/.test(kw) ? "/shop" : "/about",
+      pageType: "Marketing",
+      gap: "Partial",
+      priority: "Medium",
+      action: "Brand/about surfaces — keep About + FAQ GEO links",
+      cluster: "Brand",
     };
   }
 
@@ -246,7 +291,6 @@ const gapCsv = [
 
 writeFileSync(join(seoDir, "keyword_gap.csv"), gapCsv + "\n");
 
-// Also keep a shorter "priority gaps only" for sprint planning
 const priorityGaps = classified.filter(
   (r) => r.gap === "Y" || (r.gap === "Partial" && r.priority === "High" && r.volume >= 200)
 );
@@ -269,7 +313,6 @@ const priorityCsv = [
 ].join("\n");
 writeFileSync(join(seoDir, "keyword_gap_priority.csv"), priorityCsv + "\n");
 
-// Migration map = same data framed as equity transfer helpers
 const migCsv = [
   "Keyword,Position,Volume,Traffic,Legacy URL,Target www URL,Gap,Cluster",
   ...classified
@@ -300,13 +343,13 @@ const counts = {
 
 const md = `# Keyword gap — Semrush → www.dimeindustries.us
 
-**Source:** Semrush US Organic Positions export for \`dimeindustries.com\` (2026-08-02), used as the **keyword universe / gap list for our storefront**.
+**Source:** Semrush US Organic Positions export for \`dimeindustries.com\` (${baselineDate}), used as the **keyword universe / gap list for our storefront**.
 
 The export shows what Google already associates with DIME. For \`.us\`, each row is classified as:
 
 | Gap | Meaning |
 |-----|---------|
-| **N** | Dedicated \`.us\` URL exists (usually PDP) — optimize on-page |
+| **N** | Dedicated \`.us\` URL exists (usually PDP or dedicated hub) — optimize on-page |
 | **Partial** | Hub exists but not query-specific — deepen copy / FAQ / blog support |
 | **Y** | Need new landing, blog, or missing PDP |
 
@@ -321,6 +364,21 @@ The export shows what Google already associates with DIME. For \`.us\`, each row
 
 ## Highest-volume open / partial gaps (act on these)
 
+Updated **${baselineDate}** after hub landings + curated anchors:
+
+| Keyword | Status | Where |
+|---------|--------|--------|
+| dime cart / dime carts / dime pen | Partial | \`/shop/vapes\` — deepen exact-match anchors |
+| dime disposable (+ variants) | **N** | \`/shop/vapes/disposables\` + disposable blogs |
+| dime flavors / cart flavors | **N** | \`/blog/best-dime-industries-flavors\` |
+| dime battery | Partial | \`/shop/accessories\` |
+| dime thc las vegas | Partial | \`/locations/nevada\` |
+| dime industries flower | Y / soft | \`/shop\` — **no invented flower SKUs** |
+| dime industries pre-roll | Partial | \`/shop/prerolls\` + buying guide |
+| dime industries rosin | **N** | Rosin hub + \`/blog/what-is-dime-rosin\` |
+
+### Priority open / partial (auto from this export)
+
 ${priorityGaps
   .sort((a, b) => b.volume - a.volume)
   .slice(0, 20)
@@ -330,25 +388,33 @@ ${priorityGaps
   )
   .join("\n")}
 
+### Still soft / owner-dependent
+
+- Flower **loose** catalog — defer until real SKUs exist
+- GBP street NAP for LocalBusiness
+- \`.com\` → \`.us\` redirects for equity transfer
+
 ## How we use this in the project
 
-1. [\`keyword_gap.csv\`](./keyword_gap.csv) — full 100-keyword gap map (canonical for planning)
+1. [\`keyword_gap.csv\`](./keyword_gap.csv) — full gap map (canonical for planning)
 2. [\`keyword_gap_priority.csv\`](./keyword_gap_priority.csv) — sprint subset
 3. [\`keyword_map.csv\`](./keyword_map.csv) — Semrush volumes merged for primary commercial terms
 4. [\`content_calendar_90d.csv\`](./content_calendar_90d.csv) — disposable / flavors / rosin / preroll items already aligned
 5. [\`semrush_url_migration_map.csv\`](./semrush_url_migration_map.csv) — still useful for \`.com\`→\`www\` redirects at cutover
+6. [\`organic_positions_anchor_map_2026-11.md\`](./organic_positions_anchor_map_2026-11.md) — curated exact-match anchors
 
 ## Project build implications
 
 | Gap cluster | Code / content action |
 |-------------|----------------------|
-| Disposables (\`dime disposable\` 1300) | Dedicated landing or format hub — do not rely on homepage alone |
-| Flavors (\`dime flavors\` 210) | Ship \`/blog/best-dime-industries-flavors\` |
+| Disposables | Landing live — keep exact-match anchors + blog support |
+| Flavors | Flavors guide live — keep Signature/hub cross-links |
 | Strain PDPs | Confirm every legacy slug has \`/product/{slug}\`; optimize titles for “* strain” |
-| Rosin / Live Reserve | Hubs live — finish GEO blogs on calendar |
+| Rosin / Live Reserve | Hubs live — keep GEO blogs aligned |
 | Deals / specials | Enrich \`/promotions\` |
 | Flower | No inventing catalog — soft hub or defer until SKUs |
 | Local (\`near me\`, Las Vegas) | \`/locations\` + state pages |
+| Accessories / battery | \`/shop/accessories\` + battery blogs |
 
 Regenerate: \`node scripts/seo-import-semrush-positions.mjs\`
 `;
@@ -358,8 +424,7 @@ writeFileSync(join(seoDir, "keyword_gap_analysis.md"), md);
 const summary = {
   generatedAt: new Date().toISOString(),
   purpose: "keyword_gap_for_www_storefront",
-  sourceFile:
-    "dimeindustries.com-organic.Positions-us-20260802-2026-08-03T10_21_28Z.csv",
+  sourceFile: "semrush_organic_positions_com_us_2026-11-12.csv",
   domainEquityReference: "dimeindustries.com",
   targetSite: "https://www.dimeindustries.us",
   counts,
@@ -379,25 +444,28 @@ const summary = {
 };
 
 writeFileSync(
-  join(seoDir, "semrush_baseline_2026-08-02.json"),
+  join(seoDir, `semrush_baseline_${baselineDate}.json`),
   JSON.stringify(summary, null, 2) + "\n"
 );
 
-// Refresh human baseline doc to lead with gap usage
 writeFileSync(
-  join(seoDir, "semrush_baseline_2026-08-02.md"),
-  `# Semrush data — used as keyword gap for .us
+  join(seoDir, `semrush_baseline_${baselineDate}.md`),
+  `# Semrush data — keyword gap for .us (${baselineDate})
 
 See **[\`keyword_gap_analysis.md\`](./keyword_gap_analysis.md)** for the working gap map.
 
 ## Snapshot
 
-- **100** keywords from Semrush US Positions (\`.com\` equity reference)
+- **Source:** \`semrush_organic_positions_com_us_2026-11-12.csv\` (Semrush US Positions for \`dimeindustries.com\`)
+- **Rows:** **${counts.total}** keywords (export may include duplicate keyword×URL SERP rows)
 - Est. traffic on export: **~${data.reduce((s, r) => s + r.traffic, 0).toLocaleString()}**
-- \`.us\` Domain Overview (same date): Authority Score **2**, AI Visibility **0**, **16** RD / **21** backlinks
 - Gap classification: **${counts.gapY}** open · **${counts.gapPartial}** partial · **${counts.gapN}** covered
+- Priority sprint rows: **${counts.priorityRows}**
+- Product slugs detected for PDP mapping: **${productSlugs.size}**
 
 This export is **not** only a migration artifact — it is the prioritized keyword list to win on \`www.dimeindustries.us\`.
+
+Prior baseline: [\`semrush_baseline_2026-08-02.md\`](./semrush_baseline_2026-08-02.md).
 `
 );
 

@@ -31,6 +31,7 @@ const QUICK_LINKS = [
 const GEO_GUIDES = [
   { href: "/blog/what-is-dime-industries", label: "what is dime industries" },
   { href: "/shop/vapes", label: "dimes pens" },
+  { href: "/shop/vapes", label: "dimes cart" },
   { href: "/blog/what-is-a-dime-cart", label: "What is a Dime cart?" },
   { href: "/blog/dime-live-reserve-explained", label: "What is Live Reserve?" },
   { href: "/blog/signature-vs-live-reserve", label: "Signature vs Live Reserve" },

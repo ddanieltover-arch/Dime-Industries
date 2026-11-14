@@ -1,0 +1,161 @@
+{
+  "generatedAt": "2026-11-14T06:48:44.009Z",
+  "purpose": "keyword_gap_for_www_storefront",
+  "sourceFile": "semrush_organic_positions_com_us_2026-11-12.csv",
+  "domainEquityReference": "dimeindustries.com",
+  "targetSite": "https://www.dimeindustries.us",
+  "counts": {
+    "total": 100,
+    "gapY": 0,
+    "gapPartial": 53,
+    "gapN": 47,
+    "priorityRows": 16
+  },
+  "productSlugsDetected": 74,
+  "topPriorityGaps": [
+    {
+      "keyword": "dime cart",
+      "volume": 1900,
+      "kd": 17,
+      "gap": "Partial",
+      "assignedUrl": "/shop/vapes",
+      "cluster": "Carts",
+      "action": "Commercial hub exists — improve H1/meta/internal links; beginners pillar for dime cart"
+    },
+    {
+      "keyword": "dime pen",
+      "volume": 1900,
+      "kd": 20,
+      "gap": "Partial",
+      "assignedUrl": "/shop/vapes",
+      "cluster": "Carts",
+      "action": "Commercial hub exists — improve H1/meta/internal links; beginners pillar for dime cart"
+    },
+    {
+      "keyword": "dime pen",
+      "volume": 1900,
+      "kd": 20,
+      "gap": "Partial",
+      "assignedUrl": "/shop/vapes",
+      "cluster": "Carts",
+      "action": "Commercial hub exists — improve H1/meta/internal links; beginners pillar for dime cart"
+    },
+    {
+      "keyword": "dime pen",
+      "volume": 1900,
+      "kd": 20,
+      "gap": "Partial",
+      "assignedUrl": "/shop/vapes",
+      "cluster": "Carts",
+      "action": "Commercial hub exists — improve H1/meta/internal links; beginners pillar for dime cart"
+    },
+    {
+      "keyword": "dime pen",
+      "volume": 1900,
+      "kd": 20,
+      "gap": "Partial",
+      "assignedUrl": "/shop/vapes",
+      "cluster": "Carts",
+      "action": "Commercial hub exists — improve H1/meta/internal links; beginners pillar for dime cart"
+    },
+    {
+      "keyword": "dime cart",
+      "volume": 1900,
+      "kd": 17,
+      "gap": "Partial",
+      "assignedUrl": "/shop/vapes",
+      "cluster": "Carts",
+      "action": "Commercial hub exists — improve H1/meta/internal links; beginners pillar for dime cart"
+    },
+    {
+      "keyword": "dime cart",
+      "volume": 1900,
+      "kd": 17,
+      "gap": "Partial",
+      "assignedUrl": "/shop/vapes",
+      "cluster": "Carts",
+      "action": "Commercial hub exists — improve H1/meta/internal links; beginners pillar for dime cart"
+    },
+    {
+      "keyword": "dime carts",
+      "volume": 1300,
+      "kd": 18,
+      "gap": "Partial",
+      "assignedUrl": "/shop/vapes",
+      "cluster": "Carts",
+      "action": "Commercial hub exists — improve H1/meta/internal links; beginners pillar for dime cart"
+    },
+    {
+      "keyword": "dime weed",
+      "volume": 720,
+      "kd": 29,
+      "gap": "Partial",
+      "assignedUrl": "/shop/vapes",
+      "cluster": "Carts",
+      "action": "Commercial hub exists — improve H1/meta/internal links; beginners pillar for dime cart"
+    },
+    {
+      "keyword": "dime weed",
+      "volume": 720,
+      "kd": 29,
+      "gap": "Partial",
+      "assignedUrl": "/shop/vapes",
+      "cluster": "Carts",
+      "action": "Commercial hub exists — improve H1/meta/internal links; beginners pillar for dime cart"
+    },
+    {
+      "keyword": "dime battery",
+      "volume": 590,
+      "kd": 3,
+      "gap": "Partial",
+      "assignedUrl": "/shop/accessories",
+      "cluster": "Accessories",
+      "action": "Accessories hub live — deepen exact-match anchors + battery blog support"
+    },
+    {
+      "keyword": "dime of weed",
+      "volume": 590,
+      "kd": 28,
+      "gap": "Partial",
+      "assignedUrl": "/shop/vapes",
+      "cluster": "Carts",
+      "action": "Commercial hub exists — improve H1/meta/internal links; beginners pillar for dime cart"
+    },
+    {
+      "keyword": "dime thc las vegas",
+      "volume": 320,
+      "kd": 27,
+      "gap": "Partial",
+      "assignedUrl": "/locations/nevada",
+      "cluster": "Local",
+      "action": "Strengthen local capsules + Maps CTAs; sync NAP when GBP live"
+    },
+    {
+      "keyword": "dime industries pre-roll near met",
+      "volume": 260,
+      "kd": 17,
+      "gap": "Partial",
+      "assignedUrl": "/locations",
+      "cluster": "Local",
+      "action": "Strengthen local capsules + Maps CTAs; sync NAP when GBP live"
+    },
+    {
+      "keyword": "dime industries flower near met",
+      "volume": 210,
+      "kd": 20,
+      "gap": "Partial",
+      "assignedUrl": "/locations",
+      "cluster": "Local",
+      "action": "Strengthen local capsules + Maps CTAs; sync NAP when GBP live"
+    },
+    {
+      "keyword": "dime industries battery",
+      "volume": 210,
+      "kd": 11,
+      "gap": "Partial",
+      "assignedUrl": "/shop/accessories",
+      "cluster": "Accessories",
+      "action": "Accessories hub live — deepen exact-match anchors + battery blog support"
+    }
+  ]
+}

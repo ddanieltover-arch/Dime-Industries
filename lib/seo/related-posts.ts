@@ -622,11 +622,15 @@ export type CatalogSeoLink = { href: string; label: string };
 export function catalogSeoLinks(basePath: string): CatalogSeoLink[] {
   if (basePath === "/shop/vapes") {
     return [
+      { href: "/shop/vapes", label: "dime cart" },
+      { href: "/shop/vapes", label: "dime cartridges" },
+      { href: "/shop/vapes", label: "dimes carts" },
+      { href: "/shop/vapes", label: "dime industries vapes" },
       { href: "/blog/dime-industries-cartridges-guide", label: "dime industries cartridges" },
       { href: "/blog/dime-vape-technology-guide", label: "dime vape" },
       { href: "/blog/beginners-guide-to-dime-carts", label: "Beginner’s guide to Dime carts" },
       { href: "/blog/what-is-a-dime-cart", label: "What is a Dime cart?" },
-      { href: "/blog/best-dime-industries-flavors", label: "Best DIME flavors" },
+      { href: "/blog/best-dime-industries-flavors", label: "dime flavors" },
       { href: "/blog/dime-cart-vs-disposable", label: "Dime cart vs disposable" },
       { href: "/shop/vapes/disposables", label: "DIME disposables / pens guide" },
       { href: "/shop/vapes", label: "dime pens" },
@@ -643,10 +647,24 @@ export function catalogSeoLinks(basePath: string): CatalogSeoLink[] {
       { href: "/blog/dime-cart-vs-disposable", label: "Cart vs disposable" },
       { href: "/shop/vapes/disposables", label: "dimes disposable" },
       { href: "/shop/vapes/disposables", label: "dime industries disposable" },
+      { href: "/shop/vapes/disposables", label: "dime dispo" },
+      { href: "/shop/vapes/disposables", label: "dime disposables" },
+      { href: "/shop/vapes/disposables", label: "dime disposable pens" },
+      { href: "/blog/best-dime-industries-flavors", label: "dime disposable flavors" },
       { href: "/shop/vapes", label: "Shop all DIME carts & pens" },
       { href: "/blog/dime-vape-heat-settings", label: "Heat settings & battery modes" },
       { href: "/blog/what-is-a-dime-cart", label: "What is a Dime cart?" },
       { href: "/shop/vapes/signature", label: "Signature line" },
+    ];
+  }
+  if (basePath === "/shop/accessories") {
+    return [
+      { href: "/shop/accessories", label: "dime battery" },
+      { href: "/shop/accessories", label: "dime industries battery" },
+      { href: "/blog/what-battery-for-dime-cart", label: "What battery for a Dime cart?" },
+      { href: "/blog/how-to-charge-a-dime-battery", label: "How to charge a DIME battery" },
+      { href: "/blog/dime-hardware-accessories-guide", label: "Hardware & accessories guide" },
+      { href: "/shop/vapes", label: "DIME carts & pens" },
     ];
   }
   if (basePath === "/shop/vapes/rosin") {
@@ -681,7 +699,7 @@ export function catalogSeoLinks(basePath: string): CatalogSeoLink[] {
     return [
       { href: "/blog/signature-vs-balanced", label: "Signature vs Balanced" },
       { href: "/blog/signature-vs-live-reserve", label: "Signature vs Live Reserve" },
-      { href: "/blog/best-dime-industries-flavors", label: "Best DIME flavors" },
+      { href: "/blog/best-dime-industries-flavors", label: "dime cart flavors" },
       { href: "/shop/vapes", label: "All DIME carts" },
       { href: "/product/lime-sherbanger", label: "Lime Sherbanger DIME" },
       { href: "/product/guavalicious", label: "Guavalicious DIME" },

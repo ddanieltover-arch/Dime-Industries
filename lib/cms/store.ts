@@ -83,7 +83,7 @@ const DEFAULT_PAGES: CmsPage[] = [
   {
     slug: "promotions",
     title: "Promotions",
-    body: "### Current offers\nCheck back often for drops, bundle deals, and member-only promotions — including [dime industries cartridges specials](/promotions) and [dime industries cartridges deals](/promotions) when listed for your market.\n\nFrom here, jump to [DIME carts & vape pens](/shop/vapes) or [disposables](/shop/vapes/disposables) to shop the formats those offers cover.\n\n### Rewards members\nValidate your products and shop while logged in to earn points toward discounts and early access.\n\n### Stay notified\nJoin the members newsletter on the homepage for drop alerts.",
+    body: "### Current offers\nCheck back often for drops, bundle deals, and member-only promotions — including [dime industries cartridges specials](/promotions), [dime industries cartridges deals](/promotions), and [dime industries flower specials](/promotions) when listed for your market.\n\nFrom here, jump to [DIME carts & vape pens](/shop/vapes) or [disposables](/shop/vapes/disposables) to shop the formats those offers cover.\n\n### Rewards members\nValidate your products and shop while logged in to earn points toward discounts and early access.\n\n### Stay notified\nJoin the members newsletter on the homepage for drop alerts.",
     status: "published",
     updatedAt: "2026-11-14T00:00:00.000Z",
   },
@@ -666,7 +666,7 @@ A Dime cart is a filled DIME Industries cartridge or tank. Most shoppers mean a 
 
 ### What is a Dime disposable / all-in-one?
 
-A DIME all-in-one (often searched as “dime disposable”) ships ready to use: extract plus rechargeable battery in one body, typically with heat presets designed for that fill. No separate battery purchase required. When the oil is done, the device is finished as a unit — convenience first. Dedicated commercial explainer: [DIME disposable vapes](/blog/dime-disposable-vapes). Educational landing: [Disposables](/shop/vapes/disposables).
+A DIME all-in-one (often searched as “dime disposable” or a [dime 2g disposable](/shop/vapes/disposables) when the fill size matches) ships ready to use: extract plus rechargeable battery in one body, typically with heat presets designed for that fill. No separate battery purchase required. When the oil is done, the device is finished as a unit — convenience first. Dedicated commercial explainer: [DIME disposable vapes](/blog/dime-disposable-vapes). Educational landing: [Disposables](/shop/vapes/disposables).
 
 ### Side-by-side comparison
 
