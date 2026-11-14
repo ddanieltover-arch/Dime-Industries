@@ -9,12 +9,20 @@ export type BlogSidebarLink = {
 /** Topical clusters for internal linking (slug → preferred sibling slugs). */
 export const BLOG_CLUSTER_MAP: Record<string, readonly string[]> = {
   "what-is-a-dime-cart": [
+    "dime-industries-cartridges-guide",
     "dime-cart-vs-disposable",
     "how-to-use-a-dime-cart",
     "how-to-spot-fake-dime-carts",
     "dime-live-reserve-explained",
     "signature-vs-live-reserve",
     "built-to-beat-leaks-the-dime-hardware-story",
+  ],
+  "dime-industries-cartridges-guide": [
+    "what-is-a-dime-cart",
+    "beginners-guide-to-dime-carts",
+    "what-is-in-a-dime-cartridge",
+    "dime-cart-vs-disposable",
+    "signature-vs-live-reserve",
   ],
   "dime-cart-vs-disposable": [
     "dime-disposable-vapes",
@@ -45,14 +53,31 @@ export const BLOG_CLUSTER_MAP: Record<string, readonly string[]> = {
     "built-to-beat-leaks-the-dime-hardware-story",
   ],
   "built-to-beat-leaks-the-dime-hardware-story": [
+    "dime-vape-technology-guide",
     "what-is-a-dime-cart",
     "dime-cart-vs-disposable",
     "how-to-spot-fake-dime-carts",
   ],
+  "dime-vape-technology-guide": [
+    "built-to-beat-leaks-the-dime-hardware-story",
+    "dime-vape-heat-settings",
+    "dime-disposable-vapes",
+    "dime-industries-cartridges-guide",
+    "dime-cart-vs-disposable",
+    "dime-hardware-accessories-guide",
+  ],
+  "what-is-dime-industries": [
+    "dime-vape-technology-guide",
+    "dime-industries-cartridges-guide",
+    "dime-industries-pre-roll-guide",
+    "built-to-beat-leaks-the-dime-hardware-story",
+    "beginners-guide-to-dime-carts",
+  ],
   "dime-prerolls-are-coming-meet-dimepack-double-ds": [
+    "dime-industries-pre-roll-guide",
+    "dime-prerolls-buying-guide",
     "shopping-by-potency",
     "how-we-publish-coas",
-    "what-is-a-dime-cart",
   ],
   "how-dime-state-exclusives-capture-a-place": [
     "what-is-a-dime-cart",
@@ -95,6 +120,7 @@ export const BLOG_CLUSTER_MAP: Record<string, readonly string[]> = {
     "built-to-beat-leaks-the-dime-hardware-story",
   ],
   "what-is-in-a-dime-cartridge": [
+    "dime-industries-cartridges-guide",
     "what-is-a-dime-cart",
     "dime-live-reserve-explained",
     "melted-diamonds-vape-explained",
@@ -145,8 +171,15 @@ export const BLOG_CLUSTER_MAP: Record<string, readonly string[]> = {
     "best-dime-industries-flavors",
   ],
   "dime-prerolls-buying-guide": [
+    "dime-industries-pre-roll-guide",
     "dime-prerolls-are-coming-meet-dimepack-double-ds",
     "shopping-by-potency",
+    "how-we-publish-coas",
+  ],
+  "dime-industries-pre-roll-guide": [
+    "dime-prerolls-buying-guide",
+    "dime-prerolls-are-coming-meet-dimepack-double-ds",
+    "how-to-read-a-dime-coa",
     "how-we-publish-coas",
   ],
   "how-to-read-a-dime-coa": [
@@ -160,6 +193,7 @@ export const BLOG_CLUSTER_MAP: Record<string, readonly string[]> = {
     "dime-rewards-explained",
   ],
   "beginners-guide-to-dime-carts": [
+    "dime-industries-cartridges-guide",
     "what-is-a-dime-cart",
     "dime-cart-vs-disposable",
     "how-to-use-a-dime-cart",
@@ -233,12 +267,14 @@ export const BLOG_CLUSTER_MAP: Record<string, readonly string[]> = {
     "dime-gummies",
   ],
   "dime-vape-heat-settings": [
+    "dime-vape-technology-guide",
     "how-to-use-a-dime-cart",
     "how-to-charge-a-dime-battery",
     "what-battery-for-dime-cart",
     "dime-disposable-vapes",
   ],
   "dime-disposable-vapes": [
+    "dime-vape-technology-guide",
     "dime-cart-vs-disposable",
     "dime-vape-heat-settings",
     "what-is-a-dime-cart",
@@ -366,6 +402,91 @@ const SIDEBAR_BY_SLUG: Record<string, readonly BlogSidebarLink[]> = {
       body: "See preroll availability for your jurisdiction.",
     },
     ...DEFAULT_SIDEBAR.slice(1),
+  ],
+  "dime-industries-pre-roll-guide": [
+    {
+      href: "/shop/prerolls",
+      label: "Shop DIME Industries pre-rolls",
+      body: "Browse current preroll formats for your jurisdiction.",
+    },
+    {
+      href: "/blog/dime-prerolls-buying-guide",
+      label: "Shopping DIME prerolls",
+      body: "Short buying checklist for DIMEPACK and beyond.",
+    },
+    {
+      href: "/lab-results",
+      label: "Lab Results",
+      body: "Match batch COAs to the pack you buy.",
+    },
+  ],
+  "dime-industries-cartridges-guide": [
+    {
+      href: "/shop/vapes",
+      label: "Shop DIME Industries cartridges",
+      body: "Browse carts and pens across Signature, Live Reserve, Rosin, and more.",
+    },
+    {
+      href: "/blog/what-is-a-dime-cart",
+      label: "What is a Dime cart?",
+      body: "Short definition of DIME carts and formats.",
+    },
+    {
+      href: "/blog/beginners-guide-to-dime-carts",
+      label: "Beginner’s guide to Dime carts",
+      body: "First-purchase path for licensed markets.",
+    },
+  ],
+  "dime-vape-technology-guide": [
+    {
+      href: "/shop/vapes",
+      label: "Shop DIME vapes",
+      body: "Browse carts, pens, and all-in-ones for your jurisdiction.",
+    },
+    {
+      href: "/blog/built-to-beat-leaks-the-dime-hardware-story",
+      label: "Built to Beat Leaks",
+      body: "How DIME engineered ceramic plates, batteries, and 510 tanks.",
+    },
+    {
+      href: "/blog/dime-vape-heat-settings",
+      label: "Heat settings & battery modes",
+      body: "Presets, USB-C charging, and mid-heat starting habits.",
+    },
+  ],
+  "what-is-dime-industries": [
+    {
+      href: "/about",
+      label: "About DIME Industries",
+      body: "Official brand story, pillars, and awards.",
+    },
+    {
+      href: "/shop",
+      label: "Shop DIME products",
+      body: "Browse vapes, edibles, prerolls, and accessories.",
+    },
+    {
+      href: "/locations",
+      label: "Find DIME",
+      body: "Locate licensed retailers by state.",
+    },
+  ],
+  "dime-prerolls-buying-guide": [
+    {
+      href: "/shop/prerolls",
+      label: "Shop prerolls",
+      body: "See preroll availability for your jurisdiction.",
+    },
+    {
+      href: "/blog/dime-industries-pre-roll-guide",
+      label: "Pre-roll formats & quality guide",
+      body: "Labels, COAs, and authenticity for DIME Industries pre-rolls.",
+    },
+    {
+      href: "/locations",
+      label: "Find DIME",
+      body: "Locate licensed retailers by state.",
+    },
   ],
   "how-dime-state-exclusives-capture-a-place": [
     {
@@ -501,13 +622,14 @@ export type CatalogSeoLink = { href: string; label: string };
 export function catalogSeoLinks(basePath: string): CatalogSeoLink[] {
   if (basePath === "/shop/vapes") {
     return [
+      { href: "/blog/dime-industries-cartridges-guide", label: "dime industries cartridges" },
+      { href: "/blog/dime-vape-technology-guide", label: "dime vape" },
       { href: "/blog/beginners-guide-to-dime-carts", label: "Beginner’s guide to Dime carts" },
       { href: "/blog/what-is-a-dime-cart", label: "What is a Dime cart?" },
       { href: "/blog/best-dime-industries-flavors", label: "Best DIME flavors" },
       { href: "/blog/dime-cart-vs-disposable", label: "Dime cart vs disposable" },
       { href: "/shop/vapes/disposables", label: "DIME disposables / pens guide" },
       { href: "/shop/vapes", label: "dime pens" },
-      { href: "/shop/vapes", label: "dime industries cartridges" },
       { href: "/shop/vapes", label: "dime industries vape" },
       { href: "/shop/vapes/rosin", label: "dime industries rosin" },
       { href: "/promotions", label: "dime industries vapes specials" },
@@ -586,9 +708,9 @@ export function catalogSeoLinks(basePath: string): CatalogSeoLink[] {
   }
   if (basePath === "/shop/prerolls") {
     return [
+      { href: "/blog/dime-industries-pre-roll-guide", label: "dime industries pre-roll" },
       { href: "/blog/dime-prerolls-buying-guide", label: "Prerolls buying guide" },
       { href: "/blog/dime-prerolls-are-coming-meet-dimepack-double-ds", label: "Meet DIMEPACK" },
-      { href: "/shop/prerolls", label: "dime industries pre-roll" },
       { href: "/promotions", label: "dime industries vapes deals" },
       { href: "/shop", label: "Shop all DIME" },
       { href: "/locations", label: "Find DIME retailers" },

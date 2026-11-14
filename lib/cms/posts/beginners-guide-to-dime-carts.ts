@@ -11,7 +11,7 @@ You do not need to memorize every SKU. You need five skills: (1) know what a Dim
 
 ### What is a Dime cart? (definition)
 
-A **Dime cart** is a DIME Industries cannabis vape cartridge or tank — typically a 510-thread or DIME-engineered fill that pairs with a compatible battery. Shoppers also use “Dime cart” as shorthand for the brand’s carts and related all-in-one vapes. Full definition and FAQ: [What is a Dime cart?](/blog/what-is-a-dime-cart). Glossary: [Dime cart](/glossary#dime-cart).
+A **Dime cart** is a DIME Industries cannabis vape cartridge or tank — typically a 510-thread or DIME-engineered fill that pairs with a compatible battery. Shoppers also use “Dime cart” as shorthand for the brand’s carts and related all-in-one vapes. Full definition and FAQ: [What is a Dime cart?](/blog/what-is-a-dime-cart). Formats, lines, and quality deep dive: [DIME Industries cartridges guide](/blog/dime-industries-cartridges-guide). Glossary: [Dime cart](/glossary#dime-cart).
 
 DIME Industries is a licensed cannabis brand founded in 2016 that engineers its own hardware rather than relying only on generic white-label parts. Brand context: [About](/about), [Trust](/trust), [Facts](/facts).
 

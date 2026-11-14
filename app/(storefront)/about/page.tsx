@@ -139,7 +139,15 @@ export default function AboutPage() {
               >
                 dime industries products
               </Link>{" "}
-              to see why we&apos;re award-winning.
+              to see why we&apos;re award-winning. For a full brand overview — history, collections, and quality
+              systems — read{" "}
+              <Link
+                href="/blog/what-is-dime-industries"
+                className="underline decoration-[var(--color-border)] underline-offset-2 hover:decoration-[var(--color-resin)]"
+              >
+                What Is DIME Industries?
+              </Link>
+              .
             </p>
           </div>
           <dl className="grid grid-cols-3 gap-4 border-t border-[var(--color-border)] pt-8 lg:border-t-0 lg:border-l lg:pl-10 lg:pt-0">

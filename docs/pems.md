@@ -165,6 +165,7 @@ Source: `dime-enterprise-commerce/docs/10-decisions-d1-d7-locked.md`. Soft-launc
 | 2026-08-18 | Keyword-gap URLs + ranking SKU metadata | GSC/Ahrefs queries ranked with no dedicated URL (signature vs balanced, heat settings, dime disposable, gummies, NY) and SKU names ranked 1–3 with thin titles | New flower SKUs / duplicate flavor posts | `KEYWORD_GAP_POSTS_2026` + `STRAIN_SEO_SLUGS` titles `{flavor} DIME`; no invented catalog |
 | 2026-08-18 | Fail-fast catalog/CMS for shop HTML | Live /shop stuck on loading.tsx; home ~5s cold; Postgres could hang past connect_timeout | Wait on full DB or keep 8s CMS seed on HTML | `withTimeout` 2.5–3s → seed; parallel catalog SQL; `statement_timeout 4s`; SW v3 8s navigate abort |
 | 2026-11-14 | Curated Semrush Positions → hub anchors | Homepage-ranked commercial/intent queries need natural exact-match internal links to existing hubs | Keyword cloud / all-27 exact / brand-nav stuffing | Map in `docs/seo/organic_positions_anchor_map_2026-11.md`; skip brand-nav + Buena Vista GA |
+| 2026-11-14 | HTML editorial blog imports → calendar seeds | Owner-supplied HTML posts need CMS-dialect seeds with even publish cadence | Admin-only cookie/DB posts; same-day dumps | Convert HTML→CMS dialect; `CALENDAR_POSTS_2026`; **3–4 posts/week**, one day each, backdate from 2026-11-14; posts: pre-roll (11-14), cartridges (11-12), vape tech (11-07), `what-is-dime-industries` (11-05); **refresh** `dime-disposable-vapes` (updatedAt 11-14, URL preserved) |
 
 ---
 

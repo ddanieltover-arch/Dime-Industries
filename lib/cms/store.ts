@@ -212,10 +212,10 @@ Ceramic plates heat oil evenly without a wick to dry out and burn. DIME uses two
 
 DIME's hardware story is steady problem-solving. The brand saw leaks, waste, and weak batteries, then engineered around each one since 2016. The result is a vape built for flavor, value, and consistency.
 
-Ready to shop? Browse [DIME vapes](/shop/vapes), look up [lab results](/lab-results), or [find a retailer near you](/locations).`,
+Ready to shop? Browse [DIME vapes](/shop/vapes), look up [lab results](/lab-results), or [find a retailer near you](/locations). For a broader hardware components overview — ceramic plates, atomizers, batteries, and format differences — see the [DIME vape technology guide](/blog/dime-vape-technology-guide).`,
     status: "published",
     publishedAt: "2026-05-20T00:00:00.000Z",
-    updatedAt: "2026-08-02T21:00:00.000Z",
+    updatedAt: "2026-11-07T12:00:00.000Z",
   },
   {
     slug: "dime-prerolls-are-coming-meet-dimepack-double-ds",
@@ -608,7 +608,7 @@ DIME carts show up in a few shopper-friendly formats:
 
 510-thread tanks and cartridges that pair with a compatible battery (DIME recommends its own batteries for full performance). All-in-one disposables that combine extract and a rechargeable battery in one device. Line-specific builds across Signature, Live Reserve, Rosin, and other collections.
 
-Browse the full set under [DIME carts and vapes](/shop/vapes). Hardware and batteries live under [Accessories](/shop/accessories) where listed for your market.
+Browse the full set under [DIME carts and vapes](/shop/vapes). Hardware and batteries live under [Accessories](/shop/accessories) where listed for your market. For formats, product lines, labels, and quality checks across the catalog, see the [DIME Industries cartridges guide](/blog/dime-industries-cartridges-guide).
 
 ### Signature vs Live Reserve vs Rosin (overview)
 
@@ -648,10 +648,10 @@ Purchase from a licensed retailer, then use [Validate](/validate) and review [La
 
 ### Last reviewed
 
-Reviewed 2026-08-04 against current [DIME carts & vape pens](/shop/vapes) hubs and the long-form [Beginner’s guide to Dime carts](/blog/beginners-guide-to-dime-carts).`,
+Reviewed 2026-11-12 against current [DIME carts & vape pens](/shop/vapes) hubs, the [DIME Industries cartridges guide](/blog/dime-industries-cartridges-guide), and the long-form [Beginner’s guide to Dime carts](/blog/beginners-guide-to-dime-carts).`,
     status: "published",
     publishedAt: "2026-08-03T00:00:00.000Z",
-    updatedAt: "2026-08-04T18:00:00.000Z",
+    updatedAt: "2026-11-12T12:00:00.000Z",
   },
   {
     slug: "dime-cart-vs-disposable",
