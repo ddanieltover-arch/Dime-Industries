@@ -31,10 +31,10 @@ export function HeroVideo({
 
       <div className="media-veil absolute inset-0" />
 
-      <div className="relative z-10 mx-auto flex min-h-[min(88vh,52rem)] max-w-7xl flex-col justify-end px-[var(--container-pad-x)] pb-[calc(5.5rem+env(safe-area-inset-bottom))] pt-24 sm:pb-16 sm:pt-28 lg:min-h-[88vh] lg:pb-24">
+      <div className="on-media relative z-10 mx-auto flex min-h-[min(88vh,52rem)] max-w-7xl flex-col justify-end px-[var(--container-pad-x)] pb-[calc(5.5rem+env(safe-area-inset-bottom))] pt-24 sm:pb-16 sm:pt-28 lg:min-h-[88vh] lg:pb-24">
         <FadeInStagger>
           <FadeInItem>
-            <p className="section-eyebrow text-[clamp(1.75rem,4vw,2.75rem)]">{eyebrow}</p>
+            <p className="section-eyebrow text-[clamp(0.7rem,1.5vw,0.8rem)]">{eyebrow}</p>
           </FadeInItem>
           <FadeInItem>
             <h1 className="mt-3 max-w-2xl font-[var(--font-display)] text-[clamp(2.25rem,6vw,4rem)] uppercase leading-[1.02] tracking-[0.04em] text-white">

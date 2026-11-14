@@ -24,7 +24,7 @@ export function StoreLocatorTeaser({
       }}
     >
       <div className="absolute inset-0 bg-black/78" />
-      <Reveal className="relative mx-auto max-w-7xl px-[var(--container-pad-x)] py-[var(--section-y)] text-center">
+      <Reveal className="on-media relative mx-auto max-w-7xl px-[var(--container-pad-x)] py-[var(--section-y)] text-center">
         <h2
           id="locator-heading"
           className="font-[var(--font-display)] text-[clamp(2rem,5vw,3.5rem)] uppercase tracking-[0.14em] text-white"
@@ -32,7 +32,7 @@ export function StoreLocatorTeaser({
           {headline}
         </h2>
         <p className="mx-auto mt-4 max-w-lg text-[var(--scale-base)] text-white/75">{body}</p>
-        <Link href={ctaHref} className="btn-outline mt-8 min-h-12 w-full max-w-xs touch-manipulation sm:w-auto">
+        <Link href={ctaHref} className="btn-outline-light mt-8 min-h-12 w-full max-w-xs touch-manipulation sm:w-auto">
           {ctaLabel}
         </Link>
       </Reveal>

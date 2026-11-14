@@ -50,7 +50,7 @@ function CategoryTile({
       </figure>
 
       <div className="absolute inset-0 bg-gradient-to-t from-black via-black/35 to-transparent" />
-      <div className="pointer-events-none absolute inset-x-0 bottom-0 z-20 flex items-end justify-between gap-3 p-6">
+      <div className="on-media pointer-events-none absolute inset-x-0 bottom-0 z-20 flex items-end justify-between gap-3 p-6">
         <p className="font-[var(--font-display)] text-[var(--scale-lg)] uppercase tracking-[0.12em] text-white">
           {tile.label}
         </p>

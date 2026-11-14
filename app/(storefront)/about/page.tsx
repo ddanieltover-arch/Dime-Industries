@@ -199,7 +199,7 @@ export default function AboutPage() {
           <div className="absolute inset-0 bg-gradient-to-r from-black via-black/90 to-black/55" />
         </div>
 
-        <div className="relative mx-auto grid max-w-7xl items-center gap-12 px-[var(--container-pad-x)] py-[var(--section-y)] lg:grid-cols-2 lg:gap-16">
+        <div className="on-media relative mx-auto grid max-w-7xl items-center gap-12 px-[var(--container-pad-x)] py-[var(--section-y)] lg:grid-cols-2 lg:gap-16">
           <Reveal>
             <p className="section-eyebrow">Recognition</p>
             <h2 id="awards-heading" className="section-title mt-3 text-white">

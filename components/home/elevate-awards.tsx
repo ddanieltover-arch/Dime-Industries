@@ -45,7 +45,7 @@ export function ElevateAwards() {
         <div className="absolute inset-0 bg-gradient-to-r from-black via-black/90 to-black/60" />
       </div>
 
-      <div className="relative mx-auto grid max-w-7xl items-center gap-12 px-[var(--container-pad-x)] py-[var(--section-y)] lg:grid-cols-2 lg:gap-16">
+      <div className="on-media relative mx-auto grid max-w-7xl items-center gap-12 px-[var(--container-pad-x)] py-[var(--section-y)] lg:grid-cols-2 lg:gap-16">
         <Reveal>
           <p className="section-eyebrow">Elevate your experience</p>
           <h2 id="elevate-heading" className="section-title mt-3 text-white">

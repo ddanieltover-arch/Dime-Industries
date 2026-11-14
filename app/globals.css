@@ -587,6 +587,7 @@ summary {
   font-size: var(--scale-xs);
   letter-spacing: 0.14em;
   text-transform: uppercase;
+  /* Inherit — ink-muted by default via body; .on-media overrides on dark bands */
   color: var(--color-ink-muted);
   line-height: 1.2;
 }
@@ -597,7 +598,20 @@ summary {
   letter-spacing: 0.04em;
   text-transform: uppercase;
   line-height: 1.1;
-  color: var(--color-ink);
+  /* Inherit ink from body so text-white / on-media utilities can win */
+}
+
+/* Dark / photo overlays — force light type so retail ink cannot disappear */
+.on-media {
+  color: #fff;
+}
+
+.on-media .section-title {
+  color: #fff;
+}
+
+.on-media .section-eyebrow {
+  color: rgba(255, 255, 255, 0.75);
 }
 
 .page-header {
