@@ -23,7 +23,7 @@ const COLUMNS = [
       { href: "/facts", label: "Brand facts" },
       { href: "/blog", label: "Blog" },
       { href: "/faq", label: "FAQ" },
-      { href: "/careers", label: "Careers" },
+      { href: "/careers", label: "dime industries careers" },
       { href: "/contact", label: "Contact" },
       { href: "/wholesale", label: "Wholesale" },
       { href: "/locations", label: "Find DIME" },

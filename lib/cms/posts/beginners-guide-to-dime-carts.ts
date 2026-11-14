@@ -15,7 +15,7 @@ A **Dime cart** is a DIME Industries cannabis vape cartridge or tank — typical
 
 DIME Industries is a licensed cannabis brand founded in 2016 that engineers its own hardware rather than relying only on generic white-label parts. Brand context: [About](/about), [Trust](/trust), [Facts](/facts).
 
-When people say **dime pen**, they usually mean the same shopping universe: a DIME cart on a battery, or a DIME all-in-one disposable. Start at the commercial hub: [DIME carts & vape pens](/shop/vapes).
+When people say [dime pen](/shop/vapes), they usually mean the same shopping universe: a DIME cart on a battery, or a DIME all-in-one disposable. Related searches like [dime weed pen](/shop/vapes) point to the same commercial hub: [DIME carts & vape pens](/shop/vapes). Prefer a ready device? Shoppers often look for a [dimes dispo](/shop/vapes/disposables) all-in-one.
 
 ### Cart vs all-in-one — which should beginners buy?
 

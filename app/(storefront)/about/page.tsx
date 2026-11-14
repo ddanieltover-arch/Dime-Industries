@@ -85,8 +85,16 @@ export default function AboutPage() {
             </AnswerCapsule>
           </div>
           <p className="rise rise-delay-2 mt-4 max-w-md text-[var(--scale-base)] leading-relaxed text-white/80">
-            Building award-winning DIME carts, vapes, edibles, and prerolls from the hardware up.
-            Synonyms shoppers use: DIME, Dime Industries, dime carts.
+            Building award-winning DIME carts,{" "}
+            <Link href="/shop/vapes" className="underline decoration-white/40 underline-offset-2 hover:decoration-white">
+              dime vape
+            </Link>{" "}
+            hardware, edibles, and prerolls from the hardware up. Synonyms shoppers use: DIME, Dime
+            Industries, dime carts,{" "}
+            <Link href="/shop/vapes" className="underline decoration-white/40 underline-offset-2 hover:decoration-white">
+              dime cartridge
+            </Link>
+            .
           </p>
           <div className="rise rise-delay-3 mt-8 flex flex-wrap gap-3">
             <Link href="/shop/vapes" className="btn-primary">
@@ -112,13 +120,26 @@ export default function AboutPage() {
               Elevate your experience
             </h2>
             <p className="mt-5 max-w-xl text-[var(--scale-base)] leading-relaxed text-[var(--color-ink-soft)]">
-              DIME Industries makes award-winning vapes, gummies, softgels, and prerolls. We engineer our own
-              hardware instead of buying generic parts — so the product in your hand matches the standard on the
-              shelf.
+              DIME Industries makes award-winning vapes, gummies, softgels, and{" "}
+              <Link
+                href="/shop/prerolls"
+                className="underline decoration-[var(--color-border)] underline-offset-2 hover:decoration-[var(--color-resin)]"
+              >
+                dime industries pre-roll
+              </Link>{" "}
+              formats. We engineer our own hardware instead of buying generic parts — so the product in your
+              hand matches the standard on the shelf.
             </p>
             <p className="mt-4 max-w-xl text-[var(--scale-base)] leading-relaxed text-[var(--color-ink-soft)]">
               Innovation takes center stage. Our commitment to excellence has earned recognition across leading
-              industry publications — explore the lineup to see why we&apos;re award-winning.
+              industry publications — explore{" "}
+              <Link
+                href="/shop"
+                className="underline decoration-[var(--color-border)] underline-offset-2 hover:decoration-[var(--color-resin)]"
+              >
+                dime industries products
+              </Link>{" "}
+              to see why we&apos;re award-winning.
             </p>
           </div>
           <dl className="grid grid-cols-3 gap-4 border-t border-[var(--color-border)] pt-8 lg:border-t-0 lg:border-l lg:pl-10 lg:pt-0">

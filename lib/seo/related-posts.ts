@@ -505,17 +505,22 @@ export function catalogSeoLinks(basePath: string): CatalogSeoLink[] {
       { href: "/blog/what-is-a-dime-cart", label: "What is a Dime cart?" },
       { href: "/blog/best-dime-industries-flavors", label: "Best DIME flavors" },
       { href: "/blog/dime-cart-vs-disposable", label: "Dime cart vs disposable" },
-      { href: "/blog/dime-disposable-vapes", label: "DIME disposable vapes" },
       { href: "/shop/vapes/disposables", label: "DIME disposables / pens guide" },
+      { href: "/shop/vapes", label: "dime pens" },
+      { href: "/shop/vapes", label: "dime industries cartridges" },
+      { href: "/shop/vapes", label: "dime industries vape" },
+      { href: "/shop/vapes/rosin", label: "dime industries rosin" },
+      { href: "/promotions", label: "dime industries vapes specials" },
       { href: "/shop/vapes/signature", label: "Signature carts" },
       { href: "/shop/vapes/live-reserve", label: "Live Reserve" },
-      { href: "/shop/vapes/rosin", label: "DIME Industries rosin" },
     ];
   }
   if (basePath === "/shop/vapes/disposables") {
     return [
       { href: "/blog/dime-disposable-vapes", label: "DIME disposable vapes" },
       { href: "/blog/dime-cart-vs-disposable", label: "Cart vs disposable" },
+      { href: "/shop/vapes/disposables", label: "dimes disposable" },
+      { href: "/shop/vapes/disposables", label: "dime industries disposable" },
       { href: "/shop/vapes", label: "Shop all DIME carts & pens" },
       { href: "/blog/dime-vape-heat-settings", label: "Heat settings & battery modes" },
       { href: "/blog/what-is-a-dime-cart", label: "What is a Dime cart?" },
@@ -583,6 +588,8 @@ export function catalogSeoLinks(basePath: string): CatalogSeoLink[] {
     return [
       { href: "/blog/dime-prerolls-buying-guide", label: "Prerolls buying guide" },
       { href: "/blog/dime-prerolls-are-coming-meet-dimepack-double-ds", label: "Meet DIMEPACK" },
+      { href: "/shop/prerolls", label: "dime industries pre-roll" },
+      { href: "/promotions", label: "dime industries vapes deals" },
       { href: "/shop", label: "Shop all DIME" },
       { href: "/locations", label: "Find DIME retailers" },
       { href: "/lab-results", label: "Lab results" },
@@ -594,6 +601,7 @@ export function catalogSeoLinks(basePath: string): CatalogSeoLink[] {
       { href: "/shop/prerolls", label: "Prerolls / flower formats" },
       { href: "/shop/vapes/disposables", label: "Disposables guide" },
       { href: "/shop/vapes/rosin", label: "Rosin" },
+      { href: "/promotions", label: "Current deals & specials" },
       { href: "/blog/best-dime-industries-flavors", label: "Best DIME flavors" },
       { href: "/locations", label: "Find DIME dispensaries" },
       { href: "/blog/beginners-guide-to-dime-carts", label: "Beginner’s cart guide" },

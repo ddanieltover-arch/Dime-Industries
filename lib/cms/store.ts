@@ -83,9 +83,9 @@ const DEFAULT_PAGES: CmsPage[] = [
   {
     slug: "promotions",
     title: "Promotions",
-    body: "### Current offers\nCheck back often for drops, bundle deals, and member-only promotions.\n\n### Rewards members\nValidate your products and shop while logged in to earn points toward discounts and early access.\n\n### Stay notified\nJoin the members newsletter on the homepage for drop alerts.",
+    body: "### Current offers\nCheck back often for drops, bundle deals, and member-only promotions — including [dime industries cartridges specials](/promotions) and [dime industries cartridges deals](/promotions) when listed for your market.\n\nFrom here, jump to [DIME carts & vape pens](/shop/vapes) or [disposables](/shop/vapes/disposables) to shop the formats those offers cover.\n\n### Rewards members\nValidate your products and shop while logged in to earn points toward discounts and early access.\n\n### Stay notified\nJoin the members newsletter on the homepage for drop alerts.",
     status: "published",
-    updatedAt: "2026-07-01T00:00:00.000Z",
+    updatedAt: "2026-11-14T00:00:00.000Z",
   },
   {
     slug: "links",
@@ -680,7 +680,7 @@ A DIME all-in-one (often searched as “dime disposable”) ships ready to use: 
 
 ### Who should buy which?
 
-Choose a cart if you already have a DIME or compatible 510 battery, want to stock multiple tanks, or prefer reusable hardware. Choose an all-in-one if you travel light, gift a ready device, or do not want to manage a separate battery. New to the brand? Start with the format your licensed retailer stocks most often, then explore [DIME vapes](/shop/vapes) or the [dime disposable / all-in-one guide](/shop/vapes/disposables).
+Choose a cart if you already have a DIME or compatible 510 battery, want to stock multiple tanks, or prefer reusable hardware. Choose an all-in-one if you travel light, gift a ready device, or do not want to manage a separate battery. New to the brand? Start with the format your licensed retailer stocks most often, then explore [DIME vapes](/shop/vapes) or the [dime dispos](/shop/vapes/disposables) / all-in-one guide.
 
 ### Flavor and line availability
 

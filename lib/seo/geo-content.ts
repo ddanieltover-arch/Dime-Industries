@@ -60,10 +60,34 @@ export const GLOSSARY_TERMS: GlossaryTerm[] = [
   {
     id: "all-in-one",
     term: "All-in-one / disposable",
-    synonyms: ["dime disposable", "AIO"],
+    synonyms: ["dime disposable", "AIO", "dime dispos", "dimes disposable", "dimes dispo"],
     definition:
       "A DIME all-in-one combines extract and a rechargeable battery in one device. Unlike a cart-plus-battery setup, it is ready to use without a separate battery purchase.",
-    href: "/blog/dime-cart-vs-disposable",
+    href: "/shop/vapes/disposables",
+  },
+  {
+    id: "dime-pen",
+    term: "Dime pen",
+    synonyms: ["dime pens", "dimes pens", "dime weed pen", "dime thc pen", "dime vape"],
+    definition:
+      "“Dime pen” is shopper shorthand for a DIME cart on a battery or a DIME all-in-one vape. It points to the same licensed shopping universe as DIME carts and vape pens — not a separate product category.",
+    href: "/shop/vapes",
+  },
+  {
+    id: "dime-thc-pen",
+    term: "dime thc pen",
+    synonyms: ["THC pen", "DIME THC pen"],
+    definition:
+      "A “dime thc pen” search usually means a DIME Industries cannabis vape (cart or all-in-one) sold through licensed retailers. Start at the carts & pens hub, then confirm potency on Lab Results for the batch you buy.",
+    href: "/shop/vapes",
+  },
+  {
+    id: "dime-wax",
+    term: "dime wax",
+    synonyms: ["DIME wax", "wax pen DIME"],
+    definition:
+      "Shoppers searching “dime wax” usually mean DIME vape concentrates or cart fills in slang form — not a separate wax category page. Browse DIME carts and pens, then pick Signature, Live Reserve, or Rosin for your market.",
+    href: "/shop/vapes",
   },
   {
     id: "coa",

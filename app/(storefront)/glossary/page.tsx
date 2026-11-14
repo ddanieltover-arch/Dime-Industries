@@ -87,9 +87,9 @@ export default function GlossaryPage() {
                       {" "}
                       <Link
                         href={term.href}
-                        className="font-[var(--font-display)] text-[10px] uppercase tracking-[0.12em] text-[var(--color-resin)] hover:underline"
+                        className="text-[var(--color-resin)] underline decoration-[var(--color-border)] underline-offset-2 hover:decoration-[var(--color-resin)]"
                       >
-                        Learn more →
+                        {term.term}
                       </Link>
                     </>
                   ) : null}
